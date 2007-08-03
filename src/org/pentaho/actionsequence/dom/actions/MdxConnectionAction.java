@@ -12,10 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class MdxConnectionAction extends ActionDefinition {
@@ -86,15 +90,15 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(LOCATION_ELEMENT);
   }
   
-  public void setLocationVariable(IActionVariable variable) {
+  public void setLocationParam(IActionVariable variable) {
     setReferencedVariable(LOCATION_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
     }
   }
   
-  public IActionVariable getLocationVariable() {
-    return getReferencedVariable(LOCATION_ELEMENT);
+  public ActionInput getLocationParam() {
+    return getInputParam(LOCATION_ELEMENT);
   }
   
   public void setUserId(String value) {
@@ -109,7 +113,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(USER_ID_ELEMENT);
   }
   
-  public void setUserIdVariable(IActionVariable variable) {
+  public void setUserIdParam(IActionVariable variable) {
     setReferencedVariable(USER_ID_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -117,8 +121,8 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getUserIdVariable() {
-    return getReferencedVariable(USER_ID_ELEMENT);
+  public ActionInput getUserIdParam() {
+    return getInputParam(USER_ID_ELEMENT);
   }
   
   public void setPassword(String value) {
@@ -133,7 +137,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(PASSWORD_ELEMENT);
   }
   
-  public void setPasswordVariable(IActionVariable variable) {
+  public void setPasswordParam(IActionVariable variable) {
     setReferencedVariable(PASSWORD_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -141,8 +145,8 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getPasswordVariable() {
-    return getReferencedVariable(PASSWORD_ELEMENT);
+  public ActionInput getPasswordParam() {
+    return getInputParam(PASSWORD_ELEMENT);
   }
   
   public void setMdxConnectionString(String value) {
@@ -161,7 +165,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(MDX_CONNECTION_ELEMENT);
   }
   
-  public void setMdxConnectionStringVariable(IActionVariable variable) {
+  public void setMdxConnectionStringParam(IActionVariable variable) {
     setReferencedVariable(MDX_CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
@@ -173,8 +177,8 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getMdxConnectionStringVariable() {
-    return getReferencedVariable(MDX_CONNECTION_ELEMENT);
+  public ActionInput getMdxConnectionStringParam() {
+    return getInputParam(MDX_CONNECTION_ELEMENT);
   }
   
   public void setRole(String value) {
@@ -185,12 +189,12 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(ROLE_ELEMENT);
   }
   
-  public void setRoleVariable(IActionVariable variable) {
+  public void setRoleParam(IActionVariable variable) {
     setReferencedVariable(ROLE_ELEMENT, variable);
   }
   
-  public IActionVariable getRoleVariable() {
-    return getReferencedVariable(ROLE_ELEMENT);
+  public ActionInput getRoleParam() {
+    return getInputParam(ROLE_ELEMENT);
   }
   
   public void setConnection(String value) {
@@ -205,7 +209,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(CONNECTION_ELEMENT);
   }
   
-  public void setConnectionVariable(IActionVariable variable) {
+  public void setConnectionParam(IActionVariable variable) {
     setReferencedVariable(CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -213,8 +217,8 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getConnectionVariable() {
-    return getReferencedVariable(CONNECTION_ELEMENT);
+  public ActionInput getConnectionParam() {
+    return getInputParam(CONNECTION_ELEMENT);
   }
   
   public void setJndi(String value) {
@@ -231,7 +235,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(JNDI_ELEMENT);
   }
   
-  public void setJndiVariable(IActionVariable variable) {
+  public void setJndiParam(IActionVariable variable) {
     setReferencedVariable(JNDI_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -241,8 +245,8 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getJndiVariable() {
-    return getReferencedVariable(JNDI_ELEMENT);
+  public ActionInput getJndiParam() {
+    return getInputParam(JNDI_ELEMENT);
   }
   
   public void setOutputConnectionName(String name) {
@@ -253,7 +257,74 @@ public class MdxConnectionAction extends ActionDefinition {
     return getOutputPublicName(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionOutput getOutputConnectionVariable() {
+  public ActionOutput getOutputConnectionParam() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateInputParam(MDX_CONNECTION_ELEMENT);
+    if (validationError != null) {
+      if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
+        validationError.errorMsg = "Database connection input parameter references unknown variable.";
+        errors.add(validationError);
+      } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_UNINITIALIZED) {
+        validationError.errorMsg = "Database connection input parameter is uninitialized.";
+        errors.add(validationError);
+      } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
+        validationError = validateResourceParam(CATALOG_ELEMENT);
+        if (validationError != null) {
+          switch (validationError.errorCode) {
+            case ActionSequenceValidationError.INPUT_MISSING:
+              validationError.errorMsg = "Missing mondrian schema input parameter.";
+              break;
+            case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+              validationError.errorMsg = "Mondrian schema input parameter references unknown variable.";
+              break;
+            case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+              validationError.errorMsg = "Mondrian schema input parameter is uninitialized.";
+              break;
+          }
+          errors.add(validationError);
+        }
+        
+        validationError = validateInputParam(CONNECTION_ELEMENT);
+        if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
+          validationError = validateInputParam(JNDI_ELEMENT);
+          if (validationError != null) {
+            switch (validationError.errorCode) {
+              case ActionSequenceValidationError.INPUT_MISSING:
+                validationError.errorMsg = "Missing database connection input parameter.";
+                break;
+              case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+                validationError.errorMsg = "Database connection input parameter references unknown variable.";
+                break;
+              case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+                validationError.errorMsg = "Database connection input parameter in unitialized.";
+                break;
+            }
+            errors.add(validationError);
+          }
+        } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
+          validationError.errorMsg = "Database connection input parameter references unknown variable.";
+          errors.add(validationError);
+        } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_UNINITIALIZED) {
+          validationError.errorMsg = "Database connection input parameter is uninitialized.";
+          errors.add(validationError);
+        }
+      }
+    }
+    
+    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    if (validationError != null) {
+      if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
+        validationError.errorMsg = "Missing output connection name.";
+      }
+      errors.add(validationError);
+    }
+    
+
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

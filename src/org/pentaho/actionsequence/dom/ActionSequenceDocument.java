@@ -1077,6 +1077,10 @@ public class ActionSequenceDocument {
     return (IActionVariable[])availParams.toArray(new IActionVariable[0]);
   }
   
+  public IActionVariable[] getAvailInputVariables(ActionDefinition actionDefinition, String type) {
+    return getAvailInputVariables(actionDefinition, new String[]{type});
+  }
+  
   public IActionVariable[] getAvailInputVariables(ActionControlStatement controlStatement) {
     List availParams = new ArrayList();
     if (controlStatement instanceof ActionLoop) {
@@ -1223,5 +1227,21 @@ public class ActionSequenceDocument {
       }
     }
     return (IActionSequenceElement[])references.toArray(new IActionSequenceElement[0]);
+  }
+  
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    IActionSequenceExecutableStatement[] executableChildren = getExecutableChildren();
+    for (int i = 0; i < executableChildren.length; i++) {
+      if (executableChildren[i] instanceof ActionDefinition) {
+        ActionDefinition actionDefinition = (ActionDefinition)executableChildren[i];
+        errors.addAll(Arrays.asList(actionDefinition.validate()));
+      } else if (executableChildren[i] instanceof ActionControlStatement) {
+        ActionControlStatement actionControlStatement = (ActionControlStatement)executableChildren[i];
+        errors.addAll(Arrays.asList(actionControlStatement.validate(true)));
+      }
+    }
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

@@ -12,10 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class JFreeReportAction extends ActionDefinition {
@@ -121,7 +125,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(CONNECTION_ELEMENT);
   }
   
-  public void setConnectionVariable(IActionVariable variable) {
+  public void setConnectionParam(IActionVariable variable) {
     setReferencedVariable(CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
@@ -129,8 +133,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getConnectionVariable() {
-    return getReferencedVariable(CONNECTION_ELEMENT);
+  public ActionInput getConnectionParam() {
+    return getInputParam(CONNECTION_ELEMENT);
   }
   
   public void setUserId(String value) {
@@ -145,7 +149,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(USER_ID_ELEMENT);
   }
   
-  public void setUserIdVariable(IActionVariable variable) {
+  public void setUserIdParam(IActionVariable variable) {
     setReferencedVariable(USER_ID_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
@@ -153,8 +157,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getUserIdVariable() {
-    return getReferencedVariable(USER_ID_ELEMENT);
+  public ActionInput getUserIdParam() {
+    return getInputParam(USER_ID_ELEMENT);
   }
   
   public void setDriver(String value) {
@@ -169,7 +173,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(DRIVER_ELEMENT);
   }
   
-  public void setDriverVariable(IActionVariable variable) {
+  public void setDriverParam(IActionVariable variable) {
     setReferencedVariable(DRIVER_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
@@ -177,8 +181,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getDriverVariable() {
-    return getReferencedVariable(DRIVER_ELEMENT);
+  public ActionInput getDriverParam() {
+    return getInputParam(DRIVER_ELEMENT);
   }
   
   public void setPassword(String value) {
@@ -193,7 +197,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(PASSWORD_ELEMENT);
   }
   
-  public void setPasswordVariable(IActionVariable variable) {
+  public void setPasswordParam(IActionVariable variable) {
     setReferencedVariable(PASSWORD_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
@@ -201,8 +205,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getPasswordVariable() {
-    return getReferencedVariable(PASSWORD_ELEMENT);
+  public ActionInput getPasswordParam() {
+    return getInputParam(PASSWORD_ELEMENT);
   }
   
   public void setJndi(String value) {
@@ -220,7 +224,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(JNDI_ELEMENT);
   }
   
-  public void setJndiVariable(IActionVariable variable) {
+  public void setJndiParam(IActionVariable variable) {
     setReferencedVariable(JNDI_ELEMENT, variable);
     if (variable != null) {
       setDriver(null);
@@ -231,8 +235,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getJndiVariable() {
-    return getReferencedVariable(JNDI_ELEMENT);
+  public ActionInput getJndiParam() {
+    return getInputParam(JNDI_ELEMENT);
   }
   
   public void setOutputType(String value) {
@@ -243,12 +247,12 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(OUTPUT_TYPE_ELEMENT);
   }
   
-  public void setOutputTypeVariable(IActionVariable variable) {
+  public void setOutputTypeParam(IActionVariable variable) {
     setReferencedVariable(OUTPUT_TYPE_ELEMENT, variable);
   }
   
-  public IActionVariable getOutputTypeVariable() {
-    return getReferencedVariable(OUTPUT_TYPE_ELEMENT);
+  public ActionInput getOutputTypeParam() {
+    return getInputParam(OUTPUT_TYPE_ELEMENT);
   }
 
   public void setData(String value) {
@@ -267,7 +271,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(DATA_ELEMENT);
   }
   
-  public void setDataVariable(IActionVariable variable) {
+  public void setDataParam(IActionVariable variable) {
     setReferencedVariable(DATA_ELEMENT, variable);
     if (variable != null) {
       setDriver(null);
@@ -279,8 +283,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getDataVariable() {
-    return getReferencedVariable(DATA_ELEMENT);
+  public ActionInput getDataParam() {
+    return getInputParam(DATA_ELEMENT);
   }
   
   public void setQuery(String value) {
@@ -291,12 +295,12 @@ public class JFreeReportAction extends ActionDefinition {
     return getComponentDefinitionValue(QUERY_ELEMENT);
   }
   
-  public void setQueryVariable(IActionVariable variable) {
+  public void setQueryParam(IActionVariable variable) {
     setReferencedVariable(QUERY_ELEMENT, variable);
   }
   
-  public IActionVariable getQueryVariable() {
-    return getReferencedVariable(QUERY_ELEMENT);
+  public ActionInput getQueryParam() {
+    return getInputParam(QUERY_ELEMENT);
   }
   
   public void setOutputReportName(String name) {
@@ -323,7 +327,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getOutputPublicName(privateOutputName);
   }
   
-  public ActionOutput getOutputReportVariable() {
+  public ActionOutput getOutputReportParam() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(privateOutputName) ==  null) { 
       ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
@@ -332,5 +336,41 @@ public class JFreeReportAction extends ActionDefinition {
       }
     }
     return getOutputParam(REPORT_OUTPUT_ELEMENT);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateInputParam(DATA_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report data input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report data input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report data input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    validationError = validateResourceParam(REPORT_DEFINITION_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report definition input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report definition input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report definition input parameter is unitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

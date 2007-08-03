@@ -21,6 +21,7 @@ import org.dom4j.Element;
  */
 public class ActionIfStatement extends ActionControlStatement {
 
+  private static final ActionSequenceValidationError[] EMPTY_ARRAY = new ActionSequenceValidationError[0];
   public ActionIfStatement(Element controlElement) {
     super(controlElement);
   }
@@ -49,6 +50,10 @@ public class ActionIfStatement extends ActionControlStatement {
       condition = conditionElement.getText();
     }
     return condition;
+  }
+
+  protected ActionSequenceValidationError[] validateThis() {
+    return EMPTY_ARRAY;
   }
   
 }

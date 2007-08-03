@@ -12,6 +12,9 @@
 */
 package org.pentaho.actionsequence.dom;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.dom4j.Attribute;
 import org.dom4j.Element;
 
@@ -55,6 +58,24 @@ public class ActionLoop extends ActionControlStatement {
    */
   public String getLoopOn() {
     return controlElement.attributeValue(ActionSequenceDocument.LOOP_ON_NAME);
+  }
+
+  protected ActionSequenceValidationError[] validateThis() {
+    ArrayList errors = new ArrayList();
+    String loopOn = getLoopOn();
+    if (loopOn.trim().length() == 0) {
+      errors.add("Missing loop variable.");
+    } else {
+      IActionVariable[] actionVariables = getDocument().getAvailInputVariables(this);
+      boolean isValid = false;
+      for (int i = 0; (i < actionVariables.length) && !isValid; i++) {
+        isValid = actionVariables[i].getVariableName().equals(loopOn);
+      }
+      if (!isValid) {
+        errors.add("Loop references unknown variable.");
+      }
+    }
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
 }

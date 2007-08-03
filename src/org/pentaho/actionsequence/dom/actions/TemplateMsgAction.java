@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -71,12 +72,12 @@ public class TemplateMsgAction extends ActionDefinition {
     return getComponentDefinitionValue(TEMPLATE_ELEMENT);
   }
   
-  public void setTemplateVariable(IActionVariable variable) {
+  public void setTemplateParam(IActionVariable variable) {
     setReferencedVariable(TEMPLATE_ELEMENT, variable);
   }
   
-  public IActionVariable getTemplateVariable() {
-    return getReferencedVariable(TEMPLATE_ELEMENT);
+  public ActionInput getTemplateParam() {
+    return getInputParam(TEMPLATE_ELEMENT);
   }
   
   public void setOutputStringName(String name) {
@@ -87,7 +88,7 @@ public class TemplateMsgAction extends ActionDefinition {
     return getOutputPublicName(OUTPUT_MSG_ELEMENT);
   }
   
-  public ActionOutput getOutputStringVariable() {
+  public ActionOutput getOutputStringParam() {
     return getOutputParam(OUTPUT_MSG_ELEMENT);
   }
 }

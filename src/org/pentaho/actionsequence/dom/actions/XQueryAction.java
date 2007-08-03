@@ -12,10 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class XQueryAction extends ActionDefinition {
@@ -28,6 +32,7 @@ public class XQueryAction extends ActionDefinition {
   public static final String PREPARED_COMPONENT_ELEMENT = "prepared_component"; //$NON-NLS-1$
   public static final String OUTPUT_RESULT_SET = "output-result-set"; //$NON-NLS-1$
   public static final String OUTPUT_PREPARED_STATEMENT = "output-prepared_statement"; //$NON-NLS-1$
+  public static final String DEFAULT_QUERY_RESULTS_NAME = "query_result"; //$NON-NLS-1$
 
   protected static final String[] EXPECTED_RESOURCES = new String[] {
     DOCUMENT_ELEMENT
@@ -73,12 +78,12 @@ public class XQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(DOCUMENT_ELEMENT);
   }
   
-  public void setSourceXmlVariable(IActionVariable variable) {
+  public void setSourceXmlParam(IActionVariable variable) {
     setReferencedVariable(DOCUMENT_ELEMENT, variable);
   }
   
-  public IActionVariable getSourceXmlVariable() {
-    return getReferencedVariable(DOCUMENT_ELEMENT);
+  public ActionInput getSourceXmlParam() {
+    return getInputParam(DOCUMENT_ELEMENT);
   }
 
   public void setQuery(String value) {
@@ -89,12 +94,12 @@ public class XQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(QUERY_ELEMENT);
   }
   
-  public void setQueryVariable(IActionVariable variable) {
+  public void setQueryParam(IActionVariable variable) {
     setReferencedVariable(QUERY_ELEMENT, variable);
   }
   
-  public IActionVariable getQueryVariable() {
-    return getReferencedVariable(QUERY_ELEMENT);
+  public ActionInput getQueryParam() {
+    return getInputParam(QUERY_ELEMENT);
   }
   
   public void setOutputResultSetName(String name) {
@@ -108,7 +113,7 @@ public class XQueryAction extends ActionDefinition {
     return getOutputPublicName(QUERY_RESULT_ELEMENT);
   }
   
-  public ActionOutput getOutputResultSetVariable() {
+  public ActionOutput getOutputResultSetParam() {
     return getOutputParam(QUERY_RESULT_ELEMENT);
   }
   
@@ -129,7 +134,70 @@ public class XQueryAction extends ActionDefinition {
     return getOutputPublicName(PREPARED_COMPONENT_ELEMENT);
   }  
   
-  public ActionOutput getOutputPreparedStatementVariable() {
+  public ActionOutput getOutputPreparedStatementParam() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateInputParam(DOCUMENT_ELEMENT);
+    if (validationError != null) {
+      if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
+        validationError = validateResourceParam(DOCUMENT_ELEMENT);
+        if (validationError != null) {
+          switch (validationError.errorCode) {
+            case ActionSequenceValidationError.INPUT_MISSING:
+              validationError.errorMsg = "Missing source XML input parameter.";
+              break;
+            case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+              validationError.errorMsg = "Source XML input parameter references unknown variable.";
+              break;
+            case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+              validationError.errorMsg = "Source XML input parameter is uninitialized.";
+              break;
+          }
+          errors.add(validationError);
+        }
+      } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
+          validationError.errorMsg = "Source XML input parameter references unknown variable.";
+          errors.add(validationError);
+      } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_UNINITIALIZED) {
+        validationError.errorMsg = "Source XML input parameter is uninitialized.";
+        errors.add(validationError);
+      }
+    }
+    
+    validationError = validateInputParam(QUERY_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing query input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Query input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Query input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    if (validationError != null) {
+      validationError = validateOutputParam(QUERY_RESULT_ELEMENT);
+      if (validationError != null) {
+        validationError.errorMsg = "Missing query results output parameter.";
+        errors.add(validationError);
+      }
+    }
+    
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  protected void initNewActionDefinition() {
+    super.initNewActionDefinition();
+    setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
   }
 }

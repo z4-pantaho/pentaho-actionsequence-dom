@@ -1,7 +1,11 @@
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public abstract class AbstractChartAction extends ActionDefinition {
@@ -63,12 +67,12 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_DATA_ELEMENT);
   }
   
-  public void setChartDataVariable(IActionVariable variable) {
+  public void setChartDataParam(IActionVariable variable) {
     setReferencedVariable(CHART_DATA_ELEMENT, variable);
   }
   
-  public IActionVariable getChartDataVariable() {
-    return getReferencedVariable(CHART_DATA_ELEMENT);
+  public ActionInput getChartDataParam() {
+    return getInputParam(CHART_DATA_ELEMENT);
   }
 
   public void setWidth(String value) {
@@ -79,12 +83,12 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_WIDTH_ELEMENT);
   }
   
-  public void setWidthVariable(IActionVariable variable) {
+  public void setWidthParam(IActionVariable variable) {
     setReferencedVariable(CHART_WIDTH_ELEMENT, variable);
   }
   
-  public IActionVariable getWidthVariable() {
-    return getReferencedVariable(CHART_WIDTH_ELEMENT);
+  public ActionInput getWidthParam() {
+    return getInputParam(CHART_WIDTH_ELEMENT);
   }
 
   public void setHeight(String value) {
@@ -95,12 +99,12 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_HEIGHT_ELEMENT);
   }
   
-  public void setHeightVariable(IActionVariable variable) {
+  public void setHeightParam(IActionVariable variable) {
     setReferencedVariable(CHART_HEIGHT_ELEMENT, variable);
   }
   
-  public IActionVariable getHeightVariable() {
-    return getReferencedVariable(CHART_HEIGHT_ELEMENT);
+  public ActionInput getHeightParam() {
+    return getInputParam(CHART_HEIGHT_ELEMENT);
   }
 
   public void setTitle(String value) {
@@ -111,12 +115,12 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_TITLE_ELEMENT);
   }
   
-  public void setTitleVariable(IActionVariable variable) {
+  public void setTitleParam(IActionVariable variable) {
     setReferencedVariable(CHART_TITLE_ELEMENT, variable);
   }
   
-  public IActionVariable getTitleVariable() {
-    return getReferencedVariable(CHART_TITLE_ELEMENT);
+  public ActionInput getTitleParam() {
+    return getInputParam(CHART_TITLE_ELEMENT);
   }
   
   public void setTitleBold(boolean value) {
@@ -146,12 +150,12 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setByRowVariable(IActionVariable variable) {
+  public void setByRowParam(IActionVariable variable) {
     setReferencedVariable(CHART_BY_ROW_ELEMENT, variable);
   }
   
-  public IActionVariable getByRowVariable() {
-    return getReferencedVariable(CHART_BY_ROW_ELEMENT);
+  public ActionInput getByRowParam() {
+    return getInputParam(CHART_BY_ROW_ELEMENT);
   }
   
   public void setBorderVisible(boolean value) {
@@ -200,6 +204,42 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
   
   public String getChartType() {
-    return getComponentDefinitionValue(CHART_TITLE_ELEMENT);
+    return getComponentDefinitionValue(CHART_TYPE_XPATH);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateInputParam(CHART_DATA_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing chart data input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Chart data input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Chart data is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+      
+    validationError = validateResourceParam(CHART_ATTRIBUTES_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing chart attributes input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Chart attributes input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Chart attributes are uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

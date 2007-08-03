@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -72,28 +73,28 @@ public class ResultSetCompareAction extends ActionDefinition {
     return getComponentDefinitionValue(COMPARE_COLUMN_ELEMENT);
   }
   
-  public void setCompareColumnVariable(IActionVariable variable) {
+  public void setCompareColumnParam(IActionVariable variable) {
     setReferencedVariable(COMPARE_COLUMN_ELEMENT, variable);
   }
   
-  public IActionVariable getCompareColumnVariable() {
-    return getReferencedVariable(COMPARE_COLUMN_ELEMENT);
+  public ActionInput getCompareColumnParam() {
+    return getInputParam(COMPARE_COLUMN_ELEMENT);
   }
   
-  public void setResultSetFromVariable(IActionVariable variable) {
+  public void setResultSetFromParam(IActionVariable variable) {
     setReferencedVariable(COMPARE_FROM_ELEMENT, variable);
   }
   
-  public IActionVariable getResultSetFromVariable() {
-    return getReferencedVariable(COMPARE_FROM_ELEMENT);
+  public ActionInput getResultSetFromParam() {
+    return getInputParam(COMPARE_FROM_ELEMENT);
   }
   
-  public void setResultSetToVariable(IActionVariable variable) {
+  public void setResultSetToParam(IActionVariable variable) {
     setReferencedVariable(COMPARE_TO_ELEMENT, variable);
   }
   
-  public IActionVariable getResultSetToVariable() {
-    return getReferencedVariable(COMPARE_TO_ELEMENT);
+  public ActionInput getResultSetToParam() {
+    return getInputParam(COMPARE_TO_ELEMENT);
   }
 
   public void setOutputMismatches(boolean value) {
@@ -105,12 +106,12 @@ public class ResultSetCompareAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setOutputMismatchesVariable(IActionVariable variable) {
+  public void setOutputMismatchesParam(IActionVariable variable) {
     setReferencedVariable(OUTPUT_MISMATCHES_ELEMENT, variable);
   }
   
-  public IActionVariable getOutputMismatchesVariable() {
-    return getReferencedVariable(OUTPUT_MISMATCHES_ELEMENT);
+  public ActionInput getOutputMismatchesParam() {
+    return getInputParam(OUTPUT_MISMATCHES_ELEMENT);
   }
   
   public void setStopOnError(boolean value) {
@@ -122,12 +123,12 @@ public class ResultSetCompareAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setStopOnErrorVariable(IActionVariable variable) {
+  public void setStopOnErrorParam(IActionVariable variable) {
     setReferencedVariable(STOP_ON_ERROR_ELEMENT, variable);
   }
   
-  public IActionVariable getStopOnErrorVariable() {
-    return getReferencedVariable(STOP_ON_ERROR_ELEMENT);
+  public ActionInput getStopOnErrorParam() {
+    return getInputParam(STOP_ON_ERROR_ELEMENT);
   }
   
   public void setOutputStringName(String name) {
@@ -151,7 +152,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     return getOutputPublicName(privateName);
   }
   
-  public ActionOutput getOutputStringVariable() {
+  public ActionOutput getOutputStringParam() {
     String privateName = getComponentDefinitionValue(COMPARE_RESULT_ELEMENT);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;

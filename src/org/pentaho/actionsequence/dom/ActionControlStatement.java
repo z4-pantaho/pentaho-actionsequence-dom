@@ -13,6 +13,7 @@
 package org.pentaho.actionsequence.dom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
-public class ActionControlStatement implements IActionSequenceExecutableStatement {
+public abstract class ActionControlStatement implements IActionSequenceExecutableStatement {
 
   Element controlElement;
   
@@ -350,5 +351,29 @@ public class ActionControlStatement implements IActionSequenceExecutableStatemen
 
   public IActionSequenceExecutableStatement[] getPrecedingExecutableStatements() {
     return getDocument().getPrecedingExecutables(this);
+  }
+  
+  protected abstract ActionSequenceValidationError[] validateThis();
+  
+  public ActionSequenceValidationError[] validate() {
+    return validate(false);
+  }
+  
+  public ActionSequenceValidationError[] validate(boolean validateDescendants) {
+    ArrayList errors = new ArrayList();
+    errors.add(validateThis());
+    if (validateDescendants) {
+      IActionSequenceExecutableStatement[] children = getChildren();
+      for (int i = 0; i < children.length; i++) {
+        if (children[i] instanceof ActionDefinition) {
+          ActionDefinition actionDefinition = (ActionDefinition)children[i];
+          errors.addAll(Arrays.asList(actionDefinition.validate()));
+        } else if (children[i] instanceof ActionControlStatement) {
+          ActionControlStatement actionControlStatement = (ActionControlStatement)children[i];
+          errors.addAll(Arrays.asList(actionControlStatement.validate(true)));
+        }
+      }
+    }
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

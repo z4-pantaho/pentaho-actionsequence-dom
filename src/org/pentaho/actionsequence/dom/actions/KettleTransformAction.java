@@ -12,10 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class KettleTransformAction extends ActionDefinition {
@@ -80,12 +84,12 @@ public class KettleTransformAction extends ActionDefinition {
     return getComponentDefinitionValue(REPOSITORY_TRANSFORMATION);
   }
   
-  public void setTransformationVariable(IActionVariable variable) {
+  public void setTransformationParam(IActionVariable variable) {
     setReferencedVariable(REPOSITORY_TRANSFORMATION, variable);
   }
   
-  public IActionVariable getTransformationVariable() {
-    return getReferencedVariable(REPOSITORY_TRANSFORMATION);
+  public ActionInput getTransformationParam() {
+    return getInputParam(REPOSITORY_TRANSFORMATION);
   }
   
   public void setDirectory(String value) {
@@ -96,12 +100,12 @@ public class KettleTransformAction extends ActionDefinition {
     return getComponentDefinitionValue(REPOSITORY_DIRECTORY);
   }
   
-  public void setDirectoryVariable(IActionVariable variable) {
+  public void setDirectoryParam(IActionVariable variable) {
     setReferencedVariable(REPOSITORY_DIRECTORY, variable);
   }
   
-  public IActionVariable getDirectoryVariable() {
-    return getReferencedVariable(REPOSITORY_DIRECTORY);
+  public ActionInput getDirectoryParam() {
+    return getInputParam(REPOSITORY_DIRECTORY);
   }
   
   public void setImportstep(String value) {
@@ -112,12 +116,12 @@ public class KettleTransformAction extends ActionDefinition {
     return getComponentDefinitionValue(TRANSFORMATION_STEP_ELEMENT);
   }
   
-  public void setImportstepVariable(IActionVariable variable) {
+  public void setImportstepParam(IActionVariable variable) {
     setReferencedVariable(TRANSFORMATION_STEP_ELEMENT, variable);
   }
   
-  public IActionVariable getImportstepVariable() {
-    return getReferencedVariable(TRANSFORMATION_STEP_ELEMENT);
+  public ActionInput getImportstepParam() {
+    return getInputParam(TRANSFORMATION_STEP_ELEMENT);
   }
   
   public void setOutputResultSetName(String name) {
@@ -128,7 +132,54 @@ public class KettleTransformAction extends ActionDefinition {
     return getOutputPublicName(TRANSFORMATION_OUTPUT_ELEMENT);
   }
   
-  public ActionOutput getOutputResultSetVariable() {
+  public ActionOutput getOutputResultSetParam() {
     return getOutputParam(TRANSFORMATION_OUTPUT_ELEMENT);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateInputParam(REPOSITORY_DIRECTORY);
+    if (validationError == null) {
+      validationError = validateResourceParam(TRANSFORMATION_FILE_ELEMENT);
+      if (validationError != null) {
+        switch (validationError.errorCode) {
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing transformation file location input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Transformation file location input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Transformation file location input parameter is unitialized.";
+            break;
+        }
+        errors.add(validationError);
+      }
+    } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
+      validationError = validateInputParam(TRANSFORMATION_FILE_ELEMENT);
+      if (validationError != null) {
+        switch (validationError.errorCode) {
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing transformation file location input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Transformation file location input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Transformation file location input parameter is uninitialized.";
+            break;
+        }
+        errors.add(validationError);
+      }
+    } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
+      validationError.errorMsg = "Repository directory input parameter references unknown variable.";
+      errors.add(validationError);
+    } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_UNINITIALIZED) {
+      validationError.errorMsg = "Repository directory input parameter is uninitialized.";
+      errors.add(validationError);
+    } else {
+      errors.add(validationError);
+    }
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

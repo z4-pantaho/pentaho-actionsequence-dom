@@ -13,6 +13,7 @@
 package org.pentaho.actionsequence.dom;
 
 import java.lang.reflect.Constructor;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -119,7 +120,10 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
   public static final int SQL_CONNECTION_ACTION_ID = 41;
   public static final int MDX_CONNECTION_ACTION_ID = 42;
   
+  private static final ActionSequenceValidationError[] EMPTY_ARRAY = new ActionSequenceValidationError[0];
+  
   public static final HashMap ACTION_ID_MAP = new HashMap();
+  
   
   static {
     ACTION_ID_MAP.put(new Integer(JFREE_REPORT_ACTION_ID), new JFreeReportAction());
@@ -390,6 +394,16 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
   public ActionResource getResourceParam(String resourceName) {
     Element inputElement = (Element)actionDefElement.selectSingleNode(ActionSequenceDocument.ACTION_RESOURCES_NAME + "/" + resourceName); //$NON-NLS-1$
     return inputElement == null ? null : new ActionResource(inputElement);
+  }
+  
+  public ActionResource[] getResourceParams() {
+    List resourcesList =  actionDefElement.selectNodes(ActionSequenceDocument.ACTION_RESOURCES_NAME + "/*"); //$NON-NLS-1$
+    ActionResource[] resources = new ActionResource[resourcesList.size()];
+    int index = 0;
+    for (Iterator iter = resourcesList.iterator(); iter.hasNext();) {
+      resources[index++] = new ActionResource((Element)iter.next());
+    }
+    return resources;
   }
   
   /**
@@ -938,5 +952,99 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
       publicName = actionOutput.getPublicName();
     }
     return publicName;
+  }
+  
+  protected ActionSequenceValidationError validateInputParam(String paramName) {
+    int errorCode = ActionSequenceValidationError.INPUT_OK;
+    IActionVariable variable = getReferencedVariable(paramName);
+    if (variable == null) {
+      if (getComponentDefElement(paramName) == null) {
+        errorCode = ActionSequenceValidationError.INPUT_MISSING;
+      }
+    } else {
+      IActionVariable[] availableInputVariables = getDocument().getAvailInputVariables(this, variable.getType());
+      if (availableInputVariables.length == 0) {
+        errorCode = ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR;
+      } else {
+        errorCode = ActionSequenceValidationError.INPUT_UNINITIALIZED;
+        for (int i = 0; (i < availableInputVariables.length) && (errorCode == ActionSequenceValidationError.INPUT_UNINITIALIZED); i++) {
+          if (availableInputVariables[i] instanceof ActionSequenceInput) {
+            ActionSequenceInput actionSequenceInput = (ActionSequenceInput)availableInputVariables[i];
+            if (actionSequenceInput.getDefaultValue() != null) {
+              errorCode = ActionSequenceValidationError.INPUT_OK;
+            }
+          } else if (availableInputVariables[i] instanceof ActionOutput) {
+            errorCode = ActionSequenceValidationError.INPUT_OK;
+          }
+        }
+      }
+    }
+    ActionSequenceValidationError validationError = null;
+    if (errorCode != ActionSequenceValidationError.INPUT_OK) {
+      validationError = new ActionSequenceValidationError();
+      validationError.actionDefinition = this;
+      validationError.errorCode = errorCode;
+      validationError.parameterName = paramName;
+      switch (errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing input.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Input references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Input is uninitialized.";
+          break;
+      }
+    }
+    return validationError;
+  }
+  
+  protected ActionSequenceValidationError validateResourceParam(String paramName) {
+    ActionSequenceValidationError validationError = validateInputParam(paramName);
+    if (validationError != null) {
+      validationError = null;
+      int errorCode = ActionSequenceValidationError.INPUT_OK;
+      ActionResource actionResource = getResourceParam(paramName);
+      if (actionResource == null) {
+        errorCode = ActionSequenceValidationError.INPUT_MISSING;
+      } else {
+        errorCode = ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR;
+      }
+      if (errorCode != ActionSequenceValidationError.INPUT_OK) {
+        validationError = new ActionSequenceValidationError();
+        validationError.actionDefinition = this;
+        validationError.errorCode = errorCode;
+        validationError.parameterName = paramName;
+        switch (errorCode) {
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing input.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Input references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Input is uninitialized.";
+            break;
+        }
+      }
+    }
+    return validationError;
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    return EMPTY_ARRAY;
+  }
+  
+  protected ActionSequenceValidationError validateOutputParam(String paramName) {
+    ActionSequenceValidationError validationError = null;
+    if (getOutputParam(paramName) == null) {
+      validationError = new ActionSequenceValidationError();
+      validationError.actionDefinition = this;
+      validationError.errorCode = ActionSequenceValidationError.OUTPUT_MISSING;
+      validationError.parameterName = paramName;
+      validationError.errorMsg = "Missing output.";
+    }
+    return validationError;
   }
 }

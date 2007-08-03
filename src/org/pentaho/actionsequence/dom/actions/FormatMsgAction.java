@@ -12,10 +12,13 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 
 public class FormatMsgAction extends ActionDefinition {
 
@@ -96,11 +99,39 @@ public class FormatMsgAction extends ActionDefinition {
     return getOutputPublicName(privateName);
   }
   
-  public ActionOutput getOutputStringVariable() {
+  public ActionOutput getOutputStringParam() {
     String privateName = getComponentDefinitionValue(RETURN_NAME_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
     return getOutputParam(privateName);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = null;
+    if (getComponentDefElement(FORMAT_MSG_COMMAND + "/" + STRING_FORMAT_ELEMENT) == null){ //$NON-NLS-1$
+      validationError = new ActionSequenceValidationError();
+      validationError.actionDefinition = this;
+      validationError.errorCode = ActionSequenceValidationError.INPUT_MISSING;
+      validationError.errorMsg = "Missing format string.";
+      validationError.parameterName = STRING_FORMAT_ELEMENT;
+      errors.add(validationError);
+    }
+    
+    String privateName = getComponentDefinitionValue(RETURN_NAME_XPATH);
+    if ((privateName == null) || (privateName.trim().length() == 0)) {
+      privateName = OUTPUT_STRING_ELEMENT;
+    }  
+    
+    validationError = validateOutputParam(privateName);
+    if (validationError != null) {
+      if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
+        validationError.errorMsg = "Missing formatted message output parameter.";
+      }
+      errors.add(validationError);
+    }
+    
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

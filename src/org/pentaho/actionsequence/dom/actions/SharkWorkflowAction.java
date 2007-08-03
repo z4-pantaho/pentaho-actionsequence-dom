@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class SharkWorkflowAction extends ActionDefinition {
@@ -48,12 +49,12 @@ public class SharkWorkflowAction extends ActionDefinition {
     return getComponentDefinitionValue(PACKAGE_NAME_ELEMENT);
   }
   
-  public void setPackageNameVariable(IActionVariable variable) {
+  public void setPackageNameParam(IActionVariable variable) {
     setReferencedVariable(PACKAGE_NAME_ELEMENT, variable);
   }
   
-  public IActionVariable getPackageNameVariable() {
-    return getReferencedVariable(PACKAGE_NAME_ELEMENT);
+  public ActionInput getPackageNameParam() {
+    return getInputParam(PACKAGE_NAME_ELEMENT);
   }
 
   public void setProcessName(String value) {
@@ -64,12 +65,12 @@ public class SharkWorkflowAction extends ActionDefinition {
     return getComponentDefinitionValue(PROCESS_NAME_ELEMENT);
   }
   
-  public void setProcessNameVariable(IActionVariable variable) {
+  public void setProcessNameParam(IActionVariable variable) {
     setReferencedVariable(PROCESS_NAME_ELEMENT, variable);
   }
   
-  public IActionVariable getProcessNameVariable() {
-    return getReferencedVariable(PROCESS_NAME_ELEMENT);
+  public ActionInput getProcessNameParam() {
+    return getInputParam(PROCESS_NAME_ELEMENT);
   }
   
   public void setNewInstance(boolean value) {
@@ -81,11 +82,11 @@ public class SharkWorkflowAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setNewInstanceVariable(IActionVariable variable) {
+  public void setNewInstanceParam(IActionVariable variable) {
     setReferencedVariable(NEW_INSTANCE_ELEMENT, variable);
   }
   
-  public IActionVariable getNewInstanceVariable() {
-    return getReferencedVariable(NEW_INSTANCE_ELEMENT);
+  public ActionInput getNewInstanceParam() {
+    return getInputParam(NEW_INSTANCE_ELEMENT);
   }
 }

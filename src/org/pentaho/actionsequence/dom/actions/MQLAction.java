@@ -2,6 +2,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -60,12 +61,12 @@ public class MQLAction extends ActionDefinition {
     return getComponentDefinitionValue(QUERY_ELEMENT);
   }
   
-  public void setQueryVariable(IActionVariable variable) {
+  public void setQueryParam(IActionVariable variable) {
     setReferencedVariable(QUERY_ELEMENT, variable);
   }
   
-  public IActionVariable getQueryVariable() {
-    return getReferencedVariable(QUERY_ELEMENT);
+  public ActionInput getQueryParam() {
+    return getInputParam(QUERY_ELEMENT);
   }
   
   public void setOutputResultSetName(String name) {
@@ -76,7 +77,7 @@ public class MQLAction extends ActionDefinition {
     return getOutputPublicName(QUERY_RESULT_ELEMENT);
   }
   
-  public ActionOutput getOutputResultSetVariable() {
+  public ActionOutput getOutputResultSetParam() {
     return getOutputParam(QUERY_RESULT_ELEMENT);
   }
 }

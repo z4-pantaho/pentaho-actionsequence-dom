@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class PrinterAction extends ActionDefinition {
@@ -57,12 +58,12 @@ public class PrinterAction extends ActionDefinition {
     return getComponentDefinitionValue(FILE_ELEMENT);
   }
   
-  public void setPrintfileVariable(IActionVariable variable) {
+  public void setPrintfileParam(IActionVariable variable) {
     setReferencedVariable(FILE_ELEMENT, variable);
   }
   
-  public IActionVariable getPrintfileVariable() {
-    return getReferencedVariable(FILE_ELEMENT);
+  public ActionInput getPrintfileParam() {
+    return getInputParam(FILE_ELEMENT);
   }
   
   public void setCopies(String value) {
@@ -73,12 +74,12 @@ public class PrinterAction extends ActionDefinition {
     return getComponentDefinitionValue(COPIES_ELEMENT);
   }
   
-  public void setCopiesVariable(IActionVariable variable) {
+  public void setCopiesParam(IActionVariable variable) {
     setReferencedVariable(COPIES_ELEMENT, variable);
   }
   
-  public IActionVariable getCopiesVariable() {
-    return getReferencedVariable(COPIES_ELEMENT);
+  public ActionInput getCopiesParam() {
+    return getInputParam(COPIES_ELEMENT);
   }
   
   public void setPrinterName(String value) {
@@ -89,12 +90,12 @@ public class PrinterAction extends ActionDefinition {
     return getComponentDefinitionValue(PRINTER_ELEMENT);
   }
   
-  public void setPrinterNameVariable(IActionVariable variable) {
+  public void setPrinterNameParam(IActionVariable variable) {
     setReferencedVariable(PRINTER_ELEMENT, variable);
   }
   
-  public IActionVariable getPrinterNameVariable() {
-    return getReferencedVariable(PRINTER_ELEMENT);
+  public ActionInput getPrinterNameParam() {
+    return getInputParam(PRINTER_ELEMENT);
   }
   
 }

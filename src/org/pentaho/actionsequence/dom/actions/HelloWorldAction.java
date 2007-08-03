@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class HelloWorldAction extends ActionDefinition {
@@ -45,11 +46,11 @@ public class HelloWorldAction extends ActionDefinition {
     return getComponentDefinitionValue(QUOTE_ELEMENT);
   }
   
-  public void setQuoteVariable(IActionVariable variable) {
+  public void setQuoteParam(IActionVariable variable) {
     setReferencedVariable(QUOTE_ELEMENT, variable);
   }
   
-  public IActionVariable getQuoteVariable() {
-    return getReferencedVariable(QUOTE_ELEMENT);
+  public ActionInput getQuoteParam() {
+    return getInputParam(QUOTE_ELEMENT);
   }
 }

@@ -12,8 +12,12 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class JavascriptAction extends ActionDefinition {
@@ -45,11 +49,40 @@ public class JavascriptAction extends ActionDefinition {
     return getComponentDefinitionValue(SCRIPT_ELEMENT);
   }
   
-  public void setScriptVariable(IActionVariable variable) {
+  public void setScriptParam(IActionVariable variable) {
     setReferencedVariable(SCRIPT_ELEMENT, variable);
   }
   
-  public IActionVariable getScriptVariable() {
-    return getReferencedVariable(SCRIPT_ELEMENT);
+  public ActionInput getScriptParam() {
+    return getInputParam(SCRIPT_ELEMENT);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateInputParam(SCRIPT_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing javascript input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Javascript input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Javascript input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    if (getOutputParams().length == 0) {
+      validationError = new ActionSequenceValidationError();
+      validationError.errorCode = ActionSequenceValidationError.OUTPUT_MISSING;
+      validationError.errorMsg = "Missing javascript output parameter.";
+      validationError.actionDefinition = this;
+      errors.add(validationError);
+    }
+    
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -73,12 +74,12 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(MODE_ELEMENT);
   }
   
-  public void setModeVariable(IActionVariable variable) {
+  public void setModeParam(IActionVariable variable) {
     setReferencedVariable(MODE_ELEMENT, variable);
   }
   
-  public IActionVariable getModeVariable() {
-    return getReferencedVariable(MODE_ELEMENT);
+  public ActionInput getModeParam() {
+    return getInputParam(MODE_ELEMENT);
   }
 
   public void setViewer(String value) {
@@ -89,12 +90,12 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(VIEWER_ELEMENT);
   }
   
-  public void setViewerVariable(IActionVariable variable) {
+  public void setViewerParam(IActionVariable variable) {
     setReferencedVariable(VIEWER_ELEMENT, variable);
   }
   
-  public IActionVariable getViewerVariable() {
-    return getReferencedVariable(VIEWER_ELEMENT);
+  public ActionInput getViewerParam() {
+    return getInputParam(VIEWER_ELEMENT);
   }
 
   public void setModel(String value) {
@@ -105,12 +106,12 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(MODEL_ELEMENT);
   }
   
-  public void setModelVariable(IActionVariable variable) {
+  public void setModelParam(IActionVariable variable) {
     setReferencedVariable(MODEL_ELEMENT, variable);
   }
   
-  public IActionVariable getModelVariable() {
-    return getReferencedVariable(MODEL_ELEMENT);
+  public ActionInput getModelParam() {
+    return getInputParam(MODEL_ELEMENT);
   }
 
   public void setJndi(String value) {
@@ -121,12 +122,12 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(JNDI_ELEMENT);
   }
   
-  public void setJndiVariable(IActionVariable variable) {
+  public void setJndiParam(IActionVariable variable) {
     setReferencedVariable(JNDI_ELEMENT, variable);
   }
   
-  public IActionVariable getJndiVariable() {
-    return getReferencedVariable(JNDI_ELEMENT);
+  public ActionInput getJndiParam() {
+    return getInputParam(JNDI_ELEMENT);
   }
 
   public void setRole(String value) {
@@ -137,12 +138,12 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(ROLE_ELEMENT);
   }
   
-  public void setRoleVariable(IActionVariable variable) {
+  public void setRoleParam(IActionVariable variable) {
     setReferencedVariable(ROLE_ELEMENT, variable);
   }
   
-  public IActionVariable getRoleVariable() {
-    return getReferencedVariable(ROLE_ELEMENT);
+  public ActionInput getRoleParam() {
+    return getInputParam(ROLE_ELEMENT);
   }
 
   public void setQuery(String value) {
@@ -153,11 +154,11 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(QUERY_ELEMENT);
   }
   
-  public void setQueryVariable(IActionVariable variable) {
+  public void setQueryParam(IActionVariable variable) {
     setReferencedVariable(QUERY_ELEMENT, variable);
   }
   
-  public IActionVariable getQueryVariable() {
-    return getReferencedVariable(QUERY_ELEMENT);
+  public ActionInput getQueryParam() {
+    return getInputParam(QUERY_ELEMENT);
   }
 }

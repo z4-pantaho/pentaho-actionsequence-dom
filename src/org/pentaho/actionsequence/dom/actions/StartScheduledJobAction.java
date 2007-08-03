@@ -13,6 +13,7 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -91,7 +92,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(CRON_STRING_ELEMENT);
   }
   
-  public void setCronStringVariable(IActionVariable variable) {
+  public void setCronStringParam(IActionVariable variable) {
     setReferencedVariable(CRON_STRING_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(CRON_TRIGGER);
@@ -102,8 +103,8 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     }
   }
   
-  public IActionVariable getCronStringVariable() {
-    return getReferencedVariable(CRON_STRING_ELEMENT);
+  public ActionInput getCronStringParam() {
+    return getInputParam(CRON_STRING_ELEMENT);
   }
   
   public void setSolution(String value) {
@@ -114,12 +115,12 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(SOLUTION_ELEMENT);
   }
   
-  public void setSolutionVariable(IActionVariable variable) {
+  public void setSolutionParam(IActionVariable variable) {
     setReferencedVariable(SOLUTION_ELEMENT, variable);
   }
   
-  public IActionVariable getSolutionVariable() {
-    return getReferencedVariable(SOLUTION_ELEMENT);
+  public ActionInput getSolutionParam() {
+    return getInputParam(SOLUTION_ELEMENT);
   }
   
   public void setPath(String value) {
@@ -130,12 +131,12 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(PATH_ELEMENT);
   }
   
-  public void setPathVariable(IActionVariable variable) {
+  public void setPathParam(IActionVariable variable) {
     setReferencedVariable(PATH_ELEMENT, variable);
   }
   
-  public IActionVariable getPathVariable() {
-    return getReferencedVariable(PATH_ELEMENT);
+  public ActionInput getPathParam() {
+    return getInputParam(PATH_ELEMENT);
   }
   
   public void setAction(String value) {
@@ -146,12 +147,12 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(ACTION_ELEMENT);
   }
   
-  public void setActionVariable(IActionVariable variable) {
+  public void setActionParam(IActionVariable variable) {
     setReferencedVariable(ACTION_ELEMENT, variable);
   }
   
-  public IActionVariable getActionVariable() {
-    return getReferencedVariable(ACTION_ELEMENT);
+  public ActionInput getActionParam() {
+    return getInputParam(ACTION_ELEMENT);
   }
   
   public void setTriggerName(String value) {
@@ -162,12 +163,12 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(TRIGGER_NAME_ELEMENT);
   }
   
-  public void setTriggerNameVariable(IActionVariable variable) {
+  public void setTriggerNameParam(IActionVariable variable) {
     setReferencedVariable(TRIGGER_NAME_ELEMENT, variable);
   }
   
-  public IActionVariable getTriggerNameVariable() {
-    return getReferencedVariable(TRIGGER_NAME_ELEMENT);
+  public ActionInput getTriggerNameParam() {
+    return getInputParam(TRIGGER_NAME_ELEMENT);
   }
   
   public void setRepeatCount(String value) {
@@ -184,7 +185,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(REPEAT_COUNT_ELEMENT);
   }
   
-  public void setRepeatCountVariable(IActionVariable variable) {
+  public void setRepeatCountParam(IActionVariable variable) {
     setReferencedVariable(REPEAT_COUNT_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(SIMPLE_TRIGGER);
@@ -194,8 +195,8 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     }
   }
   
-  public IActionVariable getRepeatCountVariable() {
-    return getReferencedVariable(REPEAT_COUNT_ELEMENT);
+  public ActionInput getRepeatCountParam() {
+    return getInputParam(REPEAT_COUNT_ELEMENT);
   }
   
   public void setRepeatInterval(String value) {
@@ -212,7 +213,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(REPEAT_INTERVAL_ELEMENT);
   }
   
-  public void setRepeatIntervalVariable(IActionVariable variable) {
+  public void setRepeatIntervalParam(IActionVariable variable) {
     setReferencedVariable(REPEAT_INTERVAL_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(SIMPLE_TRIGGER);
@@ -222,8 +223,8 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     }
   }
   
-  public IActionVariable getRepeatIntervalVariable() {
-    return getReferencedVariable(REPEAT_INTERVAL_ELEMENT);
+  public ActionInput getRepeatIntervalParam() {
+    return getInputParam(REPEAT_INTERVAL_ELEMENT);
   }
   
   private void setTriggerType(String triggerType) {

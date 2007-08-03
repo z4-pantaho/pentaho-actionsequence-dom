@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class SubActionAction extends ActionDefinition {
@@ -52,12 +53,12 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(SOLUTION_ELEMENT);
   }
   
-  public void setSolutionVariable(IActionVariable variable) {
+  public void setSolutionParam(IActionVariable variable) {
     setReferencedVariable(SOLUTION_ELEMENT, variable);
   }
   
-  public IActionVariable getSolutionVariable() {
-    return getReferencedVariable(SOLUTION_ELEMENT);
+  public ActionInput getSolutionParam() {
+    return getInputParam(SOLUTION_ELEMENT);
   }
   
   public void setPath(String value) {
@@ -68,12 +69,12 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(PATH_ELEMENT);
   }
   
-  public void setPathVariable(IActionVariable variable) {
+  public void setPathParam(IActionVariable variable) {
     setReferencedVariable(PATH_ELEMENT, variable);
   }
   
-  public IActionVariable getPathVariable() {
-    return getReferencedVariable(PATH_ELEMENT);
+  public ActionInput getPathParam() {
+    return getInputParam(PATH_ELEMENT);
   }
 
   public void setAction(String value) {
@@ -84,12 +85,12 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(ACTION_ELEMENT);
   }
   
-  public void setActionVariable(IActionVariable variable) {
+  public void setActionParam(IActionVariable variable) {
     setReferencedVariable(ACTION_ELEMENT, variable);
   }
   
-  public IActionVariable getActionVariable() {
-    return getReferencedVariable(ACTION_ELEMENT);
+  public ActionInput getActionParam() {
+    return getInputParam(ACTION_ELEMENT);
   }
   
   public void setSessionProxy(String value) {
@@ -105,7 +106,7 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(PROXY_REF_ELEMENT);
   }
   
-  public void setSessionProxyVariable(IActionVariable variable) {
+  public void setSessionProxyParam(IActionVariable variable) {
     setReferencedVariable(PROXY_REF_ELEMENT, variable);
     if (variable == null) {
       setInputValue(PROXY_ELEMENT, null);
@@ -114,7 +115,7 @@ public class SubActionAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getSessionProxyVariable() {
-    return getReferencedVariable(PROXY_REF_ELEMENT);
+  public ActionInput getSessionProxyParam() {
+    return getInputParam(PROXY_REF_ELEMENT);
   }
 }

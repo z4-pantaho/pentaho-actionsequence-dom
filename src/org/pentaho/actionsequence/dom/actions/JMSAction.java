@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class JMSAction extends ActionDefinition {
@@ -51,12 +52,12 @@ public class JMSAction extends ActionDefinition {
     return getComponentDefinitionValue(SOLUTION_NAME_ELEMENT);
   }
   
-  public void setSolutionNameVariable(IActionVariable variable) {
+  public void setSolutionNameParam(IActionVariable variable) {
     setReferencedVariable(SOLUTION_NAME_ELEMENT, variable);
   }
   
-  public IActionVariable getSolutionNameVariable() {
-    return getReferencedVariable(SOLUTION_NAME_ELEMENT);
+  public ActionInput getSolutionNameParam() {
+    return getInputParam(SOLUTION_NAME_ELEMENT);
   }
   
   public void setActionPath(String value) {
@@ -67,12 +68,12 @@ public class JMSAction extends ActionDefinition {
     return getComponentDefinitionValue(ACTION_PATH_ELEMENT);
   }
   
-  public void setActionPathVariable(IActionVariable variable) {
+  public void setActionPathParam(IActionVariable variable) {
     setReferencedVariable(ACTION_PATH_ELEMENT, variable);
   }
   
-  public IActionVariable getActionPathVariable() {
-    return getReferencedVariable(ACTION_PATH_ELEMENT);
+  public ActionInput getActionPathParam() {
+    return getInputParam(ACTION_PATH_ELEMENT);
   }
   
   public void setActionName(String value) {
@@ -83,12 +84,12 @@ public class JMSAction extends ActionDefinition {
     return getComponentDefinitionValue(ACTION_NAME_ELEMENT);
   }
   
-  public void setActionNameVariable(IActionVariable variable) {
+  public void setActionNameParam(IActionVariable variable) {
     setReferencedVariable(ACTION_NAME_ELEMENT, variable);
   }
   
-  public IActionVariable getActionNameVariable() {
-    return getReferencedVariable(ACTION_NAME_ELEMENT);
+  public ActionInput getActionNameParam() {
+    return getInputParam(ACTION_NAME_ELEMENT);
   }
   
   public void setJmsQueueName(String value) {
@@ -99,11 +100,11 @@ public class JMSAction extends ActionDefinition {
     return getComponentDefinitionValue(QUEUE_NAME_ELEMENT);
   }
   
-  public void setJmsQueueNameVariable(IActionVariable variable) {
+  public void setJmsQueueNameParam(IActionVariable variable) {
     setReferencedVariable(QUEUE_NAME_ELEMENT, variable);
   }
   
-  public IActionVariable getJmsQueueNameVariable() {
-    return getReferencedVariable(QUEUE_NAME_ELEMENT);
+  public ActionInput getJmsQueueNameParam() {
+    return getInputParam(QUEUE_NAME_ELEMENT);
   }
 }

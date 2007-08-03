@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class SecureFilterAction extends ActionDefinition {
@@ -44,11 +45,11 @@ public class SecureFilterAction extends ActionDefinition {
     return getComponentDefinitionValue(TARGET_ELEMENT);
   }
   
-  public void setTargetVariable(IActionVariable variable) {
+  public void setTargetParam(IActionVariable variable) {
     setReferencedVariable(TARGET_ELEMENT, variable);
   }
   
-  public IActionVariable getTargetVariable() {
-    return getReferencedVariable(TARGET_ELEMENT);
+  public ActionInput getTargetParam() {
+    return getInputParam(TARGET_ELEMENT);
   }
 }

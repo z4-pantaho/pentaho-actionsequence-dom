@@ -12,19 +12,28 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionOutput;
+import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class ContentOutputAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.component.ContentOutputComponent"; //$NON-NLS-1$
-  public static final String CONTENT_OUTPUT_ELEMENT = "CONTENTOUTPUT"; //$NON-NLS-1$
+  public static final String CONTENT_INPUT_ELEMENT = "CONTENTOUTPUT"; //$NON-NLS-1$
+  public static final String CONTENT_OUTPUT_ELEMENT = "content"; //$NON-NLS-1$
   public static final String MIME_TYPE_ELEMENT = "mime-type"; //$NON-NLS-1$
-  public static final String CONTENT_TO_OUTPUT = "content-to-output"; //$NON-NLS-1$
+  public static final String CONTENT_INPUT = "input";
+  public static final String CONTENT_OUTPUT = "output";
+//  public static final String CONTENT_OUTPUT_ELEMENT = "content"; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
-    CONTENT_OUTPUT_ELEMENT,
+    CONTENT_INPUT_ELEMENT,
     MIME_TYPE_ELEMENT
   };
 
@@ -48,19 +57,77 @@ public class ContentOutputAction extends ActionDefinition {
     return getComponentDefinitionValue(MIME_TYPE_ELEMENT);
   }
   
-  public void setMimeTypeVariable(IActionVariable variable) {
+  public void setMimeTypeParam(IActionVariable variable) {
     setReferencedVariable(MIME_TYPE_ELEMENT, variable);
   }
   
-  public IActionVariable getMimeTypeVariable() {
-    return getReferencedVariable(MIME_TYPE_ELEMENT);
+  public ActionInput getMimeTypeParam() {
+    return getInputParam(MIME_TYPE_ELEMENT);
   }
   
-  public void setContentToOutputVariable(IActionVariable variable) {
-    setReferencedVariable(CONTENT_OUTPUT_ELEMENT, variable);
+  public void setInputParam(IActionVariable variable) {
+    setReferencedVariable(CONTENT_INPUT_ELEMENT, variable);
   }
   
-  public IActionVariable getContentToOutputVariable() {
-    return getReferencedVariable(CONTENT_OUTPUT_ELEMENT);
+  public ActionInput getInputParam() {
+    return getInputParam(CONTENT_INPUT_ELEMENT);
+  }
+  
+  public String getOutputName() {
+    return getOutputPublicName(CONTENT_OUTPUT_ELEMENT);
+  }
+  
+  public ActionOutput getOutputParam() {
+    return getOutputParam(CONTENT_OUTPUT_ELEMENT);
+  }
+  
+  public void setOutputName(String name) {
+    setOutputName(CONTENT_OUTPUT_ELEMENT, name, ActionSequenceDocument.CONTENT_TYPE);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    
+    ActionSequenceValidationError validationError = validateInputParam(CONTENT_INPUT_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing content input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Content input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Content input is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    validationError = validateInputParam(MIME_TYPE_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing content mime type parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Content mime type input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Content mime type input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    validationError = validateOutputParam(CONTENT_OUTPUT);
+    if (validationError != null) {
+      if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
+        validationError.errorMsg = "Missing content ouput parameter.";
+      }
+      errors.add(validationError);
+    }
+    
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

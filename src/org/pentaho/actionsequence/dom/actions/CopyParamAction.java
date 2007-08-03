@@ -12,10 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class CopyParamAction extends ActionDefinition {
@@ -73,23 +77,23 @@ public class CopyParamAction extends ActionDefinition {
     return accepts;
   }
   
-  public void setCopyFromVariable(IActionVariable variable) {
+  public void setCopyFromParam(IActionVariable variable) {
     if (!COPY_FROM_ELEMENT.equals(getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH))) {
       setComponentDefinition(CopyParamAction.COPY_FROM_XPATH, COPY_FROM_ELEMENT, false);
     }
     setReferencedVariable(COPY_FROM_ELEMENT, variable);
-    ActionOutput actionOutput = getOutputCopyVariable();
+    ActionOutput actionOutput = getOutputCopyParam();
     if (actionOutput != null) {
       actionOutput.setType(variable.getType());
     }
   }
   
-  public IActionVariable getCopyFromVariable() {
+  public ActionInput getCopyFromParam() {
     String copyFromVarName = getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH);
     if ((copyFromVarName == null) || (copyFromVarName.trim().length() == 0)) {
       copyFromVarName = COPY_FROM_ELEMENT;
     }
-    return getReferencedVariable(copyFromVarName);
+    return getInputParam(copyFromVarName);
   }
   
   public void setOutputCopyName(String name) {
@@ -97,7 +101,7 @@ public class CopyParamAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
     }
-    IActionVariable copyFrom = getCopyFromVariable();
+    ActionInput copyFrom = getCopyFromParam();
     ActionOutput actionOutput = setOutputName(privateName, name, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COPY_RETURN_XPATH, (String)null);
@@ -114,11 +118,51 @@ public class CopyParamAction extends ActionDefinition {
     return getOutputPublicName(privateName);
   }
   
-  public ActionOutput getOutputCopyVariable() {
+  public ActionOutput getOutputCopyParam() {
     String privateName = getComponentDefinitionValue(COPY_RETURN_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
     }  
     return getOutputParam(privateName);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    String copyFromVarName = getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH);
+    if ((copyFromVarName == null) || (copyFromVarName.trim().length() == 0)) {
+      copyFromVarName = COPY_FROM_ELEMENT;
+    }
+    
+    ArrayList errors = new ArrayList();
+    
+    ActionSequenceValidationError validationError = validateInputParam(copyFromVarName);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing input parameter to copy from.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "'Copy from' input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "'Copy from' input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    String privateName = getComponentDefinitionValue(COPY_RETURN_XPATH);
+    if ((privateName == null) || (privateName.trim().length() == 0)) {
+      privateName = COPY_TO_ELEMENT;
+    }
+    
+    validationError = validateOutputParam(privateName);
+    if (validationError != null) {
+      if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
+        validationError.errorMsg = "Missing output parameter to copy to.";
+      }
+      errors.add(validationError);
+    }
+    
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

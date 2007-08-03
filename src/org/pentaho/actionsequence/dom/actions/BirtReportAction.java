@@ -12,10 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class BirtReportAction extends ActionDefinition {
@@ -69,12 +73,12 @@ public class BirtReportAction extends ActionDefinition {
     return getComponentDefinitionValue(OUTPUT_TYPE_ELEMENT);
   }
   
-  public void setOutputTypeVariable(IActionVariable variable) {
+  public void setOutputTypeParam(IActionVariable variable) {
     setReferencedVariable(OUTPUT_TYPE_ELEMENT, variable);
   }
   
-  public IActionVariable getOutputTypeVariable() {
-    return getReferencedVariable(OUTPUT_TYPE_ELEMENT);
+  public ActionInput getOutputTypeParam() {
+    return getInputParam(OUTPUT_TYPE_ELEMENT);
   }
   
   public void setOutputReportName(String name) {
@@ -101,7 +105,7 @@ public class BirtReportAction extends ActionDefinition {
     return getOutputPublicName(privateOutputName);
   }
   
-  public ActionOutput getOutputReportVariable() {
+  public ActionOutput getOutputReportParam() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(privateOutputName) ==  null) { 
       ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
@@ -110,5 +114,42 @@ public class BirtReportAction extends ActionDefinition {
       }
     }
     return getOutputParam(REPORT_OUTPUT_ELEMENT);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateResourceParam(REPORT_DEFINITION_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report definition input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report definition input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report definition input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    validationError = validateInputParam(OUTPUT_TYPE_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report format input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report format input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report format input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+        
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }

@@ -12,10 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionDefinition;
+import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class SqlQueryAction extends ActionDefinition {
@@ -94,7 +98,7 @@ public class SqlQueryAction extends ActionDefinition {
     setInputValue(CONNECTION_ELEMENT, value);
     if (value != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
@@ -102,23 +106,23 @@ public class SqlQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(CONNECTION_ELEMENT);
   }
   
-  public void setDbUrlVariable(IActionVariable variable) {
+  public void setDbUrlParam(IActionVariable variable) {
     setReferencedVariable(CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
-  public IActionVariable getDbUrlVariable() {
-    return getReferencedVariable(CONNECTION_ELEMENT);
+  public ActionInput getDbUrlParam() {
+    return getInputParam(CONNECTION_ELEMENT);
   }
   
   public void setUserId(String value) {
     setInputValue(USER_ID_ELEMENT, value);
     if (value != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
@@ -126,23 +130,23 @@ public class SqlQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(USER_ID_ELEMENT);
   }
   
-  public void setUserIdVariable(IActionVariable variable) {
+  public void setUserIdParam(IActionVariable variable) {
     setReferencedVariable(USER_ID_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
-  public IActionVariable getUserIdVariable() {
-    return getReferencedVariable(USER_ID_ELEMENT);
+  public ActionInput getUserIdParam() {
+    return getInputParam(USER_ID_ELEMENT);
   }
   
   public void setDriver(String value) {
     setInputValue(DRIVER_ELEMENT, value);
     if (value != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
@@ -150,23 +154,23 @@ public class SqlQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(DRIVER_ELEMENT);
   }
   
-  public void setDriverVariable(IActionVariable variable) {
+  public void setDriverParam(IActionVariable variable) {
     setReferencedVariable(DRIVER_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
-  public IActionVariable getDriverVariable() {
-    return getReferencedVariable(DRIVER_ELEMENT);
+  public ActionInput getDriverParam() {
+    return getInputParam(DRIVER_ELEMENT);
   }
   
   public void setPassword(String value) {
     setInputValue(PASSWORD_ELEMENT, value);
     if (value != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
@@ -174,16 +178,16 @@ public class SqlQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(PASSWORD_ELEMENT);
   }
   
-  public void setPasswordVariable(IActionVariable variable) {
+  public void setPasswordParam(IActionVariable variable) {
     setReferencedVariable(PASSWORD_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
-  public IActionVariable getPasswordVariable() {
-    return getReferencedVariable(PASSWORD_ELEMENT);
+  public ActionInput getPasswordParam() {
+    return getInputParam(PASSWORD_ELEMENT);
   }
   
   public void setJndi(String value) {
@@ -193,7 +197,7 @@ public class SqlQueryAction extends ActionDefinition {
       setDbUrl(null);
       setUserId(null);
       setPassword(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
@@ -201,19 +205,19 @@ public class SqlQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(JNDI_ELEMENT);
   }
   
-  public void setJndiVariable(IActionVariable variable) {
+  public void setJndiParam(IActionVariable variable) {
     setReferencedVariable(JNDI_ELEMENT, variable);
     if (variable != null) {
       setDriver(null);
       setDbUrl(null);
       setUserId(null);
       setPassword(null);
-      setSqlConnectionVariable(null);
+      setSqlConnectionParam(null);
     }
   }
   
-  public IActionVariable getJndiVariable() {
-    return getReferencedVariable(JNDI_ELEMENT);
+  public ActionInput getJndiParam() {
+    return getInputParam(JNDI_ELEMENT);
   }
   
   public void setLive(boolean value) {
@@ -225,12 +229,12 @@ public class SqlQueryAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setLiveVariable(IActionVariable variable) {
+  public void setLiveParam(IActionVariable variable) {
     setReferencedVariable(LIVE_CONNECTION_ELEMENT, variable);
   }
   
-  public IActionVariable getLiveVariable() {
-    return getReferencedVariable(LIVE_CONNECTION_ELEMENT);
+  public ActionInput getLiveParam() {
+    return getInputParam(LIVE_CONNECTION_ELEMENT);
   }
   
   public void setQuery(String value) {
@@ -241,12 +245,12 @@ public class SqlQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(QUERY_ELEMENT);
   }
   
-  public void setQueryVariable(IActionVariable variable) {
+  public void setQueryParam(IActionVariable variable) {
     setReferencedVariable(QUERY_ELEMENT, variable);
   }
   
-  public IActionVariable getQueryVariable() {
-    return getReferencedVariable(QUERY_ELEMENT);
+  public ActionInput getQueryParam() {
+    return getInputParam(QUERY_ELEMENT);
   }
   
   public void setOutputResultSetName(String name) {
@@ -260,7 +264,7 @@ public class SqlQueryAction extends ActionDefinition {
     return getOutputPublicName(QUERY_RESULT_ELEMENT);
   }
   
-  public ActionOutput getOutputResultSetVariable() {
+  public ActionOutput getOutputResultSetParam() {
     return getOutputParam(QUERY_RESULT_ELEMENT);
   }
   
@@ -281,11 +285,11 @@ public class SqlQueryAction extends ActionDefinition {
     return getOutputPublicName(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionOutput getOutputPreparedStatementVariable() {
+  public ActionOutput getOutputPreparedStatementParam() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public void setSqlConnectionVariable(IActionVariable variable) {
+  public void setSqlConnectionParam(IActionVariable variable) {
     setReferencedVariable(PREPARED_COMPONENT_ELEMENT, variable);
     if (variable != null) {
       setDriver(null);
@@ -296,7 +300,108 @@ public class SqlQueryAction extends ActionDefinition {
     }
   }
   
-  public IActionVariable getSqlConnectionVariable() {
-    return getReferencedVariable(PREPARED_COMPONENT_ELEMENT);
+  public ActionInput getSqlConnectionParam() {
+    return getInputParam(PREPARED_COMPONENT_ELEMENT);
+  }
+  
+  public ActionSequenceValidationError[] validate() {
+    
+    ArrayList errors = new ArrayList();
+    ActionSequenceValidationError validationError = validateInputParam(CONNECTION_ELEMENT);
+    if (validationError == null) {
+      validationError = validateInputParam(DRIVER_ELEMENT);
+      if (validationError != null) {
+        switch (validationError.errorCode) {
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing database driver input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Database driver input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Database driver input parameter is uninitialized.";
+            break;
+        }
+        errors.add(validationError);
+      }
+      
+      validationError = validateInputParam(USER_ID_ELEMENT);
+      if (validationError != null) {
+        switch (validationError.errorCode) {
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing database login input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Database login input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Database login input parameter is uninitialized.";
+            break;
+        }
+        errors.add(validationError);
+      }
+    } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
+      validationError = validateInputParam(JNDI_ELEMENT);
+      if (validationError != null) {
+        if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
+          validationError = validateInputParam(PREPARED_COMPONENT_ELEMENT);
+          if (validationError != null) {
+            switch (validationError.errorCode) {
+              case ActionSequenceValidationError.INPUT_MISSING:
+                validationError.errorMsg = "Missing database connection input parameter.";
+                break;
+              case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+                validationError.errorMsg = "Database connection input parameter references unknown variable.";
+                break;
+              case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+                validationError.errorMsg = "Database connection input parameter is uninitialized.";
+                break;
+            }
+            errors.add(validationError);
+          }
+        } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
+          validationError.errorMsg = "Database connection input parameter references unknown variable.";
+          errors.add(validationError);
+        } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_UNINITIALIZED) {
+          validationError.errorMsg = "Database connection input parameter is uninitialized.";
+          errors.add(validationError);
+        }
+      }
+    } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
+      validationError.errorMsg = "Database connection input parameter references unknown variable.";
+      errors.add(validationError);
+    } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_UNINITIALIZED) {
+      validationError.errorMsg = "Database connection input parameter is uninitialized.";
+      errors.add(validationError);
+    } else {
+      errors.add(validationError);
+    }
+    
+    validationError = validateInputParam(QUERY_ELEMENT);
+    if (validationError != null) {
+      switch (validationError.errorCode) {
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing query input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Query input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Query input parameter is uninitialized.";
+          break;
+      }
+      errors.add(validationError);
+    }
+    
+    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    if (validationError != null) {
+      validationError = validateOutputParam(QUERY_RESULT_ELEMENT);
+      if (validationError != null) {
+        validationError.errorMsg = "Missing query results output parameter.";
+        errors.add(validationError);
+      }
+    }
+    
+    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 }
