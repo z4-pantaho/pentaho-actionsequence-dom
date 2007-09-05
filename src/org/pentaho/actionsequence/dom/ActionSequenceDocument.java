@@ -12,6 +12,7 @@
 */
 package org.pentaho.actionsequence.dom;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,6 +23,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+import org.pentaho.actionsequence.dom.actions.SqlQueryAction;
 
 /**
  * A wrapper class for an action definition resource element.
@@ -65,17 +69,18 @@ public class ActionSequenceDocument {
   // Document Outputs nodes
   public static final String DOC_OUTPUTS_NAME = "outputs"; //$NON-NLS-1$
   public static final String OUTPUTS_DESTINATIONS_NAME = "destinations"; //$NON-NLS-1$
-  public static final String RESPONSE_INPUT_SOURCE = "response"; //$NON-NLS-1$
-  public static final String SESSION_OUTPUT_SOURCE = "session"; //$NON-NLS-1$
-  public static final String RUNTIME_OUTPUT_SOURCE = "runtime"; //$NON-NLS-1$
-  public static final String GLOBAL_OUTPUT_SOURCE = "global"; //$NON-NLS-1$
+  public static final String RESPONSE_OUTPUT_DESTINATION = "response"; //$NON-NLS-1$
+  public static final String SESSION_OUTPUT_DESTINATION = "session"; //$NON-NLS-1$
+  public static final String RUNTIME_OUTPUT_DESTINATION = "runtime"; //$NON-NLS-1$
+  public static final String GLOBAL_OUTPUT_DESTINATION = "global"; //$NON-NLS-1$
   
-  public static final String[] OUTPUT_DESTINATIONS = new String[]{ RUNTIME_OUTPUT_SOURCE, SESSION_OUTPUT_SOURCE, RESPONSE_INPUT_SOURCE, GLOBAL_OUTPUT_SOURCE };
+  public static final String[] OUTPUT_DESTINATIONS = new String[]{ RUNTIME_OUTPUT_DESTINATION, SESSION_OUTPUT_DESTINATION, RESPONSE_OUTPUT_DESTINATION, GLOBAL_OUTPUT_DESTINATION };
   
   public static final String DOC_RESOURCES_NAME = "resources"; //$NON-NLS-1$
 
   // Data Types
-  public static final String STRING_TYPE = "string"; //$NON-NLS-1$
+  public static final String STRING_TYPE = "s" +
+  		"tring"; //$NON-NLS-1$
   public static final String LONG_TYPE = "long"; //$NON-NLS-1$
   public static final String INTEGER_TYPE = "integer"; //$NON-NLS-1$
   public static final String BIGDECIMAL_TYPE = "bigdecimal"; //$NON-NLS-1$
@@ -127,6 +132,14 @@ public class ActionSequenceDocument {
   
   static HashMap listenersMap = new HashMap();
   
+  public ActionSequenceDocument() {
+    document = DocumentHelper.createDocument();
+    Element rootElement = document.addElement(ACTION_SEQUENCE);
+    rootElement.addElement(DOC_INPUTS_NAME);
+    rootElement.addElement(DOC_OUTPUTS_NAME);
+    rootElement.addElement(DOC_RESOURCES_NAME);
+    rootElement.addElement(ACTIONS_NAME);
+  }
   /**
    * @param doc the document wrapped by this object
    */
@@ -1243,5 +1256,98 @@ public class ActionSequenceDocument {
       }
     }
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public static Document prettyPrint( Document document ) {
+    try {
+      OutputFormat format = OutputFormat.createPrettyPrint();
+      format.setEncoding(document.getXMLEncoding());
+      StringWriter stringWriter = new StringWriter();
+      XMLWriter writer = new XMLWriter( stringWriter, format );
+      // XMLWriter has a bug that is avoided if we reparse the document
+      // prior to calling XMLWriter.write()
+      writer.write(DocumentHelper.parseText(document.asXML()));
+      writer.close();
+      document = DocumentHelper.parseText( stringWriter.toString() );
+    }
+    catch ( Exception e ){
+      e.printStackTrace();
+            return( null );
+    }
+    return( document );
+  } 
+  
+  public String toString() {
+    String string = null;
+    try {
+      OutputFormat format = OutputFormat.createPrettyPrint();
+      format.setEncoding(document.getXMLEncoding());
+      StringWriter stringWriter = new StringWriter();
+      XMLWriter writer = new XMLWriter( stringWriter, format );
+      // XMLWriter has a bug that is avoided if we reparse the document
+      // prior to calling XMLWriter.write()
+      writer.write(DocumentHelper.parseText(document.asXML()));
+      writer.close();
+      Document tempDocument = DocumentHelper.parseText( stringWriter.toString() );
+      string = tempDocument.getRootElement().asXML();
+    }
+    catch ( Exception e ){
+      string = super.toString();
+    }
+    return string;
+  }
+  
+  public static void main(String[] args) throws Exception
+  {
+    // Create the action sequence document.
+    ActionSequenceDocument actionSequenceDocument = new ActionSequenceDocument();
+    
+    // Create thesql lookup action.
+    SqlQueryAction sqlQueryAction= new SqlQueryAction();
+
+    // Add the sql lookup to the action definition.
+    actionSequenceDocument.add(sqlQueryAction);
+    
+    // Set up the sql input parameter.
+    sqlQueryAction.setJndi("SampleData");
+    sqlQueryAction.setQuery("select * from customers");
+    
+    // Set up the name of the output result set.
+    sqlQueryAction.setOutputResultSetName("queryResults");
+    
+    // Set the query results as an output of the action sequence.
+    ActionSequenceOutput actionSequenceOutput = actionSequenceDocument.createOutput("queryResults", ActionSequenceDocument.RESULTSET_TYPE);
+    actionSequenceOutput.addDestination(SESSION_OUTPUT_DESTINATION, "theOutput");
+    System.out.println(actionSequenceDocument.toString());
+    
+    
+    
+    /////////////////////////////////////////////////////////////
+    // Below is the same example using action sequence inputs for the jndi name and query.
+    /////////////////////////////////////////////////////////////
+    
+    
+    // Create the action sequence document.
+    actionSequenceDocument = new ActionSequenceDocument();
+    
+    // Set up the action sequence inputs for the jndi name and query.
+    ActionSequenceInput jndiInput = actionSequenceDocument.createInput("jndiName", ActionSequenceDocument.STRING_TYPE);
+    ActionSequenceInput queryInput = actionSequenceDocument.createInput("query", ActionSequenceDocument.STRING_TYPE);
+    
+    // Create the sql lookup action.
+    sqlQueryAction= new SqlQueryAction();
+
+    // Add the sql lookup to the action definition.
+    actionSequenceDocument.add(sqlQueryAction);
+    
+    // Set up the sql query actions to use the action sequence inputs.
+    sqlQueryAction.setJndiParam(jndiInput);
+    sqlQueryAction.setQueryParam(queryInput);
+    sqlQueryAction.setOutputResultSetName("queryResults");
+    
+    // Set the query results as an output of the action sequence.
+    actionSequenceOutput = actionSequenceDocument.createOutput("queryResults", ActionSequenceDocument.RESULTSET_TYPE);
+    actionSequenceOutput.addDestination(SESSION_OUTPUT_DESTINATION, "theOutput");
+    System.out.println(actionSequenceDocument.toString());
   }
 }
