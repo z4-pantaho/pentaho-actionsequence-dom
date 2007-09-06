@@ -28,6 +28,7 @@ public class MdxConnectionAction extends ActionDefinition {
   public static final String CONNECTION_ELEMENT = "connection"; //$NON-NLS-1$
   public static final String USER_ID_ELEMENT = "user-id"; //$NON-NLS-1$
   public static final String PASSWORD_ELEMENT = "password"; //$NON-NLS-1$
+  public static final String DRIVER_ELEMENT = "driver"; //$NON-NLS-1$
   public static final String JNDI_ELEMENT = "jndi"; //$NON-NLS-1$
   public static final String LOCATION_ELEMENT = "location"; //$NON-NLS-1$
   public static final String MDX_CONNECTION_ELEMENT = "mdx-connection-string"; //$NON-NLS-1$
@@ -43,6 +44,7 @@ public class MdxConnectionAction extends ActionDefinition {
     CONNECTION_ELEMENT,
     USER_ID_ELEMENT,
     PASSWORD_ELEMENT,
+    DRIVER_ELEMENT,
     MDX_CONNECTION_ELEMENT,
     ROLE_ELEMENT,
     JNDI_ELEMENT
@@ -132,7 +134,33 @@ public class MdxConnectionAction extends ActionDefinition {
       setJndi(null);
     }
   }
+
+  public String getDriver() {
+    return getComponentDefinitionValue(DRIVER_ELEMENT);
+  }
   
+  public void setDriverParam(IActionVariable variable) {
+    setReferencedVariable(DRIVER_ELEMENT, variable);
+    if (variable != null) {
+      setMdxConnectionString(null);
+      setJndi(null);
+    }
+  }
+  
+  public ActionInput getDriverParam() {
+    return getInputParam(DRIVER_ELEMENT);
+  }
+  
+  
+  
+  public void setDriver(String value) {
+    setInputValue(DRIVER_ELEMENT, value);
+    if (value != null) {
+      setMdxConnectionString(null);
+      setJndi(null);
+    }
+  }
+
   public String getPassword() {
     return getComponentDefinitionValue(PASSWORD_ELEMENT);
   }
@@ -157,6 +185,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setLocation(null);
       setUserId(null);
       setPassword(null);
+      setDriver(null);
       setRole(null);
     }
   }
@@ -173,6 +202,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setLocation(null);
       setUserId(null);
       setPassword(null);
+      setDriver(null);
       setRole(null);
     }
   }
@@ -228,6 +258,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setConnection(null);
       setUserId(null);
       setPassword(null);
+      setDriver(null);
     }
   }
   
@@ -242,6 +273,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setConnection(null);
       setUserId(null);
       setPassword(null);
+      setDriver(null);
     }
   }
   
