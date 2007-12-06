@@ -15,7 +15,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -29,15 +28,19 @@ public class JavascriptAction extends ActionDefinition {
     SCRIPT_ELEMENT 
   };
 
-  public JavascriptAction(Element actionDefElement) {
-    super(actionDefElement);
+  public JavascriptAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public JavascriptAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -50,7 +53,7 @@ public class JavascriptAction extends ActionDefinition {
   }
   
   public void setScriptParam(IActionVariable variable) {
-    setReferencedVariable(SCRIPT_ELEMENT, variable);
+    setInputParam(SCRIPT_ELEMENT, variable);
   }
   
   public ActionInput getScriptParam() {
@@ -75,7 +78,7 @@ public class JavascriptAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    if (getOutputParams().length == 0) {
+    if (getAllOutputParams().length == 0) {
       validationError = new ActionSequenceValidationError();
       validationError.errorCode = ActionSequenceValidationError.OUTPUT_MISSING;
       validationError.errorMsg = "Missing javascript output parameter.";
