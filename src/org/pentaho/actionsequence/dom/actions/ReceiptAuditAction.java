@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -28,15 +27,19 @@ public class ReceiptAuditAction extends ActionDefinition {
     TIMESTAMP_ELEMENT
   };
   
-  public ReceiptAuditAction(Element actionDefElement) {
-    super(actionDefElement);
+  public ReceiptAuditAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public ReceiptAuditAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -49,7 +52,7 @@ public class ReceiptAuditAction extends ActionDefinition {
   }
   
   public void setMessageParam(IActionVariable variable) {
-    setReferencedVariable(MESSAGE_ELEMENT, variable);
+    setInputParam(MESSAGE_ELEMENT, variable);
   }
   
   public ActionInput getMessageParam() {
@@ -65,7 +68,7 @@ public class ReceiptAuditAction extends ActionDefinition {
   }
   
   public void setDtParam(IActionVariable variable) {
-    setReferencedVariable(TIMESTAMP_ELEMENT, variable);
+    setInputParam(TIMESTAMP_ELEMENT, variable);
   }
   
   public ActionInput getDtParam() {

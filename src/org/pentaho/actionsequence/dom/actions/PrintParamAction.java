@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionSequenceElement;
 
@@ -23,8 +22,8 @@ public class PrintParamAction extends ActionDefinition {
   public static final String PRINT_PARAMS_COMMAND = "print"; //$NON-NLS-1$
   public static final String DELIMITER_ELEMENT = "delimiter"; //$NON-NLS-1$
   
-  public PrintParamAction(Element actionDefElement) {
-    super(actionDefElement);
+  public PrintParamAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public PrintParamAction() {
@@ -36,9 +35,9 @@ public class PrintParamAction extends ActionDefinition {
     setComponentDefinition(PRINT_PARAMS_COMMAND, "");//$NON-NLS-1$
   }
   
-  public boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean accepts = false;
-    if (super.accepts(element)) {
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       accepts = (element.selectNodes(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + PRINT_PARAMS_COMMAND).size() == 1)  //$NON-NLS-1$
           && (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + FormatMsgAction.FORMAT_MSG_COMMAND) == null)  //$NON-NLS-1$
           && (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + PrintMapValsAction.PRINT_MAP_VALS_COMMAND) == null)  //$NON-NLS-1$

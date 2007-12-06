@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -33,15 +32,19 @@ public class SubActionAction extends ActionDefinition {
     PROXY_REF_ELEMENT
   };
   
-  public SubActionAction(Element actionDefElement) {
-    super(actionDefElement);
+  public SubActionAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public SubActionAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -54,7 +57,7 @@ public class SubActionAction extends ActionDefinition {
   }
   
   public void setSolutionParam(IActionVariable variable) {
-    setReferencedVariable(SOLUTION_ELEMENT, variable);
+    setInputParam(SOLUTION_ELEMENT, variable);
   }
   
   public ActionInput getSolutionParam() {
@@ -70,7 +73,7 @@ public class SubActionAction extends ActionDefinition {
   }
   
   public void setPathParam(IActionVariable variable) {
-    setReferencedVariable(PATH_ELEMENT, variable);
+    setInputParam(PATH_ELEMENT, variable);
   }
   
   public ActionInput getPathParam() {
@@ -86,7 +89,7 @@ public class SubActionAction extends ActionDefinition {
   }
   
   public void setActionParam(IActionVariable variable) {
-    setReferencedVariable(ACTION_ELEMENT, variable);
+    setInputParam(ACTION_ELEMENT, variable);
   }
   
   public ActionInput getActionParam() {
@@ -107,7 +110,7 @@ public class SubActionAction extends ActionDefinition {
   }
   
   public void setSessionProxyParam(IActionVariable variable) {
-    setReferencedVariable(PROXY_REF_ELEMENT, variable);
+    setInputParam(PROXY_REF_ELEMENT, variable);
     if (variable == null) {
       setInputValue(PROXY_ELEMENT, null);
     } else {

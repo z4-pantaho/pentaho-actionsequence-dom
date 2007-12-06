@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -25,15 +24,19 @@ public class SecureFilterAction extends ActionDefinition {
     TARGET_ELEMENT
   };
   
-  public SecureFilterAction(Element actionDefElement) {
-    super(actionDefElement);
+  public SecureFilterAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public SecureFilterAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -46,7 +49,7 @@ public class SecureFilterAction extends ActionDefinition {
   }
   
   public void setTargetParam(IActionVariable variable) {
-    setReferencedVariable(TARGET_ELEMENT, variable);
+    setInputParam(TARGET_ELEMENT, variable);
   }
   
   public ActionInput getTargetParam() {

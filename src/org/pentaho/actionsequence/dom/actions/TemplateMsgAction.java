@@ -12,10 +12,12 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.net.URI;
+
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
+import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -25,6 +27,7 @@ public class TemplateMsgAction extends ActionDefinition {
   public static final String TEMPLATE_ELEMENT = "template" ; //$NON-NLS-1$
   public static final String OUTPUT_MSG_ELEMENT = "output-message" ; //$NON-NLS-1$
   public static final String OUTPUT_STRING = "output-string"; //$NON-NLS-1$
+  public static final String TEMPLATE_FILE = "template-file" ; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     TEMPLATE_ELEMENT
@@ -33,19 +36,23 @@ public class TemplateMsgAction extends ActionDefinition {
     TEMPLATE_ELEMENT
   };
 
-  public TemplateMsgAction(Element actionDefElement) {
-    super(actionDefElement);
+  public TemplateMsgAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public TemplateMsgAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     String expectedOutput = OUTPUT_MSG_ELEMENT;
     if (getOutputParam(expectedOutput) ==  null) { 
       ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.STRING_TYPE);
@@ -56,7 +63,7 @@ public class TemplateMsgAction extends ActionDefinition {
     return new String[]{expectedOutput};
   }
   
-  public String[] getExpectedResources() {
+  public String[] getReservedResourceNames() {
     return EXPECTED_RESOURCES;
   }
 
@@ -73,7 +80,7 @@ public class TemplateMsgAction extends ActionDefinition {
   }
   
   public void setTemplateParam(IActionVariable variable) {
-    setReferencedVariable(TEMPLATE_ELEMENT, variable);
+    setInputParam(TEMPLATE_ELEMENT, variable);
   }
   
   public ActionInput getTemplateParam() {
@@ -81,14 +88,22 @@ public class TemplateMsgAction extends ActionDefinition {
   }
   
   public void setOutputStringName(String name) {
-    setOutputName(OUTPUT_MSG_ELEMENT, name, ActionSequenceDocument.STRING_TYPE);
+    setOutputParam(OUTPUT_MSG_ELEMENT, name, ActionSequenceDocument.STRING_TYPE);
   }
   
   public String getOutputStringName() {
-    return getOutputPublicName(OUTPUT_MSG_ELEMENT);
+    return getPublicOutputName(OUTPUT_MSG_ELEMENT);
   }
   
   public ActionOutput getOutputStringParam() {
     return getOutputParam(OUTPUT_MSG_ELEMENT);
+  }
+  
+  public ActionResource setTemplateFile(URI uri, String mimeType) {
+    return setResourceUri(TEMPLATE_ELEMENT, uri, mimeType);
+  }
+  
+  public ActionResource getFileToPrint() {
+    return getResourceParam(TEMPLATE_ELEMENT);
   }
 }

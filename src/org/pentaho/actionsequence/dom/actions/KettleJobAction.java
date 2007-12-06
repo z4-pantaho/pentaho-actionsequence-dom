@@ -12,12 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -35,8 +37,8 @@ public class KettleJobAction extends ActionDefinition {
     REPOSITORY_DIRECTORY, REPOSITORY_JOB
   };
   
-  public KettleJobAction(Element actionDefElement) {
-    super(actionDefElement);
+  public KettleJobAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public KettleJobAction() {
@@ -48,9 +50,9 @@ public class KettleJobAction extends ActionDefinition {
     addResourceParam(JOB_FILE_ELEMENT);
   }
 
-  public boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       result = (element.selectSingleNode(ActionSequenceDocument.ACTION_RESOURCES_NAME + "/" + JOB_FILE_ELEMENT) != null) //$NON-NLS-1$
         || (element.selectSingleNode(ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + REPOSITORY_JOB) != null) //$NON-NLS-1$
         || (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + REPOSITORY_JOB) != null); //$NON-NLS-1$
@@ -58,11 +60,11 @@ public class KettleJobAction extends ActionDefinition {
     return result;
   }
 
-  public String[] getExpectedResources() {
+  public String[] getReservedResourceNames() {
     return EXPECTED_RESOURCES;
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -75,7 +77,7 @@ public class KettleJobAction extends ActionDefinition {
   }
   
   public void setJobParam(IActionVariable variable) {
-    setReferencedVariable(REPOSITORY_JOB, variable);
+    setInputParam(REPOSITORY_JOB, variable);
   }
   
   public ActionInput getJobParam() {
@@ -91,7 +93,7 @@ public class KettleJobAction extends ActionDefinition {
   }
   
   public void setDirectoryParam(IActionVariable variable) {
-    setReferencedVariable(REPOSITORY_DIRECTORY, variable);
+    setInputParam(REPOSITORY_DIRECTORY, variable);
   }
   
   public ActionInput getDirectoryParam() {
@@ -145,4 +147,34 @@ public class KettleJobAction extends ActionDefinition {
     }
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
+  
+  public ActionResource setJobFile(URI uri, String mimeType) {
+    // We never want to get rid of the kettle job resource element. 
+    // That's what's used to differentiate a kettle transformation action from a kettle job action.
+    // If the uri is null we'll either delete the action sequence resource that is referenced
+    // of map the resource to an invalid name.
+    ActionResource actionResource = null;
+    if (uri == null) {
+      actionResource = getResourceParam(JOB_FILE_ELEMENT);
+      if (actionResource != null) {
+        ActionSequenceDocument actionSequenceDocument = getDocument();
+        ActionSequenceResource actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
+        ActionResource[] actionResources = actionSequenceDocument.getReferencesTo(actionSequenceResource);
+        if ((actionResources.length == 1) && actionResources[0].equals(actionResource)) {
+          actionSequenceResource.delete();
+        } else {
+          actionResource.setMapping("NULL_MAPPING");
+        }
+      }
+      actionResource = null;
+    } else {
+      actionResource = setResourceUri(JOB_FILE_ELEMENT, uri, mimeType);
+    }
+    return actionResource;
+  }
+  
+  public ActionResource getJobFile() {
+    return getResourceParam(JOB_FILE_ELEMENT);
+  }
+  
 }

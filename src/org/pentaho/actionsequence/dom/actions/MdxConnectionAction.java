@@ -12,12 +12,13 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
+import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -54,14 +55,18 @@ public class MdxConnectionAction extends ActionDefinition {
     CATALOG_ELEMENT
   };
   
-  public MdxConnectionAction(Element actionDefElement) {
-    super(actionDefElement);
+  public MdxConnectionAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public MdxConnectionAction() {
     super(COMPONENT_NAME);
   }
 
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
     setJndi(""); //$NON-NLS-1$
@@ -69,15 +74,15 @@ public class MdxConnectionAction extends ActionDefinition {
     setOutputConnectionName(DEFAULT_CONNECTION_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     return new String[]{PREPARED_COMPONENT_ELEMENT};
   }
   
-  public String[] getExpectedResources() {
+  public String[] getReservedResourceNames() {
     return EXPECTED_RESOURCES;
   }
   
@@ -93,7 +98,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setLocationParam(IActionVariable variable) {
-    setReferencedVariable(LOCATION_ELEMENT, variable);
+    setInputParam(LOCATION_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
     }
@@ -116,7 +121,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setUserIdParam(IActionVariable variable) {
-    setReferencedVariable(USER_ID_ELEMENT, variable);
+    setInputParam(USER_ID_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
       setJndi(null);
@@ -140,7 +145,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setDriverParam(IActionVariable variable) {
-    setReferencedVariable(DRIVER_ELEMENT, variable);
+    setInputParam(DRIVER_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
       setJndi(null);
@@ -160,13 +165,13 @@ public class MdxConnectionAction extends ActionDefinition {
       setJndi(null);
     }
   }
-
+  
   public String getPassword() {
     return getComponentDefinitionValue(PASSWORD_ELEMENT);
   }
   
   public void setPasswordParam(IActionVariable variable) {
-    setReferencedVariable(PASSWORD_ELEMENT, variable);
+    setInputParam(PASSWORD_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
       setJndi(null);
@@ -195,7 +200,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setMdxConnectionStringParam(IActionVariable variable) {
-    setReferencedVariable(MDX_CONNECTION_ELEMENT, variable);
+    setInputParam(MDX_CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
       setConnection(null);
@@ -220,7 +225,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setRoleParam(IActionVariable variable) {
-    setReferencedVariable(ROLE_ELEMENT, variable);
+    setInputParam(ROLE_ELEMENT, variable);
   }
   
   public ActionInput getRoleParam() {
@@ -240,7 +245,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setConnectionParam(IActionVariable variable) {
-    setReferencedVariable(CONNECTION_ELEMENT, variable);
+    setInputParam(CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
       setJndi(null);
@@ -267,7 +272,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setJndiParam(IActionVariable variable) {
-    setReferencedVariable(JNDI_ELEMENT, variable);
+    setInputParam(JNDI_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
       setConnection(null);
@@ -282,11 +287,11 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public void setOutputConnectionName(String name) {
-    setOutputName(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.MDX_CONNECTION_TYPE);
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.MDX_CONNECTION_TYPE);
   }
   
   public String getOutputConnectionName() {
-    return getOutputPublicName(PREPARED_COMPONENT_ELEMENT);
+    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
   }
   
   public ActionOutput getOutputConnectionParam() {
@@ -358,5 +363,13 @@ public class MdxConnectionAction extends ActionDefinition {
     
 
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public ActionResource setCatalog(URI uri, String mimeType) {
+    return setResourceUri(CATALOG_ELEMENT, uri, mimeType);
+  }
+  
+  public ActionResource getCatalog() {
+    return getResourceParam(CATALOG_ELEMENT);
   }
 }

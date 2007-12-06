@@ -12,13 +12,15 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
+import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -41,8 +43,8 @@ public class KettleTransformAction extends ActionDefinition {
     TRANSFORMATION_OUTPUT_ELEMENT
   };
   
-  public KettleTransformAction(Element actionDefElement) {
-    super(actionDefElement);
+  public KettleTransformAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public KettleTransformAction() {
@@ -54,13 +56,13 @@ public class KettleTransformAction extends ActionDefinition {
     addResourceParam(TRANSFORMATION_FILE_ELEMENT);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       result = (element.selectSingleNode(ActionSequenceDocument.ACTION_RESOURCES_NAME + "/" + TRANSFORMATION_FILE_ELEMENT) != null) //$NON-NLS-1$
         || (element.selectSingleNode(ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + REPOSITORY_TRANSFORMATION) != null) //$NON-NLS-1$
         || (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + REPOSITORY_TRANSFORMATION) != null); //$NON-NLS-1$
@@ -68,11 +70,11 @@ public class KettleTransformAction extends ActionDefinition {
     return result; 
   }
   
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     return EXPECTED_OUTPUTS;
   }
   
-  public String[] getExpectedResources() {
+  public String[] getReservedResourceNames() {
     return EXPECTED_RESOURCES;
   }
   
@@ -85,7 +87,7 @@ public class KettleTransformAction extends ActionDefinition {
   }
   
   public void setTransformationParam(IActionVariable variable) {
-    setReferencedVariable(REPOSITORY_TRANSFORMATION, variable);
+    setInputParam(REPOSITORY_TRANSFORMATION, variable);
   }
   
   public ActionInput getTransformationParam() {
@@ -101,7 +103,7 @@ public class KettleTransformAction extends ActionDefinition {
   }
   
   public void setDirectoryParam(IActionVariable variable) {
-    setReferencedVariable(REPOSITORY_DIRECTORY, variable);
+    setInputParam(REPOSITORY_DIRECTORY, variable);
   }
   
   public ActionInput getDirectoryParam() {
@@ -117,7 +119,7 @@ public class KettleTransformAction extends ActionDefinition {
   }
   
   public void setImportstepParam(IActionVariable variable) {
-    setReferencedVariable(TRANSFORMATION_STEP_ELEMENT, variable);
+    setInputParam(TRANSFORMATION_STEP_ELEMENT, variable);
   }
   
   public ActionInput getImportstepParam() {
@@ -125,11 +127,11 @@ public class KettleTransformAction extends ActionDefinition {
   }
   
   public void setOutputResultSetName(String name) {
-    setOutputName(TRANSFORMATION_OUTPUT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
+    setOutputParam(TRANSFORMATION_OUTPUT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
   }
   
   public String getOutputResultSetName() {
-    return getOutputPublicName(TRANSFORMATION_OUTPUT_ELEMENT);
+    return getPublicOutputName(TRANSFORMATION_OUTPUT_ELEMENT);
   }
   
   public ActionOutput getOutputResultSetParam() {
@@ -182,4 +184,38 @@ public class KettleTransformAction extends ActionDefinition {
     }
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
+  
+  public ActionResource setTransformationFile(URI uri, String mimeType) {
+    ActionResource actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
+    // We never want to get rid of the kettle transformation resource element. 
+    // That's what's used to differentiate a kettle transformation action from a kettle job action.
+    // If the uri is null we'll either delete the action sequence resource that is referenced
+    // of map the resource to an invalid name.
+    if (uri == null) {
+      actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
+      if (actionResource != null) {
+        ActionSequenceDocument actionSequenceDocument = getDocument();
+        ActionSequenceResource actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
+        ActionResource[] actionResources = actionSequenceDocument.getReferencesTo(actionSequenceResource);
+        if ((actionResources.length == 1) && actionResources[0].equals(actionResource)) {
+          actionSequenceResource.delete();
+        } else {
+          actionResource.setMapping("NULL_MAPPING");
+        }
+      }
+      actionResource = null;
+    } else {
+      actionResource = setResourceUri(TRANSFORMATION_FILE_ELEMENT, uri, mimeType);
+    }    
+    return actionResource;
+  }
+  
+  public ActionResource getTransformationFile() {
+    ActionResource actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
+    if (actionResource.getMapping().equals("NULL_MAPPING")) {
+      actionResource = null;
+    }
+    return actionResource;
+  }
+  
 }

@@ -15,7 +15,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
@@ -46,8 +45,8 @@ public class SqlConnectionAction extends ActionDefinition {
     JNDI_ELEMENT, 
   };
 
-  public SqlConnectionAction(Element actionDefElement) {
-    super(actionDefElement);
+  public SqlConnectionAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public SqlConnectionAction() {
@@ -60,9 +59,9 @@ public class SqlConnectionAction extends ActionDefinition {
     setOutputConnectionName(DEFAULT_CONNECTION_NAME);
   }
   
-  protected boolean accepts(Element element) {
-    boolean result = super.accepts(element);
-    if (result) {
+  public static boolean accepts(Element element) {
+    boolean result = false;
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       Element connectionOutput = (Element)element.selectSingleNode(ActionSequenceDocument.ACTION_OUTPUTS_NAME + "/" + PREPARED_COMPONENT_ELEMENT); //$NON-NLS-1$
       result = (connectionOutput != null)
         && ActionSequenceDocument.SQL_CONNECTION_TYPE.equals(connectionOutput.attributeValue(ActionSequenceResource.TYPE_NAME));
@@ -70,11 +69,11 @@ public class SqlConnectionAction extends ActionDefinition {
     return result;
   }
 
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
 
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     return new String[]{PREPARED_COMPONENT_ELEMENT};
   }
   
@@ -90,7 +89,7 @@ public class SqlConnectionAction extends ActionDefinition {
   }
   
   public void setDbUrlParam(IActionVariable variable) {
-    setReferencedVariable(CONNECTION_ELEMENT, variable);
+    setInputParam(CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
     }
@@ -112,7 +111,7 @@ public class SqlConnectionAction extends ActionDefinition {
   }
   
   public void setUserIdParam(IActionVariable variable) {
-    setReferencedVariable(USER_ID_ELEMENT, variable);
+    setInputParam(USER_ID_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
     }
@@ -134,7 +133,7 @@ public class SqlConnectionAction extends ActionDefinition {
   }
   
   public void setDriverParam(IActionVariable variable) {
-    setReferencedVariable(DRIVER_ELEMENT, variable);
+    setInputParam(DRIVER_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
     }
@@ -156,7 +155,7 @@ public class SqlConnectionAction extends ActionDefinition {
   }
   
   public void setPasswordParam(IActionVariable variable) {
-    setReferencedVariable(PASSWORD_ELEMENT, variable);
+    setInputParam(PASSWORD_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
     }
@@ -181,7 +180,7 @@ public class SqlConnectionAction extends ActionDefinition {
   }
   
   public void setJndiParam(IActionVariable variable) {
-    setReferencedVariable(JNDI_ELEMENT, variable);
+    setInputParam(JNDI_ELEMENT, variable);
     if (variable != null) {
       setDriver(null);
       setDbUrl(null);
@@ -195,11 +194,11 @@ public class SqlConnectionAction extends ActionDefinition {
   }
   
   public void setOutputConnectionName(String name) {
-    setOutputName(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.SQL_CONNECTION_TYPE);
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.SQL_CONNECTION_TYPE);
   }
   
   public String getOutputConnectionName() {
-    return getOutputPublicName(PREPARED_COMPONENT_ELEMENT);
+    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
   }
   
   public ActionOutput getOutputConnectionParam() {

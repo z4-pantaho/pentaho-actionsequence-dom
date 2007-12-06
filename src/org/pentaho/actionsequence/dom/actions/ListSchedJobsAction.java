@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 
 public class ListSchedJobsAction extends ActionDefinition {
@@ -23,8 +22,8 @@ public class ListSchedJobsAction extends ActionDefinition {
   public static final String LIST_JOBS_COMMAND = "getJobNames"; //$NON-NLS-1$
     
   
-  public ListSchedJobsAction(Element actionDefElement) {
-    super(actionDefElement);
+  public ListSchedJobsAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public ListSchedJobsAction() {
@@ -36,9 +35,9 @@ public class ListSchedJobsAction extends ActionDefinition {
     setComponentDefinition(SCHEDULER_ACTION_ELEMENT, LIST_JOBS_COMMAND);
   }
   
-  protected boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       element = (Element)element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + SCHEDULER_ACTION_ELEMENT); //$NON-NLS-1$
       result = (element != null) && element.getText().equals(LIST_JOBS_COMMAND);
     }

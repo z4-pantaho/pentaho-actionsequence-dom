@@ -12,12 +12,13 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
+import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -33,6 +34,7 @@ public class XQueryAction extends ActionDefinition {
   public static final String OUTPUT_RESULT_SET = "output-result-set"; //$NON-NLS-1$
   public static final String OUTPUT_PREPARED_STATEMENT = "output-prepared_statement"; //$NON-NLS-1$
   public static final String DEFAULT_QUERY_RESULTS_NAME = "query_result"; //$NON-NLS-1$
+  public static final String XML_DOCUMENT = "xml-document" ; //$NON-NLS-1$
 
   protected static final String[] EXPECTED_RESOURCES = new String[] {
     DOCUMENT_ELEMENT
@@ -43,19 +45,23 @@ public class XQueryAction extends ActionDefinition {
     QUERY_ELEMENT
   };
 
-  public XQueryAction(Element actionDefElement) {
-    super(actionDefElement);
+  public XQueryAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public XQueryAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     String expectedOutput = QUERY_RESULT_ELEMENT;
     if (getOutputParam(expectedOutput) ==  null) { 
       ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
@@ -66,7 +72,7 @@ public class XQueryAction extends ActionDefinition {
     return new String[]{expectedOutput};
   }
   
-  public String[] getExpectedResources() {
+  public String[] getReservedResourceNames() {
     return EXPECTED_RESOURCES;
   }
   
@@ -79,7 +85,7 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public void setSourceXmlParam(IActionVariable variable) {
-    setReferencedVariable(DOCUMENT_ELEMENT, variable);
+    setInputParam(DOCUMENT_ELEMENT, variable);
   }
   
   public ActionInput getSourceXmlParam() {
@@ -95,7 +101,7 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public void setQueryParam(IActionVariable variable) {
-    setReferencedVariable(QUERY_ELEMENT, variable);
+    setInputParam(QUERY_ELEMENT, variable);
   }
   
   public ActionInput getQueryParam() {
@@ -103,14 +109,14 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public void setOutputResultSetName(String name) {
-    setOutputName(QUERY_RESULT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
+    setOutputParam(QUERY_RESULT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
     if ((name != null) && (name.trim().length() > 0)) {
       setOutputPreparedStatementName(null);
     }
   }
   
   public String getOutputResultSetName() {
-    return getOutputPublicName(QUERY_RESULT_ELEMENT);
+    return getPublicOutputName(QUERY_RESULT_ELEMENT);
   }
   
   public ActionOutput getOutputResultSetParam() {
@@ -118,10 +124,10 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public void setOutputPreparedStatementName(String name) {
-    setOutputName(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.XQUERY_TYPE);
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.XQUERY_TYPE);
     if ((name != null) && (name.trim().length() > 0)) {
       setOutputResultSetName(null);
-      ActionOutput[] actionOutputs = getOutputParams();
+      ActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (!actionOutputs[i].getType().equals(ActionSequenceDocument.XQUERY_TYPE)) {
           actionOutputs[i].delete();
@@ -131,7 +137,7 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public String getOutputPreparedStatementName() {
-    return getOutputPublicName(PREPARED_COMPONENT_ELEMENT);
+    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
   }  
   
   public ActionOutput getOutputPreparedStatementParam() {
@@ -199,5 +205,13 @@ public class XQueryAction extends ActionDefinition {
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
     setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
+  }
+  
+  public ActionResource setXmlDocument(URI uri, String mimeType) {
+    return setResourceUri(DOCUMENT_ELEMENT, uri, mimeType);
+  }
+  
+  public ActionResource getXmlDocument() {
+    return getResourceParam(DOCUMENT_ELEMENT);
   }
 }

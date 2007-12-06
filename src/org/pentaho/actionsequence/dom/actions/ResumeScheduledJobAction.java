@@ -24,8 +24,8 @@ public class ResumeScheduledJobAction extends AbstractJobSchedulerAction{
   };
   
   
-  public ResumeScheduledJobAction(Element actionDefElement) {
-    super(actionDefElement);
+  public ResumeScheduledJobAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
     // TODO Auto-generated constructor stub
   }
 
@@ -38,13 +38,13 @@ public class ResumeScheduledJobAction extends AbstractJobSchedulerAction{
     setComponentDefinition(JOB_ACTION_ELEMENT, RESUME_SCHED_JOB_CMND);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  protected boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (AbstractJobSchedulerAction.accepts(element)) {
       element = (Element)element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + JOB_ACTION_ELEMENT); //$NON-NLS-1$
       result = (element != null) && element.getText().equals(RESUME_SCHED_JOB_CMND);
     }

@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 
 public class SuspendSchedulerAction extends ActionDefinition {
@@ -21,8 +20,8 @@ public class SuspendSchedulerAction extends ActionDefinition {
   public static final String COMPONENT_NAME = "org.pentaho.component.SchedulerAdminComponent"; //$NON-NLS-1$
   public static final String SCHEDULER_ACTION_ELEMENT = "schedulerAction" ; //$NON-NLS-1$
   
-  public SuspendSchedulerAction(Element actionDefElement) {
-    super(actionDefElement);
+  public SuspendSchedulerAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public SuspendSchedulerAction() {
@@ -34,9 +33,9 @@ public class SuspendSchedulerAction extends ActionDefinition {
     setComponentDefinition(SCHEDULER_ACTION_ELEMENT, ActionSequenceDocument.SUSPEND_SCHEDULER_CMND);
   }
   
-  protected boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       element = (Element)element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + SCHEDULER_ACTION_ELEMENT); //$NON-NLS-1$
       result = (element != null) && element.getText().equals(ActionSequenceDocument.SUSPEND_SCHEDULER_CMND);
     }

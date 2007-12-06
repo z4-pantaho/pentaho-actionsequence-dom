@@ -19,8 +19,8 @@ public class LineChartAction extends AbstractChartAction {
 
   public static final String CHART_TYPE = "LineChart"; //$NON-NLS-1$
 
-  public LineChartAction(Element actionDefElement) {
-    super(actionDefElement);
+  public LineChartAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public LineChartAction() {
@@ -32,13 +32,13 @@ public class LineChartAction extends AbstractChartAction {
     setComponentDefinition(CHART_TYPE_XPATH, CHART_TYPE);
   }
 
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  protected boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (AbstractChartAction.accepts(element)) {
       element = (Element)element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/chart-attributes/chart-type"); //$NON-NLS-1$
       result = (element != null) && element.getText().equals(CHART_TYPE);
     }

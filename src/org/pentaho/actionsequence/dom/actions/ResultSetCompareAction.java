@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
@@ -38,25 +37,29 @@ public class ResultSetCompareAction extends ActionDefinition {
     COMPARE_TO_ELEMENT
   };
   
-  public ResultSetCompareAction(Element actionDefElement) {
-    super(actionDefElement);
+  public ResultSetCompareAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public ResultSetCompareAction() {
     super(COMPONENT_NAME);
   }
 
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
     setComponentDefinition(COMPARE_RESULT_ELEMENT, COMPARE_RESULT_ELEMENT);
     setComponentDefinition(STOP_ON_ERROR_ELEMENT, Boolean.TRUE.toString());
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     String expectedOutput = COMPARE_RESULT_ELEMENT;
     String compDefVal = getComponentDefinitionValue(COMPARE_RESULT_ELEMENT);
     if (compDefVal != null) {
@@ -74,7 +77,7 @@ public class ResultSetCompareAction extends ActionDefinition {
   }
   
   public void setCompareColumnParam(IActionVariable variable) {
-    setReferencedVariable(COMPARE_COLUMN_ELEMENT, variable);
+    setInputParam(COMPARE_COLUMN_ELEMENT, variable);
   }
   
   public ActionInput getCompareColumnParam() {
@@ -82,7 +85,7 @@ public class ResultSetCompareAction extends ActionDefinition {
   }
   
   public void setResultSetFromParam(IActionVariable variable) {
-    setReferencedVariable(COMPARE_FROM_ELEMENT, variable);
+    setInputParam(COMPARE_FROM_ELEMENT, variable);
   }
   
   public ActionInput getResultSetFromParam() {
@@ -90,7 +93,7 @@ public class ResultSetCompareAction extends ActionDefinition {
   }
   
   public void setResultSetToParam(IActionVariable variable) {
-    setReferencedVariable(COMPARE_TO_ELEMENT, variable);
+    setInputParam(COMPARE_TO_ELEMENT, variable);
   }
   
   public ActionInput getResultSetToParam() {
@@ -107,7 +110,7 @@ public class ResultSetCompareAction extends ActionDefinition {
   }
   
   public void setOutputMismatchesParam(IActionVariable variable) {
-    setReferencedVariable(OUTPUT_MISMATCHES_ELEMENT, variable);
+    setInputParam(OUTPUT_MISMATCHES_ELEMENT, variable);
   }
   
   public ActionInput getOutputMismatchesParam() {
@@ -124,7 +127,7 @@ public class ResultSetCompareAction extends ActionDefinition {
   }
   
   public void setStopOnErrorParam(IActionVariable variable) {
-    setReferencedVariable(STOP_ON_ERROR_ELEMENT, variable);
+    setInputParam(STOP_ON_ERROR_ELEMENT, variable);
   }
   
   public ActionInput getStopOnErrorParam() {
@@ -136,7 +139,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;
     }  
-    ActionOutput actionOutput = setOutputName(privateName, name, ActionSequenceDocument.STRING_TYPE);
+    ActionOutput actionOutput = setOutputParam(privateName, name, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COMPARE_RESULT_ELEMENT, (String)null);
     } else {
@@ -149,7 +152,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;
     }  
-    return getOutputPublicName(privateName);
+    return getPublicOutputName(privateName);
   }
   
   public ActionOutput getOutputStringParam() {

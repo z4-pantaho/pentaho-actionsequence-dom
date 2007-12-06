@@ -12,9 +12,11 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.net.URI;
+
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
 public class PrinterAction extends ActionDefinition {
@@ -23,6 +25,7 @@ public class PrinterAction extends ActionDefinition {
   public static final String PRINTER_ELEMENT = "printer-name"; //$NON-NLS-1$
   public static final String COPIES_ELEMENT = "copies"; //$NON-NLS-1$
   public static final String FILE_ELEMENT = "printFile"; //$NON-NLS-1$
+  public static final String FILE_TO_PRINT = "file-to-print"; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_RESOURCES = new String[] {
     FILE_ELEMENT
@@ -34,19 +37,23 @@ public class PrinterAction extends ActionDefinition {
     FILE_ELEMENT
   };
 
-  public PrinterAction(Element actionDefElement) {
-    super(actionDefElement);
+  public PrinterAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public PrinterAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public String[] getExpectedResources() {
+  public String[] getReservedResourceNames() {
     return EXPECTED_RESOURCES;
   }
   
@@ -59,7 +66,7 @@ public class PrinterAction extends ActionDefinition {
   }
   
   public void setPrintfileParam(IActionVariable variable) {
-    setReferencedVariable(FILE_ELEMENT, variable);
+    setInputParam(FILE_ELEMENT, variable);
   }
   
   public ActionInput getPrintfileParam() {
@@ -75,7 +82,7 @@ public class PrinterAction extends ActionDefinition {
   }
   
   public void setCopiesParam(IActionVariable variable) {
-    setReferencedVariable(COPIES_ELEMENT, variable);
+    setInputParam(COPIES_ELEMENT, variable);
   }
   
   public ActionInput getCopiesParam() {
@@ -91,11 +98,18 @@ public class PrinterAction extends ActionDefinition {
   }
   
   public void setPrinterNameParam(IActionVariable variable) {
-    setReferencedVariable(PRINTER_ELEMENT, variable);
+    setInputParam(PRINTER_ELEMENT, variable);
   }
   
   public ActionInput getPrinterNameParam() {
     return getInputParam(PRINTER_ELEMENT);
   }
   
+  public ActionResource setFileToPrint(URI uri, String mimeType) {
+    return setResourceUri(FILE_ELEMENT, uri, mimeType);
+  }
+  
+  public ActionResource getFileToPrint() {
+    return getResourceParam(FILE_ELEMENT);
+  }
 }

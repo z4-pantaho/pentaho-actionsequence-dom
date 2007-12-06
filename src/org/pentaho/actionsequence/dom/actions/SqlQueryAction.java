@@ -15,34 +15,19 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
 
-public class SqlQueryAction extends ActionDefinition {
+public class SqlQueryAction extends AbstractRelationalDbAction {
 
 
   public static final String QUERY_RESULT_OUTPUT_NAME = "query-result"; //$NON-NLS-1$
   
   public static final String COMPONENT_NAME = "org.pentaho.component.SQLLookupRule"; //$NON-NLS-1$
-  public static final String DRIVER_ELEMENT = "driver"; //$NON-NLS-1$
-  public static final String CONNECTION_ELEMENT = "connection"; //$NON-NLS-1$
-  public static final String USER_ID_ELEMENT = "user-id"; //$NON-NLS-1$
-  public static final String PASSWORD_ELEMENT = "password"; //$NON-NLS-1$
-  public static final String JNDI_ELEMENT = "jndi"; //$NON-NLS-1$
-  public static final String LIVE_CONNECTION_ELEMENT = "live"; //$NON-NLS-1$
-  public static final String QUERY_ELEMENT = "query"; //$NON-NLS-1$
-  public static final String QUERY_RESULT_ELEMENT = "query-result"; //$NON-NLS-1$
-  public static final String OUTPUT_NAME_ELEMENT = "output-name"; //$NON-NLS-1$
   public static final String DEFAULT_QUERY_RESULTS_NAME = "query_result"; //$NON-NLS-1$
-  public static final String PREPARED_COMPONENT_ELEMENT = "prepared_component"; //$NON-NLS-1$
   public static final String SQL_CONNECTION = "sql-connection"; //$NON-NLS-1$
-  public static final String DB_URL_NAME = "db-url"; //$NON-NLS-1$
-  public static final String OUTPUT_RESULT_SET = "output-result-set"; //$NON-NLS-1$
-  public static final String OUTPUT_PREPARED_STATEMENT = "output-prepared_statement"; //$NON-NLS-1$
+  
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     DRIVER_ELEMENT,
@@ -54,18 +39,19 @@ public class SqlQueryAction extends ActionDefinition {
     LIVE_CONNECTION_ELEMENT
   };
 
-  public SqlQueryAction(Element actionDefElement) {
-    super(actionDefElement);
+  public SqlQueryAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public SqlQueryAction() {
     super(COMPONENT_NAME);
   }
   
-  protected boolean accepts(Element element) {
-    return super.accepts(element)
-    && ((element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + QUERY_ELEMENT) != null) //$NON-NLS-1$
-        || (element.selectSingleNode(ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + QUERY_ELEMENT) != null)); //$NON-NLS-1$
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) 
+      && hasComponentName(element, COMPONENT_NAME)
+      && ((element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + QUERY_ELEMENT) != null) //$NON-NLS-1$
+          || (element.selectSingleNode(ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + QUERY_ELEMENT) != null)); //$NON-NLS-1$
   }
 
   protected void initNewActionDefinition() {
@@ -76,11 +62,11 @@ public class SqlQueryAction extends ActionDefinition {
     setLive(true);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
 
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     String expectedOutput = QUERY_RESULT_ELEMENT;
     String compDefVal = getComponentDefinitionValue(OUTPUT_NAME_ELEMENT);
     if (compDefVal != null) {
@@ -94,215 +80,9 @@ public class SqlQueryAction extends ActionDefinition {
     return new String[]{expectedOutput};
   }
   
-  public void setDbUrl(String value) {
-    setInputValue(CONNECTION_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
   
-  public String getDbUrl() {
-    return getComponentDefinitionValue(CONNECTION_ELEMENT);
-  }
   
-  public void setDbUrlParam(IActionVariable variable) {
-    setReferencedVariable(CONNECTION_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
   
-  public ActionInput getDbUrlParam() {
-    return getInputParam(CONNECTION_ELEMENT);
-  }
-  
-  public void setUserId(String value) {
-    setInputValue(USER_ID_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public String getUserId() {
-    return getComponentDefinitionValue(USER_ID_ELEMENT);
-  }
-  
-  public void setUserIdParam(IActionVariable variable) {
-    setReferencedVariable(USER_ID_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public ActionInput getUserIdParam() {
-    return getInputParam(USER_ID_ELEMENT);
-  }
-  
-  public void setDriver(String value) {
-    setInputValue(DRIVER_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public String getDriver() {
-    return getComponentDefinitionValue(DRIVER_ELEMENT);
-  }
-  
-  public void setDriverParam(IActionVariable variable) {
-    setReferencedVariable(DRIVER_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public ActionInput getDriverParam() {
-    return getInputParam(DRIVER_ELEMENT);
-  }
-  
-  public void setPassword(String value) {
-    setInputValue(PASSWORD_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public String getPassword() {
-    return getComponentDefinitionValue(PASSWORD_ELEMENT);
-  }
-  
-  public void setPasswordParam(IActionVariable variable) {
-    setReferencedVariable(PASSWORD_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public ActionInput getPasswordParam() {
-    return getInputParam(PASSWORD_ELEMENT);
-  }
-  
-  public void setJndi(String value) {
-    setInputValue(JNDI_ELEMENT, value);
-    if (value != null) {
-      setDriver(null);
-      setDbUrl(null);
-      setUserId(null);
-      setPassword(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public String getJndi() {
-    return getComponentDefinitionValue(JNDI_ELEMENT);
-  }
-  
-  public void setJndiParam(IActionVariable variable) {
-    setReferencedVariable(JNDI_ELEMENT, variable);
-    if (variable != null) {
-      setDriver(null);
-      setDbUrl(null);
-      setUserId(null);
-      setPassword(null);
-      setSqlConnectionParam(null);
-    }
-  }
-  
-  public ActionInput getJndiParam() {
-    return getInputParam(JNDI_ELEMENT);
-  }
-  
-  public void setLive(boolean value) {
-    setInputValue(LIVE_CONNECTION_ELEMENT, value ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
-  }
-  
-  public boolean getLive() {
-    String value = getComponentDefinitionValue(LIVE_CONNECTION_ELEMENT);
-    return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
-  }
-  
-  public void setLiveParam(IActionVariable variable) {
-    setReferencedVariable(LIVE_CONNECTION_ELEMENT, variable);
-  }
-  
-  public ActionInput getLiveParam() {
-    return getInputParam(LIVE_CONNECTION_ELEMENT);
-  }
-  
-  public void setQuery(String value) {
-    setInputValue(QUERY_ELEMENT, value);
-  }
-  
-  public String getQuery() {
-    return getComponentDefinitionValue(QUERY_ELEMENT);
-  }
-  
-  public void setQueryParam(IActionVariable variable) {
-    setReferencedVariable(QUERY_ELEMENT, variable);
-  }
-  
-  public ActionInput getQueryParam() {
-    return getInputParam(QUERY_ELEMENT);
-  }
-  
-  public void setOutputResultSetName(String name) {
-    setOutputName(QUERY_RESULT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputPreparedStatementName(null);
-    }
-  }
-  
-  public String getOutputResultSetName() {
-    return getOutputPublicName(QUERY_RESULT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputResultSetParam() {
-    return getOutputParam(QUERY_RESULT_ELEMENT);
-  }
-  
-  public void setOutputPreparedStatementName(String name) {
-    setOutputName(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.SQL_QUERY_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputResultSetName(null);
-      ActionOutput[] actionOutputs = getOutputParams();
-      for (int i = 0; i < actionOutputs.length; i++) {
-        if (!actionOutputs[i].getType().equals(ActionSequenceDocument.SQL_QUERY_TYPE)) {
-          actionOutputs[i].delete();
-        }
-      }
-    }
-  }
-  
-  public String getOutputPreparedStatementName() {
-    return getOutputPublicName(PREPARED_COMPONENT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputPreparedStatementParam() {
-    return getOutputParam(PREPARED_COMPONENT_ELEMENT);
-  }
-  
-  public void setSqlConnectionParam(IActionVariable variable) {
-    setReferencedVariable(PREPARED_COMPONENT_ELEMENT, variable);
-    if (variable != null) {
-      setDriver(null);
-      setDbUrl(null);
-      setUserId(null);
-      setPassword(null);
-      setJndi(null);
-    }
-  }
-  
-  public ActionInput getSqlConnectionParam() {
-    return getInputParam(PREPARED_COMPONENT_ELEMENT);
-  }
   
   public ActionSequenceValidationError[] validate() {
     
@@ -403,5 +183,9 @@ public class SqlQueryAction extends ActionDefinition {
     }
     
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public String getQueryType() {
+    return ActionSequenceDocument.SQL_QUERY_TYPE;
   }
 }

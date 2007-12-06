@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -43,26 +42,30 @@ public class PivotViewAction extends ActionDefinition {
     QUERY_ELEMENT
   };
   
-  public PivotViewAction(Element actionDefElement) {
-    super(actionDefElement);
+  public PivotViewAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public PivotViewAction() {
     super(COMPONENT_NAME);
   }
 
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
     setComponentDefinition(MODE_ELEMENT, EXECUTE_MODE);
-    addOutputParam(OPTIONS_ELEMENT, ActionSequenceDocument.LIST_TYPE);
-    addOutputParam(MODEL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    addOutputParam(CONNECTION_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    addOutputParam(MDX_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    addOutputParam(TITLE_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    addOutputParam(URL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutputParam(OPTIONS_ELEMENT, OPTIONS_ELEMENT, ActionSequenceDocument.LIST_TYPE);
+    setOutputParam(MODEL_ELEMENT, MODEL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutputParam(CONNECTION_ELEMENT, CONNECTION_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutputParam(MDX_ELEMENT, MDX_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutputParam(TITLE_ELEMENT, TITLE_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutputParam(URL_ELEMENT, URL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -75,7 +78,7 @@ public class PivotViewAction extends ActionDefinition {
   }
   
   public void setModeParam(IActionVariable variable) {
-    setReferencedVariable(MODE_ELEMENT, variable);
+    setInputParam(MODE_ELEMENT, variable);
   }
   
   public ActionInput getModeParam() {
@@ -91,7 +94,7 @@ public class PivotViewAction extends ActionDefinition {
   }
   
   public void setViewerParam(IActionVariable variable) {
-    setReferencedVariable(VIEWER_ELEMENT, variable);
+    setInputParam(VIEWER_ELEMENT, variable);
   }
   
   public ActionInput getViewerParam() {
@@ -107,7 +110,7 @@ public class PivotViewAction extends ActionDefinition {
   }
   
   public void setModelParam(IActionVariable variable) {
-    setReferencedVariable(MODEL_ELEMENT, variable);
+    setInputParam(MODEL_ELEMENT, variable);
   }
   
   public ActionInput getModelParam() {
@@ -123,7 +126,7 @@ public class PivotViewAction extends ActionDefinition {
   }
   
   public void setJndiParam(IActionVariable variable) {
-    setReferencedVariable(JNDI_ELEMENT, variable);
+    setInputParam(JNDI_ELEMENT, variable);
   }
   
   public ActionInput getJndiParam() {
@@ -139,7 +142,7 @@ public class PivotViewAction extends ActionDefinition {
   }
   
   public void setRoleParam(IActionVariable variable) {
-    setReferencedVariable(ROLE_ELEMENT, variable);
+    setInputParam(ROLE_ELEMENT, variable);
   }
   
   public ActionInput getRoleParam() {
@@ -155,7 +158,7 @@ public class PivotViewAction extends ActionDefinition {
   }
   
   public void setQueryParam(IActionVariable variable) {
-    setReferencedVariable(QUERY_ELEMENT, variable);
+    setInputParam(QUERY_ELEMENT, variable);
   }
   
   public ActionInput getQueryParam() {

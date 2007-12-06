@@ -51,8 +51,8 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   
   
 
-  public StartScheduledJobAction(Element actionDefElement) {
-    super(actionDefElement);
+  public StartScheduledJobAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public StartScheduledJobAction() {
@@ -64,13 +64,13 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     setComponentDefinition(JOB_ACTION_ELEMENT, START_SCHED_JOB_CMND);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  protected boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (AbstractJobSchedulerAction.accepts(element)) {
       element = (Element)element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + JOB_ACTION_ELEMENT); //$NON-NLS-1$
       result = (element != null) && element.getText().equals(START_SCHED_JOB_CMND);
     }
@@ -93,7 +93,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   }
   
   public void setCronStringParam(IActionVariable variable) {
-    setReferencedVariable(CRON_STRING_ELEMENT, variable);
+    setInputParam(CRON_STRING_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(CRON_TRIGGER);
       setRepeatCount(null);
@@ -116,7 +116,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   }
   
   public void setSolutionParam(IActionVariable variable) {
-    setReferencedVariable(SOLUTION_ELEMENT, variable);
+    setInputParam(SOLUTION_ELEMENT, variable);
   }
   
   public ActionInput getSolutionParam() {
@@ -132,7 +132,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   }
   
   public void setPathParam(IActionVariable variable) {
-    setReferencedVariable(PATH_ELEMENT, variable);
+    setInputParam(PATH_ELEMENT, variable);
   }
   
   public ActionInput getPathParam() {
@@ -148,7 +148,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   }
   
   public void setActionParam(IActionVariable variable) {
-    setReferencedVariable(ACTION_ELEMENT, variable);
+    setInputParam(ACTION_ELEMENT, variable);
   }
   
   public ActionInput getActionParam() {
@@ -164,7 +164,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   }
   
   public void setTriggerNameParam(IActionVariable variable) {
-    setReferencedVariable(TRIGGER_NAME_ELEMENT, variable);
+    setInputParam(TRIGGER_NAME_ELEMENT, variable);
   }
   
   public ActionInput getTriggerNameParam() {
@@ -186,7 +186,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   }
   
   public void setRepeatCountParam(IActionVariable variable) {
-    setReferencedVariable(REPEAT_COUNT_ELEMENT, variable);
+    setInputParam(REPEAT_COUNT_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(SIMPLE_TRIGGER);
       setCronString(null);
@@ -214,7 +214,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
   }
   
   public void setRepeatIntervalParam(IActionVariable variable) {
-    setReferencedVariable(REPEAT_INTERVAL_ELEMENT, variable);
+    setInputParam(REPEAT_INTERVAL_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(SIMPLE_TRIGGER);
       setCronString(null);

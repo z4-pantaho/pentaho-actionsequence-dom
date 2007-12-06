@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -29,15 +28,19 @@ public class SharkWorkflowAction extends ActionDefinition {
     PROCESS_NAME_ELEMENT
   };
   
-  public SharkWorkflowAction(Element actionDefElement) {
-    super(actionDefElement);
+  public SharkWorkflowAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public SharkWorkflowAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -50,7 +53,7 @@ public class SharkWorkflowAction extends ActionDefinition {
   }
   
   public void setPackageNameParam(IActionVariable variable) {
-    setReferencedVariable(PACKAGE_NAME_ELEMENT, variable);
+    setInputParam(PACKAGE_NAME_ELEMENT, variable);
   }
   
   public ActionInput getPackageNameParam() {
@@ -66,7 +69,7 @@ public class SharkWorkflowAction extends ActionDefinition {
   }
   
   public void setProcessNameParam(IActionVariable variable) {
-    setReferencedVariable(PROCESS_NAME_ELEMENT, variable);
+    setInputParam(PROCESS_NAME_ELEMENT, variable);
   }
   
   public ActionInput getProcessNameParam() {
@@ -83,7 +86,7 @@ public class SharkWorkflowAction extends ActionDefinition {
   }
   
   public void setNewInstanceParam(IActionVariable variable) {
-    setReferencedVariable(NEW_INSTANCE_ELEMENT, variable);
+    setInputParam(NEW_INSTANCE_ELEMENT, variable);
   }
   
   public ActionInput getNewInstanceParam() {
