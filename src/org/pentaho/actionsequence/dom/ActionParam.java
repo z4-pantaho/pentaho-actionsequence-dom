@@ -14,6 +14,9 @@ package org.pentaho.actionsequence.dom;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.ActionDefinition;
+import org.pentaho.actionsequence.dom.actions.ActionFactory;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * A wrapper class for an action definition input or output element.
@@ -22,8 +25,8 @@ import org.dom4j.Element;
  */
 public class ActionParam extends AbstractParam {
 
-  public ActionParam(Element ioElement) {
-    super(ioElement);
+  public ActionParam(Element ioElement, IActionParameterMgr actionInputProvider) {
+    super(ioElement, actionInputProvider);
   }
 
   
@@ -72,7 +75,7 @@ public class ActionParam extends AbstractParam {
       if (ancestorElement != null) {
         ancestorElement = ancestorElement.getParent();
         if ((ancestorElement != null) && ancestorElement.getName().equals(ActionSequenceDocument.ACTION_DEFINITION_NAME)) {
-          actionDefinition = ActionDefinition.instance(ancestorElement);
+          actionDefinition = ActionFactory.getActionDefinition(ancestorElement, actionInputProvider);
         }
       }
     }

@@ -12,6 +12,8 @@
 */
 package org.pentaho.actionsequence.dom;
 
+import org.pentaho.actionsequence.dom.actions.ActionDefinition;
+
 public class ActionSequenceDocumentAdapter implements IActionSequenceDocumentListener {
 
   public ActionSequenceDocumentAdapter() {

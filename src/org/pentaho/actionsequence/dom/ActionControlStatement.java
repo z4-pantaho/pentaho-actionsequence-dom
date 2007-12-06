@@ -20,13 +20,18 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
+import org.pentaho.actionsequence.dom.actions.ActionDefinition;
+import org.pentaho.actionsequence.dom.actions.ActionFactory;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 public abstract class ActionControlStatement implements IActionSequenceExecutableStatement {
 
   Element controlElement;
+  IActionParameterMgr actionInputProvider;
   
-  public ActionControlStatement(Element controlElement) {
+  public ActionControlStatement(Element controlElement, IActionParameterMgr actionInputProvider) {
     this.controlElement = controlElement;
+    this.actionInputProvider = actionInputProvider;
   }
 
   public Element getElement() {
@@ -40,11 +45,18 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * @param componentName the name of the component that processes
    * the action definition
    * @return the newly created action definition
+   * @throws IllegalAccessException 
+   * @throws InstantiationException 
    */
-  public ActionDefinition addAction(int actionId) {
-    ActionDefinition action = ActionDefinition.createAction(actionId);
-    controlElement.elements().add(action.getElement());
-    ActionSequenceDocument.fireActionAdded(action);
+  public ActionDefinition addAction(Class actionDefinitionClass) {
+    ActionDefinition action = null;   
+    try {
+      action = (ActionDefinition) actionDefinitionClass.newInstance();
+      controlElement.elements().add(action.getElement());
+      ActionSequenceDocument.fireActionAdded(action);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return action;
   }
   
@@ -56,24 +68,30 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * is greater than the number of children then the new action is added
    * at the end of the list of children.
    * @return the newly created action definition
+   * @throws IllegalAccessException 
+   * @throws InstantiationException 
    */
-  public ActionDefinition addAction(int actionId, int index) {
-    Object[] children = getChildren();
+  public ActionDefinition addAction(Class actionDefClass, int index) {
     ActionDefinition actionDef = null;
-    if (index >= children.length) {
-      actionDef = addAction(actionId);
-    } else {
-      Object childAtIndex = children[index];
-      Element childElement = (childAtIndex instanceof ActionControlStatement) ? ((ActionControlStatement) childAtIndex).controlElement : ((ActionDefinition) childAtIndex).actionDefElement;
-      List childElements = controlElement.elements();
-      index = childElements.indexOf(childElement);
-      if (index >= 0) {
-        actionDef = ActionDefinition.createAction(actionId);
-        childElements.add(index, actionDef.getElement());
-        ActionSequenceDocument.fireActionAdded(actionDef);
+    try {
+      Object[] children = getChildren();
+      if (index >= children.length) {
+        actionDef = addAction(actionDefClass);
       } else {
-        actionDef = addAction(actionId);
+        Object childAtIndex = children[index];
+        Element childElement = (childAtIndex instanceof ActionControlStatement) ? ((ActionControlStatement) childAtIndex).controlElement : ((ActionDefinition) childAtIndex).getElement();
+        List childElements = controlElement.elements();
+        index = childElements.indexOf(childElement);
+        if (index >= 0) {
+          actionDef = (ActionDefinition)actionDefClass.newInstance();
+          childElements.add(index, actionDef.getElement());
+          ActionSequenceDocument.fireActionAdded(actionDef);
+        } else {
+          actionDef = addAction(actionDefClass);
+        }
       }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     return actionDef;
   }
@@ -88,12 +106,12 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
       Element element = (Element)iter.next();
       String elementName = element.getName();
       if (elementName.equals(ActionSequenceDocument.ACTION_DEFINITION_NAME)) {
-        filteredChildren.add(ActionDefinition.instance(element));
+        filteredChildren.add(ActionFactory.getActionDefinition(element, actionInputProvider));
       } else if (elementName.equals(ActionSequenceDocument.ACTIONS_NAME)) {
         if (element.element(ActionSequenceDocument.CONDITION_NAME) == null) {
-          filteredChildren.add(new ActionLoop(element));
+          filteredChildren.add(new ActionLoop(element, actionInputProvider));
         } else {
-          filteredChildren.add(new ActionIfStatement(element));
+          filteredChildren.add(new ActionIfStatement(element, actionInputProvider));
         }
       }
     }
@@ -106,7 +124,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
   public ActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((controlElement != null) && (controlElement.getDocument() != null)) {
-      doc = new ActionSequenceDocument(controlElement.getDocument());
+      doc = new ActionSequenceDocument(controlElement.getDocument(), actionInputProvider);
     }
     return doc;
   }
@@ -118,7 +136,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
     Document doc = controlElement.getDocument();
     if (doc != null) {
       controlElement.detach();
-      ActionSequenceDocument.fireControlStatementRemoved(new ActionSequenceDocument(doc), this);
+      ActionSequenceDocument.fireControlStatementRemoved(new ActionSequenceDocument(doc, actionInputProvider), this);
     }
   }
   
@@ -133,9 +151,9 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
           && ancestorElement.getName().equals(ActionSequenceDocument.ACTIONS_NAME)
           && !ancestorElement.getPath().equals(ActionSequenceDocument.DOC_ACTIONS_PATH)) {
         if (ancestorElement.element(ActionSequenceDocument.CONDITION_NAME) == null) {
-          controlStatement = new ActionLoop(ancestorElement);
+          controlStatement = new ActionLoop(ancestorElement, actionInputProvider);
         } else {
-          controlStatement = new ActionIfStatement(ancestorElement);
+          controlStatement = new ActionIfStatement(ancestorElement, actionInputProvider);
         }
       }
     }
@@ -150,7 +168,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    */
   public void add(ActionDefinition actionDef) {
     actionDef.delete();
-    controlElement.elements().add(actionDef.actionDefElement);
+    controlElement.elements().add(actionDef.getElement());
     ActionSequenceDocument.fireActionAdded(actionDef);
   }
   
@@ -175,7 +193,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
         if  ((actionDefIndex >= 0) && (actionDefIndex < index)) {
           index--;
         }
-        controlElement.elements().add(index, actionDef.actionDefElement);
+        controlElement.elements().add(index, actionDef.getElement());
         ActionSequenceDocument.fireActionAdded(actionDef);
       } else {
         add(actionDef);
@@ -188,7 +206,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * children. This control statement becomes the new parent of the specified control statement.
    * @param controlStatement the control statment to be added.
    */
-  public void add(ActionControlStatement controlStatement) {
+  void add(ActionControlStatement controlStatement) {
     controlStatement.delete();
     controlElement.elements().add(controlStatement.controlElement);
     ActionSequenceDocument.fireControlStatementAdded(controlStatement);
@@ -202,7 +220,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * is greater than the number of children then the new control statement is added
    * at the end of the list of children.
    */
-  public void add(ActionControlStatement controlStatement, int index) {
+  void add(ActionControlStatement controlStatement, int index) {
     IActionSequenceElement[] children = getChildren();
     if (index >= children.length) {
       add(controlStatement);
@@ -231,7 +249,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
   public ActionLoop addLoop(String loopOn) {
     Element child = createLoopElement();
     controlElement.elements().add(child);
-    ActionLoop loop = new ActionLoop(child);
+    ActionLoop loop = new ActionLoop(child, actionInputProvider);
     ActionSequenceDocument.fireControlStatementAdded(loop);
     return loop;
   }
@@ -250,13 +268,13 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
       actionLoop = addLoop(loopOn);
     } else {
       Object childAtIndex = children[index];
-      Element childElement = (childAtIndex instanceof ActionControlStatement) ? ((ActionControlStatement)childAtIndex).controlElement : ((ActionDefinition)childAtIndex).actionDefElement;
+      Element childElement = (childAtIndex instanceof ActionControlStatement) ? ((ActionControlStatement)childAtIndex).controlElement : ((ActionDefinition)childAtIndex).getElement();
       List childElements = controlElement.elements();
       index = childElements.indexOf(childElement);
       if (index >= 0) {
         Element child = createLoopElement();
         childElements.add(index, child);
-        actionLoop = new ActionLoop(child);
+        actionLoop = new ActionLoop(child, actionInputProvider);
         ActionSequenceDocument.fireControlStatementAdded(actionLoop);
       } else {
         actionLoop = addLoop(loopOn);
@@ -272,7 +290,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
   public ActionIfStatement addIf(String condition) {
     Element child = createIfElement();
     controlElement.elements().add(child);
-    ActionIfStatement actionIf = new ActionIfStatement(child);
+    ActionIfStatement actionIf = new ActionIfStatement(child, actionInputProvider);
     ActionSequenceDocument.fireControlStatementAdded(actionIf);
     return actionIf;
   }
@@ -291,13 +309,13 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
       actionIf = addIf(condition);
     } else {
       Object childAtIndex = children[index];
-      Element childElement = (childAtIndex instanceof ActionControlStatement) ? ((ActionControlStatement)childAtIndex).controlElement : ((ActionDefinition)childAtIndex).actionDefElement;
+      Element childElement = (childAtIndex instanceof ActionControlStatement) ? ((ActionControlStatement)childAtIndex).controlElement : ((ActionDefinition)childAtIndex).getElement();
       List childElements = controlElement.elements();
       index = childElements.indexOf(childElement);
       if (index >= 0) {
         Element child = createIfElement();
         childElements.add(index, child);
-        actionIf = new ActionIfStatement(child);
+        actionIf = new ActionIfStatement(child, actionInputProvider);
         ActionSequenceDocument.fireControlStatementAdded(actionIf);
       } else {
         actionIf = addIf(condition);
@@ -376,4 +394,19 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
     }
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
+  
+  public void moveTo(ActionControlStatement newParentControlStatement, int index) {
+    if (newParentControlStatement == null) {
+      newParentControlStatement = getDocument().getRootLoop();
+    }
+    newParentControlStatement.add(this, index);
+  }
+  
+  public void moveTo(ActionControlStatement newParentControlStatement) {
+    if (newParentControlStatement == null) {
+      newParentControlStatement = getDocument().getRootLoop();
+    }
+    newParentControlStatement.add(this);
+  }
+  
 }

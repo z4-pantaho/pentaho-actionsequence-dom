@@ -1,5 +1,7 @@
 package org.pentaho.actionsequence.dom;
 
+import org.pentaho.actionsequence.dom.actions.ActionDefinition;
+
 public class ActionSequenceValidationError {
   public static final int INPUT_OK = 0;;
   public static final int INPUT_MISSING = 1;

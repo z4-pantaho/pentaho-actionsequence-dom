@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * A wrapper class for an action loop.
@@ -25,8 +26,8 @@ import org.dom4j.Element;
  */
 public class ActionLoop extends ActionControlStatement {
 
-  public ActionLoop(Element loopElement) {
-    super(loopElement);
+  public ActionLoop(Element loopElement, IActionParameterMgr actionInputProvider) {
+    super(loopElement, actionInputProvider);
   }
 
   /**

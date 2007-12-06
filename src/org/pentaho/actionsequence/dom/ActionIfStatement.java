@@ -13,6 +13,7 @@
 package org.pentaho.actionsequence.dom;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * A wrapper class for an action if statement.
@@ -22,8 +23,8 @@ import org.dom4j.Element;
 public class ActionIfStatement extends ActionControlStatement {
 
   private static final ActionSequenceValidationError[] EMPTY_ARRAY = new ActionSequenceValidationError[0];
-  public ActionIfStatement(Element controlElement) {
-    super(controlElement);
+  public ActionIfStatement(Element controlElement, IActionParameterMgr actionInputProvider) {
+    super(controlElement, actionInputProvider);
   }
 
   /**

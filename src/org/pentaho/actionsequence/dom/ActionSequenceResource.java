@@ -12,9 +12,14 @@
 */
 package org.pentaho.actionsequence.dom;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * A wrapper class for an action sequence resource element.
@@ -31,8 +36,11 @@ public class ActionSequenceResource extends AbstractParam {
   public static final String RES_MIME_TYPE_NAME = "mime-type"; //$NON-NLS-1$
   public static final String TYPE_NAME = "type"; //$NON-NLS-1$
   
-  public ActionSequenceResource(Element resourceElement) {
-    super(resourceElement);
+  public static final String SOLUTION_SCHEME = "solution"; //$NON-NLS-1$
+  public static final String FILE_SCHEME = "file"; //$NON-NLS-1$
+  
+  public ActionSequenceResource(Element resourceElement, IActionParameterMgr actionInputProvider) {
+    super(resourceElement, actionInputProvider);
   }
   
   /**
@@ -110,7 +118,7 @@ public class ActionSequenceResource extends AbstractParam {
    * Sets the resource URI
    * @param uri the resource URI
    */
-  public void setUri(String uri) {
+  public void setPath(String uri) {
     String resType = getType();
     Element pathElement = null;
     if (SOLUTION_FILE_RESOURCE_TYPE.equals(resType)) {
@@ -140,7 +148,7 @@ public class ActionSequenceResource extends AbstractParam {
   /**
    * @return the resource URI
    */
-  public String getUri() {
+  public String getPath() {
     String uri = ""; //$NON-NLS-1$
     String resType = getType();
     Element pathElement = null;
@@ -228,7 +236,7 @@ public class ActionSequenceResource extends AbstractParam {
     Document doc = ioElement.getDocument();
     if (doc != null) {
       ioElement.detach();
-      ActionSequenceDocument.fireResourceRemoved(new ActionSequenceDocument(doc), this);
+      ActionSequenceDocument.fireResourceRemoved(new ActionSequenceDocument(doc, actionInputProvider), this);
     }
   }
   
@@ -256,8 +264,45 @@ public class ActionSequenceResource extends AbstractParam {
   public ActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((ioElement != null) && (ioElement.getDocument() != null)) {
-      doc = new ActionSequenceDocument(ioElement.getDocument());
+      doc = new ActionSequenceDocument(ioElement.getDocument(), actionInputProvider);
     }
     return doc;
+  }
+  
+  public URI getUri() {
+    URI uri = null;
+    try {
+      String schemaSpecificPart = getPath();
+      if (getType().equals(ActionSequenceResource.SOLUTION_FILE_RESOURCE_TYPE)) {
+        uri = new URI(SOLUTION_SCHEME, schemaSpecificPart, null);
+      } else if (getType().equals(ActionSequenceResource.FILE_RESOURCE_TYPE)) {
+        uri = new URI(FILE_SCHEME, schemaSpecificPart, null);
+      } else {
+        uri = new URI(schemaSpecificPart);
+      }
+    } catch (URISyntaxException e) {
+      uri = null;
+      e.printStackTrace();
+    }
+    return uri;
+  }
+  
+  public void setUri(URI uri) {
+    if (!uri.isAbsolute() || FILE_SCHEME.equals(uri.getScheme())) {
+      setType(ActionSequenceResource.FILE_RESOURCE_TYPE);
+      setPath(uri.getSchemeSpecificPart());
+    } else if (SOLUTION_SCHEME.equals(uri.getScheme())) {
+      setType(ActionSequenceResource.SOLUTION_FILE_RESOURCE_TYPE);
+      setPath(uri.getSchemeSpecificPart());
+    } else {
+      try {
+        URL url = uri.toURL();
+        setType(ActionSequenceResource.URL_RESOURCE_TYPE);
+        setPath(url.toString());
+      } catch (Exception ex) {
+        setType(ActionSequenceResource.FILE_RESOURCE_TYPE);
+        setPath(uri.toString());
+      }
+    }
   }
 }

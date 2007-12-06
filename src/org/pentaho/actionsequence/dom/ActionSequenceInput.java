@@ -25,6 +25,7 @@ import javax.swing.table.TableModel;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * A wrapper class for an action definition input or output element.
@@ -38,8 +39,8 @@ public class ActionSequenceInput extends AbstractParam implements IActionVariabl
   public static final int RUNTIME_INPUT_SOURCE_ID = 3;
   public static final int GLOBAL_INPUT_SOURCE_ID = 4;
   
-  public ActionSequenceInput(Element inputElement) {
-    super(inputElement);
+  public ActionSequenceInput(Element inputElement, IActionParameterMgr actionInputProvider) {
+    super(inputElement, actionInputProvider);
   }
   
   
@@ -381,7 +382,7 @@ public class ActionSequenceInput extends AbstractParam implements IActionVariabl
     ArrayList inputSources = new ArrayList();
     List sourceElements = ioElement.selectNodes(ActionSequenceDocument.INPUT_SOURCES_NAME + "/*"); //$NON-NLS-1$
     for (Iterator iter = sourceElements.iterator(); iter.hasNext();) {
-      inputSources.add(new ActionSequenceInputSource((Element)iter.next()));
+      inputSources.add(new ActionSequenceInputSource((Element)iter.next(), actionInputProvider));
     }
     return (ActionSequenceInputSource[])inputSources.toArray(new ActionSequenceInputSource[0]);
   }
@@ -390,7 +391,7 @@ public class ActionSequenceInput extends AbstractParam implements IActionVariabl
     Element sourceParent = DocumentHelper.makeElement(ioElement, ActionSequenceDocument.INPUT_SOURCES_NAME);     
     Element newSourceElement = sourceParent.addElement(origin);
     newSourceElement.setText(name);
-    ActionSequenceInputSource actionSequenceInputSource = new ActionSequenceInputSource(newSourceElement);
+    ActionSequenceInputSource actionSequenceInputSource = new ActionSequenceInputSource(newSourceElement, actionInputProvider);
     ActionSequenceDocument.fireIoChanged(this);
     return actionSequenceInputSource;
   }
@@ -403,7 +404,7 @@ public class ActionSequenceInput extends AbstractParam implements IActionVariabl
     Element newSourceElement = new DefaultElement(origin);
     List sources = sourceParent.elements();
     sources.add(index, newSourceElement);
-    return new ActionSequenceInputSource(newSourceElement);
+    return new ActionSequenceInputSource(newSourceElement, actionInputProvider);
   }
 
 

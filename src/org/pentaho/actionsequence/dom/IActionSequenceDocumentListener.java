@@ -12,6 +12,8 @@
 */
 package org.pentaho.actionsequence.dom;
 
+import org.pentaho.actionsequence.dom.actions.ActionDefinition;
+
 /**
  * Classes that implement this interface can be notified of changes to an action sequence.
  * 

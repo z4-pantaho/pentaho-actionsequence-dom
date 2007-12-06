@@ -13,6 +13,7 @@
 package org.pentaho.actionsequence.dom;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * Convenience class used to distinguish action inputs from action outputs.
@@ -21,8 +22,8 @@ import org.dom4j.Element;
  */
 public class ActionOutput extends ActionParam implements IActionVariable {
 
-  public ActionOutput(Element ioElement) {
-    super(ioElement);
+  public ActionOutput(Element ioElement, IActionParameterMgr actionInputProvider) {
+    super(ioElement, actionInputProvider);
   }
 
   /**
@@ -35,5 +36,11 @@ public class ActionOutput extends ActionParam implements IActionVariable {
 
   public String getVariableName() {
     return getPublicName();
+  }
+  
+  public void setValue(Object value) {
+    if (actionInputProvider != null) {
+      actionInputProvider.setOutputValue(this, value);
+    }
   }
 }

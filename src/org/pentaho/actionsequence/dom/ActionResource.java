@@ -12,21 +12,28 @@
 */
 package org.pentaho.actionsequence.dom;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URI;
+
+import javax.activation.DataSource;
+
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.ActionDefinition;
+import org.pentaho.actionsequence.dom.actions.ActionFactory;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * A wrapper class for an action definition resource element.
  * @author Angelo Rodriguez
  *
  */
-public class ActionResource extends ActionParam {
+public class ActionResource extends ActionParam implements IActionResource {
 
-  public static final String UNMAPPED_RESOURCE = "_UNMAPPED_"; //$NON-NLS-1$
-  
-  public ActionResource(Element resourceElement) {
-    super(resourceElement);
+  public ActionResource(Element resourceElement, IActionParameterMgr actionInputProvider) {
+    super(resourceElement, actionInputProvider);
     this.ioElement = resourceElement;
   }
 
@@ -90,7 +97,7 @@ public class ActionResource extends ActionParam {
     Document doc = ioElement.getDocument();
     if (doc != null) {
       ioElement.detach();
-      ActionSequenceDocument.fireResourceRemoved(new ActionSequenceDocument(doc), this);
+      ActionSequenceDocument.fireResourceRemoved(new ActionSequenceDocument(doc, actionInputProvider), this);
     }
   }
   
@@ -118,7 +125,7 @@ public class ActionResource extends ActionParam {
   public ActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((ioElement != null) && (ioElement.getDocument() != null)) {
-      doc = new ActionSequenceDocument(ioElement.getDocument());
+      doc = new ActionSequenceDocument(ioElement.getDocument(), actionInputProvider);
     }
     return doc;
   }
@@ -138,7 +145,7 @@ public class ActionResource extends ActionParam {
       if (ancestorElement != null) {
         ancestorElement = ancestorElement.getParent();
         if ((ancestorElement != null) && ancestorElement.getName().equals(ActionSequenceDocument.ACTION_DEFINITION_NAME)) {
-          actionDefinition = ActionDefinition.instance(ancestorElement);
+          actionDefinition = ActionFactory.getActionDefinition(ancestorElement, actionInputProvider);
         }
       }
     }
@@ -151,5 +158,83 @@ public class ActionResource extends ActionParam {
 
   public void setType(String ioType) {
     throw new UnsupportedOperationException();
+  }
+  
+  public URI getUri() {
+    URI uri = null;
+    ActionSequenceResource actionSequenceResource = getDocument().getResource(getPublicName());
+    if (actionSequenceResource != null) {
+      uri = actionSequenceResource.getUri();
+    }
+    return uri;
+  }
+  
+  public String getMimeType() {
+    String mimeType = null;
+    ActionSequenceResource actionSequenceResource = getDocument().getResource(getPublicName());
+    if (actionSequenceResource != null) {
+      mimeType = actionSequenceResource.getMimeType();
+    }
+    return mimeType;
+  }
+  
+  public void setURI(URI uri) {
+    String logicalName = getPublicName();
+    ActionSequenceResource actionSequenceResource = getDocument().getResource(logicalName);
+    if (uri == null) {
+      ActionSequenceDocument document = getDocument();
+      delete();
+      if ((actionSequenceResource != null) && (document.getReferencesTo(actionSequenceResource).length == 0)) {
+    	  document.setResourceUri(logicalName, null, null);
+      }
+    } else {
+      if (actionSequenceResource == null) {
+        getDocument().setResourceUri(logicalName, uri, "text/plain");
+      } else {
+        String mimeType = actionSequenceResource.getMimeType();
+        ActionResource[] actionResources = getDocument().getReferencesTo(actionSequenceResource);
+        if ((actionResources.length == 1) && actionResources[0].equals(this)) {
+          getDocument().setResourceUri(logicalName, uri, mimeType);
+        } else {
+          logicalName = createLogicalName(getName());
+          setMapping(logicalName);
+          getDocument().setResourceUri(logicalName, uri, mimeType);
+        }
+      }
+    }
+  }
+  
+  public void setMimeType(String mimeType) {
+    String logicalName = getPublicName();
+    ActionSequenceResource actionSequenceResource = getDocument().getResource(logicalName);
+    if (actionSequenceResource != null) {
+      ActionResource[] actionResources = getDocument().getReferencesTo(actionSequenceResource);
+      if ((actionResources.length == 1) && actionResources[0].equals(this)) {
+        getDocument().setResourceUri(logicalName, actionSequenceResource.getUri(), mimeType);
+      } else {
+        logicalName = createLogicalName(getName());
+        setMapping(logicalName);
+        getDocument().setResourceUri(logicalName, actionSequenceResource.getUri(), mimeType);
+      }
+    }
+  }
+  
+  private String createLogicalName(String resourceName) {
+    String logicalName;
+    logicalName = resourceName;
+    int index = 1;
+    while (getDocument().getResource(logicalName) != null) {
+      logicalName = resourceName + index;
+      index++;
+    }
+    return logicalName;
+  }
+  
+  public DataSource getDataSource() throws FileNotFoundException {
+    DataSource dataSource = null;
+    if (actionInputProvider != null) {
+      dataSource = actionInputProvider.getDataSource(this);
+    }
+    return dataSource;
   }
 }

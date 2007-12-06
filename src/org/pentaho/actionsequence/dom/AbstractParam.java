@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 import org.pentaho.actionsequence.dom.messages.Messages;
 
 /**
@@ -26,10 +27,12 @@ public abstract class AbstractParam implements IActionSequenceElement {
   public static final String TYPE_NAME = "type"; //$NON-NLS-1$
   
   Element ioElement;
+  IActionParameterMgr actionInputProvider;
   
-  protected AbstractParam(Element ioElement) {
+  protected AbstractParam(Element ioElement, IActionParameterMgr actionInputProvider) {
     super();
     this.ioElement = ioElement;
+    this.actionInputProvider = actionInputProvider;
   }
 
   /**
@@ -79,7 +82,7 @@ public abstract class AbstractParam implements IActionSequenceElement {
     Document doc = ioElement.getDocument();
     if (doc != null) {
       ioElement.detach();
-      ActionSequenceDocument.fireIoRemoved(new ActionSequenceDocument(doc), this);
+      ActionSequenceDocument.fireIoRemoved(new ActionSequenceDocument(doc, actionInputProvider), this);
     }
   }
   
@@ -107,7 +110,7 @@ public abstract class AbstractParam implements IActionSequenceElement {
   public ActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((ioElement != null) && (ioElement.getDocument() != null)) {
-      doc = new ActionSequenceDocument(ioElement.getDocument());
+      doc = new ActionSequenceDocument(ioElement.getDocument(), actionInputProvider);
     }
     return doc;
   }

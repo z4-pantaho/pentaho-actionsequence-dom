@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
  * Convenience class used to distinguish action sequence inputs from action sequence outputs.
@@ -26,15 +27,15 @@ import org.dom4j.Element;
  */
 public class ActionSequenceOutput extends AbstractParam {
 
-  protected ActionSequenceOutput(Element outputElement) {
-    super(outputElement);
+  protected ActionSequenceOutput(Element outputElement, IActionParameterMgr actionInputProvider) {
+    super(outputElement, actionInputProvider);
   }
   
   public ActionSequenceOutputDestination[] getDestinations() {
     ArrayList outputDestinations = new ArrayList();
     List destinationElements = ioElement.selectNodes(ActionSequenceDocument.OUTPUTS_DESTINATIONS_NAME + "/*"); //$NON-NLS-1$
     for (Iterator iter = destinationElements.iterator(); iter.hasNext();) {
-      outputDestinations.add(new ActionSequenceOutputDestination((Element)iter.next()));
+      outputDestinations.add(new ActionSequenceOutputDestination((Element)iter.next(), actionInputProvider));
     }
     return (ActionSequenceOutputDestination[])outputDestinations.toArray(new ActionSequenceOutputDestination[0]);
   }
@@ -44,7 +45,7 @@ public class ActionSequenceOutput extends AbstractParam {
     Element destinationParent = DocumentHelper.makeElement(ioElement, ActionSequenceDocument.OUTPUTS_DESTINATIONS_NAME);     
     Element newDestinationElement = destinationParent.addElement(destination);
     newDestinationElement.setText(name);
-    ActionSequenceOutputDestination actionSequenceOutputDestination = new ActionSequenceOutputDestination(newDestinationElement);
+    ActionSequenceOutputDestination actionSequenceOutputDestination = new ActionSequenceOutputDestination(newDestinationElement, actionInputProvider);
     ActionSequenceDocument.fireIoChanged(this);
     return actionSequenceOutputDestination;
   }

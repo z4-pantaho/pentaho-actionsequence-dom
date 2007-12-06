@@ -14,13 +14,16 @@ package org.pentaho.actionsequence.dom;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 public class ActionSequenceInputSource {
   
   Element sourceElement;
+  IActionParameterMgr actionInputProvider;
   
-  protected ActionSequenceInputSource(Element element) {
+  protected ActionSequenceInputSource(Element element, IActionParameterMgr actionInputProvider) {
     sourceElement = element;
+    this.actionInputProvider = actionInputProvider;
   }
 
   public void setOrigin(String origin) {
@@ -48,7 +51,7 @@ public class ActionSequenceInputSource {
       if (ancestorElement != null) {
         ancestorElement = ancestorElement.getParent();
         if (ancestorElement != null) {
-          actionSequenceInput = new ActionSequenceInput(ancestorElement);
+          actionSequenceInput = new ActionSequenceInput(ancestorElement, actionInputProvider);
         }
       }
     }
