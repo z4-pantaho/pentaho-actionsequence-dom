@@ -23,8 +23,8 @@ public class DeleteScheduledJobAction extends AbstractJobSchedulerAction {
     JOB_NAME_ELEMENT
   };
   
-  public DeleteScheduledJobAction(Element actionDefElement) {
-    super(actionDefElement);
+  public DeleteScheduledJobAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public DeleteScheduledJobAction() {
@@ -36,13 +36,13 @@ public class DeleteScheduledJobAction extends AbstractJobSchedulerAction {
     setComponentDefinition(JOB_ACTION_ELEMENT, JOB_SCHEDULER_COMMAND);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  protected boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (AbstractJobSchedulerAction.accepts(element)) {
       element = (Element)element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + JOB_ACTION_ELEMENT); //$NON-NLS-1$
       result = (element != null) && element.getText().equals(JOB_SCHEDULER_COMMAND);
     }

@@ -15,7 +15,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -27,8 +26,8 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
   public static final String JOB_NAME = "job-name"; //$NON-NLS-1$
   
   
-  protected AbstractJobSchedulerAction(Element actionDefElement) {
-    super(actionDefElement);
+  protected AbstractJobSchedulerAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
   
   protected AbstractJobSchedulerAction(String componentName) {
@@ -44,7 +43,7 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
   }
   
   public void setJobNameParam(IActionVariable variable) {
-    setReferencedVariable(JOB_NAME_ELEMENT, variable);
+    setInputParam(JOB_NAME_ELEMENT, variable);
   }
   
   public ActionInput getJobNameParam() {
@@ -86,5 +85,9 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
     }
     
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
 }

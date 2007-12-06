@@ -19,8 +19,8 @@ public class AreaChartAction extends AbstractChartAction {
 
   public static final String CHART_TYPE = "AreaChart"; //$NON-NLS-1$
 
-  public AreaChartAction(Element actionDefElement) {
-    super(actionDefElement);
+  public AreaChartAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public AreaChartAction() {
@@ -32,13 +32,13 @@ public class AreaChartAction extends AbstractChartAction {
     setChartType(CHART_TYPE);
   }
 
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
 
-  protected boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean result = false;
-    if (super.accepts(element)) {
+    if (AbstractChartAction.accepts(element)) {
       element = (Element)element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/chart-attributes/chart-type"); //$NON-NLS-1$
       result = (element != null) && element.getText().equals(CHART_TYPE);
     }

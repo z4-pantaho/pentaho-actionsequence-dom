@@ -15,7 +15,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
@@ -37,15 +36,15 @@ public class ContentOutputAction extends ActionDefinition {
     MIME_TYPE_ELEMENT
   };
 
-  public ContentOutputAction(Element actionDefElement) {
-    super(actionDefElement);
+  public ContentOutputAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public ContentOutputAction() {
     super(COMPONENT_NAME);
   }
 
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -58,7 +57,7 @@ public class ContentOutputAction extends ActionDefinition {
   }
   
   public void setMimeTypeParam(IActionVariable variable) {
-    setReferencedVariable(MIME_TYPE_ELEMENT, variable);
+    setInputParam(MIME_TYPE_ELEMENT, variable);
   }
   
   public ActionInput getMimeTypeParam() {
@@ -66,7 +65,7 @@ public class ContentOutputAction extends ActionDefinition {
   }
   
   public void setInputParam(IActionVariable variable) {
-    setReferencedVariable(CONTENT_INPUT_ELEMENT, variable);
+    setInputParam(CONTENT_INPUT_ELEMENT, variable);
   }
   
   public ActionInput getInputParam() {
@@ -74,7 +73,7 @@ public class ContentOutputAction extends ActionDefinition {
   }
   
   public String getOutputName() {
-    return getOutputPublicName(CONTENT_OUTPUT_ELEMENT);
+    return getPublicOutputName(CONTENT_OUTPUT_ELEMENT);
   }
   
   public ActionOutput getOutputParam() {
@@ -82,7 +81,7 @@ public class ContentOutputAction extends ActionDefinition {
   }
   
   public void setOutputName(String name) {
-    setOutputName(CONTENT_OUTPUT_ELEMENT, name, ActionSequenceDocument.CONTENT_TYPE);
+    setOutputParam(CONTENT_OUTPUT_ELEMENT, name, ActionSequenceDocument.CONTENT_TYPE);
   }
   
   public ActionSequenceValidationError[] validate() {
@@ -129,5 +128,9 @@ public class ContentOutputAction extends ActionDefinition {
     }
     
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
 }

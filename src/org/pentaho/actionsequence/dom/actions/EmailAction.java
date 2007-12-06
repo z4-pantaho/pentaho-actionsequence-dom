@@ -12,10 +12,13 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -41,21 +44,20 @@ public class EmailAction extends ActionDefinition {
     HTML_MSG_ELEMENT
   };
   
-  public EmailAction(Element actionDefElement) {
-    super(actionDefElement);
+  public EmailAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public EmailAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
 
-  protected boolean accepts(Element element) {
-    // TODO Auto-generated method stub
-    return super.accepts(element);
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
   
   public void setTo(String to) {
@@ -63,11 +65,22 @@ public class EmailAction extends ActionDefinition {
   }
   
   public String getTo() {
-    return getComponentDefinitionValue(TO_ELEMENT);
+    // The message could come from a hash map that is named after the "to" input. I believe
+    // this is deprecated functionality.
+    Object toString = getInputValue(TO_ELEMENT);
+    if (toString instanceof HashMap) {
+      toString = ((HashMap)toString).get(EmailAction.TO_ELEMENT);
+    }
+    // End deprecated functionality
+    
+    if ((toString != null) && (actionParameterMgr != null)) {
+      toString = actionParameterMgr.replaceParameterReferences(toString.toString());
+    }
+    return toString != null ? toString.toString() : (String)toString;
   }
   
   public void setToParam(IActionVariable variable) {
-    setReferencedVariable(TO_ELEMENT, variable);
+    setInputParam(TO_ELEMENT, variable);
   }
   
   public ActionInput getToParam() {
@@ -79,11 +92,15 @@ public class EmailAction extends ActionDefinition {
   }
   
   public String getFrom() {
-    return getComponentDefinitionValue(FROM_ELEMENT);
+    Object from = getInputValue(FROM_ELEMENT);
+    if ((from != null) && (actionParameterMgr != null)) {
+      from = actionParameterMgr.replaceParameterReferences(from.toString());
+    }
+    return from != null ? from.toString() : (String)from;
   }
   
   public void setFromParam(IActionVariable variable) {
-    setReferencedVariable(FROM_ELEMENT, variable);
+    setInputParam(FROM_ELEMENT, variable);
   }
   
   public ActionInput getFromParam() {
@@ -96,11 +113,15 @@ public class EmailAction extends ActionDefinition {
   }
   
   public String getCc() {
-    return getComponentDefinitionValue(CC_ELEMENT);
+    Object cc = getInputValue(CC_ELEMENT);
+    if ((cc != null) && (actionParameterMgr != null)) {
+      cc = actionParameterMgr.replaceParameterReferences(cc.toString());
+    }
+    return cc != null ? cc.toString() : (String)cc;
   }
   
   public void setCcParam(IActionVariable variable) {
-    setReferencedVariable(CC_ELEMENT, variable);
+    setInputParam(CC_ELEMENT, variable);
   }
   
   public ActionInput getCcParam() {
@@ -112,11 +133,15 @@ public class EmailAction extends ActionDefinition {
   }
   
   public String getBcc() {
-    return getComponentDefinitionValue(BCC_ELEMENT);
+    Object bcc = getInputValue(BCC_ELEMENT);
+    if ((bcc != null) && (actionParameterMgr != null)) {
+      bcc = actionParameterMgr.replaceParameterReferences(bcc.toString());
+    }
+    return bcc != null ? bcc.toString() : (String)bcc;
   }
   
   public void setBccParam(IActionVariable variable) {
-    setReferencedVariable(BCC_ELEMENT, variable);
+    setInputParam(BCC_ELEMENT, variable);
   }
   
   public ActionInput getBccParam() {
@@ -128,11 +153,31 @@ public class EmailAction extends ActionDefinition {
   }
   
   public String getMessageHtml() {
-    return getComponentDefinitionValue(PLAIN_MSG_ELEMENT);
+    Object msg = getInputValue(HTML_MSG_ELEMENT);
+    if (msg instanceof InputStream) {
+      InputStream is = (InputStream)msg;
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      byte bytes[] = new byte[1024];
+      int numRead = 0;
+      try {
+        while ((numRead = is.read(bytes)) != -1) {
+          if (numRead > 0) {
+            baos.write(bytes, 0, numRead);
+          }
+        }
+        msg = baos.toString();
+      } catch (Exception e) {
+        msg = "";
+      }
+    }
+    if ((msg != null) && (actionParameterMgr != null)) {
+      msg = actionParameterMgr.replaceParameterReferences(msg.toString());
+    }
+    return msg != null ? msg.toString() : (String)msg;
   }
   
   public void setMessageHtmlParam(IActionVariable variable) {
-    setReferencedVariable(HTML_MSG_ELEMENT, variable);
+    setInputParam(HTML_MSG_ELEMENT, variable);
   }
   
   public ActionInput getMessageHtmlParam() {
@@ -144,11 +189,29 @@ public class EmailAction extends ActionDefinition {
   }
   
   public String getMessagePlain() {
-    return getComponentDefinitionValue(HTML_MSG_ELEMENT);
+    
+    // The message could come from a hash map that is named after the "to" input. I believe
+    // this is deprecated functionality.
+    Object msg = getInputValue(TO_ELEMENT);
+    if (msg instanceof HashMap) {
+      msg = ((HashMap)msg).get(EmailAction.PLAIN_MSG_ELEMENT);
+    } else {
+      msg = null;
+    }
+    // End deprecated functionality
+    
+    if (msg == null) {
+      msg = getInputValue(PLAIN_MSG_ELEMENT);
+    }
+    
+    if ((msg != null) && (actionParameterMgr != null)) {
+      msg = actionParameterMgr.replaceParameterReferences(msg.toString());
+    }
+    return msg != null ? msg.toString() : (String)msg;
   }
   
   public void setMessagePlainParam(IActionVariable variable) {
-    setReferencedVariable(PLAIN_MSG_ELEMENT, variable);
+    setInputParam(PLAIN_MSG_ELEMENT, variable);
   }
   
   public ActionInput getMessagePlainParam() {
@@ -160,11 +223,28 @@ public class EmailAction extends ActionDefinition {
   }
   
   public String getSubject() {
-    return getComponentDefinitionValue(SUBJECT_ELEMENT);
+    // The message could come from a hash map that is named after the "to" input. I believe
+    // this is deprecated functionality.
+    Object subject = getInputValue(TO_ELEMENT);
+    if (subject instanceof HashMap) {
+      subject = ((HashMap)subject).get(EmailAction.SUBJECT_ELEMENT);
+    } else {
+      subject = null;
+    }
+    // End deprecated functionality
+    
+    if (subject == null) {
+      subject = getInputValue(SUBJECT_ELEMENT);
+    }
+    
+    if ((subject != null) && (actionParameterMgr != null)) {
+      subject = actionParameterMgr.replaceParameterReferences(subject.toString());
+    }
+    return subject != null ? subject.toString() : (String)subject;
   }
   
   public void setSubjectParam(IActionVariable variable) {
-    setReferencedVariable(SUBJECT_ELEMENT, variable);
+    setInputParam(SUBJECT_ELEMENT, variable);
   }
   
   public ActionInput getSubjectParam() {
@@ -232,5 +312,44 @@ public class EmailAction extends ActionDefinition {
     }
     
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public EmailAttachment addAttachment(IActionVariable variable) {
+    EmailAttachment[] emailAttachments = getAttachments();
+    for (int i = 0; i < emailAttachments.length; i++) {
+      if (emailAttachments[i].isDeprecatedAttachmentStyle()) {
+        emailAttachments[i].convertToNewAttachmentStyle();
+      }
+    }
+    return new EmailAttachment(this, variable);
+  }
+  
+  public EmailAttachment addAttachment(String name, URI uri, String mimeType) {
+    EmailAttachment[] emailAttachments = getAttachments();
+    for (int i = 0; i < emailAttachments.length; i++) {
+      if (emailAttachments[i].isDeprecatedAttachmentStyle()) {
+        emailAttachments[i].convertToNewAttachmentStyle();
+      }
+    }
+    return new EmailAttachment(this, name, uri, mimeType);
+  }
+  
+  public EmailAttachment[] getAttachments() {
+    Element[] elements = getComponentDefElements(EmailAttachment.ELEMENT_NAME);
+    EmailAttachment[] emailAttachments = new EmailAttachment[elements.length];
+    if (emailAttachments.length != 0) {
+      for (int i = 0; i < elements.length; i++) {
+        emailAttachments[i] = new EmailAttachment(elements[i], actionParameterMgr);
+      }
+    } else {
+      // This else statement handles deprecated functionality. It is here to ensure that old
+      // style email actions still work.
+      if ((getInputValue(EmailAttachment.OLD_ATTACHMENT_ELEMENT) != null) ||
+          (getComponentDefElement(EmailAttachment.OLD_ATTACHMENT_ELEMENT) != null)){
+        emailAttachments = new EmailAttachment[1];
+        emailAttachments[0] = new EmailAttachment(this);
+      }
+    }
+    return emailAttachments;
   }
 }

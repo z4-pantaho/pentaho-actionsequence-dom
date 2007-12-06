@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -26,15 +25,19 @@ public class HelloWorldAction extends ActionDefinition {
     QUOTE_ELEMENT
   };
   
-  public HelloWorldAction(Element actionDefElement) {
-    super(actionDefElement);
+  public HelloWorldAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public HelloWorldAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -43,11 +46,15 @@ public class HelloWorldAction extends ActionDefinition {
   }
   
   public String getQuote() {
-    return getComponentDefinitionValue(QUOTE_ELEMENT);
+    Object quote = getInputValue(QUOTE_ELEMENT);
+    if ((quote != null) && (actionParameterMgr != null)) {
+      quote = actionParameterMgr.replaceParameterReferences(quote.toString());
+    }
+    return quote != null ? quote.toString() : null;
   }
   
   public void setQuoteParam(IActionVariable variable) {
-    setReferencedVariable(QUOTE_ELEMENT, variable);
+    setInputParam(QUOTE_ELEMENT, variable);
   }
   
   public ActionInput getQuoteParam() {

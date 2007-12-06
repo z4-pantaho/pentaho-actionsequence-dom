@@ -3,7 +3,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionVariable;
@@ -51,12 +50,16 @@ public abstract class AbstractChartAction extends ActionDefinition {
     CHART_PAINT_BORDER_ELEMENT  
   };
   
-  public AbstractChartAction(Element actionDefElement) {
-    super(actionDefElement);
+  public AbstractChartAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
   
   public AbstractChartAction(String componentName) {
     super(componentName);
+  }
+  
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
   
   public void setChartData(String value) {
@@ -68,7 +71,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
   
   public void setChartDataParam(IActionVariable variable) {
-    setReferencedVariable(CHART_DATA_ELEMENT, variable);
+    setInputParam(CHART_DATA_ELEMENT, variable);
   }
   
   public ActionInput getChartDataParam() {
@@ -84,7 +87,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
   
   public void setWidthParam(IActionVariable variable) {
-    setReferencedVariable(CHART_WIDTH_ELEMENT, variable);
+    setInputParam(CHART_WIDTH_ELEMENT, variable);
   }
   
   public ActionInput getWidthParam() {
@@ -100,7 +103,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
   
   public void setHeightParam(IActionVariable variable) {
-    setReferencedVariable(CHART_HEIGHT_ELEMENT, variable);
+    setInputParam(CHART_HEIGHT_ELEMENT, variable);
   }
   
   public ActionInput getHeightParam() {
@@ -116,7 +119,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
   
   public void setTitleParam(IActionVariable variable) {
-    setReferencedVariable(CHART_TITLE_ELEMENT, variable);
+    setInputParam(CHART_TITLE_ELEMENT, variable);
   }
   
   public ActionInput getTitleParam() {
@@ -151,7 +154,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
   
   public void setByRowParam(IActionVariable variable) {
-    setReferencedVariable(CHART_BY_ROW_ELEMENT, variable);
+    setInputParam(CHART_BY_ROW_ELEMENT, variable);
   }
   
   public ActionInput getByRowParam() {

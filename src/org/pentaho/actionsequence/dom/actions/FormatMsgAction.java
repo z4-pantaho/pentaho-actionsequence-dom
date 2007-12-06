@@ -15,7 +15,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
@@ -34,8 +33,8 @@ public class FormatMsgAction extends ActionDefinition {
     STRING_FORMAT_ELEMENT
   };
 
-  public FormatMsgAction(Element actionDefElement) {
-    super(actionDefElement);
+  public FormatMsgAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public FormatMsgAction() {
@@ -47,11 +46,11 @@ public class FormatMsgAction extends ActionDefinition {
     setComponentDefinition(FORMAT_MSG_COMMAND, "");//$NON-NLS-1$
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     String outputName = getComponentDefinitionValue(RETURN_NAME_XPATH);
     if ((outputName == null) || (outputName.trim().length() == 0)) {
       outputName = OUTPUT_STRING_ELEMENT;;
@@ -59,9 +58,9 @@ public class FormatMsgAction extends ActionDefinition {
     return new String[]{outputName};
   }
   
-  public boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean accepts = false;
-    if (super.accepts(element)) {
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       accepts = (element.selectNodes(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + FORMAT_MSG_COMMAND).size() == 1)  //$NON-NLS-1$
           && (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + CopyParamAction.COPY_PARAM_COMMAND) == null)  //$NON-NLS-1$
           && (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + PrintParamAction.PRINT_PARAMS_COMMAND) == null)  //$NON-NLS-1$
@@ -83,7 +82,7 @@ public class FormatMsgAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
-    ActionOutput actionOutput = setOutputName(privateName, name, ActionSequenceDocument.STRING_TYPE);
+    ActionOutput actionOutput = setOutputParam(privateName, name, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(RETURN_NAME_XPATH, (String)null);
     } else {
@@ -96,7 +95,7 @@ public class FormatMsgAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
-    return getOutputPublicName(privateName);
+    return getPublicOutputName(privateName);
   }
   
   public ActionOutput getOutputStringParam() {

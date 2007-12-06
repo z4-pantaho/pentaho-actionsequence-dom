@@ -15,7 +15,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
@@ -36,8 +35,8 @@ public class CopyParamAction extends ActionDefinition {
     COPY_FROM_ELEMENT
   };
   
-  public CopyParamAction(Element actionDefElement) {
-    super(actionDefElement);
+  public CopyParamAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public CopyParamAction() {
@@ -50,7 +49,7 @@ public class CopyParamAction extends ActionDefinition {
     setComponentDefinition(COPY_RETURN_XPATH, COPY_TO_ELEMENT);
   }
   
-  public String[] getExpectedInputs() {
+  public String[] getReservedInputNames() {
     String inputName = getComponentDefinitionValue(COPY_FROM_XPATH); 
     if ((inputName == null) || (inputName.trim().length() == 0)) {
       inputName = COPY_FROM_ELEMENT;
@@ -58,7 +57,7 @@ public class CopyParamAction extends ActionDefinition {
     return new String[]{inputName};
   }
   
-  public String[] getExpectedOutputs() {
+  public String[] getReservedOutputNames() {
     String outputName = getComponentDefinitionValue(COPY_RETURN_XPATH);
     if ((outputName == null) || (outputName.trim().length() == 0)) {
       outputName = COPY_TO_ELEMENT;
@@ -66,9 +65,9 @@ public class CopyParamAction extends ActionDefinition {
     return new String[]{outputName};
   }
 
-  public boolean accepts(Element element) {
+  public static boolean accepts(Element element) {
     boolean accepts = false;
-    if (super.accepts(element)) {
+    if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       accepts = (element.selectNodes(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + COPY_PARAM_COMMAND).size() == 1)  //$NON-NLS-1$
           && (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + FormatMsgAction.FORMAT_MSG_COMMAND) == null)  //$NON-NLS-1$
           && (element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + PrintParamAction.PRINT_PARAMS_COMMAND) == null)  //$NON-NLS-1$
@@ -81,7 +80,7 @@ public class CopyParamAction extends ActionDefinition {
     if (!COPY_FROM_ELEMENT.equals(getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH))) {
       setComponentDefinition(CopyParamAction.COPY_FROM_XPATH, COPY_FROM_ELEMENT, false);
     }
-    setReferencedVariable(COPY_FROM_ELEMENT, variable);
+    setInputParam(COPY_FROM_ELEMENT, variable);
     ActionOutput actionOutput = getOutputCopyParam();
     if (actionOutput != null) {
       actionOutput.setType(variable.getType());
@@ -102,7 +101,7 @@ public class CopyParamAction extends ActionDefinition {
       privateName = COPY_TO_ELEMENT;
     }
     ActionInput copyFrom = getCopyFromParam();
-    ActionOutput actionOutput = setOutputName(privateName, name, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
+    ActionOutput actionOutput = setOutputParam(privateName, name, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COPY_RETURN_XPATH, (String)null);
     } else {
@@ -115,7 +114,7 @@ public class CopyParamAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
     }  
-    return getOutputPublicName(privateName);
+    return getPublicOutputName(privateName);
   }
   
   public ActionOutput getOutputCopyParam() {
@@ -164,5 +163,14 @@ public class CopyParamAction extends ActionDefinition {
     }
     
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public Object getValueToCopy() {
+    Object value = null;
+    ActionInput actionInput = getCopyFromParam();
+    if (actionInput != null) {
+      value = actionInput.getValue();
+    }
+    return value;
   }
 }
