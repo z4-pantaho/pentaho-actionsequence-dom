@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -28,15 +27,19 @@ public class JFreeReportGenAction extends ActionDefinition {
     COMPONENT_SETTINGS_ELEMENT
   };
   
-  public JFreeReportGenAction(Element actionDefElement) {
-    super(actionDefElement);
+  public JFreeReportGenAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public JFreeReportGenAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -49,7 +52,7 @@ public class JFreeReportGenAction extends ActionDefinition {
   }
   
   public void setResultSetParam(IActionVariable variable) {
-    setReferencedVariable(RESULT_SET_ELEMENT, variable);
+    setInputParam(RESULT_SET_ELEMENT, variable);
   }
   
   public ActionInput getResultSetParam() {
@@ -65,7 +68,7 @@ public class JFreeReportGenAction extends ActionDefinition {
   }
   
   public void setComponentSettingsParam(IActionVariable variable) {
-    setReferencedVariable(COMPONENT_SETTINGS_ELEMENT, variable);
+    setInputParam(COMPONENT_SETTINGS_ELEMENT, variable);
   }
   
   public ActionInput getComponentSettingsParam() {

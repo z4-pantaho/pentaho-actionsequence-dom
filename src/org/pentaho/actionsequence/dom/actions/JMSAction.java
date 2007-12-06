@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionDefinition;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.IActionVariable;
 
@@ -32,15 +31,19 @@ public class JMSAction extends ActionDefinition {
     QUEUE_NAME_ELEMENT 
   };
 
-  public JMSAction(Element actionDefElement) {
-    super(actionDefElement);
+  public JMSAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
+    super(actionDefElement, actionInputProvider);
   }
 
   public JMSAction() {
     super(COMPONENT_NAME);
   }
   
-  public String[] getExpectedInputs() {
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
+  public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
@@ -53,7 +56,7 @@ public class JMSAction extends ActionDefinition {
   }
   
   public void setSolutionNameParam(IActionVariable variable) {
-    setReferencedVariable(SOLUTION_NAME_ELEMENT, variable);
+    setInputParam(SOLUTION_NAME_ELEMENT, variable);
   }
   
   public ActionInput getSolutionNameParam() {
@@ -69,7 +72,7 @@ public class JMSAction extends ActionDefinition {
   }
   
   public void setActionPathParam(IActionVariable variable) {
-    setReferencedVariable(ACTION_PATH_ELEMENT, variable);
+    setInputParam(ACTION_PATH_ELEMENT, variable);
   }
   
   public ActionInput getActionPathParam() {
@@ -85,7 +88,7 @@ public class JMSAction extends ActionDefinition {
   }
   
   public void setActionNameParam(IActionVariable variable) {
-    setReferencedVariable(ACTION_NAME_ELEMENT, variable);
+    setInputParam(ACTION_NAME_ELEMENT, variable);
   }
   
   public ActionInput getActionNameParam() {
@@ -101,7 +104,7 @@ public class JMSAction extends ActionDefinition {
   }
   
   public void setJmsQueueNameParam(IActionVariable variable) {
-    setReferencedVariable(QUEUE_NAME_ELEMENT, variable);
+    setInputParam(QUEUE_NAME_ELEMENT, variable);
   }
   
   public ActionInput getJmsQueueNameParam() {
