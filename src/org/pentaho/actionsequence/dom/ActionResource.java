@@ -13,7 +13,7 @@
 package org.pentaho.actionsequence.dom;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.IOException;
 import java.net.URI;
 
 import javax.activation.DataSource;
@@ -236,5 +236,13 @@ public class ActionResource extends ActionParam implements IActionResource {
       dataSource = actionInputProvider.getDataSource(this);
     }
     return dataSource;
+  }
+  
+  public String getStringValue() throws IOException {
+    String stringValue = null;
+    if (actionInputProvider != null) {
+      stringValue = actionInputProvider.getString(this);
+    }
+    return stringValue;
   }
 }

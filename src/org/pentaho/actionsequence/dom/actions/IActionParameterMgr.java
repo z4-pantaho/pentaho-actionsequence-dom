@@ -1,6 +1,7 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.activation.DataSource;
 
@@ -14,4 +15,5 @@ public interface IActionParameterMgr {
   public DataSource getDataSource(ActionResource actionResource) throws FileNotFoundException;
   public DataSource getDataSource(ActionInput actionInput);
   public void setOutputValue(ActionOutput actionOutput, Object value);
+  public String getString(ActionResource actionResource) throws IOException;
 }
