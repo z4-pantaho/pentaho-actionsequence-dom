@@ -1058,21 +1058,21 @@ public class ActionSequenceDocument {
     return (ActionDefinition[])getAncestorExecutables(controlStatement, false).toArray(new ActionDefinition[0]);
   }
   
-  public IActionVariable[] getAvailInputVariables(ActionDefinition actionDefinition, String[] types) {
+  public IActionInputVariable[] getAvailInputVariables(ActionDefinition actionDefinition, String[] types) {
     List availParams = new ArrayList();
     availParams.addAll(Arrays.asList(getInputs(types)));
     ActionDefinition[] precedingActionDefs = getPrecedingActionDefinitions(actionDefinition);
     for (int i = 0; i < precedingActionDefs.length; i++) {
       availParams.addAll(Arrays.asList(precedingActionDefs[i].getOutputParams(types)));
     }
-    return (IActionVariable[])availParams.toArray(new IActionVariable[0]);
+    return (IActionInputVariable[])availParams.toArray(new IActionInputVariable[0]);
   }
   
-  public IActionVariable[] getAvailInputVariables(ActionDefinition actionDefinition, String type) {
+  public IActionInputVariable[] getAvailInputVariables(ActionDefinition actionDefinition, String type) {
     return getAvailInputVariables(actionDefinition, new String[]{type});
   }
   
-  public IActionVariable[] getAvailInputVariables(ActionControlStatement controlStatement) {
+  public IActionInputVariable[] getAvailInputVariables(ActionControlStatement controlStatement) {
     List availParams = new ArrayList();
     if (controlStatement instanceof ActionLoop) {
       String[] types = new String[] {ActionSequenceDocument.PROPERTY_MAP_LIST_TYPE, ActionSequenceDocument.STRING_LIST_TYPE, ActionSequenceDocument.RESULTSET_TYPE};
@@ -1098,7 +1098,7 @@ public class ActionSequenceDocument {
         }
       }
     }
-    return (IActionVariable[])availParams.toArray(new IActionVariable[0]);
+    return (IActionInputVariable[])availParams.toArray(new IActionInputVariable[0]);
   }
   
   public IActionSequenceElement[] getReferencesTo(ActionSequenceInput actionSequenceInput) {
@@ -1273,8 +1273,8 @@ public class ActionSequenceDocument {
     actionSequenceDocument.getRootLoop().add(sqlQueryAction);
     
     // Set up the sql input parameter.
-    sqlQueryAction.setJndi("SampleData");
-    sqlQueryAction.setQuery("select * from customers");
+    sqlQueryAction.setJndi(new ActionInputConstant("SampleData"));
+    sqlQueryAction.setQuery(new ActionInputConstant("select * from customers"));
     
     // Set up the name of the output result set.
     sqlQueryAction.setOutputResultSetName("queryResults");
@@ -1305,8 +1305,8 @@ public class ActionSequenceDocument {
     actionSequenceDocument.getRootLoop().add(sqlQueryAction);
     
     // Set up the sql query actions to use the action sequence inputs.
-    sqlQueryAction.setJndiParam(jndiInput);
-    sqlQueryAction.setQueryParam(queryInput);
+    sqlQueryAction.setJndi(jndiInput);
+    sqlQueryAction.setQuery(queryInput);
     sqlQueryAction.setOutputResultSetName("queryResults");
     
     // Set the query results as an output of the action sequence.

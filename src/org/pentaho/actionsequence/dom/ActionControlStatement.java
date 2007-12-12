@@ -343,7 +343,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * @param types the desired input type
    * @return the list of available inputs
    */
-  public IActionVariable[] getAvailInputVariables() {
+  public IActionInputVariable[] getAvailInputVariables() {
     return getDocument().getAvailInputVariables(this);
   }
   

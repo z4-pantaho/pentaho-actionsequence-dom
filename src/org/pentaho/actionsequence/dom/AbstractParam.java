@@ -114,4 +114,8 @@ public abstract class AbstractParam implements IActionSequenceElement {
     }
     return doc;
   }
+  
+  public IActionParameterMgr getParameterMgr() {
+    return actionInputProvider;
+  }
 }

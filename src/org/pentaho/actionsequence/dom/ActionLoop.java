@@ -67,7 +67,7 @@ public class ActionLoop extends ActionControlStatement {
     if (loopOn.trim().length() == 0) {
       errors.add("Missing loop variable.");
     } else {
-      IActionVariable[] actionVariables = getDocument().getAvailInputVariables(this);
+      IActionInputVariable[] actionVariables = getDocument().getAvailInputVariables(this);
       boolean isValid = false;
       for (int i = 0; (i < actionVariables.length) && !isValid; i++) {
         isValid = actionVariables[i].getVariableName().equals(loopOn);

@@ -20,7 +20,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionOutput extends ActionParam implements IActionVariable {
+public class ActionOutput extends ActionParam implements IActionInputVariable {
 
   public ActionOutput(Element ioElement, IActionParameterMgr actionInputProvider) {
     super(ioElement, actionInputProvider);
@@ -42,5 +42,41 @@ public class ActionOutput extends ActionParam implements IActionVariable {
     if (actionInputProvider != null) {
       actionInputProvider.setOutputValue(this, value);
     }
+  }
+
+  public Object getValue() {
+    throw new UnsupportedOperationException();
+  }
+  
+  public Boolean getBooleanValue() {
+    throw new UnsupportedOperationException();
+  }
+
+  public Integer getIntValue() {
+    throw new UnsupportedOperationException();
+  }
+
+  public String getStringValue() {
+    throw new UnsupportedOperationException();
+  }
+
+  public String getStringValue(boolean replaceParamReferences) {
+    throw new UnsupportedOperationException();
+  }
+
+  public boolean getBooleanValue(boolean defaultValue) {
+    throw new UnsupportedOperationException();
+  }
+
+  public int getIntValue(int defaultValue) {
+    throw new UnsupportedOperationException();
+  }
+
+  public String getStringValue(boolean replaceParamReferences, String defaultValue) {
+    throw new UnsupportedOperationException();
+  }
+
+  public String getStringValue(String defaultValue) {
+    throw new UnsupportedOperationException();
   }
 }

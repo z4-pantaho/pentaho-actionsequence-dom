@@ -32,7 +32,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceInput extends AbstractParam implements IActionVariable {
+public class ActionSequenceInput extends AbstractParam implements IActionInputVariable {
 
   public static final int REQUEST_INPUT_SOURCE_ID = 1;
   public static final int SESSION_INPUT_SOURCE_ID = 2;
@@ -412,4 +412,46 @@ public class ActionSequenceInput extends AbstractParam implements IActionVariabl
     return getName();
   }
 
+  public Object getValue() {
+    throw new UnsupportedOperationException();
+  }
+  
+  public Boolean getBooleanValue() {
+    throw new UnsupportedOperationException();
+  }
+
+
+  public Integer getIntValue() {
+    throw new UnsupportedOperationException();
+  }
+
+
+  public String getStringValue() {
+    throw new UnsupportedOperationException();
+  }
+
+
+  public String getStringValue(boolean replaceParamReferences) {
+    throw new UnsupportedOperationException();
+  }
+
+
+  public boolean getBooleanValue(boolean defaultValue) {
+    throw new UnsupportedOperationException();
+  }
+
+
+  public int getIntValue(int defaultValue) {
+    throw new UnsupportedOperationException();
+  }
+
+
+  public String getStringValue(boolean replaceParamReferences, String defaultValue) {
+    throw new UnsupportedOperationException();
+  }
+
+
+  public String getStringValue(String defaultValue) {
+    throw new UnsupportedOperationException();
+  }
 }
