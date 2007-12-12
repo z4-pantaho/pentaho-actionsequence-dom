@@ -2,9 +2,11 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class MQLAction extends AbstractRelationalDbAction {
   public static final String QUERY_RESULT_OUTPUT_NAME = "query-result"; //$NON-NLS-1$
@@ -59,23 +61,23 @@ public class MQLAction extends AbstractRelationalDbAction {
   }
 
   
-  public String getQuery() {
-    String query = super.getQuery();
+  public IActionInput getQuery() {
+    IActionInput query = super.getQuery();
     
     // The following condition covers an alternative way to store the mql
     // within the action definition. This class does not use this method when
     // writing to the dom.
-    if (query == null) {
+    if (query.getValue() == null) {
       Element element = getComponentDefElement(MQL_ELEMENT);
       if (element != null) {
-        query = element.asXML();
+        query = new ActionInputConstant(element.asXML(), actionParameterMgr);
       }
     }
     
     return query;
   }
 
-  public void setQuery(String value) {
+  public void setQuery(IActionInput value) {
     super.setQuery(value);
     
     // The following removes an alternative way to store the mql
@@ -87,59 +89,23 @@ public class MQLAction extends AbstractRelationalDbAction {
     }
   }
 
-  public void setQueryParam(IActionVariable variable) {
-    super.setQueryParam(variable);
-    
-    // The following removes an alternative way to store the mql
-    // within the action definition. This class does not use this method when
-    // writing to the dom.
-    Element element = getComponentDefElement(MQL_ELEMENT);
-    if (element != null) {
-      element.detach();
-    }
+  public void setDisableDistinct(IActionInput value) {
+    setActionInputValue(DISABLE_DISTINCT_ELEMENT, value);
   }
   
-  public void setDisableDistinct(boolean value) {
-    setInputValue(DISABLE_DISTINCT_ELEMENT, Boolean.toString(value)); //$NON-NLS-1$ //$NON-NLS-2$
+  public IActionInput getDisableDistinct() {
+    return getActionInputValue(DISABLE_DISTINCT_ELEMENT);
   }
   
-  public boolean getDisableDistinct() {
-    Object disableDistinct = getInputValue(DISABLE_DISTINCT_ELEMENT);
-    if ((disableDistinct != null) && (actionParameterMgr != null)) {
-      disableDistinct = actionParameterMgr.replaceParameterReferences(disableDistinct.toString());
-    }
-    return disableDistinct != null ? Boolean.parseBoolean(disableDistinct.toString()) : false;
-  }
-  
-  public void setDisableDistinctParam(IActionVariable variable) {
-    setInputParam(DISABLE_DISTINCT_ELEMENT, variable);
-  }
-  
-  public ActionInput getDisableDistinctParam() {
-    return getInputParam(DISABLE_DISTINCT_ELEMENT);
-  }
-  
-  public void setForceDbDialect(boolean value) {
-    setInputValue(FORCE_DB_DIALECT_ELEMENT, Boolean.toString(value)); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setForceDbDialect(IActionInput value) {
+    setActionInputValue(FORCE_DB_DIALECT_ELEMENT, value);
   }
   
   // forces the use of the metadata.xmi's dialect, even if the actual 
   // connection is of a different database.  this may be necessary if 
   // there are issues with detecting the correct database.  The value
   // defaults to false if not specified.
-  public boolean getForceDbDialect() {
-    Object disableDistinct = getInputValue(FORCE_DB_DIALECT_ELEMENT);
-    if ((disableDistinct != null) && (actionParameterMgr != null)) {
-      disableDistinct = actionParameterMgr.replaceParameterReferences(disableDistinct.toString());
-    }
-    return disableDistinct != null ? Boolean.parseBoolean(disableDistinct.toString()) : false;
-  }
-  
-  public void setForceDbDialectParam(IActionVariable variable) {
-    setInputParam(FORCE_DB_DIALECT_ELEMENT, variable);
-  }
-  
-  public ActionInput getForceDbDialectParam() {
-    return getInputParam(FORCE_DB_DIALECT_ELEMENT);
+  public IActionInput getForceDbDialect() {
+    return getActionInputValue(FORCE_DB_DIALECT_ELEMENT);
   }
 }

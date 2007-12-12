@@ -15,7 +15,7 @@ package org.pentaho.actionsequence.dom.actions;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class PivotViewAction extends ActionDefinition {
 
@@ -77,7 +77,7 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(MODE_ELEMENT);
   }
   
-  public void setModeParam(IActionVariable variable) {
+  public void setModeParam(IActionInputVariable variable) {
     setInputParam(MODE_ELEMENT, variable);
   }
   
@@ -93,7 +93,7 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(VIEWER_ELEMENT);
   }
   
-  public void setViewerParam(IActionVariable variable) {
+  public void setViewerParam(IActionInputVariable variable) {
     setInputParam(VIEWER_ELEMENT, variable);
   }
   
@@ -109,7 +109,7 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(MODEL_ELEMENT);
   }
   
-  public void setModelParam(IActionVariable variable) {
+  public void setModelParam(IActionInputVariable variable) {
     setInputParam(MODEL_ELEMENT, variable);
   }
   
@@ -125,7 +125,7 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(JNDI_ELEMENT);
   }
   
-  public void setJndiParam(IActionVariable variable) {
+  public void setJndiParam(IActionInputVariable variable) {
     setInputParam(JNDI_ELEMENT, variable);
   }
   
@@ -141,7 +141,7 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(ROLE_ELEMENT);
   }
   
-  public void setRoleParam(IActionVariable variable) {
+  public void setRoleParam(IActionInputVariable variable) {
     setInputParam(ROLE_ELEMENT, variable);
   }
   
@@ -157,7 +157,7 @@ public class PivotViewAction extends ActionDefinition {
     return getComponentDefinitionValue(QUERY_ELEMENT);
   }
   
-  public void setQueryParam(IActionVariable variable) {
+  public void setQueryParam(IActionInputVariable variable) {
     setInputParam(QUERY_ELEMENT, variable);
   }
   

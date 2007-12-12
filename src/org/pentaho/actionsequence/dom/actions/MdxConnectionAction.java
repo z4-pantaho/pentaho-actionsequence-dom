@@ -21,7 +21,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class MdxConnectionAction extends ActionDefinition {
 
@@ -97,7 +97,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(LOCATION_ELEMENT);
   }
   
-  public void setLocationParam(IActionVariable variable) {
+  public void setLocationParam(IActionInputVariable variable) {
     setInputParam(LOCATION_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -120,7 +120,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(USER_ID_ELEMENT);
   }
   
-  public void setUserIdParam(IActionVariable variable) {
+  public void setUserIdParam(IActionInputVariable variable) {
     setInputParam(USER_ID_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -144,7 +144,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(DRIVER_ELEMENT);
   }
   
-  public void setDriverParam(IActionVariable variable) {
+  public void setDriverParam(IActionInputVariable variable) {
     setInputParam(DRIVER_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -170,7 +170,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(PASSWORD_ELEMENT);
   }
   
-  public void setPasswordParam(IActionVariable variable) {
+  public void setPasswordParam(IActionInputVariable variable) {
     setInputParam(PASSWORD_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -199,7 +199,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(MDX_CONNECTION_ELEMENT);
   }
   
-  public void setMdxConnectionStringParam(IActionVariable variable) {
+  public void setMdxConnectionStringParam(IActionInputVariable variable) {
     setInputParam(MDX_CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setJndi(null);
@@ -224,7 +224,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(ROLE_ELEMENT);
   }
   
-  public void setRoleParam(IActionVariable variable) {
+  public void setRoleParam(IActionInputVariable variable) {
     setInputParam(ROLE_ELEMENT, variable);
   }
   
@@ -244,7 +244,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(CONNECTION_ELEMENT);
   }
   
-  public void setConnectionParam(IActionVariable variable) {
+  public void setConnectionParam(IActionInputVariable variable) {
     setInputParam(CONNECTION_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
@@ -271,7 +271,7 @@ public class MdxConnectionAction extends ActionDefinition {
     return getComponentDefinitionValue(JNDI_ELEMENT);
   }
   
-  public void setJndiParam(IActionVariable variable) {
+  public void setJndiParam(IActionInputVariable variable) {
     setInputParam(JNDI_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);

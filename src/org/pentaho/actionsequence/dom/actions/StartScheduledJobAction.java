@@ -15,7 +15,7 @@ package org.pentaho.actionsequence.dom.actions;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class StartScheduledJobAction extends AbstractJobSchedulerAction{
 
@@ -92,7 +92,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(CRON_STRING_ELEMENT);
   }
   
-  public void setCronStringParam(IActionVariable variable) {
+  public void setCronStringParam(IActionInputVariable variable) {
     setInputParam(CRON_STRING_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(CRON_TRIGGER);
@@ -115,7 +115,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(SOLUTION_ELEMENT);
   }
   
-  public void setSolutionParam(IActionVariable variable) {
+  public void setSolutionParam(IActionInputVariable variable) {
     setInputParam(SOLUTION_ELEMENT, variable);
   }
   
@@ -131,7 +131,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(PATH_ELEMENT);
   }
   
-  public void setPathParam(IActionVariable variable) {
+  public void setPathParam(IActionInputVariable variable) {
     setInputParam(PATH_ELEMENT, variable);
   }
   
@@ -147,7 +147,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(ACTION_ELEMENT);
   }
   
-  public void setActionParam(IActionVariable variable) {
+  public void setActionParam(IActionInputVariable variable) {
     setInputParam(ACTION_ELEMENT, variable);
   }
   
@@ -163,7 +163,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(TRIGGER_NAME_ELEMENT);
   }
   
-  public void setTriggerNameParam(IActionVariable variable) {
+  public void setTriggerNameParam(IActionInputVariable variable) {
     setInputParam(TRIGGER_NAME_ELEMENT, variable);
   }
   
@@ -185,7 +185,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(REPEAT_COUNT_ELEMENT);
   }
   
-  public void setRepeatCountParam(IActionVariable variable) {
+  public void setRepeatCountParam(IActionInputVariable variable) {
     setInputParam(REPEAT_COUNT_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(SIMPLE_TRIGGER);
@@ -213,7 +213,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction{
     return getComponentDefinitionValue(REPEAT_INTERVAL_ELEMENT);
   }
   
-  public void setRepeatIntervalParam(IActionVariable variable) {
+  public void setRepeatIntervalParam(IActionInputVariable variable) {
     setInputParam(REPEAT_INTERVAL_ELEMENT, variable);
     if (variable != null) {
       setTriggerType(SIMPLE_TRIGGER);

@@ -14,7 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class ReceiptAuditAction extends ActionDefinition {
 
@@ -51,7 +51,7 @@ public class ReceiptAuditAction extends ActionDefinition {
     return getComponentDefinitionValue(MESSAGE_ELEMENT);
   }
   
-  public void setMessageParam(IActionVariable variable) {
+  public void setMessageParam(IActionInputVariable variable) {
     setInputParam(MESSAGE_ELEMENT, variable);
   }
   
@@ -67,7 +67,7 @@ public class ReceiptAuditAction extends ActionDefinition {
     return getComponentDefinitionValue(TIMESTAMP_ELEMENT);
   }
   
-  public void setDtParam(IActionVariable variable) {
+  public void setDtParam(IActionInputVariable variable) {
     setInputParam(TIMESTAMP_ELEMENT, variable);
   }
   

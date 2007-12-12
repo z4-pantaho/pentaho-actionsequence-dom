@@ -16,11 +16,13 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SqlConnectionAction extends ActionDefinition {
 
@@ -55,7 +57,7 @@ public class SqlConnectionAction extends ActionDefinition {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setJndi(""); //$NON-NLS-1$
+    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
     setOutputConnectionName(DEFAULT_CONNECTION_NAME);
   }
   
@@ -77,97 +79,55 @@ public class SqlConnectionAction extends ActionDefinition {
     return new String[]{PREPARED_COMPONENT_ELEMENT};
   }
   
-  public void setDbUrl(String value) {
-    setInputValue(CONNECTION_ELEMENT, value);
-    if (value != null) {
+  public void setDbUrl(IActionInput value) {
+    setActionInputValue(CONNECTION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public String getDbUrl() {
-    return getComponentDefinitionValue(CONNECTION_ELEMENT);
+  public IActionInput getDbUrl() {
+    return getActionInputValue(CONNECTION_ELEMENT);
   }
   
-  public void setDbUrlParam(IActionVariable variable) {
-    setInputParam(CONNECTION_ELEMENT, variable);
-    if (variable != null) {
+  
+  public void setUserId(IActionInput value) {
+    setActionInputValue(USER_ID_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public ActionInput getDbUrlParam() {
-    return getInputParam(CONNECTION_ELEMENT);
+  public IActionInput getUserId() {
+    return getActionInputValue(USER_ID_ELEMENT);
   }
   
-  public void setUserId(String value) {
-    setInputValue(USER_ID_ELEMENT, value);
-    if (value != null) {
+  
+  public void setDriver(IActionInput value) {
+    setActionInputValue(DRIVER_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public String getUserId() {
-    return getComponentDefinitionValue(USER_ID_ELEMENT);
+  public IActionInput getDriver() {
+    return getActionInputValue(DRIVER_ELEMENT);
   }
   
-  public void setUserIdParam(IActionVariable variable) {
-    setInputParam(USER_ID_ELEMENT, variable);
-    if (variable != null) {
+  public void setPassword(IActionInput value) {
+    setActionInputValue(PASSWORD_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public ActionInput getUserIdParam() {
-    return getInputParam(USER_ID_ELEMENT);
+  public IActionInput getPassword() {
+    return getActionInputValue(PASSWORD_ELEMENT);
   }
   
-  public void setDriver(String value) {
-    setInputValue(DRIVER_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-    }
-  }
-  
-  public String getDriver() {
-    return getComponentDefinitionValue(DRIVER_ELEMENT);
-  }
-  
-  public void setDriverParam(IActionVariable variable) {
-    setInputParam(DRIVER_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-    }
-  }
-  
-  public ActionInput getDriverParam() {
-    return getInputParam(DRIVER_ELEMENT);
-  }
-  
-  public void setPassword(String value) {
-    setInputValue(PASSWORD_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-    }
-  }
-  
-  public String getPassword() {
-    return getComponentDefinitionValue(PASSWORD_ELEMENT);
-  }
-  
-  public void setPasswordParam(IActionVariable variable) {
-    setInputParam(PASSWORD_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-    }
-  }
-  
-  public ActionInput getPasswordParam() {
-    return getInputParam(PASSWORD_ELEMENT);
-  }
-  
-  public void setJndi(String value) {
-    setInputValue(JNDI_ELEMENT, value);
-    if (value != null) {
+  public void setJndi(IActionInput value) {
+    setActionInputValue(JNDI_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setDriver(null);
       setDbUrl(null);
       setUserId(null);
@@ -175,23 +135,10 @@ public class SqlConnectionAction extends ActionDefinition {
     }
   }
   
-  public String getJndi() {
-    return getComponentDefinitionValue(JNDI_ELEMENT);
+  public IActionInput getJndi() {
+    return getActionInputValue(JNDI_ELEMENT);
   }
   
-  public void setJndiParam(IActionVariable variable) {
-    setInputParam(JNDI_ELEMENT, variable);
-    if (variable != null) {
-      setDriver(null);
-      setDbUrl(null);
-      setUserId(null);
-      setPassword(null);
-    }
-  }
-  
-  public ActionInput getJndiParam() {
-    return getInputParam(JNDI_ELEMENT);
-  }
   
   public void setOutputConnectionName(String name) {
     setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.SQL_CONNECTION_TYPE);

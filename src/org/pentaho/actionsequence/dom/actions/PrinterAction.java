@@ -17,7 +17,7 @@ import java.net.URI;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionResource;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class PrinterAction extends ActionDefinition {
 
@@ -65,7 +65,7 @@ public class PrinterAction extends ActionDefinition {
     return getComponentDefinitionValue(FILE_ELEMENT);
   }
   
-  public void setPrintfileParam(IActionVariable variable) {
+  public void setPrintfileParam(IActionInputVariable variable) {
     setInputParam(FILE_ELEMENT, variable);
   }
   
@@ -81,7 +81,7 @@ public class PrinterAction extends ActionDefinition {
     return getComponentDefinitionValue(COPIES_ELEMENT);
   }
   
-  public void setCopiesParam(IActionVariable variable) {
+  public void setCopiesParam(IActionInputVariable variable) {
     setInputParam(COPIES_ELEMENT, variable);
   }
   
@@ -97,7 +97,7 @@ public class PrinterAction extends ActionDefinition {
     return getComponentDefinitionValue(PRINTER_ELEMENT);
   }
   
-  public void setPrinterNameParam(IActionVariable variable) {
+  public void setPrinterNameParam(IActionInputVariable variable) {
     setInputParam(PRINTER_ELEMENT, variable);
   }
   

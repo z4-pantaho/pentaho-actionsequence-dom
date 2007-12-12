@@ -14,7 +14,8 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class HelloWorldAction extends ActionDefinition {
 
@@ -41,23 +42,12 @@ public class HelloWorldAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setQuote(String quote) {
-    setInputValue(QUOTE_ELEMENT, quote);
+  public void setQuote(IActionInput value) {
+    setActionInputValue(QUOTE_ELEMENT, value);
   }
   
-  public String getQuote() {
-    Object quote = getInputValue(QUOTE_ELEMENT);
-    if ((quote != null) && (actionParameterMgr != null)) {
-      quote = actionParameterMgr.replaceParameterReferences(quote.toString());
-    }
-    return quote != null ? quote.toString() : null;
+  public IActionInput getQuote() {
+    return getActionInputValue(QUOTE_ELEMENT);
   }
   
-  public void setQuoteParam(IActionVariable variable) {
-    setInputParam(QUOTE_ELEMENT, variable);
-  }
-  
-  public ActionInput getQuoteParam() {
-    return getInputParam(QUOTE_ELEMENT);
-  }
 }

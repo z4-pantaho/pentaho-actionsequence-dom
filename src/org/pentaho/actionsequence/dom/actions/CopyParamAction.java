@@ -19,7 +19,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class CopyParamAction extends ActionDefinition {
 
@@ -76,7 +76,7 @@ public class CopyParamAction extends ActionDefinition {
     return accepts;
   }
   
-  public void setCopyFromParam(IActionVariable variable) {
+  public void setCopyFromParam(IActionInputVariable variable) {
     if (!COPY_FROM_ELEMENT.equals(getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH))) {
       setComponentDefinition(CopyParamAction.COPY_FROM_XPATH, COPY_FROM_ELEMENT, false);
     }

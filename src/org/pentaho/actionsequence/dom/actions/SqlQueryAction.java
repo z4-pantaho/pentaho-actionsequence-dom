@@ -15,6 +15,7 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
@@ -56,10 +57,10 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setJndi(""); //$NON-NLS-1$
-    setQuery(""); //$NON-NLS-1$
+    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
+    setQuery(new ActionInputConstant("")); //$NON-NLS-1$
     setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
-    setLive(true);
+    setLive(new ActionInputConstant(true));
   }
   
   public String[] getReservedInputNames() {

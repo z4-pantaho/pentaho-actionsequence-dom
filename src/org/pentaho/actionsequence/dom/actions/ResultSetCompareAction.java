@@ -16,7 +16,7 @@ import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class ResultSetCompareAction extends ActionDefinition {
 
@@ -76,7 +76,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     return getComponentDefinitionValue(COMPARE_COLUMN_ELEMENT);
   }
   
-  public void setCompareColumnParam(IActionVariable variable) {
+  public void setCompareColumnParam(IActionInputVariable variable) {
     setInputParam(COMPARE_COLUMN_ELEMENT, variable);
   }
   
@@ -84,7 +84,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     return getInputParam(COMPARE_COLUMN_ELEMENT);
   }
   
-  public void setResultSetFromParam(IActionVariable variable) {
+  public void setResultSetFromParam(IActionInputVariable variable) {
     setInputParam(COMPARE_FROM_ELEMENT, variable);
   }
   
@@ -92,7 +92,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     return getInputParam(COMPARE_FROM_ELEMENT);
   }
   
-  public void setResultSetToParam(IActionVariable variable) {
+  public void setResultSetToParam(IActionInputVariable variable) {
     setInputParam(COMPARE_TO_ELEMENT, variable);
   }
   
@@ -109,7 +109,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setOutputMismatchesParam(IActionVariable variable) {
+  public void setOutputMismatchesParam(IActionInputVariable variable) {
     setInputParam(OUTPUT_MISMATCHES_ELEMENT, variable);
   }
   
@@ -126,7 +126,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setStopOnErrorParam(IActionVariable variable) {
+  public void setStopOnErrorParam(IActionInputVariable variable) {
     setInputParam(STOP_ON_ERROR_ELEMENT, variable);
   }
   

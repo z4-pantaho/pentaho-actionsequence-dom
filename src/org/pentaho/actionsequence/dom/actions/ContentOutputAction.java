@@ -19,7 +19,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class ContentOutputAction extends ActionDefinition {
 
@@ -56,7 +56,7 @@ public class ContentOutputAction extends ActionDefinition {
     return getComponentDefinitionValue(MIME_TYPE_ELEMENT);
   }
   
-  public void setMimeTypeParam(IActionVariable variable) {
+  public void setMimeTypeParam(IActionInputVariable variable) {
     setInputParam(MIME_TYPE_ELEMENT, variable);
   }
   
@@ -64,7 +64,7 @@ public class ContentOutputAction extends ActionDefinition {
     return getInputParam(MIME_TYPE_ELEMENT);
   }
   
-  public void setInputParam(IActionVariable variable) {
+  public void setInputParam(IActionInputVariable variable) {
     setInputParam(CONTENT_INPUT_ELEMENT, variable);
   }
   

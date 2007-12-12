@@ -19,7 +19,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class TemplateMsgAction extends ActionDefinition {
 
@@ -79,7 +79,7 @@ public class TemplateMsgAction extends ActionDefinition {
     return getComponentDefinitionValue(TEMPLATE_ELEMENT);
   }
   
-  public void setTemplateParam(IActionVariable variable) {
+  public void setTemplateParam(IActionInputVariable variable) {
     setInputParam(TEMPLATE_ELEMENT, variable);
   }
   

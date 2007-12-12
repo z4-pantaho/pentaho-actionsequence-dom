@@ -22,14 +22,43 @@ import javax.activation.DataSource;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class JFreeReportAction extends ActionDefinition {
 
+  public class YieldRateInput extends ActionInput {
+    
+    YieldRateInput(Element element, IActionParameterMgr actionParameterMgr) {
+      super(element, actionParameterMgr);
+    }
+
+    public Integer getIntValue() {
+      Integer intValue = null;
+      Object value = getValue();
+      if (value != null) {
+        if (value instanceof Number) {
+          Number n = (Number) value;
+          if (n.intValue() > 0) {
+            intValue = n.intValue();
+          }
+        } else if (value != null) {
+          try {
+            intValue = Integer.parseInt(value.toString());
+          } catch (Exception ex) {
+            //Do nothing.
+          }
+        }
+      }
+      return intValue;
+    }
+  }
+  
   public class StaticReportConfigItem {
     Element configurationElement;
     
@@ -91,7 +120,7 @@ public class JFreeReportAction extends ActionDefinition {
     public void setDataClass(String className) {
       setInputValue(JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT, className);
       if (className != null) {
-        setDataParam(null);
+        setData(null);
         setDataComponent(null);
         
         // The following elements are deprecated within this component. Old style action sequences
@@ -107,17 +136,17 @@ public class JFreeReportAction extends ActionDefinition {
     }
     
     public String getDataClass() {
-      Object className = getInputValue(JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT);
+      Object className = getActionInputValue(JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT).getValue();
       if ((className != null) && (actionParameterMgr != null)) {
         className = actionParameterMgr.replaceParameterReferences(className.toString());
       }
       return className != null ? className.toString() : (String)className;
     }
     
-    public void setDataClassParam(IActionVariable variable) {
+    public void setDataClassParam(IActionInputVariable variable) {
       setInputParam(JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT, variable);
       if (variable != null) {
-        setDataParam(null);
+        setData(null);
         setDataComponent(null);
         
         // The following elements are deprecated within this component. Old style action sequences
@@ -140,7 +169,7 @@ public class JFreeReportAction extends ActionDefinition {
     public ActionResource setJar(URI uri) {
       ActionResource actionResource = setResourceUri(JFreeReportAction.REPORT_DATA_JAR_ELEMENT, uri, "application/java-archive");
       if (uri != null) {
-        setDataParam(null);
+        setData(null);
         setDataComponent(null);
         
         // The following elements are deprecated within this component. Old style action sequences
@@ -173,26 +202,26 @@ public class JFreeReportAction extends ActionDefinition {
           setComponentName("JFreeReportComponent");
         }
         setReportDefinition(null, null);
-        setReportDefinitionParam(null);
+        setReportDefinition(null);
       }
     }
     
     public String getReportLocation() {
-      Object location = getInputValue(REPORT_LOC_IN_JAR_ELEMENT);
+      Object location = getActionInputValue(REPORT_LOC_IN_JAR_ELEMENT).getValue();
       if ((location != null) && (actionParameterMgr != null)) {
         location = actionParameterMgr.replaceParameterReferences(location.toString());
       }
       return location != null ? location.toString() : (String)location;
     }
     
-    public void setReportLocationParam(IActionVariable variable) {
+    public void setReportLocationParam(IActionInputVariable variable) {
       setInputParam(REPORT_LOC_IN_JAR_ELEMENT, variable);
       if (variable != null) {
         if (!getComponentName().endsWith("JFreeReportComponent")) {
           setComponentName("JFreeReportComponent");
         }
         setReportDefinition(null, null);
-        setReportDefinitionParam(null);
+        setReportDefinition(null);
       }
     }
     
@@ -208,7 +237,7 @@ public class JFreeReportAction extends ActionDefinition {
           setComponentName("JFreeReportComponent");
         }
         setReportDefinition(null, null);
-        setReportDefinitionParam(null);
+        setReportDefinition(null);
      }
       return actionResource;
     }
@@ -325,11 +354,11 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public void setConnection(String value) {
-    setInputValue(CONNECTION_ELEMENT, value);
-    if (value != null) {
+  public void setConnection(IActionInput value) {
+    setActionInputValue(CONNECTION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
-      setDataParam(null);
+      setData(null);
       setDataComponent(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
@@ -339,22 +368,19 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public String getConnection() {
-    Object connection = getInputValue(CONNECTION_ELEMENT);
-    if ((connection != null) && (actionParameterMgr != null)) {
-      connection = actionParameterMgr.replaceParameterReferences(connection.toString());
-    }
-    return connection != null ? connection.toString() : (String)connection;
+  public IActionInput getConnection() {
+    return getActionInputValue(CONNECTION_ELEMENT);
   }
+  
   
   /**
    * @deprecated 
    */
-  public void setConnectionParam(IActionVariable variable) {
-    setInputParam(CONNECTION_ELEMENT, variable);
-    if (variable != null) {
+  public void setUserId(IActionInput value) {
+    setActionInputValue(USER_ID_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
-      setDataParam(null);
+      setData(null);
       setDataComponent(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
@@ -364,18 +390,19 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public ActionInput getConnectionParam() {
-    return getInputParam(CONNECTION_ELEMENT);
+  public IActionInput getUserId() {
+    return getActionInputValue(USER_ID_ELEMENT);
   }
+  
   
   /**
    * @deprecated 
    */
-  public void setUserId(String value) {
-    setInputValue(USER_ID_ELEMENT, value);
-    if (value != null) {
+  public void setDriver(IActionInput value) {
+    setActionInputValue(DRIVER_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
-      setDataParam(null);
+      setData(null);
       setDataComponent(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
@@ -385,22 +412,19 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public String getUserId() {
-    Object userId = getInputValue(USER_ID_ELEMENT);
-    if ((userId != null) && (actionParameterMgr != null)) {
-      userId = actionParameterMgr.replaceParameterReferences(userId.toString());
-    }
-    return userId != null ? userId.toString() : (String)userId;
+  public IActionInput getDriver() {
+    return getActionInputValue(DRIVER_ELEMENT);
   }
+  
   
   /**
    * @deprecated 
    */
-  public void setUserIdParam(IActionVariable variable) {
-    setInputParam(USER_ID_ELEMENT, variable);
-    if (variable != null) {
+  public void setPassword(IActionInput value) {
+    setActionInputValue(PASSWORD_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
-      setDataParam(null);
+      setData(null);
       setDataComponent(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
@@ -410,113 +434,21 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public ActionInput getUserIdParam() {
-    return getInputParam(USER_ID_ELEMENT);
+  public IActionInput getPassword() {
+    return getActionInputValue(PASSWORD_ELEMENT);
   }
-  
+    
   /**
    * @deprecated 
    */
-  public void setDriver(String value) {
-    setInputValue(DRIVER_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-      setDataParam(null);
-      setDataComponent(null);
-      getDataJar().setJar(null);
-      getDataJar().setDataClass(null);
-    }
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public String getDriver() {
-    Object driver = getInputValue(DRIVER_ELEMENT);
-    if ((driver != null) && (actionParameterMgr != null)) {
-      driver = actionParameterMgr.replaceParameterReferences(driver.toString());
-    }
-    return driver != null ? driver.toString() : (String)driver;
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public void setDriverParam(IActionVariable variable) {
-    setInputParam(DRIVER_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-      setDataParam(null);
-      setDataComponent(null);
-      getDataJar().setJar(null);
-      getDataJar().setDataClass(null);
-    }
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public ActionInput getDriverParam() {
-    return getInputParam(DRIVER_ELEMENT);
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public void setPassword(String value) {
-    setInputValue(PASSWORD_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-      setDataParam(null);
-      setDataComponent(null);
-      getDataJar().setJar(null);
-      getDataJar().setDataClass(null);
-    }
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public String getPassword() {
-    Object password = getInputValue(PASSWORD_ELEMENT);
-    if ((password != null) && (actionParameterMgr != null)) {
-      password = actionParameterMgr.replaceParameterReferences(password.toString());
-    }
-    return password != null ? password.toString() : (String)password;
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public void setPasswordParam(IActionVariable variable) {
-    setInputParam(PASSWORD_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-      setDataParam(null);
-      setDataComponent(null);
-      getDataJar().setJar(null);
-      getDataJar().setDataClass(null);
-    }
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public ActionInput getPasswordParam() {
-    return getInputParam(PASSWORD_ELEMENT);
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public void setJndi(String value) {
-    setInputValue(JNDI_ELEMENT, value);
-    if (value != null) {
+  public void setJndi(IActionInput value) {
+    setActionInputValue(JNDI_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setDriver(null);
       setConnection(null);
       setUserId(null);
       setPassword(null);
-      setDataParam(null);
+      setData(null);
       setDataComponent(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
@@ -526,97 +458,44 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public String getJndi() {
-    Object jndiName = getInputValue(JNDI_ELEMENT);
-    if ((jndiName != null) && (actionParameterMgr != null)) {
-      jndiName = actionParameterMgr.replaceParameterReferences(jndiName.toString());
-    }
-    return jndiName != null ? jndiName.toString() : (String)jndiName;
+  public IActionInput getJndi() {
+    return getActionInputValue(JNDI_ELEMENT);
   }
   
-  /**
-   * @deprecated 
-   */
-  public void setJndiParam(IActionVariable variable) {
-    setInputParam(JNDI_ELEMENT, variable);
-    if (variable != null) {
-      setDriver(null);
-      setConnection(null);
-      setUserId(null);
-      setPassword(null);
-      setDataParam(null);
-      setDataComponent(null);
-      getDataJar().setJar(null);
-      getDataJar().setDataClass(null);
-    }
-  }
   
-  /**
-   * @deprecated 
-   */
-  public ActionInput getJndiParam() {
-    return getInputParam(JNDI_ELEMENT);
-  }
-  
-  public void setOutputType(String value) {
-    setInputValue(OUTPUT_TYPE_ELEMENT, value);
-    if (value != null) {
+  public void setOutputType(IActionInput value) {
+    setActionInputValue(OUTPUT_TYPE_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setPrinterName(null);
     }
   }
   
-  public String getOutputType() {
-    Object outputType = getInputValue(OUTPUT_TYPE_ELEMENT);
-    if ((outputType != null) && (actionParameterMgr != null)) {
-      outputType = actionParameterMgr.replaceParameterReferences(outputType.toString());
-    }
-    return outputType != null ? outputType.toString() : (String)outputType;
+  public IActionInput getOutputType() {
+    return getActionInputValue(OUTPUT_TYPE_ELEMENT);
   }
   
-  public void setOutputTypeParam(IActionVariable variable) {
-    setInputParam(OUTPUT_TYPE_ELEMENT, variable);
-    if (variable != null) {
-      setPrinterName(null);
-    }
-  }
-  
-  public ActionInput getOutputTypeParam() {
-    return getInputParam(OUTPUT_TYPE_ELEMENT);
-  }
-  
-  public void setPrinterName(String value) {
-    setInputValue(PRINTER_NAME_ELEMENT, value);
-    if (value != null) {
+  public void setPrinterName(IActionInput value) {
+    setActionInputValue(PRINTER_NAME_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setOutputType(null);
     }
   }
   
-  public String getPrinterName() {
-    Object printerName = getInputValue(PRINTER_NAME_ELEMENT);
-    if ((printerName != null) && (actionParameterMgr != null)) {
-      printerName = actionParameterMgr.replaceParameterReferences(printerName.toString());
-    }
-    return printerName != null ? printerName.toString() : (String)printerName;
+  public IActionInput getPrinterName() {
+    return getActionInputValue(PRINTER_NAME_ELEMENT);
   }
   
-  public void setPrinterNameParam(IActionVariable variable) {
-    setInputParam(PRINTER_NAME_ELEMENT, variable);
-    if (variable != null) {
-      setOutputType(null);
-    }
-  }
-  
-  public ActionInput getPrinterNameParam() {
-    return getInputParam(PRINTER_NAME_ELEMENT);
-  }
 
-  public Object getData() {
-    return getInputValue(DATA_ELEMENT);
+  public IActionInput getData() {
+    return getActionInputValue(DATA_ELEMENT);
   }
   
-  public void setDataParam(IActionVariable variable) {
-    setInputParam(DATA_ELEMENT, variable);
-    if (variable != null) {
+  public void setData(IActionInput value) {
+    if (value instanceof ActionInputConstant) {
+      throw new IllegalArgumentException();
+    }
+    setActionInputValue(DATA_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setDataComponent(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
@@ -632,17 +511,13 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public ActionInput getDataParam() {
-    return getInputParam(DATA_ELEMENT);
-  }
-  
   /**
    * @deprecated 
    */
-  public void setQuery(String value) {
-    setInputValue(QUERY_ELEMENT, value);
-    if (value != null) {
-      setDataParam(null);
+  public void setQuery(IActionInput value) {
+    setActionInputValue(QUERY_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+      setData(null);
       setDataComponent(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
@@ -652,32 +527,8 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public String getQuery() {
-    Object query = getInputValue(QUERY_ELEMENT);
-    if ((query != null) && (actionParameterMgr != null)) {
-      query = actionParameterMgr.replaceParameterReferences(query.toString());
-    }
-    return query != null ? query.toString() : (String)query;
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public void setQueryParam(IActionVariable variable) {
-    setInputParam(QUERY_ELEMENT, variable);
-    if (variable != null) {
-      setDataParam(null);
-      setDataComponent(null);
-      getDataJar().setJar(null);
-      getDataJar().setDataClass(null);
-    }
-  }
-  
-  /**
-   * @deprecated 
-   */
-  public ActionInput getQueryParam() {
-    return getInputParam(QUERY_ELEMENT);
+  public IActionInput getQuery() {
+    return getActionInputValue(QUERY_ELEMENT);
   }
   
   public void setOutputReportName(String name) {
@@ -771,14 +622,15 @@ public class JFreeReportAction extends ActionDefinition {
         setResourceUri(JFreeReportAction.REPORT_DEFINITION_ELEMENT, null, null);
         actionResource = setResourceUri(REPORT_WIZ_SPEC_ELEMENT, uri, mimeType);         
       }
-      setReportDefinitionParam(null);
+      setReportDefinition(null);
       getReportDefinitionJar().setJar(null);
       getReportDefinitionJar().setReportLocation(null);
     }
     return actionResource;
   }
   
-  public ActionResource getReportDefinition() {
+  public Object getReportDefinition() {
+    Object reportDefinition;
     ActionResource actionResource = null;
     if (getComponentName().endsWith("JFreeReportComponent")) {
       actionResource = getResourceParam(REPORT_DEFINITION_ELEMENT);
@@ -786,22 +638,30 @@ public class JFreeReportAction extends ActionDefinition {
       actionResource = getResourceParam(REPORT_WIZ_SPEC_ELEMENT);
     }
     if (actionResource == null) {
-      Object resourceName = getInputValue(RESOURCE_NAME_ELEMENT);
+      Object resourceName = getActionInputValue(RESOURCE_NAME_ELEMENT).getValue();
       if (resourceName != null) {
         actionResource = getResourceParam(resourceName.toString());
       }
     }
-    return actionResource;
+    if (actionResource == null) {
+      reportDefinition = getActionInputValue(REPORT_DEFINITION_ELEMENT);
+    } else {
+      reportDefinition = actionResource;
+    }
+    return reportDefinition;
   }
   
   public DataSource getReportDefinitionDataSource() throws FileNotFoundException {
-    ActionResource reportDefinition = getReportDefinition();
-    return reportDefinition != null ? reportDefinition.getDataSource() : null;
+    Object reportDefinition = getReportDefinition();
+    return reportDefinition instanceof ActionResource ? ((ActionResource)reportDefinition).getDataSource() : null;
   }
   
-  public void setReportDefinitionParam(IActionVariable variable) {
-    setInputParam(REPORT_DEFINITION_ELEMENT, variable);
-    if (variable != null) {
+  public void setReportDefinition(IActionInputVariable value) {
+    if (value instanceof ActionInputConstant) {
+      throw new IllegalArgumentException();
+    }
+    setActionInputValue(REPORT_DEFINITION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       if (!getComponentName().endsWith("JFreeReportComponent")) {
         setComponentName("JFreeReportComponent");
       }
@@ -811,14 +671,14 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public ActionInput getReportDefinitionParam() {
-    return getInputParam(REPORT_DEFINITION_ELEMENT);
-  }
+//  public IActionInput getReportDefinition() {
+//    return getActionInputValue(REPORT_DEFINITION_ELEMENT);
+//  }
   
-  public void setDataComponent(String componentClassName) {
-    setInputValue(REPORT_DATA_SOURCE_ELEMENT, componentClassName);
-    if (componentClassName != null) {
-      setDataParam(null);
+  public void setDataComponent(IActionInput value) {
+    setActionInputValue(REPORT_DATA_SOURCE_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+      setData(null);
       getDataJar().setJar(null);
       getDataJar().setDataClass(null);
       
@@ -834,37 +694,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public String getDataComponent() {
-    Object componentClassName = getInputValue(REPORT_DATA_SOURCE_ELEMENT);
-    if ((componentClassName != null) && (actionParameterMgr != null)) {
-      componentClassName = actionParameterMgr.replaceParameterReferences(componentClassName.toString());
-    }
-    return componentClassName != null ? componentClassName.toString() : (String)componentClassName;
-  }
-  
-  
-  public void setDataComponentParam(IActionVariable variable) {
-    setInputParam(REPORT_DATA_SOURCE_ELEMENT, variable);
-    if (variable != null) {
-      setDataParam(null);
-      getDataJar().setJar(null);
-      getDataJar().setDataClass(null);
-      
-      // The following elements are deprecated within this component. Old style action sequences
-      // may still have these elements in place. We'll clean them up now.
-      setDriver(null);
-      setConnection(null);
-      setUserId(null);
-      setPassword(null);
-      setJndi(null);
-      setQuery(null);
-      // End deprecated functionality.
-    }
-  }
-  
-  public ActionInput getDataComponentParam() {
-    return getInputParam(REPORT_DATA_SOURCE_ELEMENT);
-
+  public IActionInput getDataComponent() {
+    return getActionInputValue(REPORT_DATA_SOURCE_ELEMENT);
   }
   
   public DataJar getDataJar() {
@@ -875,116 +706,60 @@ public class JFreeReportAction extends ActionDefinition {
     return reportJar;
   }
     
-  public void setReportConfigParam(IActionVariable variable) {
-    setInputParam(REPORT_CONFIG_INPUT_PARAM, variable);
+  public void setReportConfig(IActionInput value) {
+    if (value instanceof ActionInputConstant) {
+      throw new IllegalArgumentException();
+    }
+    setActionInputValue(REPORT_CONFIG_INPUT_PARAM, value);
   }
   
-  public ActionInput getReportConfigParam() {
-    return getInputParam(REPORT_CONFIG_INPUT_PARAM);
-  }
-  
-  public Object getReportConfig() {
-    Object reportConfig = getInputValue(REPORT_CONFIG_INPUT_PARAM);
-    if (reportConfig == null) {
-      reportConfig = staticReportConfig;
+  public IActionInput getReportConfig() {
+    IActionInput reportConfig = getActionInputValue(REPORT_CONFIG_INPUT_PARAM);
+    if (reportConfig.getValue() == null) {
+      reportConfig = new ActionInputConstant(staticReportConfig, actionParameterMgr);
     }
     return reportConfig;
   }
   
-  public void setCreatePrivateCopy(boolean value) {
-    setInputValue(CREATE_PRIVATE_COPY_ELEMENT, value ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setCreatePrivateCopy(IActionInput value) {
+    setActionInputValue(CREATE_PRIVATE_COPY_ELEMENT, value);
   }
   
-  public boolean getCreatePrivateCopy() {
-    Object live = getInputValue(CREATE_PRIVATE_COPY_ELEMENT);
-    if ((live != null) && (actionParameterMgr != null)) {
-      live = actionParameterMgr.replaceParameterReferences(live.toString());
+  public IActionInput getCreatePrivateCopy() {
+    return getActionInputValue(CREATE_PRIVATE_COPY_ELEMENT);
+  }
+  
+  public void setReportGenerationPriority(IActionInput value) {
+    setActionInputValue(REPORT_GEN_PRIORITY_ELEMENT, value);
+  }
+  
+  public IActionInput getReportGenerationPriority() {
+    return getActionInputValue(REPORT_GEN_PRIORITY_ELEMENT);
+  }
+  
+  public void setHtmlContentHandlerUrlPattern(IActionInput value) {
+    setActionInputValue(HTML_CONTENT_HANDLER_ELEMENT, value);
+  }
+  
+  public IActionInput getHtmlContentHandlerUrlPattern() {
+    return getActionInputValue(HTML_CONTENT_HANDLER_ELEMENT);
+  }
+  
+  public void setReportGenerationYieldRate(IActionInput value) {
+    setActionInputValue(REPORT_GEN_YIELD_RATE_ELEMENT, value);
+  }
+  
+  public IActionInput getReportGenerationYieldRate() {
+    IActionInput actionInput = getActionInputValue(REPORT_GEN_YIELD_RATE_ELEMENT);
+    if (actionInput instanceof ActionInput) {
+      actionInput = new YieldRateInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr());
     }
-    return live != null ? Boolean.parseBoolean(live.toString()) : false;
+    return actionInput;
   }
-  
-  public void setCreatePrivateCopyParam(IActionVariable variable) {
-    setInputParam(CREATE_PRIVATE_COPY_ELEMENT, variable);
-  }
-  
-  public ActionInput getCreatePrivateCopyParam() {
-    return getInputParam(CREATE_PRIVATE_COPY_ELEMENT);
-  }
-  
-  public void setReportGenerationPriority(String value) {
-    setInputValue(REPORT_GEN_PRIORITY_ELEMENT, null); //$NON-NLS-1$ //$NON-NLS-2$
-  }
-  
-  public String getReportGenerationPriority() {
-    Object priority = getInputValue(REPORT_GEN_PRIORITY_ELEMENT);
-    if ((priority != null) && (actionParameterMgr != null)) {
-      priority = actionParameterMgr.replaceParameterReferences(priority.toString());
-    }
-    return priority != null ? priority.toString() : null;
-  }
-  
-  public void setReportGenerationPriorityParam(IActionVariable variable) {
-    setInputParam(REPORT_GEN_PRIORITY_ELEMENT, variable);
-  }
-  
-  public ActionInput getReportGenerationPriorityParam() {
-    return getInputParam(REPORT_GEN_PRIORITY_ELEMENT);
-  }
-  
-  public void setHtmlContentHandlerUrlPattern(String value) {
-    setInputValue(HTML_CONTENT_HANDLER_ELEMENT, null); //$NON-NLS-1$ //$NON-NLS-2$
-  }
-  
-  public String getHtmlContentHandlerUrlPattern() {
-    Object priority = getInputValue(HTML_CONTENT_HANDLER_ELEMENT);
-    if ((priority != null) && (actionParameterMgr != null)) {
-      priority = actionParameterMgr.replaceParameterReferences(priority.toString());
-    }
-    return priority != null ? priority.toString() : null;
-  }
-  
-  public void setHtmlContentHandlerUrlPatternParam(IActionVariable variable) {
-    setInputParam(HTML_CONTENT_HANDLER_ELEMENT, variable);
-  }
-  
-  public ActionInput getHtmlContentHandlerUrlPatternParam() {
-    return getInputParam(HTML_CONTENT_HANDLER_ELEMENT);
-  }
-  
-  public void setReportGenerationYieldRate(int value) {
-    setInputValue(REPORT_GEN_YIELD_RATE_ELEMENT, null); //$NON-NLS-1$ //$NON-NLS-2$
-  }
-  
-  public int getReportGenerationYieldRate() {
-    int yieldRate = 0;
-    Object value = getInputValue(REPORT_GEN_YIELD_RATE_ELEMENT);
-    if (value instanceof Number) {
-      Number n = (Number) value;
-      if (n.intValue() > 0) {
-        yieldRate = n.intValue();
-      }
-    } else if (value != null) {
-      try {
-        yieldRate = Integer.parseInt(value.toString());
-      } catch (Exception ex) {
-        //Do nothing.
-      }
-    }
-    return yieldRate;
-  }
-  
-  public void setReportGenerationYieldRateParam(IActionVariable variable) {
-    setInputParam(REPORT_GEN_YIELD_RATE_ELEMENT, variable);
-  }
-  
-  public ActionInput getReportGenerationYieldRateParam() {
-    return getInputParam(REPORT_GEN_YIELD_RATE_ELEMENT);
-  }
-  
   
   public ActionInput[] getSubreportQueryParams() {
     ArrayList subreportQueryParams = new ArrayList();
-    ActionInput mainReportData = getDataParam();
+    ActionInput mainReportData = (ActionInput)getData();
     ActionInput[] actionInputs = getInputParams(new String[] {ActionSequenceDocument.RESULTSET_TYPE, ActionSequenceDocument.MDX_QUERY_TYPE, ActionSequenceDocument.SQL_QUERY_TYPE, ActionSequenceDocument.XQUERY_TYPE, ActionSequenceDocument.HQL_QUERY_TYPE});
     for (int i = 0; i < actionInputs.length; i++) {
       if (!actionInputs[i].equals(mainReportData)) {
@@ -994,7 +769,7 @@ public class JFreeReportAction extends ActionDefinition {
     return (ActionInput[])subreportQueryParams.toArray(new ActionInput[0]);
   }
   
-  public void setSubReportQueryParams(IActionVariable[] subQueryVariables) {
+  public void setSubReportQueryParams(IActionInputVariable[] subQueryVariables) {
     ActionInput[] actionInputs = getSubreportQueryParams();
     for (int i = 0; i < actionInputs.length; i++) {
       actionInputs[i].delete();

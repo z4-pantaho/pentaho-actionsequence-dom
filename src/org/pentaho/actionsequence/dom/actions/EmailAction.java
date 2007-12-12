@@ -21,7 +21,8 @@ import java.util.HashMap;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class EmailAction extends ActionDefinition {
 
@@ -33,7 +34,47 @@ public class EmailAction extends ActionDefinition {
   public static final String SUBJECT_ELEMENT = "subject"; //$NON-NLS-1$
   public static final String PLAIN_MSG_ELEMENT = "message-plain"; //$NON-NLS-1$
   public static final String HTML_MSG_ELEMENT = "message-html"; //$NON-NLS-1$
+  
+  public class HTMLMsgInput extends ActionInput {
+    HTMLMsgInput(Element element, IActionParameterMgr actionParameterMgr) {
+      super(element, actionParameterMgr);
+    }
+
+    public Object getValue() {
+      Object msg = super.getValue();
+      if (msg instanceof InputStream) {
+        InputStream is = (InputStream)msg;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte bytes[] = new byte[1024];
+        int numRead = 0;
+        try {
+          while ((numRead = is.read(bytes)) != -1) {
+            if (numRead > 0) {
+              baos.write(bytes, 0, numRead);
+            }
+          }
+          msg = baos.toString();
+        } catch (Exception e) {
+          msg = "";
+        }
+      }
+      return msg;
+    }
+  }
     
+  public class HashMapInput extends ActionInput {
+    String key;
+    
+    HashMapInput(Element element, IActionParameterMgr actionParameterMgr, String key) {
+      super(element, actionParameterMgr);
+      this.key = key;
+    }
+
+    public Object getValue() {
+      return ((HashMap)super.getValue()).get(key);
+    }
+  }
+  
   protected static final String[] EXPECTED_INPUTS = new String[] {
     TO_ELEMENT,
     FROM_ELEMENT,
@@ -60,195 +101,110 @@ public class EmailAction extends ActionDefinition {
     return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
   
-  public void setTo(String to) {
-    setInputValue(TO_ELEMENT, to);
+  public void setTo(IActionInput value) {
+    setActionInputValue(TO_ELEMENT, value);
   }
   
-  public String getTo() {
-    // The message could come from a hash map that is named after the "to" input. I believe
+  public IActionInput getTo() {
+    IActionInput actionInput = getActionInputValue(TO_ELEMENT);
+    // The to address could come from a hash map that is named after the "to" input. I believe
     // this is deprecated functionality.
-    Object toString = getInputValue(TO_ELEMENT);
-    if (toString instanceof HashMap) {
-      toString = ((HashMap)toString).get(EmailAction.TO_ELEMENT);
-    }
-    // End deprecated functionality
-    
-    if ((toString != null) && (actionParameterMgr != null)) {
-      toString = actionParameterMgr.replaceParameterReferences(toString.toString());
-    }
-    return toString != null ? toString.toString() : (String)toString;
-  }
-  
-  public void setToParam(IActionVariable variable) {
-    setInputParam(TO_ELEMENT, variable);
-  }
-  
-  public ActionInput getToParam() {
-    return getInputParam(TO_ELEMENT);
-  }
-  
-  public void setFrom(String from) {
-    setInputValue(FROM_ELEMENT, from);
-  }
-  
-  public String getFrom() {
-    Object from = getInputValue(FROM_ELEMENT);
-    if ((from != null) && (actionParameterMgr != null)) {
-      from = actionParameterMgr.replaceParameterReferences(from.toString());
-    }
-    return from != null ? from.toString() : (String)from;
-  }
-  
-  public void setFromParam(IActionVariable variable) {
-    setInputParam(FROM_ELEMENT, variable);
-  }
-  
-  public ActionInput getFromParam() {
-    return getInputParam(FROM_ELEMENT);
-
-  }
-  
-  public void setCc(String cc) {
-    setInputValue(CC_ELEMENT, cc);
-  }
-  
-  public String getCc() {
-    Object cc = getInputValue(CC_ELEMENT);
-    if ((cc != null) && (actionParameterMgr != null)) {
-      cc = actionParameterMgr.replaceParameterReferences(cc.toString());
-    }
-    return cc != null ? cc.toString() : (String)cc;
-  }
-  
-  public void setCcParam(IActionVariable variable) {
-    setInputParam(CC_ELEMENT, variable);
-  }
-  
-  public ActionInput getCcParam() {
-    return getInputParam(CC_ELEMENT);
-  }
-  
-  public void setBcc(String bcc) {
-    setInputValue(BCC_ELEMENT, bcc);
-  }
-  
-  public String getBcc() {
-    Object bcc = getInputValue(BCC_ELEMENT);
-    if ((bcc != null) && (actionParameterMgr != null)) {
-      bcc = actionParameterMgr.replaceParameterReferences(bcc.toString());
-    }
-    return bcc != null ? bcc.toString() : (String)bcc;
-  }
-  
-  public void setBccParam(IActionVariable variable) {
-    setInputParam(BCC_ELEMENT, variable);
-  }
-  
-  public ActionInput getBccParam() {
-    return getInputParam(BCC_ELEMENT);
-  }
-  
-  public void setMessageHtml(String htmlMsg) {
-    setInputValue(HTML_MSG_ELEMENT, htmlMsg);
-  }
-  
-  public String getMessageHtml() {
-    Object msg = getInputValue(HTML_MSG_ELEMENT);
-    if (msg instanceof InputStream) {
-      InputStream is = (InputStream)msg;
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      byte bytes[] = new byte[1024];
-      int numRead = 0;
-      try {
-        while ((numRead = is.read(bytes)) != -1) {
-          if (numRead > 0) {
-            baos.write(bytes, 0, numRead);
-          }
-        }
-        msg = baos.toString();
-      } catch (Exception e) {
-        msg = "";
+    if (actionInput.getValue() instanceof HashMap) {
+      HashMapInput hashMapInput = new HashMapInput(((ActionInput) actionInput).getElement(), ((ActionInput) actionInput)
+          .getParameterMgr(), TO_ELEMENT);
+      if (hashMapInput.getValue() != null) {
+        actionInput = hashMapInput;
       }
     }
-    if ((msg != null) && (actionParameterMgr != null)) {
-      msg = actionParameterMgr.replaceParameterReferences(msg.toString());
-    }
-    return msg != null ? msg.toString() : (String)msg;
+    // End deprecated functionality
+    return actionInput;
   }
   
-  public void setMessageHtmlParam(IActionVariable variable) {
-    setInputParam(HTML_MSG_ELEMENT, variable);
+  public void setFrom(IActionInput value) {
+    setActionInputValue(FROM_ELEMENT, value);
   }
   
-  public ActionInput getMessageHtmlParam() {
-    return getInputParam(HTML_MSG_ELEMENT);
+  public IActionInput getFrom() {
+    return getActionInputValue(FROM_ELEMENT);
   }
   
-  public void setMessagePlain(String msg) {
-    setInputValue(PLAIN_MSG_ELEMENT, msg);
+  public void setCc(IActionInput value) {
+    setActionInputValue(CC_ELEMENT, value);
   }
   
-  public String getMessagePlain() {
+  public IActionInput getCc() {
+    return getActionInputValue(CC_ELEMENT);
+  }
+  
+  public void setBcc(IActionInput value) {
+    setActionInputValue(BCC_ELEMENT, value);
+  }
+  
+  public IActionInput getBcc() {
+    return getActionInputValue(BCC_ELEMENT);
+ }
     
+  public void setMessageHtml(IActionInput value) {
+    setActionInputValue(HTML_MSG_ELEMENT, value);
+  }
+  
+  public IActionInput getMessageHtml() {
+    IActionInput actionInput = getActionInputValue(HTML_MSG_ELEMENT);
+    if (actionInput instanceof ActionInput) {
+      actionInput = new HTMLMsgInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr());
+    }
+    return actionInput;
+  }
+  
+  public void setMessagePlain(IActionInput value) {
+    setActionInputValue(PLAIN_MSG_ELEMENT, value);
+  }
+  
+  public IActionInput getMessagePlain() {
+    
+    IActionInput actionInput;
     // The message could come from a hash map that is named after the "to" input. I believe
     // this is deprecated functionality.
-    Object msg = getInputValue(TO_ELEMENT);
-    if (msg instanceof HashMap) {
-      msg = ((HashMap)msg).get(EmailAction.PLAIN_MSG_ELEMENT);
+    actionInput = getActionInputValue(TO_ELEMENT);
+    if (actionInput.getValue() instanceof HashMap) {
+      actionInput = new HashMapInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr(), EmailAction.PLAIN_MSG_ELEMENT);
+      if (actionInput.getValue() == null) {
+        actionInput = null;
+      }
     } else {
-      msg = null;
+      actionInput = null;
     }
     // End deprecated functionality
     
-    if (msg == null) {
-      msg = getInputValue(PLAIN_MSG_ELEMENT);
-    }
-    
-    if ((msg != null) && (actionParameterMgr != null)) {
-      msg = actionParameterMgr.replaceParameterReferences(msg.toString());
-    }
-    return msg != null ? msg.toString() : (String)msg;
+    if (actionInput == null) {
+      actionInput = getActionInputValue(PLAIN_MSG_ELEMENT);
+    };
+    return actionInput;
   }
   
-  public void setMessagePlainParam(IActionVariable variable) {
-    setInputParam(PLAIN_MSG_ELEMENT, variable);
+  public void setSubject(IActionInput subject) {
+    setActionInputValue(SUBJECT_ELEMENT, subject);
   }
   
-  public ActionInput getMessagePlainParam() {
-    return getInputParam(PLAIN_MSG_ELEMENT);
-  }
-  
-  public void setSubject(String subject) {
-    setInputValue(SUBJECT_ELEMENT, subject);
-  }
-  
-  public String getSubject() {
-    // The message could come from a hash map that is named after the "to" input. I believe
+  public IActionInput getSubject() {
+    IActionInput actionInput;
+    // The subject could come from a hash map that is named after the "to" input. I believe
     // this is deprecated functionality.
-    Object subject = getInputValue(TO_ELEMENT);
-    if (subject instanceof HashMap) {
-      subject = ((HashMap)subject).get(EmailAction.SUBJECT_ELEMENT);
+    actionInput = getActionInputValue(TO_ELEMENT);
+    if (actionInput.getValue() instanceof HashMap) {
+      actionInput = new HashMapInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr(), EmailAction.SUBJECT_ELEMENT);
+      if (actionInput.getValue() == null) {
+        actionInput = null;
+      }
     } else {
-      subject = null;
+      actionInput = null;
     }
     // End deprecated functionality
     
-    if (subject == null) {
-      subject = getInputValue(SUBJECT_ELEMENT);
-    }
-    
-    if ((subject != null) && (actionParameterMgr != null)) {
-      subject = actionParameterMgr.replaceParameterReferences(subject.toString());
-    }
-    return subject != null ? subject.toString() : (String)subject;
-  }
-  
-  public void setSubjectParam(IActionVariable variable) {
-    setInputParam(SUBJECT_ELEMENT, variable);
-  }
-  
-  public ActionInput getSubjectParam() {
-    return getInputParam(SUBJECT_ELEMENT);
+    if (actionInput == null) {
+      actionInput = getActionInputValue(SUBJECT_ELEMENT);
+    };
+    return actionInput;
   }
   
   public ActionSequenceValidationError[] validate() {
@@ -314,7 +270,7 @@ public class EmailAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public EmailAttachment addAttachment(IActionVariable variable) {
+  public EmailAttachment addAttachment(IActionInputVariable variable) {
     EmailAttachment[] emailAttachments = getAttachments();
     for (int i = 0; i < emailAttachments.length; i++) {
       if (emailAttachments[i].isDeprecatedAttachmentStyle()) {
@@ -344,7 +300,7 @@ public class EmailAction extends ActionDefinition {
     } else {
       // This else statement handles deprecated functionality. It is here to ensure that old
       // style email actions still work.
-      if ((getInputValue(EmailAttachment.OLD_ATTACHMENT_ELEMENT) != null) ||
+      if ((getActionInputValue(EmailAttachment.OLD_ATTACHMENT_ELEMENT).getValue() != null) ||
           (getComponentDefElement(EmailAttachment.OLD_ATTACHMENT_ELEMENT) != null)){
         emailAttachments = new EmailAttachment[1];
         emailAttachments[0] = new EmailAttachment(this);

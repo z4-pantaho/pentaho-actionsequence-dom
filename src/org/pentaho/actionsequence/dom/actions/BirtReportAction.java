@@ -21,7 +21,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class BirtReportAction extends ActionDefinition {
 
@@ -74,7 +74,7 @@ public class BirtReportAction extends ActionDefinition {
     return getComponentDefinitionValue(OUTPUT_TYPE_ELEMENT);
   }
   
-  public void setOutputTypeParam(IActionVariable variable) {
+  public void setOutputTypeParam(IActionInputVariable variable) {
     setInputParam(OUTPUT_TYPE_ELEMENT, variable);
   }
   

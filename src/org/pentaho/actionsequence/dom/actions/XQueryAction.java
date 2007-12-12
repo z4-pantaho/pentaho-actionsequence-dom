@@ -21,7 +21,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class XQueryAction extends ActionDefinition {
 
@@ -84,7 +84,7 @@ public class XQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(DOCUMENT_ELEMENT);
   }
   
-  public void setSourceXmlParam(IActionVariable variable) {
+  public void setSourceXmlParam(IActionInputVariable variable) {
     setInputParam(DOCUMENT_ELEMENT, variable);
   }
   
@@ -100,7 +100,7 @@ public class XQueryAction extends ActionDefinition {
     return getComponentDefinitionValue(QUERY_ELEMENT);
   }
   
-  public void setQueryParam(IActionVariable variable) {
+  public void setQueryParam(IActionInputVariable variable) {
     setInputParam(QUERY_ELEMENT, variable);
   }
   

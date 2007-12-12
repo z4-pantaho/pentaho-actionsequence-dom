@@ -22,7 +22,7 @@ import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class KettleTransformAction extends ActionDefinition {
 
@@ -86,7 +86,7 @@ public class KettleTransformAction extends ActionDefinition {
     return getComponentDefinitionValue(REPOSITORY_TRANSFORMATION);
   }
   
-  public void setTransformationParam(IActionVariable variable) {
+  public void setTransformationParam(IActionInputVariable variable) {
     setInputParam(REPOSITORY_TRANSFORMATION, variable);
   }
   
@@ -102,7 +102,7 @@ public class KettleTransformAction extends ActionDefinition {
     return getComponentDefinitionValue(REPOSITORY_DIRECTORY);
   }
   
-  public void setDirectoryParam(IActionVariable variable) {
+  public void setDirectoryParam(IActionInputVariable variable) {
     setInputParam(REPOSITORY_DIRECTORY, variable);
   }
   
@@ -118,7 +118,7 @@ public class KettleTransformAction extends ActionDefinition {
     return getComponentDefinitionValue(TRANSFORMATION_STEP_ELEMENT);
   }
   
-  public void setImportstepParam(IActionVariable variable) {
+  public void setImportstepParam(IActionInputVariable variable) {
     setInputParam(TRANSFORMATION_STEP_ELEMENT, variable);
   }
   

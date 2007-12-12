@@ -14,9 +14,11 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SqlExecuteAction extends AbstractRelationalDbAction {
 
@@ -52,7 +54,7 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setComponentDefinition(JNDI_ELEMENT, ""); //$NON-NLS-1$
+    setActionInputValue(JNDI_ELEMENT, new ActionInputConstant(""));
   }
   
   public String[] getReservedInputNames() {
@@ -73,63 +75,27 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
     return new String[]{expectedOutput};
   }
     
-  public void setContinueOnException(boolean value) {
-    setInputValue(CONTINUE_ON_EXCEPTION, Boolean.toString(value)); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setContinueOnException(IActionInput value) {
+    setActionInputValue(CONTINUE_ON_EXCEPTION, value);
   }
   
-  public boolean getContinueOnException() {
-    Object continueOnException = getInputValue(CONTINUE_ON_EXCEPTION);
-    if ((continueOnException != null) && (actionParameterMgr != null)) {
-      continueOnException = actionParameterMgr.replaceParameterReferences(continueOnException.toString());
-    }
-    return continueOnException != null ? Boolean.parseBoolean(continueOnException.toString()) : false;
+  public IActionInput getContinueOnException() {
+    return getActionInputValue(CONTINUE_ON_EXCEPTION);
   }
   
-  public void setContinueOnExceptionParam(IActionVariable variable) {
-    setInputParam(CONTINUE_ON_EXCEPTION, variable);
+  public void setForceSingleStatement(IActionInput value) {
+    setActionInputValue(FORCE_SINGLE_STATEMENT, value);
   }
   
-  public ActionInput getContinueOnExceptionParam() {
-    return getInputParam(CONTINUE_ON_EXCEPTION);
+  public IActionInput getForceSingleStatement() {
+    return getActionInputValue(FORCE_SINGLE_STATEMENT);
   }
   
-  public void setForceSingleStatement(boolean value) {
-    setInputValue(FORCE_SINGLE_STATEMENT, Boolean.toString(value)); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setMultiStatementSeparator(IActionInput value) {
+    setActionInputValue(MULTI_STATEMENT_SEPARATOR, value);
   }
   
-  public boolean getForceSingleStatement() {
-    Object continueOnException = getInputValue(FORCE_SINGLE_STATEMENT);
-    if ((continueOnException != null) && (actionParameterMgr != null)) {
-      continueOnException = actionParameterMgr.replaceParameterReferences(continueOnException.toString());
-    }
-    return continueOnException != null ? Boolean.parseBoolean(continueOnException.toString()) : false;
-  }
-  
-  public void setForceSingleStatementParam(IActionVariable variable) {
-    setInputParam(FORCE_SINGLE_STATEMENT, variable);
-  }
-  
-  public ActionInput getForceSingleStatementParam() {
-    return getInputParam(FORCE_SINGLE_STATEMENT);
-  }
-  
-  public void setMultiStatementSeparator(String cc) {
-    setInputValue(MULTI_STATEMENT_SEPARATOR, cc);
-  }
-  
-  public String getMultiStatementSeparator() {
-    Object separator = getInputValue(MULTI_STATEMENT_SEPARATOR);
-    if ((separator != null) && (actionParameterMgr != null)) {
-      separator = actionParameterMgr.replaceParameterReferences(separator.toString());
-    }
-    return separator != null ? separator.toString() : ";";
-  }
-  
-  public void setMultiStatementSeparatorParam(IActionVariable variable) {
-    setInputParam(MULTI_STATEMENT_SEPARATOR, variable);
-  }
-  
-  public ActionInput getMultiStatementSeparatorParam() {
-    return getInputParam(MULTI_STATEMENT_SEPARATOR);
+  public IActionInput getMultiStatementSeparator() {
+    return getActionInputValue(MULTI_STATEMENT_SEPARATOR);
   }
 }

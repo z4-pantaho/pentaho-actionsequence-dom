@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class PrintMapValsAction extends ActionDefinition {
 
@@ -53,10 +53,10 @@ public class PrintMapValsAction extends ActionDefinition {
     return accepts;
   }
   
-  public void setMapParam(IActionVariable variable) {
+  public void setMapParam(IActionInputVariable variable) {
     String mapParamName = getComponentDefinitionValue(TARGET_MAP_XPATH);
     if (variable == null) {
-      setInputParam(mapParamName, (IActionVariable)null);
+      setInputParam(mapParamName, (IActionInputVariable)null);
       setComponentDefinition(TARGET_MAP_XPATH, "", false);
     } else {
       if (!PROPERTY_MAP_ELEMENT.equals(mapParamName)) {
@@ -110,8 +110,8 @@ public class PrintMapValsAction extends ActionDefinition {
     
     ArrayList keyParamNames = new ArrayList();
     for (int i = 0; i < keys.length; i++) {
-      if (keys[i] instanceof IActionVariable) {
-        IActionVariable actionVariable = (IActionVariable)keys[i];
+      if (keys[i] instanceof IActionInputVariable) {
+        IActionInputVariable actionVariable = (IActionInputVariable)keys[i];
         keyParamNames.add(actionVariable.getVariableName());
         setInputParam(actionVariable.getVariableName(), actionVariable);
       } else {

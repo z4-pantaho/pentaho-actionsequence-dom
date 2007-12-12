@@ -14,7 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SubActionAction extends ActionDefinition {
 
@@ -56,7 +56,7 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(SOLUTION_ELEMENT);
   }
   
-  public void setSolutionParam(IActionVariable variable) {
+  public void setSolutionParam(IActionInputVariable variable) {
     setInputParam(SOLUTION_ELEMENT, variable);
   }
   
@@ -72,7 +72,7 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(PATH_ELEMENT);
   }
   
-  public void setPathParam(IActionVariable variable) {
+  public void setPathParam(IActionInputVariable variable) {
     setInputParam(PATH_ELEMENT, variable);
   }
   
@@ -88,7 +88,7 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(ACTION_ELEMENT);
   }
   
-  public void setActionParam(IActionVariable variable) {
+  public void setActionParam(IActionInputVariable variable) {
     setInputParam(ACTION_ELEMENT, variable);
   }
   
@@ -109,7 +109,7 @@ public class SubActionAction extends ActionDefinition {
     return getComponentDefinitionValue(PROXY_REF_ELEMENT);
   }
   
-  public void setSessionProxyParam(IActionVariable variable) {
+  public void setSessionProxyParam(IActionInputVariable variable) {
     setInputParam(PROXY_REF_ELEMENT, variable);
     if (variable == null) {
       setInputValue(PROXY_ELEMENT, null);

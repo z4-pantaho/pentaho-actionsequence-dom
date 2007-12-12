@@ -14,7 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class JFreeReportGenAction extends ActionDefinition {
 
@@ -51,7 +51,7 @@ public class JFreeReportGenAction extends ActionDefinition {
     return getComponentDefinitionValue(RESULT_SET_ELEMENT);
   }
   
-  public void setResultSetParam(IActionVariable variable) {
+  public void setResultSetParam(IActionInputVariable variable) {
     setInputParam(RESULT_SET_ELEMENT, variable);
   }
   
@@ -67,7 +67,7 @@ public class JFreeReportGenAction extends ActionDefinition {
     return getComponentDefinitionValue(COMPONENT_SETTINGS_ELEMENT);
   }
   
-  public void setComponentSettingsParam(IActionVariable variable) {
+  public void setComponentSettingsParam(IActionInputVariable variable) {
     setInputParam(COMPONENT_SETTINGS_ELEMENT, variable);
   }
   

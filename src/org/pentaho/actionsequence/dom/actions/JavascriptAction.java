@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class JavascriptAction extends ActionDefinition {
 
@@ -52,7 +52,7 @@ public class JavascriptAction extends ActionDefinition {
     return getComponentDefinitionValue(SCRIPT_ELEMENT);
   }
   
-  public void setScriptParam(IActionVariable variable) {
+  public void setScriptParam(IActionInputVariable variable) {
     setInputParam(SCRIPT_ELEMENT, variable);
   }
   

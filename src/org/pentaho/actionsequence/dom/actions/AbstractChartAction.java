@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public abstract class AbstractChartAction extends ActionDefinition {
 
@@ -70,7 +70,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_DATA_ELEMENT);
   }
   
-  public void setChartDataParam(IActionVariable variable) {
+  public void setChartDataParam(IActionInputVariable variable) {
     setInputParam(CHART_DATA_ELEMENT, variable);
   }
   
@@ -86,7 +86,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_WIDTH_ELEMENT);
   }
   
-  public void setWidthParam(IActionVariable variable) {
+  public void setWidthParam(IActionInputVariable variable) {
     setInputParam(CHART_WIDTH_ELEMENT, variable);
   }
   
@@ -102,7 +102,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_HEIGHT_ELEMENT);
   }
   
-  public void setHeightParam(IActionVariable variable) {
+  public void setHeightParam(IActionInputVariable variable) {
     setInputParam(CHART_HEIGHT_ELEMENT, variable);
   }
   
@@ -118,7 +118,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_TITLE_ELEMENT);
   }
   
-  public void setTitleParam(IActionVariable variable) {
+  public void setTitleParam(IActionInputVariable variable) {
     setInputParam(CHART_TITLE_ELEMENT, variable);
   }
   
@@ -153,7 +153,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
   }
   
-  public void setByRowParam(IActionVariable variable) {
+  public void setByRowParam(IActionInputVariable variable) {
     setInputParam(CHART_BY_ROW_ELEMENT, variable);
   }
   

@@ -12,7 +12,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionSequenceElement;
-import org.pentaho.actionsequence.dom.IActionVariable;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class EmailAttachment implements IActionSequenceElement {
 
@@ -35,7 +35,7 @@ public class EmailAttachment implements IActionSequenceElement {
     actionInputProvider = emailAction.actionParameterMgr;
   }
   
-  EmailAttachment(EmailAction emailAction, IActionVariable attachment) {
+  EmailAttachment(EmailAction emailAction, IActionInputVariable attachment) {
     attachmentElement = DocumentHelper.makeElement(emailAction.getElement(), ActionSequenceDocument.COMPONENT_DEF_NAME).addElement(ELEMENT_NAME); //$NON-NLS-1$
     actionInputProvider = emailAction.actionParameterMgr;
     setName(attachment.getVariableName());
@@ -134,7 +134,7 @@ public class EmailAttachment implements IActionSequenceElement {
     String paramName = isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim();
     Object name = null;
     if (paramName != null) {
-      name = getEmailAction().getInputValue(paramName);
+      name = getEmailAction().getActionInputValue(paramName).getValue();
     }
     if ((name != null) && (actionInputProvider != null)) {
       name = actionInputProvider.replaceParameterReferences(name.toString());
@@ -142,7 +142,7 @@ public class EmailAttachment implements IActionSequenceElement {
     return name != null ? name.toString() : null;
   }
   
-  public void setNameParam(IActionVariable variable) {
+  public void setNameParam(IActionInputVariable variable) {
     if (isDeprecatedAttachmentStyle()) {
       convertToNewAttachmentStyle();
     }
@@ -164,7 +164,7 @@ public class EmailAttachment implements IActionSequenceElement {
     return actionInput;
   }
   
-  public void setContentParam(IActionVariable variable) {
+  public void setContentParam(IActionInputVariable variable) {
     if (isDeprecatedAttachmentStyle()) {
       convertToNewAttachmentStyle();
     }
