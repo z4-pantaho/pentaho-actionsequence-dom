@@ -16,12 +16,11 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
 
 public class KettleJobAction extends ActionDefinition {
 
@@ -68,36 +67,20 @@ public class KettleJobAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setJob(String value) {
-    setInputValue(REPOSITORY_JOB, value);
+  public void setJob(IActionInput value) {
+    setActionInputValue(REPOSITORY_JOB, value);
   }
   
-  public String getJob() {
-    return getComponentDefinitionValue(REPOSITORY_JOB);
+  public IActionInput getJob() {
+    return getActionInputValue(REPOSITORY_JOB);
   }
   
-  public void setJobParam(IActionInputVariable variable) {
-    setInputParam(REPOSITORY_JOB, variable);
+  public void setDirectory(IActionInput value) {
+    setActionInputValue(REPOSITORY_DIRECTORY, value);
   }
   
-  public ActionInput getJobParam() {
-    return getInputParam(REPOSITORY_JOB);
-  }
-  
-  public void setDirectory(String value) {
-    setInputValue(REPOSITORY_DIRECTORY, value);
-  }
-  
-  public String getDirectory() {
-    return getComponentDefinitionValue(REPOSITORY_DIRECTORY);
-  }
-  
-  public void setDirectoryParam(IActionInputVariable variable) {
-    setInputParam(REPOSITORY_DIRECTORY, variable);
-  }
-  
-  public ActionInput getDirectoryParam() {
-    return getInputParam(REPOSITORY_DIRECTORY);
+  public IActionInput getDirectory() {
+    return getActionInputValue(REPOSITORY_DIRECTORY);
   }
   
   public ActionSequenceValidationError[] validate() {

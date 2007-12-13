@@ -22,6 +22,7 @@ import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class KettleTransformAction extends ActionDefinition {
@@ -78,52 +79,28 @@ public class KettleTransformAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setTransformation(String value) {
-    setInputValue(REPOSITORY_TRANSFORMATION, value);
+  public void setTransformation(IActionInput value) {
+    setActionInputValue(REPOSITORY_TRANSFORMATION, value);
   }
   
-  public String getTransformation() {
-    return getComponentDefinitionValue(REPOSITORY_TRANSFORMATION);
+  public IActionInput getTransformation() {
+    return getActionInputValue(REPOSITORY_TRANSFORMATION);
   }
   
-  public void setTransformationParam(IActionInputVariable variable) {
-    setInputParam(REPOSITORY_TRANSFORMATION, variable);
+  public void setDirectory(IActionInput value) {
+    setActionInputValue(REPOSITORY_DIRECTORY, value);
   }
   
-  public ActionInput getTransformationParam() {
-    return getInputParam(REPOSITORY_TRANSFORMATION);
+  public IActionInput getDirectory() {
+    return getActionInputValue(REPOSITORY_DIRECTORY);
   }
   
-  public void setDirectory(String value) {
-    setInputValue(REPOSITORY_DIRECTORY, value);
+  public void setImportstep(IActionInput value) {
+    setActionInputValue(TRANSFORMATION_STEP_ELEMENT, value);
   }
   
-  public String getDirectory() {
-    return getComponentDefinitionValue(REPOSITORY_DIRECTORY);
-  }
-  
-  public void setDirectoryParam(IActionInputVariable variable) {
-    setInputParam(REPOSITORY_DIRECTORY, variable);
-  }
-  
-  public ActionInput getDirectoryParam() {
-    return getInputParam(REPOSITORY_DIRECTORY);
-  }
-  
-  public void setImportstep(String value) {
-    setInputValue(TRANSFORMATION_STEP_ELEMENT, value);
-  }
-  
-  public String getImportstep() {
-    return getComponentDefinitionValue(TRANSFORMATION_STEP_ELEMENT);
-  }
-  
-  public void setImportstepParam(IActionInputVariable variable) {
-    setInputParam(TRANSFORMATION_STEP_ELEMENT, variable);
-  }
-  
-  public ActionInput getImportstepParam() {
-    return getInputParam(TRANSFORMATION_STEP_ELEMENT);
+  public IActionInput getImportstep() {
+    return getActionInputValue(TRANSFORMATION_STEP_ELEMENT);
   }
   
   public void setOutputResultSetName(String name) {
