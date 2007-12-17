@@ -15,16 +15,15 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
 
 public abstract class AbstractJobSchedulerAction extends ActionDefinition {
   public static final String COMPONENT_NAME = "org.pentaho.component.JobSchedulerComponent"; //$NON-NLS-1$
   public static final String JOB_NAME_ELEMENT = "jobName"; //$NON-NLS-1$
   public static final String JOB_ACTION_ELEMENT = "jobAction"; //$NON-NLS-1$
   public static final String JOB_NAME = "job-name"; //$NON-NLS-1$
-  
+  private static final String DEFAULT_STR = "default"; //$NON-NLS-1$
   
   protected AbstractJobSchedulerAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
     super(actionDefElement, actionInputProvider);
@@ -34,21 +33,14 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
     super(componentName);
   }
   
-  public void setJobName(String value) {
-    setInputValue(JOB_NAME_ELEMENT, value);
+  public void setJobName(IActionInput value) {
+    setActionInputValue(JOB_NAME_ELEMENT, value);
   }
   
-  public String getJobName() {
-    return getComponentDefinitionValue(JOB_NAME_ELEMENT);
+  public IActionInput getJobName() {
+   return getActionInputValue(JOB_NAME_ELEMENT);
   }
   
-  public void setJobNameParam(IActionInputVariable variable) {
-    setInputParam(JOB_NAME_ELEMENT, variable);
-  }
-  
-  public ActionInput getJobNameParam() {
-    return getInputParam(JOB_NAME_ELEMENT);
-  }
   
   public ActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
