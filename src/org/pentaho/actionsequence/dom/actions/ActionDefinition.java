@@ -281,7 +281,7 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
   
   public void setActionInputValue(String inputPrivateName, IActionInput value) {
     if ((value == null) || (value instanceof ActionInputConstant)) {
-      setInputValue(inputPrivateName, value.getStringValue(false) != null ? value.getStringValue(false) : null);
+      setInputValue(inputPrivateName, value != null ? value.getStringValue(false) : null);
     } else if (value instanceof IActionInputVariable) {
       setInputParam(inputPrivateName, (IActionInputVariable)value);
     }
@@ -357,20 +357,20 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
   }
   
   public IActionInput getActionInputValue(String privateParamName) {
-    IActionInput value = getInputParam(privateParamName);
+    IActionInput inputParam = getInputParam(privateParamName);
     
-    if ((value == null) || (value.getValue() == null)) {
-      String constantValue = getComponentDefinitionValue(privateParamName);
-      if (constantValue == null) {
-        if (value == null) {
-          value = new ActionInputConstant((Object)null, actionParameterMgr);
+    if ((inputParam == null) || (inputParam.getValue() == null)) {
+      String componentDefValue = getComponentDefinitionValue(privateParamName);
+      if (componentDefValue == null) {
+        if (inputParam == null) {
+          inputParam = IActionInput.NULL_INPUT;
         }
       } else {
-        value = new ActionInputConstant(constantValue, actionParameterMgr);
+        inputParam = new ActionInputConstant(componentDefValue, actionParameterMgr);
       }
     }
     
-    return value;
+    return inputParam;
   }
   
   /**
