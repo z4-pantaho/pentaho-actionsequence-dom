@@ -780,6 +780,12 @@ public class JFreeReportAction extends ActionDefinition {
       }
     }
   }
+   
+  public void setXsl(IActionInput value) {
+    setActionInputValue(XSL_ELEMENT, value);
+  }
   
-  
+  public IActionInput getXsl() {
+    return getActionInputValue(XSL_ELEMENT);
+  }
 }

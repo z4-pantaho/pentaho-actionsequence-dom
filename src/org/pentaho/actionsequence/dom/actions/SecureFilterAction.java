@@ -14,12 +14,15 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SecureFilterAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.component.SecureFilterComponent"; //$NON-NLS-1$
   public static final String TARGET_ELEMENT = "target" ; //$NON-NLS-1$
+  public static final String XSL_ELEMENT = "xsl"; //$NON-NLS-1$
+  
   protected static final String[] EXPECTED_INPUTS = new String[] {
     TARGET_ELEMENT
   };
@@ -40,19 +43,19 @@ public class SecureFilterAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setTarget(String value) {
-    setInputValue(TARGET_ELEMENT, value);
+  public void setTarget(IActionInput value) {
+    setActionInputValue(TARGET_ELEMENT, value);
   }
   
-  public String getTarget() {
-    return getComponentDefinitionValue(TARGET_ELEMENT);
+  public IActionInput getTarget() {
+    return getActionInputValue(TARGET_ELEMENT);
   }
   
-  public void setTargetParam(IActionInputVariable variable) {
-    setInputParam(TARGET_ELEMENT, variable);
+  public void setXsl(IActionInput value) {
+    setActionInputValue(XSL_ELEMENT, value);
   }
   
-  public ActionInput getTargetParam() {
-    return getInputParam(TARGET_ELEMENT);
+  public IActionInput getXsl() {
+    return getActionInputValue(XSL_ELEMENT);
   }
 }

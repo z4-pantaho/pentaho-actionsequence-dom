@@ -30,6 +30,7 @@ public class TemplateMsgAction extends ActionDefinition {
   public static final String TEMPLATE_FILE = "template-file" ; //$NON-NLS-1$
   public static final String MIME_TYPE = "mime-type"; //$NON-NLS-1$ 
   public static final String EXTENSION = "extension"; //$NON-NLS-1$
+  public static final String TEMPLATE_RESOURCE = "template-resource" ; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     TEMPLATE_ELEMENT
@@ -125,13 +126,5 @@ public class TemplateMsgAction extends ActionDefinition {
   
   public ActionOutput getOutputStringParam() {
     return getOutputParam(OUTPUT_MSG_ELEMENT);
-  }
-  
-  public ActionResource setTemplateFile(URI uri, String mimeType) {
-    return setResourceUri(TEMPLATE_ELEMENT, uri, mimeType);
-  }
-  
-  public ActionResource getFileToPrint() {
-    return getResourceParam(TEMPLATE_ELEMENT);
   }
 }

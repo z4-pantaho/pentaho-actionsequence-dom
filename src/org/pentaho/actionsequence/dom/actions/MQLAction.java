@@ -1,12 +1,17 @@
 package org.pentaho.actionsequence.dom.actions;
 
+import java.io.StringWriter;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInput;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class MQLAction extends AbstractRelationalDbAction {
   public static final String QUERY_RESULT_OUTPUT_NAME = "query-result"; //$NON-NLS-1$
@@ -67,10 +72,14 @@ public class MQLAction extends AbstractRelationalDbAction {
     // The following condition covers an alternative way to store the mql
     // within the action definition. This class does not use this method when
     // writing to the dom.
-    if (query.getValue() == null) {
+    if (query == IActionInput.NULL_INPUT) {
       Element element = getComponentDefElement(MQL_ELEMENT);
       if (element != null) {
-        query = new ActionInputConstant(element.asXML(), actionParameterMgr);
+        try {
+          query = new ActionInputConstant(prettyPrint(DocumentHelper.parseText(element.asXML())).getRootElement().asXML(), actionParameterMgr);
+        } catch (DocumentException e) {
+          query = new ActionInputConstant(element.asXML(), actionParameterMgr);
+        }
       }
     }
     
@@ -108,4 +117,23 @@ public class MQLAction extends AbstractRelationalDbAction {
   public IActionInput getForceDbDialect() {
     return getActionInputValue(FORCE_DB_DIALECT_ELEMENT);
   }
+  
+  private Document prettyPrint( Document document ) {
+    try {
+      OutputFormat format = OutputFormat.createPrettyPrint();
+      format.setEncoding(document.getXMLEncoding());
+      StringWriter stringWriter = new StringWriter();
+      XMLWriter writer = new XMLWriter( stringWriter, format );
+      // XMLWriter has a bug that is avoided if we reparse the document
+      // prior to calling XMLWriter.write()
+      writer.write(DocumentHelper.parseText(document.asXML()));
+      writer.close();
+      document = DocumentHelper.parseText( stringWriter.toString() );
+    }
+    catch ( Exception e ){
+      e.printStackTrace();
+            return( null );
+    }
+    return( document );
+  } 
 }

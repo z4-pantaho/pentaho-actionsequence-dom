@@ -467,9 +467,12 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
     ActionResource actionResource = null;
     if (inputElement == null) {
       if (includeImplicitResource) {
-        ActionSequenceResource actionSequenceResource = getDocument().getResource(privateResourceName);
-        if (actionSequenceResource != null) {
-          actionResource = new ImplicitActionResource(this, privateResourceName, actionParameterMgr);
+        ActionSequenceDocument document = getDocument();
+        if (document != null) {
+          ActionSequenceResource actionSequenceResource = getDocument().getResource(privateResourceName);
+          if (actionSequenceResource != null) {
+            actionResource = new ImplicitActionResource(this, privateResourceName, actionParameterMgr);
+          }
         }
       }
     } else {

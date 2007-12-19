@@ -16,11 +16,12 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class MdxQueryAction extends ActionDefinition {
@@ -68,9 +69,9 @@ public class MdxQueryAction extends ActionDefinition {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setJndi(""); //$NON-NLS-1$
-    setQuery(""); //$NON-NLS-1$
-    setLocation(DEFAULT_LOCATION);
+    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
+    setQuery(new ActionInputConstant("")); //$NON-NLS-1$
+    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
   }
   
@@ -100,230 +101,116 @@ public class MdxQueryAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setLocation(String value) {
-    setInputValue(LOCATION_ELEMENT, value);
-    if (value != null) {
+  public void setLocation(IActionInput value) {
+    setActionInputValue(LOCATION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnectionString(null);
     }
   }
   
-  public String getLocation() {
-    return getComponentDefinitionValue(LOCATION_ELEMENT);
+  public IActionInput getLocation() {
+    return getActionInputValue(LOCATION_ELEMENT);
   }
   
-  public void setLocationParam(IActionInputVariable variable) {
-    setInputParam(LOCATION_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-    }
-  }
-  
-  public ActionInput getLocationParam() {
-    return getInputParam(LOCATION_ELEMENT);
-  }
-  
-  public void setUserId(String value) {
-    setInputValue(USER_ID_ELEMENT, value);
-    if (value != null) {
+  public void setUserId(IActionInput value) {
+    setActionInputValue(USER_ID_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
+      setMdxConnection(null);
+      if (getLocation() == IActionInput.NULL_INPUT) {
+        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public String getUserId() {
-    return getComponentDefinitionValue(USER_ID_ELEMENT);
+  public IActionInput getUserId() {
+    return getActionInputValue(USER_ID_ELEMENT);
   }
   
-  public void setUserIdParam(IActionInputVariable variable) {
-    setInputParam(USER_ID_ELEMENT, variable);
-    if (variable != null) {
+  public void setPassword(IActionInput value) {
+    setActionInputValue(PASSWORD_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
+      setMdxConnection(null);
+      if (getLocation() == IActionInput.NULL_INPUT) {
+        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public ActionInput getUserIdParam() {
-    return getInputParam(USER_ID_ELEMENT);
+  public IActionInput getPassword() {
+    return getActionInputValue(PASSWORD_ELEMENT);
   }
   
-  public void setPassword(String value) {
-    setInputValue(PASSWORD_ELEMENT, value);
-    if (value != null) {
-      setMdxConnectionString(null);
-      setJndi(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
-      }    
-    }
-  }
-  
-  public String getPassword() {
-    return getComponentDefinitionValue(PASSWORD_ELEMENT);
-  }
-  
-  public void setPasswordParam(IActionInputVariable variable) {
-    setInputParam(PASSWORD_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-      setJndi(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
-      }    
-    }
-  }
-  
-  public ActionInput getPasswordParam() {
-    return getInputParam(PASSWORD_ELEMENT);
-  }
-  
-  public void setMdxConnectionString(String value) {
-    setInputValue(MDX_CONNECTION_ELEMENT, value);
-    if (value != null) {
+  public void setMdxConnectionString(IActionInput value) {
+    setActionInputValue(MDX_CONNECTION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setJndi(null);
       setConnection(null);
       setLocation(null);
       setUserId(null);
       setPassword(null);
       setRole(null);
-      setConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
+      if (getLocation() == IActionInput.NULL_INPUT) {
+        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public String getMdxConnectionString() {
-    return getComponentDefinitionValue(MDX_CONNECTION_ELEMENT);
+  public IActionInput getMdxConnectionString() {
+    return getActionInputValue(MDX_CONNECTION_ELEMENT);
   }
   
-  public void setMdxConnectionStringParam(IActionInputVariable variable) {
-    setInputParam(MDX_CONNECTION_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-      setConnection(null);
-      setLocation(null);
-      setUserId(null);
-      setPassword(null);
-      setRole(null);
-      setConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
-      }    
-    }
+  public void setRole(IActionInput value) {
+    setActionInputValue(ROLE_ELEMENT, value);
   }
   
-  public ActionInput getMdxConnectionStringParam() {
-    return getInputParam(MDX_CONNECTION_ELEMENT);
+  public IActionInput getRole() {
+    return getActionInputValue(ROLE_ELEMENT);
   }
   
-  public void setRole(String value) {
-    setInputValue(ROLE_ELEMENT, value);
-  }
-  
-  public String getRole() {
-    return getComponentDefinitionValue(ROLE_ELEMENT);
-  }
-  
-  public void setRoleParam(IActionInputVariable variable) {
-    setInputParam(ROLE_ELEMENT, variable);
-  }
-  
-  public ActionInput getRoleParam() {
-    return getInputParam(ROLE_ELEMENT);
-  }
-  
-  public void setConnection(String value) {
-    setInputValue(CONNECTION_ELEMENT, value);
-    if (value != null) {
+  public void setConnection(IActionInput value) {
+    setActionInputValue(CONNECTION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
+      setMdxConnection(null);
+      if (getLocation() == IActionInput.NULL_INPUT) {
+        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public String getConnection() {
-    return getComponentDefinitionValue(CONNECTION_ELEMENT);
+  public IActionInput getConnection() {
+    return getActionInputValue(CONNECTION_ELEMENT);
   }
   
-  public void setConnectionParam(IActionInputVariable variable) {
-    setInputParam(CONNECTION_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-      setJndi(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
-      }    
-    }
-  }
-  
-  public ActionInput getConnectionParam() {
-    return getInputParam(CONNECTION_ELEMENT);
-  }
-  
-  public void setJndi(String value) {
-    setInputValue(JNDI_ELEMENT, value);
-    if (value != null) {
+  public void setJndi(IActionInput value) {
+    setActionInputValue(JNDI_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setConnection(null);
       setUserId(null);
       setPassword(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
+      setMdxConnection(null);
+      if (getLocation() == IActionInput.NULL_INPUT) {
+        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public String getJndi() {
-    return getComponentDefinitionValue(JNDI_ELEMENT);
+  public IActionInput getJndi() {
+    return getActionInputValue(JNDI_ELEMENT);
   }
   
-  public void setJndiParam(IActionInputVariable variable) {
-    setInputParam(JNDI_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-      setConnection(null);
-      setUserId(null);
-      setPassword(null);
-      setMdxConnectionParam(null);
-      if ((getLocation() == null) && (getLocationParam() == null)) {
-        setLocation(DEFAULT_LOCATION);
-      }    
-    }
+  public void setQuery(IActionInput value) {
+    setActionInputValue(QUERY_ELEMENT, value);
   }
   
-  public ActionInput getJndiParam() {
-    return getInputParam(JNDI_ELEMENT);
-  }
-  
-  public void setQuery(String value) {
-    setInputValue(QUERY_ELEMENT, value);
-  }
-  
-  public String getQuery() {
-    return getComponentDefinitionValue(QUERY_ELEMENT);
-  }
-  
-  public void setQueryParam(IActionInputVariable variable) {
-    setInputParam(QUERY_ELEMENT, variable);
-  }
-  
-  public ActionInput getQueryParam() {
-    return getInputParam(QUERY_ELEMENT);
+  public IActionInput getQuery() {
+    return getActionInputValue(QUERY_ELEMENT);
   }
   
   public void setOutputResultSetName(String name) {
@@ -356,8 +243,8 @@ public class MdxQueryAction extends ActionDefinition {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public void setMdxConnectionParam(IActionInputVariable variable) {
-    setInputParam(PREPARED_COMPONENT_ELEMENT, variable);
+  public void setMdxConnection(IActionInputVariable variable) {
+    setActionInputValue(PREPARED_COMPONENT_ELEMENT, variable);
     if (variable != null) {
       setMdxConnectionString(null);
       setConnection(null);
@@ -368,8 +255,8 @@ public class MdxQueryAction extends ActionDefinition {
     }
   }
   
-  public ActionInput getMdxConnectionParam() {
-    return getInputParam(PREPARED_COMPONENT_ELEMENT);
+  public IActionInput getMdxConnection() {
+    return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
   }
   
   public ActionSequenceValidationError[] validate() {

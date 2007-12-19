@@ -33,6 +33,7 @@ public class KettleTransformAction extends ActionDefinition {
   public static final String REPOSITORY_TRANSFORMATION = "transformation"; //$NON-NLS-1$
   public static final String[] EXPECTED_RESOURCES = new String[]{TRANSFORMATION_FILE_ELEMENT};
   public static final String OUTPUT_RESULT_SET = "output-result-set"; //$NON-NLS-1$
+  public static final String NULL_MAPPING = "NULL_MAPPING";
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     TRANSFORMATION_STEP_ELEMENT, REPOSITORY_DIRECTORY, REPOSITORY_TRANSFORMATION
@@ -175,7 +176,7 @@ public class KettleTransformAction extends ActionDefinition {
         if ((actionResources.length == 1) && actionResources[0].equals(actionResource)) {
           actionSequenceResource.delete();
         } else {
-          actionResource.setMapping("NULL_MAPPING");
+          actionResource.setMapping(NULL_MAPPING);
         }
       }
       actionResource = null;
@@ -187,7 +188,7 @@ public class KettleTransformAction extends ActionDefinition {
   
   public ActionResource getTransformationFile() {
     ActionResource actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
-    if (actionResource.getMapping().equals("NULL_MAPPING")) {
+    if ((actionResource != null) && NULL_MAPPING.equals(actionResource.getMapping())) {
       actionResource = null;
     }
     return actionResource;
