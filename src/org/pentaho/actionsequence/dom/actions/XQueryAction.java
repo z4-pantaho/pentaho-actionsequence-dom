@@ -16,12 +16,11 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
 
 public class XQueryAction extends ActionDefinition {
 
@@ -76,36 +75,20 @@ public class XQueryAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setSourceXml(String value) {
-    setInputValue(DOCUMENT_ELEMENT, value);
+  public void setSourceXml(IActionInput value) {
+    setActionInputValue(DOCUMENT_ELEMENT, value);
   }
   
-  public String getSourceXml() {
-    return getComponentDefinitionValue(DOCUMENT_ELEMENT);
+  public IActionInput getSourceXml() {
+    return getActionInputValue(DOCUMENT_ELEMENT);
   }
   
-  public void setSourceXmlParam(IActionInputVariable variable) {
-    setInputParam(DOCUMENT_ELEMENT, variable);
+  public void setQuery(IActionInput value) {
+    setActionInputValue(QUERY_ELEMENT, value);
   }
   
-  public ActionInput getSourceXmlParam() {
-    return getInputParam(DOCUMENT_ELEMENT);
-  }
-
-  public void setQuery(String value) {
-    setInputValue(QUERY_ELEMENT, value);
-  }
-  
-  public String getQuery() {
-    return getComponentDefinitionValue(QUERY_ELEMENT);
-  }
-  
-  public void setQueryParam(IActionInputVariable variable) {
-    setInputParam(QUERY_ELEMENT, variable);
-  }
-  
-  public ActionInput getQueryParam() {
-    return getInputParam(QUERY_ELEMENT);
+  public IActionInput getQuery() {
+    return getActionInputValue(QUERY_ELEMENT);
   }
   
   public void setOutputResultSetName(String name) {
