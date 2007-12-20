@@ -17,10 +17,12 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class MdxConnectionAction extends ActionDefinition {
@@ -69,8 +71,8 @@ public class MdxConnectionAction extends ActionDefinition {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setJndi(""); //$NON-NLS-1$
-    setLocation(DEFAULT_LOCATION);
+    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
+    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     setOutputConnectionName(DEFAULT_CONNECTION_NAME);
   }
   
@@ -86,105 +88,56 @@ public class MdxConnectionAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setLocation(String value) {
-    setInputValue(LOCATION_ELEMENT, value);
-    if (value != null) {
+  public void setLocation(IActionInput value) {
+    setActionInputValue(LOCATION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
     }
   }
   
-  public String getLocation() {
-    return getComponentDefinitionValue(LOCATION_ELEMENT);
+  public IActionInput getLocation() {
+    return getActionInputValue(LOCATION_ELEMENT);
   }
   
-  public void setLocationParam(IActionInputVariable variable) {
-    setInputParam(LOCATION_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-    }
-  }
-  
-  public ActionInput getLocationParam() {
-    return getInputParam(LOCATION_ELEMENT);
-  }
-  
-  public void setUserId(String value) {
-    setInputValue(USER_ID_ELEMENT, value);
-    if (value != null) {
+  public void setUserId(IActionInput value) {
+    setActionInputValue(USER_ID_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
     }
   }
   
-  public String getUserId() {
-    return getComponentDefinitionValue(USER_ID_ELEMENT);
+  public IActionInput getUserId() {
+    return getActionInputValue(USER_ID_ELEMENT);
   }
   
-  public void setUserIdParam(IActionInputVariable variable) {
-    setInputParam(USER_ID_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-      setJndi(null);
-    }
-  }
-  
-  public ActionInput getUserIdParam() {
-    return getInputParam(USER_ID_ELEMENT);
-  }
-  
-  public void setPassword(String value) {
-    setInputValue(PASSWORD_ELEMENT, value);
-    if (value != null) {
+  public void setPassword(IActionInput value) {
+    setActionInputValue(PASSWORD_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
     }
   }
 
-  public String getDriver() {
-    return getComponentDefinitionValue(DRIVER_ELEMENT);
+  public IActionInput getPassword() {
+    return getActionInputValue(PASSWORD_ELEMENT);
   }
   
-  public void setDriverParam(IActionInputVariable variable) {
-    setInputParam(DRIVER_ELEMENT, variable);
-    if (variable != null) {
+  public void setDriver(IActionInput value) {
+    setActionInputValue(DRIVER_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
     }
   }
   
-  public ActionInput getDriverParam() {
-    return getInputParam(DRIVER_ELEMENT);
+  public IActionInput getDriver() {
+    return getActionInputValue(DRIVER_ELEMENT);
   }
   
-  
-  
-  public void setDriver(String value) {
-    setInputValue(DRIVER_ELEMENT, value);
-    if (value != null) {
-      setMdxConnectionString(null);
-      setJndi(null);
-    }
-  }
-  
-  public String getPassword() {
-    return getComponentDefinitionValue(PASSWORD_ELEMENT);
-  }
-  
-  public void setPasswordParam(IActionInputVariable variable) {
-    setInputParam(PASSWORD_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-      setJndi(null);
-    }
-  }
-  
-  public ActionInput getPasswordParam() {
-    return getInputParam(PASSWORD_ELEMENT);
-  }
-  
-  public void setMdxConnectionString(String value) {
-    setInputValue(MDX_CONNECTION_ELEMENT, value);
-    if (value != null) {
+  public void setMdxConnectionString(IActionInput value) {
+    setActionInputValue(MDX_CONNECTION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
       setConnection(null);
       setLocation(null);
@@ -195,70 +148,34 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public String getMdxConnectionString() {
-    return getComponentDefinitionValue(MDX_CONNECTION_ELEMENT);
+  public IActionInput getMdxConnectionString() {
+    return getActionInputValue(MDX_CONNECTION_ELEMENT);
   }
   
-  public void setMdxConnectionStringParam(IActionInputVariable variable) {
-    setInputParam(MDX_CONNECTION_ELEMENT, variable);
-    if (variable != null) {
+  public void setRole(IActionInput value) {
+    setActionInputValue(ROLE_ELEMENT, value);
+  }
+  
+  public IActionInput getRole() {
+    return getActionInputValue(ROLE_ELEMENT);
+  }
+  
+  public void setConnection(IActionInput value) {
+    setActionInputValue(CONNECTION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
-      setConnection(null);
-      setLocation(null);
-      setUserId(null);
-      setPassword(null);
-      setDriver(null);
-      setRole(null);
-    }
-  }
-  
-  public ActionInput getMdxConnectionStringParam() {
-    return getInputParam(MDX_CONNECTION_ELEMENT);
-  }
-  
-  public void setRole(String value) {
-    setInputValue(ROLE_ELEMENT, value);
-  }
-  
-  public String getRole() {
-    return getComponentDefinitionValue(ROLE_ELEMENT);
-  }
-  
-  public void setRoleParam(IActionInputVariable variable) {
-    setInputParam(ROLE_ELEMENT, variable);
-  }
-  
-  public ActionInput getRoleParam() {
-    return getInputParam(ROLE_ELEMENT);
-  }
-  
-  public void setConnection(String value) {
-    setInputValue(CONNECTION_ELEMENT, value);
-    if (value != null) {
       setMdxConnectionString(null);
-      setJndi(null);
     }
   }
   
-  public String getConnection() {
-    return getComponentDefinitionValue(CONNECTION_ELEMENT);
+  public IActionInput getConnection() {
+    return getActionInputValue(CONNECTION_ELEMENT);
   }
   
-  public void setConnectionParam(IActionInputVariable variable) {
-    setInputParam(CONNECTION_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-      setJndi(null);
-    }
-  }
   
-  public ActionInput getConnectionParam() {
-    return getInputParam(CONNECTION_ELEMENT);
-  }
-  
-  public void setJndi(String value) {
-    setInputValue(JNDI_ELEMENT, value);
-    if (value != null) {
+  public void setJndi(IActionInput value) {
+    setActionInputValue(JNDI_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setConnection(null);
       setUserId(null);
@@ -267,23 +184,8 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public String getJndi() {
-    return getComponentDefinitionValue(JNDI_ELEMENT);
-  }
-  
-  public void setJndiParam(IActionInputVariable variable) {
-    setInputParam(JNDI_ELEMENT, variable);
-    if (variable != null) {
-      setMdxConnectionString(null);
-      setConnection(null);
-      setUserId(null);
-      setPassword(null);
-      setDriver(null);
-    }
-  }
-  
-  public ActionInput getJndiParam() {
-    return getInputParam(JNDI_ELEMENT);
+  public IActionInput getJndi() {
+    return getActionInputValue(JNDI_ELEMENT);
   }
   
   public void setOutputConnectionName(String name) {
