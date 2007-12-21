@@ -105,6 +105,7 @@ public class ActionSequenceDocument {
   public static final String RESOURCE_TYPE = "resource"; //$NON-NLS-1$
   public static final String SQL_CONNECTION_TYPE = "sql-connection"; //$NON-NLS-1$
   public static final String MDX_CONNECTION_TYPE = "mdx-connection"; //$NON-NLS-1$
+  public static final String XQUERY_CONNECTION_TYPE = "xquery-connection"; //$NON-NLS-1$
   public static final String SQL_QUERY_TYPE = "sql-query"; //$NON-NLS-1$
   public static final String MDX_QUERY_TYPE = "mdx-query"; //$NON-NLS-1$
   public static final String HQL_QUERY_TYPE = "hql-query"; //$NON-NLS-1$
