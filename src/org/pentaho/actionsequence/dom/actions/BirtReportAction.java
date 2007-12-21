@@ -16,12 +16,11 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInput;
 
 public class BirtReportAction extends ActionDefinition {
 
@@ -66,20 +65,12 @@ public class BirtReportAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setOutputType(String value) {
-    setInputValue(OUTPUT_TYPE_ELEMENT, value);
+  public void setOutputType(IActionInput value) {
+    setActionInputValue(OUTPUT_TYPE_ELEMENT, value);
   }
   
-  public String getOutputType() {
-    return getComponentDefinitionValue(OUTPUT_TYPE_ELEMENT);
-  }
-  
-  public void setOutputTypeParam(IActionInputVariable variable) {
-    setInputParam(OUTPUT_TYPE_ELEMENT, variable);
-  }
-  
-  public ActionInput getOutputTypeParam() {
-    return getInputParam(OUTPUT_TYPE_ELEMENT);
+  public IActionInput getOutputType() {
+    return getActionInputValue(OUTPUT_TYPE_ELEMENT);
   }
   
   public void setOutputReportName(String name) {
