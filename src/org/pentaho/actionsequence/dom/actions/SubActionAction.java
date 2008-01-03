@@ -13,8 +13,8 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
+import org.pentaho.actionsequence.dom.IActionInput;
 
 public class SubActionAction extends ActionDefinition {
 
@@ -48,77 +48,45 @@ public class SubActionAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setSolution(String value) {
-    setInputValue(SOLUTION_ELEMENT, value);
+  public void setSolution(IActionInput value) {
+    setActionInputValue(SOLUTION_ELEMENT, value);
   }
   
-  public String getSolution() {
-    return getComponentDefinitionValue(SOLUTION_ELEMENT);
+  public IActionInput getSolution() {
+    return getActionInputValue(SOLUTION_ELEMENT);
   }
   
-  public void setSolutionParam(IActionInputVariable variable) {
-    setInputParam(SOLUTION_ELEMENT, variable);
+  public void setPath(IActionInput value) {
+    setActionInputValue(PATH_ELEMENT, value);
   }
   
-  public ActionInput getSolutionParam() {
-    return getInputParam(SOLUTION_ELEMENT);
+  public IActionInput getPath() {
+    return getActionInputValue(PATH_ELEMENT);
   }
   
-  public void setPath(String value) {
-    setInputValue(PATH_ELEMENT, value);
+  public void setAction(IActionInput value) {
+    setActionInputValue(ACTION_ELEMENT, value);
   }
   
-  public String getPath() {
-    return getComponentDefinitionValue(PATH_ELEMENT);
+  public IActionInput getAction() {
+    return getActionInputValue(ACTION_ELEMENT);
   }
   
-  public void setPathParam(IActionInputVariable variable) {
-    setInputParam(PATH_ELEMENT, variable);
-  }
-  
-  public ActionInput getPathParam() {
-    return getInputParam(PATH_ELEMENT);
-  }
-
-  public void setAction(String value) {
-    setInputValue(ACTION_ELEMENT, value);
-  }
-  
-  public String getAction() {
-    return getComponentDefinitionValue(ACTION_ELEMENT);
-  }
-  
-  public void setActionParam(IActionInputVariable variable) {
-    setInputParam(ACTION_ELEMENT, variable);
-  }
-  
-  public ActionInput getActionParam() {
-    return getInputParam(ACTION_ELEMENT);
-  }
-  
-  public void setSessionProxy(String value) {
-    setInputValue(PROXY_REF_ELEMENT, value);
+  public void setSessionProxy(IActionInput value) {
+    setActionInputValue(PROXY_REF_ELEMENT, value);
     if (value == null) {
-      setInputValue(PROXY_ELEMENT, null);
+      setActionInputValue(PROXY_ELEMENT, null);
     } else {
-      setInputValue(PROXY_ELEMENT, PROXY_REF_ELEMENT);
+      setActionInputValue(PROXY_ELEMENT, new ActionInputConstant(PROXY_REF_ELEMENT));
     }
   }
   
-  public String getSessionProxy() {
-    return getComponentDefinitionValue(PROXY_REF_ELEMENT);
-  }
-  
-  public void setSessionProxyParam(IActionInputVariable variable) {
-    setInputParam(PROXY_REF_ELEMENT, variable);
-    if (variable == null) {
-      setInputValue(PROXY_ELEMENT, null);
-    } else {
-      setInputValue(PROXY_ELEMENT, PROXY_REF_ELEMENT);
+  public IActionInput getSessionProxy() {
+    IActionInput actionInput = getActionInputValue(PROXY_ELEMENT);
+    String stringValue = actionInput.getStringValue();
+    if (stringValue != null) {
+      actionInput = getActionInputValue(stringValue);
     }
-  }
-  
-  public ActionInput getSessionProxyParam() {
-    return getInputParam(PROXY_REF_ELEMENT);
+    return actionInput;
   }
 }
