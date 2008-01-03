@@ -12,19 +12,17 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
-import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
-public class MdxQueryAction extends ActionDefinition {
+public class MdxQueryAction extends MdxConnectionAction {
 
   public static final String COMPONENT_NAME = "org.pentaho.component.MDXLookupRule"; //$NON-NLS-1$
   public static final String CONNECTION_ELEMENT = "connection"; //$NON-NLS-1$
@@ -75,15 +73,15 @@ public class MdxQueryAction extends ActionDefinition {
     setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
   }
   
-  public String[] getReservedInputNames() {
-    return EXPECTED_INPUTS;
-  }
-  
   public static boolean accepts(Element element) {
     return ActionDefinition.accepts(element)
       && hasComponentName(element, COMPONENT_NAME)
       && ((element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + QUERY_ELEMENT) != null) //$NON-NLS-1$
           || (element.selectSingleNode(ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + QUERY_ELEMENT) != null)); //$NON-NLS-1$
+  }
+  
+  public String[] getReservedInputNames() {
+    return EXPECTED_INPUTS;
   }
   
   public String[] getReservedOutputNames() {
@@ -97,42 +95,19 @@ public class MdxQueryAction extends ActionDefinition {
     return new String[]{expectedOutput};
   }
   
-  public String[] getReservedResourceNames() {
-    return EXPECTED_RESOURCES;
-  }
-  
-  public void setLocation(IActionInput value) {
-    setActionInputValue(LOCATION_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
-      setMdxConnectionString(null);
-    }
-  }
-  
-  public IActionInput getLocation() {
-    return getActionInputValue(LOCATION_ELEMENT);
-  }
-  
   public void setUserId(IActionInput value) {
-    setActionInputValue(USER_ID_ELEMENT, value);
+    super.setUserId(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
-      setMdxConnectionString(null);
-      setJndi(null);
       setMdxConnection(null);
       if (getLocation() == IActionInput.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
-  }
-  
-  public IActionInput getUserId() {
-    return getActionInputValue(USER_ID_ELEMENT);
   }
   
   public void setPassword(IActionInput value) {
-    setActionInputValue(PASSWORD_ELEMENT, value);
+    super.setPassword(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
-      setMdxConnectionString(null);
-      setJndi(null);
       setMdxConnection(null);
       if (getLocation() == IActionInput.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
@@ -140,69 +115,42 @@ public class MdxQueryAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getPassword() {
-    return getActionInputValue(PASSWORD_ELEMENT);
+  public void setConnectionProps(IActionInput value) {
+    super.setConnectionProps(value);
+  }
+  
+  public IActionInput getConnectionProps() {
+    return super.getConnectionProps();
   }
   
   public void setMdxConnectionString(IActionInput value) {
-    setActionInputValue(MDX_CONNECTION_ELEMENT, value);
+    super.setMdxConnectionString(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
-      setJndi(null);
-      setConnection(null);
-      setLocation(null);
-      setUserId(null);
-      setPassword(null);
-      setRole(null);
-      if (getLocation() == IActionInput.NULL_INPUT) {
-        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-      }    
+    	setMdxConnection(null);
+	    if (getLocation() == IActionInput.NULL_INPUT) {
+  	    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
+    	}
     }
-  }
-  
-  public IActionInput getMdxConnectionString() {
-    return getActionInputValue(MDX_CONNECTION_ELEMENT);
-  }
-  
-  public void setRole(IActionInput value) {
-    setActionInputValue(ROLE_ELEMENT, value);
-  }
-  
-  public IActionInput getRole() {
-    return getActionInputValue(ROLE_ELEMENT);
   }
   
   public void setConnection(IActionInput value) {
-    setActionInputValue(CONNECTION_ELEMENT, value);
+    super.setConnection(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
-      setMdxConnectionString(null);
-      setJndi(null);
       setMdxConnection(null);
       if (getLocation() == IActionInput.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
-  }
-  
-  public IActionInput getConnection() {
-    return getActionInputValue(CONNECTION_ELEMENT);
   }
   
   public void setJndi(IActionInput value) {
-    setActionInputValue(JNDI_ELEMENT, value);
+    super.setJndi(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
-      setMdxConnectionString(null);
-      setConnection(null);
-      setUserId(null);
-      setPassword(null);
       setMdxConnection(null);
       if (getLocation() == IActionInput.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
-  }
-  
-  public IActionInput getJndi() {
-    return getActionInputValue(JNDI_ELEMENT);
   }
   
   public void setQuery(IActionInput value) {
@@ -225,7 +173,23 @@ public class MdxQueryAction extends ActionDefinition {
   }
   
   public ActionOutput getOutputResultSetParam() {
-    return getOutputParam(QUERY_RESULTS_ELEMENT);
+    ActionOutput actionOutput = getOutputParam(QUERY_RESULTS_ELEMENT);
+    if (actionOutput == null) {
+      ActionOutput[] allOutputs = getAllOutputParams();
+      if (allOutputs.length > 0) {
+        actionOutput = allOutputs[0];
+      }
+    }
+    return actionOutput;
+  }
+  
+  
+  public IActionInput getPreparedComponent() {
+    return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
+  }  
+  
+  public void setPreparedComponent(IActionInput value) {
+    setActionInputValue(PREPARED_COMPONENT_ELEMENT, value);
   }
   
   public void setOutputPreparedStatementName(String name) {
@@ -349,13 +313,5 @@ public class MdxQueryAction extends ActionDefinition {
     }
     
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
-  }
-  
-  public ActionResource setCatalog(URI uri, String mimeType) {
-    return setResourceUri(CATALOG_ELEMENT, uri, mimeType);
-  }
-  
-  public ActionResource getCatalog() {
-    return getResourceParam(CATALOG_ELEMENT);
   }
 }
