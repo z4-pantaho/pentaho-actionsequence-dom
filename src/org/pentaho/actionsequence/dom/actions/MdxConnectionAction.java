@@ -14,9 +14,12 @@ package org.pentaho.actionsequence.dom.actions;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
@@ -29,6 +32,7 @@ public class MdxConnectionAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.component.MDXLookupRule"; //$NON-NLS-1$
   public static final String CONNECTION_ELEMENT = "connection"; //$NON-NLS-1$
+  public static final String CONNECTION_PROPS = "connection-properties"; //$NON-NLS-1$
   public static final String USER_ID_ELEMENT = "user-id"; //$NON-NLS-1$
   public static final String PASSWORD_ELEMENT = "password"; //$NON-NLS-1$
   public static final String DRIVER_ELEMENT = "driver"; //$NON-NLS-1$
@@ -41,6 +45,9 @@ public class MdxConnectionAction extends ActionDefinition {
   public static final String DEFAULT_CONNECTION_NAME = "shared_olap_connection"; //$NON-NLS-1$
   public static final String DEFAULT_LOCATION = "mondrian"; //$NON-NLS-1$
   public static final String OUTPUT_CONNECTION = "output-connection"; //$NON-NLS-1$
+  public static final String PROPERTY = "property"; //$NON-NLS-1$
+  public static final String KEY_NODE = "key"; //$NON-NLS-1$
+  public static final String VALUE_NODE = "value"; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     LOCATION_ELEMENT,
@@ -62,9 +69,13 @@ public class MdxConnectionAction extends ActionDefinition {
   }
 
   public MdxConnectionAction() {
-    super(COMPONENT_NAME);
+    this(COMPONENT_NAME);
   }
 
+  protected MdxConnectionAction(String componentName) {
+    super(componentName);
+  }
+  
   public static boolean accepts(Element element) {
     return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
@@ -104,6 +115,7 @@ public class MdxConnectionAction extends ActionDefinition {
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
+      setConnectionProps(null);      
     }
   }
   
@@ -116,6 +128,7 @@ public class MdxConnectionAction extends ActionDefinition {
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
+      setConnectionProps(null);
     }
   }
 
@@ -128,6 +141,7 @@ public class MdxConnectionAction extends ActionDefinition {
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
+      setConnectionProps(null);
     }
   }
   
@@ -140,6 +154,7 @@ public class MdxConnectionAction extends ActionDefinition {
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
       setConnection(null);
+      setConnectionProps(null);
       setLocation(null);
       setUserId(null);
       setPassword(null);
@@ -155,6 +170,7 @@ public class MdxConnectionAction extends ActionDefinition {
   public void setRole(IActionInput value) {
     setActionInputValue(ROLE_ELEMENT, value);
   }
+
   
   public IActionInput getRole() {
     return getActionInputValue(ROLE_ELEMENT);
@@ -165,13 +181,68 @@ public class MdxConnectionAction extends ActionDefinition {
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
       setMdxConnectionString(null);
+      setConnectionProps(null);
     }
   }
   
   public IActionInput getConnection() {
     return getActionInputValue(CONNECTION_ELEMENT);
   }
+
+  public void setConnectionProps(IActionInput value) {
+    if (value instanceof IActionInputVariable) {
+      throw new IllegalArgumentException();
+    } else if (value == null || value.getValue() == null) {
+      clearComponentDef(CONNECTION_PROPS);      
+    } else {
+      clearComponentDef(CONNECTION_PROPS);
+      /*
+       * Get the hash map of the key, value pairs from the properties and
+       * create an entry for each key inside element CONNECTION_PROPS
+       */
+      Properties properties = (Properties)value.getValue();
+      Element compDefElement =(Element)actionDefElement.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME);
+      Element connectionPropsElement = compDefElement.addElement(CONNECTION_PROPS);
+      for (Iterator iter = properties.entrySet().iterator(); iter.hasNext();) {
+        Map.Entry mapEntry = (Map.Entry)iter.next();
+        Element propElement = connectionPropsElement.addElement(PROPERTY);
+        propElement.addElement(KEY_NODE).setText(mapEntry.getKey().toString());
+        propElement.addElement(VALUE_NODE).setText(mapEntry.getValue().toString());
+      }
+      setDriver(null);
+      setUserId(null);
+      setPassword(null);
+      setJndi(null);
+      setMdxConnectionString(null);
+      setConnection(null);
+    }
+  }
+
+  public IActionInput getConnectionProps() {
+    IActionInput actionInput = IActionInput.NULL_INPUT;
+    Element connectionPropsElement = getComponentDefElement(CONNECTION_PROPS);
+    if (connectionPropsElement != null) {
+      Properties properties = new Properties();
+      List propertyElements = connectionPropsElement.selectNodes(PROPERTY);
+      for (Iterator iter = propertyElements.iterator(); iter.hasNext();) {
+        Element propElement = (Element)iter.next();
+        Element keyElement = propElement.element(KEY_NODE);
+        Element valueElement = propElement.element(VALUE_NODE);
+        if (keyElement != null) {
+          properties.put(keyElement.getText(), valueElement != null ? valueElement.getText(): null);
+        }
+      }
+      actionInput = new ActionInputConstant(properties);
+    }
+    return actionInput;
+  }
   
+  private void clearComponentDef (String key) {
+    Element element = getComponentDefElement(key);
+    if (element != null) {
+      element.detach();
+    }
+  }  
   
   public void setJndi(IActionInput value) {
     setActionInputValue(JNDI_ELEMENT, value);
@@ -181,6 +252,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setUserId(null);
       setPassword(null);
       setDriver(null);
+      setConnectionProps(null);   
     }
   }
   
@@ -267,11 +339,20 @@ public class MdxConnectionAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public ActionResource setCatalog(URI uri, String mimeType) {
+  public ActionResource setCatalogResource(URI uri, String mimeType) {
     return setResourceUri(CATALOG_ELEMENT, uri, mimeType);
   }
   
-  public ActionResource getCatalog() {
+  public ActionResource getCatalogResource() {
     return getResourceParam(CATALOG_ELEMENT);
   }
+  
+  public void setCatalog(IActionInput value) {
+    setActionInputValue(CATALOG_ELEMENT, value);
+  }
+  
+  public IActionInput getCatalog() {
+    return getActionInputValue(CATALOG_ELEMENT);
+  }
+
 }
