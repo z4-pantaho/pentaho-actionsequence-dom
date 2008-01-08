@@ -18,6 +18,7 @@ public class ActionFactory {
     SqlDataAction.class,
     SqlExecuteAction.class,
     MdxQueryAction.class,
+    HQLQueryAction.class,
     XQueryAction.class,
     XQueryConnectionAction.class,
     PivotViewAction.class,
@@ -50,7 +51,8 @@ public class ActionFactory {
     SecureFilterAction.class,
     SubActionAction.class,
     SqlConnectionAction.class,
-    MdxConnectionAction.class
+    MdxConnectionAction.class,
+    HQLConnectionAction.class
   };
   
   public static ActionDefinition getActionDefinition(Element actionDefDomElement, IActionParameterMgr actionInputProvider) {
