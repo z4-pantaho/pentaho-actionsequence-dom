@@ -20,7 +20,7 @@ import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 
 public class KettleJobAction extends ActionDefinition {
 
@@ -67,19 +67,19 @@ public class KettleJobAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setJob(IActionInput value) {
+  public void setJob(IActionInputValueProvider value) {
     setActionInputValue(REPOSITORY_JOB, value);
   }
   
-  public IActionInput getJob() {
+  public IActionInputValueProvider getJob() {
     return getActionInputValue(REPOSITORY_JOB);
   }
   
-  public void setDirectory(IActionInput value) {
+  public void setDirectory(IActionInputValueProvider value) {
     setActionInputValue(REPOSITORY_DIRECTORY, value);
   }
   
-  public IActionInput getDirectory() {
+  public IActionInputValueProvider getDirectory() {
     return getActionInputValue(REPOSITORY_DIRECTORY);
   }
   

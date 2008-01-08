@@ -11,7 +11,7 @@ import org.dom4j.io.XMLWriter;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 
 public class MQLAction extends AbstractRelationalDbAction {
   public static final String QUERY_RESULT_OUTPUT_NAME = "query-result"; //$NON-NLS-1$
@@ -66,13 +66,13 @@ public class MQLAction extends AbstractRelationalDbAction {
   }
 
   
-  public IActionInput getQuery() {
-    IActionInput query = super.getQuery();
+  public IActionInputValueProvider getQuery() {
+    IActionInputValueProvider query = super.getQuery();
     
     // The following condition covers an alternative way to store the mql
     // within the action definition. This class does not use this method when
     // writing to the dom.
-    if (query == IActionInput.NULL_INPUT) {
+    if (query == IActionInputValueProvider.NULL_INPUT) {
       Element element = getComponentDefElement(MQL_ELEMENT);
       if (element != null) {
         try {
@@ -86,7 +86,7 @@ public class MQLAction extends AbstractRelationalDbAction {
     return query;
   }
 
-  public void setQuery(IActionInput value) {
+  public void setQuery(IActionInputValueProvider value) {
     super.setQuery(value);
     
     // The following removes an alternative way to store the mql
@@ -98,15 +98,15 @@ public class MQLAction extends AbstractRelationalDbAction {
     }
   }
 
-  public void setDisableDistinct(IActionInput value) {
+  public void setDisableDistinct(IActionInputValueProvider value) {
     setActionInputValue(DISABLE_DISTINCT_ELEMENT, value);
   }
   
-  public IActionInput getDisableDistinct() {
+  public IActionInputValueProvider getDisableDistinct() {
     return getActionInputValue(DISABLE_DISTINCT_ELEMENT);
   }
   
-  public void setForceDbDialect(IActionInput value) {
+  public void setForceDbDialect(IActionInputValueProvider value) {
     setActionInputValue(FORCE_DB_DIALECT_ELEMENT, value);
   }
   
@@ -114,7 +114,7 @@ public class MQLAction extends AbstractRelationalDbAction {
   // connection is of a different database.  this may be necessary if 
   // there are issues with detecting the correct database.  The value
   // defaults to false if not specified.
-  public IActionInput getForceDbDialect() {
+  public IActionInputValueProvider getForceDbDialect() {
     return getActionInputValue(FORCE_DB_DIALECT_ELEMENT);
   }
   

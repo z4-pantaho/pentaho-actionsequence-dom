@@ -3,7 +3,7 @@ package org.pentaho.actionsequence.dom;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 // This class is used to set an action input to a constant value.
-public class ActionInputConstant implements IActionInput {
+public class ActionInputConstant implements IActionInputValueProvider {
   Object value;
   IActionParameterMgr actionParameterMgr;
   
@@ -120,6 +120,11 @@ public class ActionInputConstant implements IActionInput {
   public int getIntValue(int defaultValue) {
     Integer intValue = getIntValue();
     return intValue != null ? intValue.intValue() : defaultValue;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return value != null && (obj instanceof ActionInputConstant) && value.equals(((ActionInputConstant)obj).getValue());
   }
 
 }

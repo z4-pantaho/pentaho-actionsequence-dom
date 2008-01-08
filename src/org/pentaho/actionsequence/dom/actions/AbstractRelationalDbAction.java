@@ -10,7 +10,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.actions.EmailAction.HTMLMsgInput;
 
@@ -69,8 +69,8 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     super(componentName);
   }
 
-  public IActionInput getQuery() {
-    IActionInput actionInput = getActionInputValue(QUERY_ELEMENT);
+  public IActionInputValueProvider getQuery() {
+    IActionInputValueProvider actionInput = getActionInputValue(QUERY_ELEMENT);
     
     // This is deprecated functionality for determining the name of the query input parameter.
     if (actionInput.getValue() == null) {
@@ -84,14 +84,14 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     return actionInput;
   }
   
-  public void setQuery(IActionInput value) {
+  public void setQuery(IActionInputValueProvider value) {
     setActionInputValue(QUERY_ELEMENT, value);
     
     // Remove deprecated method of determining query that may exist. 
     setActionInputValue(QUERY_NAME_ELEMENT, null);
   }
   
-  public void setSharedConnection(IActionInput value) {
+  public void setSharedConnection(IActionInputValueProvider value) {
     if (value instanceof ActionInputConstant) {
       throw new IllegalArgumentException();
     }
@@ -105,11 +105,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getSharedConnection() {
+  public IActionInputValueProvider getSharedConnection() {
     return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public void setJndi(IActionInput value) {
+  public void setJndi(IActionInputValueProvider value) {
     setActionInputValue(JNDI_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setDriver(null);
@@ -120,11 +120,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getJndi() {
+  public IActionInputValueProvider getJndi() {
     return getActionInputValue(JNDI_ELEMENT);
   }
   
-  public void setDriver(IActionInput value) {
+  public void setDriver(IActionInputValueProvider value) {
     setActionInputValue(DRIVER_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -132,11 +132,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getDriver() {
+  public IActionInputValueProvider getDriver() {
     return getActionInputValue(DRIVER_ELEMENT);
   }
   
-  public void setDbUrl(IActionInput value) {
+  public void setDbUrl(IActionInputValueProvider value) {
     setActionInputValue(CONNECTION_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -144,11 +144,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getDbUrl() {
+  public IActionInputValueProvider getDbUrl() {
     return getActionInputValue(CONNECTION_ELEMENT);
   }
   
-  public void setUserId(IActionInput value) {
+  public void setUserId(IActionInputValueProvider value) {
     setActionInputValue(USER_ID_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -156,11 +156,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getUserId() {
+  public IActionInputValueProvider getUserId() {
     return getActionInputValue(USER_ID_ELEMENT);
   }
   
-  public void setPassword(IActionInput value) {
+  public void setPassword(IActionInputValueProvider value) {
     setActionInputValue(PASSWORD_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -168,11 +168,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getPassword() {
+  public IActionInputValueProvider getPassword() {
     return getActionInputValue(PASSWORD_ELEMENT);
   }
   
-  public void setPerformTransform(IActionInput value) {
+  public void setPerformTransform(IActionInputValueProvider value) {
     setActionInputValue(TRANSFORM_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setTransformMeasuresColumn(null);
@@ -183,27 +183,27 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getPerformTransform() {
+  public IActionInputValueProvider getPerformTransform() {
     return getActionInputValue(TRANSFORM_ELEMENT);
   }
     
-  public void setTransformPivotColumn(IActionInput value) {
+  public void setTransformPivotColumn(IActionInputValueProvider value) {
     setActionInputValue(TRANSFORM_PIVOT_COLUMN_ELEMENT, value);
   }
   
-  public IActionInput getTransformPivotColumn() {
+  public IActionInputValueProvider getTransformPivotColumn() {
     return getActionInputValue(TRANSFORM_PIVOT_COLUMN_ELEMENT);
   }
   
-  public void setTransformMeasuresColumn(IActionInput value) {
+  public void setTransformMeasuresColumn(IActionInputValueProvider value) {
     setActionInputValue(TRANSFORM_MEASURES_COLUMN_ELEMENT, value);
   }
   
-  public IActionInput getTransformMeasuresColumn() {
+  public IActionInputValueProvider getTransformMeasuresColumn() {
     return getActionInputValue(TRANSFORM_MEASURES_COLUMN_ELEMENT);
   }
   
-  public void setTransformPivotDataFormat(IActionInput value) {
+  public void setTransformPivotDataFormat(IActionInputValueProvider value) {
     if ((value == null) || ((value instanceof ActionInputConstant) && (value.getValue() == null))) {
       setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT, null);
       setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_TYPE_ELEMENT, null);
@@ -225,8 +225,8 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getTransformPivotDataFormat() {
-    IActionInput actionInput = getActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT);
+  public IActionInputValueProvider getTransformPivotDataFormat() {
+    IActionInputValueProvider actionInput = getActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT);
     if (actionInput instanceof ActionInput) {
       actionInput = new FormatInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr());
     } else if (actionInput instanceof ActionInputConstant) {
@@ -242,7 +242,7 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     return actionInput;
   }
   
-  public void setTransformSortDataFormat(IActionInput value) {
+  public void setTransformSortDataFormat(IActionInputValueProvider value) {
     if ((value == null) || ((value instanceof ActionInputConstant) && (value.getValue() == null))) {
       setInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT, null);
       setInputValue(TRANSFORM_SORT_FORMAT_TYPE_ELEMENT, null);
@@ -264,8 +264,8 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getTransformSortDataFormat() {
-    IActionInput actionInput = getActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT);
+  public IActionInputValueProvider getTransformSortDataFormat() {
+    IActionInputValueProvider actionInput = getActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT);
     if (actionInput instanceof ActionInput) {
       actionInput = new FormatInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr());
     } else if (actionInput instanceof ActionInputConstant) {
@@ -281,19 +281,19 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     return actionInput;
   }
   
-  public void setTransformSortColumn(IActionInput value) {
+  public void setTransformSortColumn(IActionInputValueProvider value) {
     setActionInputValue(TRANSFORM_SORT_COLUMN_ELEMENT, value);
   }
   
-  public IActionInput getTransformSortColumn() {
+  public IActionInputValueProvider getTransformSortColumn() {
     return getActionInputValue(TRANSFORM_SORT_COLUMN_ELEMENT);
   }
   
-  public void setTransformOrderOutputColumns(IActionInput value) {
+  public void setTransformOrderOutputColumns(IActionInputValueProvider value) {
     setActionInputValue(TRANSFORM_ORDERED_MAPS, value);
   }
   
-  public IActionInput getTransformOrderOutputColumns() {
+  public IActionInputValueProvider getTransformOrderOutputColumns() {
     return getActionInputValue(TRANSFORM_ORDERED_MAPS);
   }
   
@@ -353,11 +353,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public void setMaxRows(IActionInput value) {
+  public void setMaxRows(IActionInputValueProvider value) {
     setActionInputValue(MAX_ROWS_ELEMENT, value);
   }
   
-  public IActionInput getMaxRows() {
+  public IActionInputValueProvider getMaxRows() {
     return getActionInputValue(MAX_ROWS_ELEMENT);
   }
   
@@ -382,19 +382,19 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public void setLive(IActionInput value) {
+  public void setLive(IActionInputValueProvider value) {
     setActionInputValue(LIVE_CONNECTION_ELEMENT, value); 
   }
   
-  public IActionInput getLive() {
+  public IActionInputValueProvider getLive() {
     return getActionInputValue(LIVE_CONNECTION_ELEMENT); 
   }
   
-  public void setUseForwardOnlyResultSet(IActionInput value) {
+  public void setUseForwardOnlyResultSet(IActionInputValueProvider value) {
     setActionInputValue(RESULTSET_FORWARD_ONLY, value); 
  }
   
-  public IActionInput getUseForwardOnlyResultSet() {
+  public IActionInputValueProvider getUseForwardOnlyResultSet() {
     return getActionInputValue(RESULTSET_FORWARD_ONLY); 
   }
   

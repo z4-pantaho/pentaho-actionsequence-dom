@@ -21,7 +21,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class XQueryAction extends ActionDefinition {
@@ -78,38 +78,38 @@ public class XQueryAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setSharedConnection(IActionInput value) {
+  public void setSharedConnection(IActionInputValueProvider value) {
     if (value instanceof ActionInputConstant) {
       throw new IllegalArgumentException();
     }
     setActionInputValue(PREPARED_COMPONENT_ELEMENT, value);
   }
   
-  public IActionInput getSharedConnection() {
+  public IActionInputValueProvider getSharedConnection() {
     return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public void setSourceXml(IActionInput value) {
+  public void setSourceXml(IActionInputValueProvider value) {
     setActionInputValue(DOCUMENT_ELEMENT, value);
   }
   
-  public IActionInput getSourceXml() {
+  public IActionInputValueProvider getSourceXml() {
     return getActionInputValue(DOCUMENT_ELEMENT);
   }
   
-  public void setQuery(IActionInput value) {
+  public void setQuery(IActionInputValueProvider value) {
     setActionInputValue(QUERY_ELEMENT, value);
   }
   
-  public IActionInput getQuery() {
+  public IActionInputValueProvider getQuery() {
     return getActionInputValue(QUERY_ELEMENT);
   }
   
-  public void setLive(IActionInput value) {
+  public void setLive(IActionInputValueProvider value) {
     setActionInputValue(LIVE_CONNECTION_ELEMENT, value); 
   }
   
-  public IActionInput getLive() {
+  public IActionInputValueProvider getLive() {
     return getActionInputValue(LIVE_CONNECTION_ELEMENT); 
   }
   

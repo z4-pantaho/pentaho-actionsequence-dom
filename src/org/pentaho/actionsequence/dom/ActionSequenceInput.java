@@ -32,7 +32,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceInput extends AbstractParam implements IActionInputVariable {
+public class ActionSequenceInput extends AbstractIOElement implements IActionInputVariable {
 
   public static final int REQUEST_INPUT_SOURCE_ID = 1;
   public static final int SESSION_INPUT_SOURCE_ID = 2;

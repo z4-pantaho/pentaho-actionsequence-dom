@@ -25,7 +25,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceOutput extends AbstractParam {
+public class ActionSequenceOutput extends AbstractIOElement {
 
   protected ActionSequenceOutput(Element outputElement, IActionParameterMgr actionInputProvider) {
     super(outputElement, actionInputProvider);

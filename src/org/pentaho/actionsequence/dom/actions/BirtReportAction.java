@@ -20,7 +20,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 
 public class BirtReportAction extends ActionDefinition {
 
@@ -65,11 +65,11 @@ public class BirtReportAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setOutputType(IActionInput value) {
+  public void setOutputType(IActionInputValueProvider value) {
     setActionInputValue(OUTPUT_TYPE_ELEMENT, value);
   }
   
-  public IActionInput getOutputType() {
+  public IActionInputValueProvider getOutputType() {
     return getActionInputValue(OUTPUT_TYPE_ELEMENT);
   }
   

@@ -18,7 +18,7 @@ import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class TemplateMsgAction extends ActionDefinition {
@@ -88,7 +88,7 @@ public class TemplateMsgAction extends ActionDefinition {
     return getResourceParam(TEMPLATE_ELEMENT);
   }
 
-  public void setTemplate(IActionInput value) {
+  public void setTemplate(IActionInputValueProvider value) {
 	  setActionInputValue(TEMPLATE_ELEMENT, value);
 	  
 	// Cleaning up the resource since we would be using template based on input
@@ -97,22 +97,22 @@ public class TemplateMsgAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getTemplate() {
+  public IActionInputValueProvider getTemplate() {
 	  return getActionInputValue(TEMPLATE_ELEMENT);
   }
 
-  public IActionInput getMimeType() {
+  public IActionInputValueProvider getMimeType() {
     return getActionInputValue(MIME_TYPE);
   }
 
-  public void setMimeType(IActionInput value) {
+  public void setMimeType(IActionInputValueProvider value) {
     setActionInputValue(MIME_TYPE, value);
   }
 
-  public IActionInput getExtension() {
+  public IActionInputValueProvider getExtension() {
 	  return getActionInputValue(EXTENSION);
   }
-  public void setExtension(IActionInput value) {
+  public void setExtension(IActionInputValueProvider value) {
     setActionInputValue(EXTENSION, value);
   }
   

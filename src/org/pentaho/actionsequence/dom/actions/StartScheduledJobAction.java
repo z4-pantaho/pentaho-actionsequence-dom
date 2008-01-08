@@ -15,7 +15,7 @@ package org.pentaho.actionsequence.dom.actions;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class StartScheduledJobAction extends AbstractJobSchedulerAction {
@@ -85,7 +85,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
     return result;
   }
 
-  public void setCronString(IActionInput value) {
+  public void setCronString(IActionInputValueProvider value) {
     setActionInputValue(CRON_STRING_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setTriggerType(new ActionInputConstant (CRON_TRIGGER));
@@ -96,43 +96,43 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
     }
   }
 
-  public IActionInput getCronString() {
+  public IActionInputValueProvider getCronString() {
     return getActionInputValue(CRON_STRING_ELEMENT);
   }
 
-  public void setSolution(IActionInput value) {
+  public void setSolution(IActionInputValueProvider value) {
     setActionInputValue(SOLUTION_ELEMENT, value);
   }
 
-  public IActionInput getSolution() {
+  public IActionInputValueProvider getSolution() {
     return getActionInputValue(SOLUTION_ELEMENT);
   }
 
-  public void setPath(IActionInput value) {
+  public void setPath(IActionInputValueProvider value) {
     setActionInputValue(PATH_ELEMENT, value);
   }
 
-  public IActionInput getPath() {
+  public IActionInputValueProvider getPath() {
     return getActionInputValue(PATH_ELEMENT);
   }
 
-  public void setAction(IActionInput value) {
+  public void setAction(IActionInputValueProvider value) {
     setActionInputValue(ACTION_ELEMENT, value);
   }
 
-  public IActionInput getAction() {
+  public IActionInputValueProvider getAction() {
     return getActionInputValue(ACTION_ELEMENT);
   }
 
-  public void setTriggerName(IActionInput value) {
+  public void setTriggerName(IActionInputValueProvider value) {
     setActionInputValue(TRIGGER_NAME_ELEMENT, value);
   }
 
-  public IActionInput getTriggerName() {
+  public IActionInputValueProvider getTriggerName() {
     return getActionInputValue(TRIGGER_NAME_ELEMENT);    
   }
 
-  public void setRepeatCount(IActionInput value) {
+  public void setRepeatCount(IActionInputValueProvider value) {
     setActionInputValue(REPEAT_COUNT_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setTriggerType(new ActionInputConstant (SIMPLE_TRIGGER));
@@ -142,11 +142,11 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
     }
   }
 
-  public IActionInput getRepeatCount() {
+  public IActionInputValueProvider getRepeatCount() {
     return getActionInputValue(REPEAT_COUNT_ELEMENT);
   }
 
-  public void setRepeatInterval(IActionInput value) {
+  public void setRepeatInterval(IActionInputValueProvider value) {
     setActionInputValue(REPEAT_INTERVAL_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setTriggerType(new ActionInputConstant (SIMPLE_TRIGGER));
@@ -156,15 +156,15 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
     }
   }
 
-  public IActionInput getRepeatInterval() {
+  public IActionInputValueProvider getRepeatInterval() {
     return getActionInputValue(REPEAT_INTERVAL_ELEMENT);
   }
 
-  public void setTriggerType(IActionInput triggerType) {
+  public void setTriggerType(IActionInputValueProvider triggerType) {
     setActionInputValue(TRIGGER_TYPE_ELEMENT, triggerType);
   }
 
-  public IActionInput getTriggerType() {
+  public IActionInputValueProvider getTriggerType() {
     return getActionInputValue(TRIGGER_TYPE_ELEMENT);    
   }
 }

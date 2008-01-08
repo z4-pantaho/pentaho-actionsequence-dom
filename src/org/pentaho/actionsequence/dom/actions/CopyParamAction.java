@@ -19,6 +19,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class CopyParamAction extends ActionDefinition {
@@ -76,23 +77,23 @@ public class CopyParamAction extends ActionDefinition {
     return accepts;
   }
   
-  public void setCopyFromParam(IActionInputVariable variable) {
+  public void setCopyFrom(IActionInputVariable value) {
     if (!COPY_FROM_ELEMENT.equals(getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH))) {
       setComponentDefinition(CopyParamAction.COPY_FROM_XPATH, COPY_FROM_ELEMENT, false);
     }
-    setInputParam(COPY_FROM_ELEMENT, variable);
+    setActionInputValue(COPY_FROM_ELEMENT, value);
     ActionOutput actionOutput = getOutputCopyParam();
     if (actionOutput != null) {
-      actionOutput.setType(variable.getType());
+      actionOutput.setType(value.getType());
     }
   }
   
-  public ActionInput getCopyFromParam() {
+  public IActionInputValueProvider getCopyFrom() {
     String copyFromVarName = getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH);
     if ((copyFromVarName == null) || (copyFromVarName.trim().length() == 0)) {
       copyFromVarName = COPY_FROM_ELEMENT;
     }
-    return getInputParam(copyFromVarName);
+    return getActionInputValue(copyFromVarName);
   }
   
   public void setOutputCopyName(String name) {
@@ -100,7 +101,7 @@ public class CopyParamAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
     }
-    ActionInput copyFrom = getCopyFromParam();
+    ActionInput copyFrom = (ActionInput)getCopyFrom();
     ActionOutput actionOutput = setOutputParam(privateName, name, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COPY_RETURN_XPATH, (String)null);
@@ -167,7 +168,7 @@ public class CopyParamAction extends ActionDefinition {
   
   public Object getValueToCopy() {
     Object value = null;
-    ActionInput actionInput = getCopyFromParam();
+    ActionInput actionInput = (ActionInput)getCopyFrom();
     if (actionInput != null) {
       value = actionInput.getValue();
     }

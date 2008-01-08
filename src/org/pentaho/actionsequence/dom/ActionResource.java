@@ -30,7 +30,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionResource extends ActionParam implements IActionResource {
+public class ActionResource extends AbstractActionIOElement implements IActionResource {
 
   public ActionResource(Element resourceElement, IActionParameterMgr actionInputProvider) {
     super(resourceElement, actionInputProvider);

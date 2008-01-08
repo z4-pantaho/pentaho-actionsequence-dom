@@ -21,7 +21,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SqlConnectionAction extends ActionDefinition {
@@ -79,53 +79,53 @@ public class SqlConnectionAction extends ActionDefinition {
     return new String[]{PREPARED_COMPONENT_ELEMENT};
   }
   
-  public void setDbUrl(IActionInput value) {
+  public void setDbUrl(IActionInputValueProvider value) {
     setActionInputValue(CONNECTION_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInput getDbUrl() {
+  public IActionInputValueProvider getDbUrl() {
     return getActionInputValue(CONNECTION_ELEMENT);
   }
   
   
-  public void setUserId(IActionInput value) {
+  public void setUserId(IActionInputValueProvider value) {
     setActionInputValue(USER_ID_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInput getUserId() {
+  public IActionInputValueProvider getUserId() {
     return getActionInputValue(USER_ID_ELEMENT);
   }
   
   
-  public void setDriver(IActionInput value) {
+  public void setDriver(IActionInputValueProvider value) {
     setActionInputValue(DRIVER_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInput getDriver() {
+  public IActionInputValueProvider getDriver() {
     return getActionInputValue(DRIVER_ELEMENT);
   }
   
-  public void setPassword(IActionInput value) {
+  public void setPassword(IActionInputValueProvider value) {
     setActionInputValue(PASSWORD_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInput getPassword() {
+  public IActionInputValueProvider getPassword() {
     return getActionInputValue(PASSWORD_ELEMENT);
   }
   
-  public void setJndi(IActionInput value) {
+  public void setJndi(IActionInputValueProvider value) {
     setActionInputValue(JNDI_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setDriver(null);
@@ -135,7 +135,7 @@ public class SqlConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getJndi() {
+  public IActionInputValueProvider getJndi() {
     return getActionInputValue(JNDI_ELEMENT);
   }
   

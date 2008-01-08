@@ -22,10 +22,10 @@ import org.pentaho.actionsequence.dom.actions.ActionDefinition;
  */
 public interface IActionSequenceDocumentListener {
   
-  public void ioAdded(AbstractParam io);
-  public void ioRemoved(Object parent, AbstractParam io);
-  public void ioRenamed(AbstractParam io);
-  public void ioChanged(AbstractParam io);
+  public void ioAdded(AbstractIOElement io);
+  public void ioRemoved(Object parent, AbstractIOElement io);
+  public void ioRenamed(AbstractIOElement io);
+  public void ioChanged(AbstractIOElement io);
   
   public void resourceAdded(Object resource);
   public void resourceRemoved(Object parent, Object resource);

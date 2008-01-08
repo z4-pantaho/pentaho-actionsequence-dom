@@ -22,14 +22,14 @@ import org.pentaho.actionsequence.dom.messages.Messages;
  * @author Angelo Rodriguez
  *
  */
-public abstract class AbstractParam implements IActionSequenceElement {
+public abstract class AbstractIOElement implements IGenericIOElement {
 
   public static final String TYPE_NAME = "type"; //$NON-NLS-1$
   
   Element ioElement;
   IActionParameterMgr actionInputProvider;
   
-  protected AbstractParam(Element ioElement, IActionParameterMgr actionInputProvider) {
+  protected AbstractIOElement(Element ioElement, IActionParameterMgr actionInputProvider) {
     super();
     this.ioElement = ioElement;
     this.actionInputProvider = actionInputProvider;
@@ -97,7 +97,7 @@ public abstract class AbstractParam implements IActionSequenceElement {
     boolean result = false;
     if (arg0 != null) {
       if (arg0.getClass() == this.getClass()) {
-        AbstractParam io = (AbstractParam)arg0;
+        AbstractIOElement io = (AbstractIOElement)arg0;
         result = (io.ioElement != null ? io.ioElement.equals(this.ioElement) : (io == this));
       }
     }

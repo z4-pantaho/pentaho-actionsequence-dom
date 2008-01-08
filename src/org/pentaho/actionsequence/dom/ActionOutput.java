@@ -20,7 +20,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionOutput extends ActionParam implements IActionInputVariable {
+public class ActionOutput extends AbstractActionIOElement implements IActionInputVariable {
 
   public ActionOutput(Element ioElement, IActionParameterMgr actionInputProvider) {
     super(ioElement, actionInputProvider);

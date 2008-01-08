@@ -15,9 +15,13 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class FormatMsgAction extends ActionDefinition {
 
@@ -28,6 +32,7 @@ public class FormatMsgAction extends ActionDefinition {
   public static final String ARGUMENT_XPATH = "format/arg"; //$NON-NLS-1$
   public static final String FORMAT_MSG_COMMAND = "format"; //$NON-NLS-1$
   public static final String OUTPUT_STRING = "output-string"; //$NON-NLS-1$
+  public static final String MSG_INPUT_PREFIX = "msgInput"; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     STRING_FORMAT_ELEMENT
@@ -69,12 +74,27 @@ public class FormatMsgAction extends ActionDefinition {
     return accepts;
   }
   
-  public void setFormatString(String value) {
-    setComponentDefinition(FORMAT_MSG_COMMAND + "/" + STRING_FORMAT_ELEMENT, value); //$NON-NLS-1$
+  public void setFormatString(ActionInputConstant value) {
+    String stringValue = (value != null ? value.getStringValue() : null);
+    if (stringValue != null) {
+      stringValue = "\"" + stringValue + "\"";
+    }
+    
+    setComponentDefinition(FORMAT_MSG_COMMAND + "/" + STRING_FORMAT_ELEMENT, value == null ? null : value.getStringValue()); //$NON-NLS-1$
   }
   
-  public String getFormatString() {
-    return getComponentDefinitionValue(FORMAT_MSG_COMMAND + "/" + STRING_FORMAT_ELEMENT); //$NON-NLS-1$
+  public ActionInputConstant getFormatString() {
+    String formatString = getComponentDefinitionValue(FORMAT_MSG_COMMAND + "/" + STRING_FORMAT_ELEMENT);
+    if (formatString != null) {
+      formatString = formatString.trim();
+      if (formatString.startsWith("\"") && formatString.endsWith("\"")) {
+        if (formatString.length() < 3) {
+          formatString = ""; //$NON-NLS-1$
+        }
+        formatString = formatString.substring(1, formatString.length() - 1);
+      }
+    }
+    return formatString == null ? IActionInputValueProvider.NULL_INPUT : new ActionInputConstant(formatString);
   }
   
   public void setOutputStringName(String name) {
@@ -109,7 +129,7 @@ public class FormatMsgAction extends ActionDefinition {
   public ActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = null;
-    if (getComponentDefElement(FORMAT_MSG_COMMAND + "/" + STRING_FORMAT_ELEMENT) == null){ //$NON-NLS-1$
+    if (getFormatString() == IActionInputValueProvider.NULL_INPUT){ //$NON-NLS-1$
       validationError = new ActionSequenceValidationError();
       validationError.actionDefinition = this;
       validationError.errorCode = ActionSequenceValidationError.INPUT_MISSING;
@@ -132,5 +152,59 @@ public class FormatMsgAction extends ActionDefinition {
     }
     
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+  }
+  
+  public IActionInputValueProvider[] getMsgInputs() {
+    ArrayList msgInputs = new ArrayList();
+    Element[] elements = getComponentDefElements(ARGUMENT_XPATH);
+    for (int i = 0; i < elements.length; i++) {
+      String msgInputParamName = elements[i].getText();
+      IActionInputValueProvider msgInput = getActionInputValue(msgInputParamName);
+      if (msgInput != IActionInputValueProvider.NULL_INPUT) {
+        msgInputs.add(msgInput);
+      }
+    }
+    return (IActionInputValueProvider[])msgInputs.toArray(new IActionInputValueProvider[0]);
+  }
+  
+  
+  public void setMsgInputs(IActionInputValueProvider[] values) {
+    Object[] oldInputs = getMsgInputs();
+    for (int i = 0; i < oldInputs.length; i++) {
+      if (oldInputs[i] instanceof ActionInput) {
+        ((ActionInput)oldInputs[i]).delete();
+      }
+    }
+    setComponentDefinition(ARGUMENT_XPATH, new String[0]);
+    
+    ArrayList msgInputParamNames = new ArrayList();
+    for (int i = 0; i < values.length; i++) {
+      if (values[i] instanceof IActionInputVariable) {
+        IActionInputVariable actionVariable = (IActionInputVariable)values[i];
+        msgInputParamNames.add(actionVariable.getVariableName());
+        setActionInputValue(actionVariable.getVariableName(), actionVariable);
+      } else if ((values[i] instanceof ActionInputConstant) && (values[i].getValue() != null)) {
+        String msgInputParamName = getUniqueNameParam();
+        msgInputParamNames.add(msgInputParamName);
+        setActionInputValue(msgInputParamName, values[i]);
+      } else if (values[i] instanceof ActionInput) {
+        ActionInput actionInput = (ActionInput)values[i];
+        msgInputParamNames.add(actionInput.getName());
+        setInputParam(actionInput.getName(), actionInput.getReferencedVariableName(), actionInput.getType());
+      }
+    }
+    if (msgInputParamNames.size() > 0) {
+      setComponentDefinition(ARGUMENT_XPATH, (String[])msgInputParamNames.toArray(new String[0]));
+    }
+  }
+  
+  private String getUniqueNameParam() {
+    String name = null;
+    boolean isUnique = false;
+    for (int i = 1; !isUnique; i++) {
+      name = MSG_INPUT_PREFIX + i;
+      isUnique = (getInputParam(name) == null) && (getComponentDefElement(name) == null);
+    }
+    return name;
   }
 }

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class EmailAction extends ActionDefinition {
@@ -101,12 +101,12 @@ public class EmailAction extends ActionDefinition {
     return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
   
-  public void setTo(IActionInput value) {
+  public void setTo(IActionInputValueProvider value) {
     setActionInputValue(TO_ELEMENT, value);
   }
   
-  public IActionInput getTo() {
-    IActionInput actionInput = getActionInputValue(TO_ELEMENT);
+  public IActionInputValueProvider getTo() {
+    IActionInputValueProvider actionInput = getActionInputValue(TO_ELEMENT);
     // The to address could come from a hash map that is named after the "to" input. I believe
     // this is deprecated functionality.
     if (actionInput.getValue() instanceof HashMap) {
@@ -120,49 +120,49 @@ public class EmailAction extends ActionDefinition {
     return actionInput;
   }
   
-  public void setFrom(IActionInput value) {
+  public void setFrom(IActionInputValueProvider value) {
     setActionInputValue(FROM_ELEMENT, value);
   }
   
-  public IActionInput getFrom() {
+  public IActionInputValueProvider getFrom() {
     return getActionInputValue(FROM_ELEMENT);
   }
   
-  public void setCc(IActionInput value) {
+  public void setCc(IActionInputValueProvider value) {
     setActionInputValue(CC_ELEMENT, value);
   }
   
-  public IActionInput getCc() {
+  public IActionInputValueProvider getCc() {
     return getActionInputValue(CC_ELEMENT);
   }
   
-  public void setBcc(IActionInput value) {
+  public void setBcc(IActionInputValueProvider value) {
     setActionInputValue(BCC_ELEMENT, value);
   }
   
-  public IActionInput getBcc() {
+  public IActionInputValueProvider getBcc() {
     return getActionInputValue(BCC_ELEMENT);
  }
     
-  public void setMessageHtml(IActionInput value) {
+  public void setMessageHtml(IActionInputValueProvider value) {
     setActionInputValue(HTML_MSG_ELEMENT, value);
   }
   
-  public IActionInput getMessageHtml() {
-    IActionInput actionInput = getActionInputValue(HTML_MSG_ELEMENT);
+  public IActionInputValueProvider getMessageHtml() {
+    IActionInputValueProvider actionInput = getActionInputValue(HTML_MSG_ELEMENT);
     if (actionInput instanceof ActionInput) {
       actionInput = new HTMLMsgInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr());
     }
     return actionInput;
   }
   
-  public void setMessagePlain(IActionInput value) {
+  public void setMessagePlain(IActionInputValueProvider value) {
     setActionInputValue(PLAIN_MSG_ELEMENT, value);
   }
   
-  public IActionInput getMessagePlain() {
+  public IActionInputValueProvider getMessagePlain() {
     
-    IActionInput actionInput;
+    IActionInputValueProvider actionInput;
     // The message could come from a hash map that is named after the "to" input. I believe
     // this is deprecated functionality.
     actionInput = getActionInputValue(TO_ELEMENT);
@@ -182,12 +182,12 @@ public class EmailAction extends ActionDefinition {
     return actionInput;
   }
   
-  public void setSubject(IActionInput subject) {
+  public void setSubject(IActionInputValueProvider subject) {
     setActionInputValue(SUBJECT_ELEMENT, subject);
   }
   
-  public IActionInput getSubject() {
-    IActionInput actionInput;
+  public IActionInputValueProvider getSubject() {
+    IActionInputValueProvider actionInput;
     // The subject could come from a hash map that is named after the "to" input. I believe
     // this is deprecated functionality.
     actionInput = getActionInputValue(TO_ELEMENT);

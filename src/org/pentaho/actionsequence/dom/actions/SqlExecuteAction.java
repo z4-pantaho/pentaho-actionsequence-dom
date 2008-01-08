@@ -17,7 +17,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SqlExecuteAction extends AbstractRelationalDbAction {
@@ -75,27 +75,27 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
     return new String[]{expectedOutput};
   }
     
-  public void setContinueOnException(IActionInput value) {
+  public void setContinueOnException(IActionInputValueProvider value) {
     setActionInputValue(CONTINUE_ON_EXCEPTION, value);
   }
   
-  public IActionInput getContinueOnException() {
+  public IActionInputValueProvider getContinueOnException() {
     return getActionInputValue(CONTINUE_ON_EXCEPTION);
   }
   
-  public void setForceSingleStatement(IActionInput value) {
+  public void setForceSingleStatement(IActionInputValueProvider value) {
     setActionInputValue(FORCE_SINGLE_STATEMENT, value);
   }
   
-  public IActionInput getForceSingleStatement() {
+  public IActionInputValueProvider getForceSingleStatement() {
     return getActionInputValue(FORCE_SINGLE_STATEMENT);
   }
   
-  public void setMultiStatementSeparator(IActionInput value) {
+  public void setMultiStatementSeparator(IActionInputValueProvider value) {
     setActionInputValue(MULTI_STATEMENT_SEPARATOR, value);
   }
   
-  public IActionInput getMultiStatementSeparator() {
+  public IActionInputValueProvider getMultiStatementSeparator() {
     return getActionInputValue(MULTI_STATEMENT_SEPARATOR);
   }
 }

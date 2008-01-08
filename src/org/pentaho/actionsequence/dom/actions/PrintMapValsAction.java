@@ -16,7 +16,10 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
+import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class PrintMapValsAction extends ActionDefinition {
@@ -53,85 +56,62 @@ public class PrintMapValsAction extends ActionDefinition {
     return accepts;
   }
   
-  public void setMapParam(IActionInputVariable variable) {
+  public void setPropertyMap(IActionInputVariable value) {
     String mapParamName = getComponentDefinitionValue(TARGET_MAP_XPATH);
-    if (variable == null) {
-      setInputParam(mapParamName, (IActionInputVariable)null);
+    if (value == null) {
+      setActionInputValue(mapParamName, null);
       setComponentDefinition(TARGET_MAP_XPATH, "", false);
     } else {
       if (!PROPERTY_MAP_ELEMENT.equals(mapParamName)) {
         setComponentDefinition(TARGET_MAP_XPATH, PROPERTY_MAP_ELEMENT, false);
       }
-      setInputParam(PROPERTY_MAP_ELEMENT, variable);
+      setActionInputValue(PROPERTY_MAP_ELEMENT, value);
     }   
   }
   
-  public ActionInput getMapParam() {
+  public IActionInputValueProvider getPropertyMap() {
     String mapParamName = getComponentDefinitionValue(TARGET_MAP_XPATH);
-    ActionInput actionInput = null;
-    if ((mapParamName == null) || (mapParamName.trim().length() == 0)) {
-      actionInput = getInputParam(mapParamName);
+    IActionInputValueProvider actionInput = IActionInputValueProvider.NULL_INPUT;
+    if ((mapParamName != null) && (mapParamName.trim().length() > 0)) {
+      actionInput = getActionInputValue(mapParamName);
     }
     return actionInput;
   }
   
-  public Object[] getKeys() {
-    return getKeys(true);
-  }
-  
-  public Object[] getKeys(boolean evaluateInputParams) {
+  public IActionInputValueProvider[] getKeys() {
     ArrayList keys = new ArrayList();
     Element[] elements = getComponentDefElements(MAP_KEY_XPATH);
     for (int i = 0; i < elements.length; i++) {
-      String keyParamName = elements[i].getText();
-      ActionInput keyInputParam = getInputParam(keyParamName);
-      if (keyInputParam != null) {
-        if (evaluateInputParams) {
-          Object key = keyInputParam.getValue();
-          if (key != null) {
-            keys.add(key);
-          }
-        } else {
-          keys.add(keyInputParam);
-        }
-      }
+      keys.add(new ActionInputConstant(elements[i].getText()));
     }
-    return keys.toArray();
+    return (IActionInputValueProvider[])keys.toArray(new IActionInputValueProvider[0]);
   }
   
-  public void setKeys(Object[] keys) {
-    Object[] oldKeys = getKeys(false);
+  
+  public void setKeys(ActionInputConstant[] keys) {
+    Object[] oldKeys = getKeys();
     for (int i = 0; i < oldKeys.length; i++) {
       if (oldKeys[i] instanceof ActionInput) {
         ((ActionInput)oldKeys[i]).delete();
       }
     }
+    ActionOutput[] oldOutputs = getAllOutputParams();
+    for (int i = 0; i < oldOutputs.length; i++) {
+      oldOutputs[i].delete();
+    }
     setComponentDefinition(MAP_KEY_XPATH, new String[0]);
     
     ArrayList keyParamNames = new ArrayList();
     for (int i = 0; i < keys.length; i++) {
-      if (keys[i] instanceof IActionInputVariable) {
-        IActionInputVariable actionVariable = (IActionInputVariable)keys[i];
-        keyParamNames.add(actionVariable.getVariableName());
-        setInputParam(actionVariable.getVariableName(), actionVariable);
-      } else {
-        String keyParamName = getUniqueNameParam();
+      String keyParamName = keys[i].getStringValue();
+      if (keyParamName != null) {
         keyParamNames.add(keyParamName);
-        setInputValue(keyParamName, keys[i].toString());
+        setOutputParam(keyParamName, keyParamName, ActionSequenceDocument.STRING_TYPE);
       }
     }
+    
     if (keyParamNames.size() > 0) {
       setComponentDefinition(MAP_KEY_XPATH, (String[])keyParamNames.toArray(new String[0]));
     }
-  }
-  
-  private String getUniqueNameParam() {
-    String name = null;
-    boolean isUnique = false;
-    for (int i = 1; !isUnique; i++) {
-      name = KEY_PARAM_PREFIX + i;
-      isUnique = (getInputParam(name) == null) && (getComponentDefElement(name) == null);
-    }
-    return name;
   }
 }

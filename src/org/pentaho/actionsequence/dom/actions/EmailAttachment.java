@@ -151,7 +151,7 @@ public class EmailAttachment implements IActionSequenceElement {
         attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, getUniqueNameParam());
       }
       String paramName = attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim();
-      getEmailAction().setInputParam(paramName, variable.getVariableName()).setType(variable.getType());
+      getEmailAction().setInputParam(paramName, variable.getVariableName(), variable.getType());
     }  
   }
   
@@ -176,7 +176,7 @@ public class EmailAttachment implements IActionSequenceElement {
       }
       
       attachmentElement.addAttribute(ATTACHMENT_CONTENT_ATTRIBUTE, variable.getVariableName());
-      getEmailAction().setInputParam(variable.getVariableName(), variable.getVariableName()).setType(variable.getType());
+      getEmailAction().setInputParam(variable.getVariableName(), variable.getVariableName(), variable.getType());
     }  
   }
   

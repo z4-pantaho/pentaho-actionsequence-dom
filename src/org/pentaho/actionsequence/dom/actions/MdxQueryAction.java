@@ -12,14 +12,16 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
+import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class MdxQueryAction extends MdxConnectionAction {
@@ -95,69 +97,61 @@ public class MdxQueryAction extends MdxConnectionAction {
     return new String[]{expectedOutput};
   }
   
-  public void setUserId(IActionInput value) {
+  public void setUserId(IActionInputValueProvider value) {
     super.setUserId(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInput.NULL_INPUT) {
+      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public void setPassword(IActionInput value) {
+  public void setPassword(IActionInputValueProvider value) {
     super.setPassword(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInput.NULL_INPUT) {
+      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public void setConnectionProps(IActionInput value) {
-    super.setConnectionProps(value);
-  }
-  
-  public IActionInput getConnectionProps() {
-    return super.getConnectionProps();
-  }
-  
-  public void setMdxConnectionString(IActionInput value) {
+  public void setMdxConnectionString(IActionInputValueProvider value) {
     super.setMdxConnectionString(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
     	setMdxConnection(null);
-	    if (getLocation() == IActionInput.NULL_INPUT) {
+	    if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
   	    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     	}
     }
   }
   
-  public void setConnection(IActionInput value) {
+  public void setConnection(IActionInputValueProvider value) {
     super.setConnection(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInput.NULL_INPUT) {
+      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public void setJndi(IActionInput value) {
+  public void setJndi(IActionInputValueProvider value) {
     super.setJndi(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInput.NULL_INPUT) {
+      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
   }
   
-  public void setQuery(IActionInput value) {
+  public void setQuery(IActionInputValueProvider value) {
     setActionInputValue(QUERY_ELEMENT, value);
   }
   
-  public IActionInput getQuery() {
+  public IActionInputValueProvider getQuery() {
     return getActionInputValue(QUERY_ELEMENT);
   }
   
@@ -181,15 +175,6 @@ public class MdxQueryAction extends MdxConnectionAction {
       }
     }
     return actionOutput;
-  }
-  
-  
-  public IActionInput getPreparedComponent() {
-    return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
-  }  
-  
-  public void setPreparedComponent(IActionInput value) {
-    setActionInputValue(PREPARED_COMPONENT_ELEMENT, value);
   }
   
   public void setOutputPreparedStatementName(String name) {
@@ -219,7 +204,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     }
   }
   
-  public IActionInput getMdxConnection() {
+  public IActionInputValueProvider getMdxConnection() {
     return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
   }
   

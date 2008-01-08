@@ -19,6 +19,7 @@ public class ActionFactory {
     SqlExecuteAction.class,
     MdxQueryAction.class,
     XQueryAction.class,
+    XQueryConnectionAction.class,
     PivotViewAction.class,
     ResultSetCompareAction.class,
     ListSchedJobsAction.class,

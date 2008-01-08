@@ -26,7 +26,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceResource extends AbstractParam {
+public class ActionSequenceResource extends AbstractIOElement {
 
   // Document Resources nodes
   public static final String SOLUTION_FILE_RESOURCE_TYPE = "solution-file"; //$NON-NLS-1$

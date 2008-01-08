@@ -555,7 +555,7 @@ public class ActionSequenceDocument {
     ActionSequenceInput input = getInput(inputName);
     if (input == null) {  
       Element inputElement = DocumentHelper.makeElement(document.getRootElement(), DOC_INPUTS_NAME + "/" + inputName); //$NON-NLS-1$
-      inputElement.addAttribute(AbstractParam.TYPE_NAME, inputType);
+      inputElement.addAttribute(AbstractIOElement.TYPE_NAME, inputType);
       input = new ActionSequenceInput(inputElement, actionInputProvider);
       fireIoAdded(input);
       if (inputType.equals(ActionSequenceDocument.STRING_TYPE)) {
@@ -614,7 +614,7 @@ public class ActionSequenceDocument {
     ActionSequenceOutput output = getOutput(outputName);
     if (output == null) {  
       Element outputElement = DocumentHelper.makeElement(document.getRootElement(), DOC_OUTPUTS_NAME + "/" + outputName); //$NON-NLS-1$
-      outputElement.addAttribute(AbstractParam.TYPE_NAME, outputType);
+      outputElement.addAttribute(AbstractIOElement.TYPE_NAME, outputType);
       output = new ActionSequenceOutput(outputElement, actionInputProvider);
       fireIoAdded(output);
     } else {
@@ -775,7 +775,7 @@ public class ActionSequenceDocument {
     }
   }
   
-  public static void fireIoAdded(final AbstractParam io) {
+  public static void fireIoAdded(final AbstractIOElement io) {
     ArrayList listenerList = (ArrayList)listenersMap.get(io.ioElement.getDocument());
     if (listenerList != null) {
       Object[] listeners = listenerList.toArray();
@@ -786,7 +786,7 @@ public class ActionSequenceDocument {
     }
   }
   
-  protected static void fireIoRemoved(final Object parent, final AbstractParam io) {
+  protected static void fireIoRemoved(final Object parent, final AbstractIOElement io) {
     Document doc = null;
     if (parent instanceof ActionDefinition) {
       doc = ((ActionDefinition)parent).getElement().getDocument();
@@ -805,7 +805,7 @@ public class ActionSequenceDocument {
     }
   }
   
-  protected static void fireIoRenamed(final AbstractParam io) {
+  protected static void fireIoRenamed(final AbstractIOElement io) {
     ArrayList listenerList = (ArrayList)listenersMap.get(io.ioElement.getDocument());
     if (listenerList != null) {
       Object[] listeners = listenerList.toArray();
@@ -816,7 +816,7 @@ public class ActionSequenceDocument {
     }
   }
   
-  public static void fireIoChanged(final AbstractParam io) {
+  public static void fireIoChanged(final AbstractIOElement io) {
     ArrayList listenerList = (ArrayList)listenersMap.get(io.ioElement.getDocument());
     if (listenerList != null) {
       Object[] listeners = listenerList.toArray();

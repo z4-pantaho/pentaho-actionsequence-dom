@@ -1,6 +1,6 @@
 package org.pentaho.actionsequence.dom;
 
-public interface IActionInput {
+public interface IActionInputValueProvider {
   public static final ActionInputConstant NULL_INPUT = new ActionInputConstant((Object)null);
   
   public Object getValue();

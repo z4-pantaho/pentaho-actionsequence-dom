@@ -27,7 +27,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class JFreeReportAction extends ActionDefinition {
@@ -354,7 +354,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public void setConnection(IActionInput value) {
+  public void setConnection(IActionInputValueProvider value) {
     setActionInputValue(CONNECTION_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -368,7 +368,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public IActionInput getConnection() {
+  public IActionInputValueProvider getConnection() {
     return getActionInputValue(CONNECTION_ELEMENT);
   }
   
@@ -376,7 +376,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public void setUserId(IActionInput value) {
+  public void setUserId(IActionInputValueProvider value) {
     setActionInputValue(USER_ID_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -390,7 +390,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public IActionInput getUserId() {
+  public IActionInputValueProvider getUserId() {
     return getActionInputValue(USER_ID_ELEMENT);
   }
   
@@ -398,7 +398,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public void setDriver(IActionInput value) {
+  public void setDriver(IActionInputValueProvider value) {
     setActionInputValue(DRIVER_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -412,7 +412,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public IActionInput getDriver() {
+  public IActionInputValueProvider getDriver() {
     return getActionInputValue(DRIVER_ELEMENT);
   }
   
@@ -420,7 +420,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public void setPassword(IActionInput value) {
+  public void setPassword(IActionInputValueProvider value) {
     setActionInputValue(PASSWORD_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
@@ -434,14 +434,14 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public IActionInput getPassword() {
+  public IActionInputValueProvider getPassword() {
     return getActionInputValue(PASSWORD_ELEMENT);
   }
     
   /**
    * @deprecated 
    */
-  public void setJndi(IActionInput value) {
+  public void setJndi(IActionInputValueProvider value) {
     setActionInputValue(JNDI_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setDriver(null);
@@ -458,39 +458,39 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public IActionInput getJndi() {
+  public IActionInputValueProvider getJndi() {
     return getActionInputValue(JNDI_ELEMENT);
   }
   
   
-  public void setOutputType(IActionInput value) {
+  public void setOutputType(IActionInputValueProvider value) {
     setActionInputValue(OUTPUT_TYPE_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setPrinterName(null);
     }
   }
   
-  public IActionInput getOutputType() {
+  public IActionInputValueProvider getOutputType() {
     return getActionInputValue(OUTPUT_TYPE_ELEMENT);
   }
   
-  public void setPrinterName(IActionInput value) {
+  public void setPrinterName(IActionInputValueProvider value) {
     setActionInputValue(PRINTER_NAME_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setOutputType(null);
     }
   }
   
-  public IActionInput getPrinterName() {
+  public IActionInputValueProvider getPrinterName() {
     return getActionInputValue(PRINTER_NAME_ELEMENT);
   }
   
 
-  public IActionInput getData() {
+  public IActionInputValueProvider getData() {
     return getActionInputValue(DATA_ELEMENT);
   }
   
-  public void setData(IActionInput value) {
+  public void setData(IActionInputValueProvider value) {
     if (value instanceof ActionInputConstant) {
       throw new IllegalArgumentException();
     }
@@ -514,7 +514,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public void setQuery(IActionInput value) {
+  public void setQuery(IActionInputValueProvider value) {
     setActionInputValue(QUERY_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setData(null);
@@ -527,7 +527,7 @@ public class JFreeReportAction extends ActionDefinition {
   /**
    * @deprecated 
    */
-  public IActionInput getQuery() {
+  public IActionInputValueProvider getQuery() {
     return getActionInputValue(QUERY_ELEMENT);
   }
   
@@ -675,7 +675,7 @@ public class JFreeReportAction extends ActionDefinition {
 //    return getActionInputValue(REPORT_DEFINITION_ELEMENT);
 //  }
   
-  public void setDataComponent(IActionInput value) {
+  public void setDataComponent(IActionInputValueProvider value) {
     setActionInputValue(REPORT_DATA_SOURCE_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setData(null);
@@ -694,7 +694,7 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public IActionInput getDataComponent() {
+  public IActionInputValueProvider getDataComponent() {
     return getActionInputValue(REPORT_DATA_SOURCE_ELEMENT);
   }
   
@@ -706,51 +706,51 @@ public class JFreeReportAction extends ActionDefinition {
     return reportJar;
   }
     
-  public void setReportConfig(IActionInput value) {
+  public void setReportConfig(IActionInputValueProvider value) {
     if (value instanceof ActionInputConstant) {
       throw new IllegalArgumentException();
     }
     setActionInputValue(REPORT_CONFIG_INPUT_PARAM, value);
   }
   
-  public IActionInput getReportConfig() {
-    IActionInput reportConfig = getActionInputValue(REPORT_CONFIG_INPUT_PARAM);
+  public IActionInputValueProvider getReportConfig() {
+    IActionInputValueProvider reportConfig = getActionInputValue(REPORT_CONFIG_INPUT_PARAM);
     if (reportConfig.getValue() == null) {
       reportConfig = new ActionInputConstant(staticReportConfig, actionParameterMgr);
     }
     return reportConfig;
   }
   
-  public void setCreatePrivateCopy(IActionInput value) {
+  public void setCreatePrivateCopy(IActionInputValueProvider value) {
     setActionInputValue(CREATE_PRIVATE_COPY_ELEMENT, value);
   }
   
-  public IActionInput getCreatePrivateCopy() {
+  public IActionInputValueProvider getCreatePrivateCopy() {
     return getActionInputValue(CREATE_PRIVATE_COPY_ELEMENT);
   }
   
-  public void setReportGenerationPriority(IActionInput value) {
+  public void setReportGenerationPriority(IActionInputValueProvider value) {
     setActionInputValue(REPORT_GEN_PRIORITY_ELEMENT, value);
   }
   
-  public IActionInput getReportGenerationPriority() {
+  public IActionInputValueProvider getReportGenerationPriority() {
     return getActionInputValue(REPORT_GEN_PRIORITY_ELEMENT);
   }
   
-  public void setHtmlContentHandlerUrlPattern(IActionInput value) {
+  public void setHtmlContentHandlerUrlPattern(IActionInputValueProvider value) {
     setActionInputValue(HTML_CONTENT_HANDLER_ELEMENT, value);
   }
   
-  public IActionInput getHtmlContentHandlerUrlPattern() {
+  public IActionInputValueProvider getHtmlContentHandlerUrlPattern() {
     return getActionInputValue(HTML_CONTENT_HANDLER_ELEMENT);
   }
   
-  public void setReportGenerationYieldRate(IActionInput value) {
+  public void setReportGenerationYieldRate(IActionInputValueProvider value) {
     setActionInputValue(REPORT_GEN_YIELD_RATE_ELEMENT, value);
   }
   
-  public IActionInput getReportGenerationYieldRate() {
-    IActionInput actionInput = getActionInputValue(REPORT_GEN_YIELD_RATE_ELEMENT);
+  public IActionInputValueProvider getReportGenerationYieldRate() {
+    IActionInputValueProvider actionInput = getActionInputValue(REPORT_GEN_YIELD_RATE_ELEMENT);
     if (actionInput instanceof ActionInput) {
       actionInput = new YieldRateInput(((ActionInput)actionInput).getElement(), ((ActionInput)actionInput).getParameterMgr());
     }
@@ -781,11 +781,11 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
    
-  public void setXsl(IActionInput value) {
+  public void setXsl(IActionInputValueProvider value) {
     setActionInputValue(XSL_ELEMENT, value);
   }
   
-  public IActionInput getXsl() {
+  public IActionInputValueProvider getXsl() {
     return getActionInputValue(XSL_ELEMENT);
   }
 }

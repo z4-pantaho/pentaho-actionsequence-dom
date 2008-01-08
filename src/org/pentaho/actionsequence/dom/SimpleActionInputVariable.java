@@ -1,5 +1,7 @@
 package org.pentaho.actionsequence.dom;
 
+import org.dom4j.Element;
+
 public class SimpleActionInputVariable implements IActionInputVariable {
 
   public String name;
@@ -30,38 +32,58 @@ public class SimpleActionInputVariable implements IActionInputVariable {
   }
 
   public Boolean getBooleanValue() {
-    throw new UnsupportedOperationException();
+    return null;
   }
 
   public boolean getBooleanValue(boolean defaultValue) {
-    throw new UnsupportedOperationException();
+    return defaultValue;
   }
 
   public Integer getIntValue() {
-    throw new UnsupportedOperationException();
+    return null;
   }
 
   public int getIntValue(int defaultValue) {
-    throw new UnsupportedOperationException();
+    return defaultValue;
   }
 
   public String getStringValue() {
-    throw new UnsupportedOperationException();
+    return null;
   }
 
   public String getStringValue(boolean replaceParamReferences, String defaultValue) {
-    throw new UnsupportedOperationException();
+    return defaultValue;
   }
 
   public String getStringValue(boolean replaceParamReferences) {
-    throw new UnsupportedOperationException();
+    return null;
   }
 
   public String getStringValue(String defaultValue) {
-    throw new UnsupportedOperationException();
+    return defaultValue;
   }
 
   public Object getValue() {
-    throw new UnsupportedOperationException();
+    return null;
+  }
+
+  public String getName() {
+   return name;
+  }
+
+  public void setName(String ioName) {
+    name = ioName;
+    
+  }
+
+  public void delete() {
+  }
+
+  public ActionSequenceDocument getDocument() {
+    return null;
+  }
+
+  public Element getElement() {
+    return null;
   }
 }

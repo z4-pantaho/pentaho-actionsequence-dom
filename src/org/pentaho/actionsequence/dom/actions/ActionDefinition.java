@@ -34,7 +34,7 @@ import org.pentaho.actionsequence.dom.ActionSequenceInput;
 import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionSequenceExecutableStatement;
 import org.pentaho.actionsequence.dom.ImplicitActionResource;
@@ -46,76 +46,6 @@ import org.pentaho.actionsequence.dom.messages.Messages;
  */
 public class ActionDefinition implements IActionSequenceExecutableStatement {
   
-  public class ActionInputVariable implements IActionInputVariable {
-
-    public String name;
-    public String type;
-    
-    public ActionInputVariable() {
-    }
-    
-    public ActionInputVariable(String name, String type) {
-      this.name = name;
-      this.type = type;
-    }
-    
-    public String getType() {
-      return type;
-    }
-
-    public String getVariableName() {
-      return name;
-    }
-
-    public void setType(String type) {
-      this.type = type;
-    }
-
-    public void setVariableName(String name) {
-      this.name = name;
-    }
-
-    public Object getValue() {
-      throw new UnsupportedOperationException();
-    }
-
-    public Boolean getBooleanValue() {
-      throw new UnsupportedOperationException();
-    }
-
-    public Integer getIntValue() {
-      throw new UnsupportedOperationException();
-    }
-
-    public String getStringValue() {
-      throw new UnsupportedOperationException();
-    }
-
-    public String getStringValue(boolean replaceParamReferences) {
-      throw new UnsupportedOperationException();
-    }
-
-    public ActionInput getInputParam() {
-      throw new UnsupportedOperationException();
-    }
-
-    public boolean getBooleanValue(boolean defaultValue) {
-      throw new UnsupportedOperationException();
-    }
-
-    public int getIntValue(int defaultValue) {
-      throw new UnsupportedOperationException();
-    }
-
-    public String getStringValue(boolean replaceParamReferences, String defaultValue) {
-      throw new UnsupportedOperationException();
-    }
-
-    public String getStringValue(String defaultValue) {
-      throw new UnsupportedOperationException();
-    }
-
-  }
   
   private static final ActionSequenceValidationError[] EMPTY_ARRAY = new ActionSequenceValidationError[0];
   
@@ -279,11 +209,14 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
     return input;
   }
   
-  public void setActionInputValue(String inputPrivateName, IActionInput value) {
+  public void setActionInputValue(String inputPrivateName, IActionInputValueProvider value) {
     if ((value == null) || (value instanceof ActionInputConstant)) {
       setInputValue(inputPrivateName, value != null ? value.getStringValue(false) : null);
     } else if (value instanceof IActionInputVariable) {
       setInputParam(inputPrivateName, (IActionInputVariable)value);
+    } else if (value instanceof ActionInput) {
+      ActionInput actionInput = (ActionInput)value;
+      setInputParam(inputPrivateName, actionInput.getReferencedVariableName(), actionInput.getType());
     }
   }
   
@@ -312,7 +245,7 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
    * @param privateParamName the name of the param as it is known by this action definition (the input element name).
    * @param value the value to be assigned. May be null.
    */
-  public ActionInput setInputParam(String privateParamName, String referencedVariableName) {
+  public ActionInput setInputParam(String privateParamName, String referencedVariableName, String type) {
     ActionInput actionInput = null;
     if (referencedVariableName == null) {
       actionInput = getInputParam(privateParamName);
@@ -320,17 +253,7 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
         actionInput.delete();
       }     
     } else {
-      IActionInputVariable mappedElement = null;
-      IActionInputVariable[] availInputs = getAvailInputVariables();
-      
-      for (int i = 0; i < availInputs.length; i++) {
-        if (availInputs[i].getVariableName().equals(referencedVariableName)) {
-          mappedElement = availInputs[i];
-          break;
-        }
-      }
-      String type = (mappedElement != null ? mappedElement.getType() : ActionSequenceDocument.STRING_TYPE);
-      actionInput = addInputParam(privateParamName, type);
+      actionInput = addInputParam(privateParamName, type != null ? type : ActionSequenceDocument.STRING_TYPE);
       actionInput.setMapping(referencedVariableName);
     }
     return actionInput;
@@ -356,14 +279,14 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
     }
   }
   
-  public IActionInput getActionInputValue(String privateParamName) {
-    IActionInput inputParam = getInputParam(privateParamName);
+  public IActionInputValueProvider getActionInputValue(String privateParamName) {
+    IActionInputValueProvider inputParam = getInputParam(privateParamName);
     
     if ((inputParam == null) || (inputParam.getValue() == null)) {
       String componentDefValue = getComponentDefinitionValue(privateParamName);
       if (componentDefValue == null) {
         if (inputParam == null) {
-          inputParam = IActionInput.NULL_INPUT;
+          inputParam = IActionInputValueProvider.NULL_INPUT;
         }
       } else {
         inputParam = new ActionInputConstant(componentDefValue, actionParameterMgr);
@@ -1077,25 +1000,11 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
   protected ActionInput setInputParam(String privateParamName, IActionInputVariable referencedVariable) {
     ActionInput actionInput = null;
     if (referencedVariable != null) {
-      actionInput = setInputParam(privateParamName, referencedVariable.getVariableName());
-      if (actionInput != null) {
-        actionInput.setType(referencedVariable.getType());
-      }
+      actionInput = setInputParam(privateParamName, referencedVariable.getVariableName(), referencedVariable.getType());
     } else {
       removeInputParam(privateParamName);
     }
     return actionInput;
-  }
-  
-  private IActionInputVariable getReferencedInputVariable(String privateInputName) {
-    ActionInputVariable variable = null;
-    ActionInput actionInput = getInputParam(privateInputName);
-    if (actionInput != null) {
-      variable = new ActionInputVariable();
-      variable.setVariableName(actionInput.getReferencedVariableName());
-      variable.setType(actionInput.getType());
-    }
-    return variable; 
   }
   
   /**
@@ -1145,13 +1054,13 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
    */
   protected ActionSequenceValidationError validateInputParam(String privateParamName) {
     int errorCode = ActionSequenceValidationError.INPUT_OK;
-    IActionInputVariable variable = getReferencedInputVariable(privateParamName);
-    if (variable == null) {
+    ActionInput actionInput = getInputParam(privateParamName);
+    if (actionInput == null) {
       if (getComponentDefElement(privateParamName) == null) {
         errorCode = ActionSequenceValidationError.INPUT_MISSING;
       }
     } else {
-      IActionInputVariable[] availableInputVariables = getDocument().getAvailInputVariables(this, variable.getType());
+      IActionInputVariable[] availableInputVariables = getDocument().getAvailInputVariables(this, actionInput.getType());
       if (availableInputVariables.length == 0) {
         errorCode = ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR;
       } else {

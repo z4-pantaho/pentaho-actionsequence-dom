@@ -14,7 +14,7 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class HelloWorldAction extends ActionDefinition {
@@ -42,11 +42,11 @@ public class HelloWorldAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setQuote(IActionInput value) {
+  public void setQuote(IActionInputValueProvider value) {
     setActionInputValue(QUOTE_ELEMENT, value);
   }
   
-  public IActionInput getQuote() {
+  public IActionInputValueProvider getQuote() {
     return getActionInputValue(QUOTE_ELEMENT);
   }
   

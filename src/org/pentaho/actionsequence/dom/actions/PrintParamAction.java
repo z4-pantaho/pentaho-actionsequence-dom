@@ -12,8 +12,14 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
+import java.util.ArrayList;
+
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionSequenceElement;
 
 public class PrintParamAction extends ActionDefinition {
@@ -21,6 +27,8 @@ public class PrintParamAction extends ActionDefinition {
   public static final String COMPONENT_NAME = "org.pentaho.component.UtilityComponent"; //$NON-NLS-1$
   public static final String PRINT_PARAMS_COMMAND = "print"; //$NON-NLS-1$
   public static final String DELIMITER_ELEMENT = "delimiter"; //$NON-NLS-1$
+  public static final String PRINT_PARAMS_XPATH = "print/arg"; //$NON-NLS-1$
+  public static final String PRINT_PARAM_PREFIX = "printParam"; //$NON-NLS-1$
   
   public PrintParamAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
     super(actionDefElement, actionInputProvider);
@@ -50,21 +58,16 @@ public class PrintParamAction extends ActionDefinition {
     return actionDef instanceof PrintParamAction;
   }
   
-  public void setDelimiter(String value) {
-    if (value != null) {
-      value = value.trim();
-      if (value.length() > 0) {
-        if (!value.startsWith("\"") || !value.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
-          value = "\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$
-        }
-      } else {
-        value = null;
-      }
+  public void setDelimiter(ActionInputConstant value) {
+    String delimiter = (value != null ? value.getStringValue() : null);
+    if (delimiter != null) {
+      delimiter = "\"" + delimiter + "\"";
     }
-    setComponentDefinition(PRINT_PARAMS_COMMAND + "/" + DELIMITER_ELEMENT, value); //$NON-NLS-1$
+    setComponentDefinition(PRINT_PARAMS_COMMAND + "/" + DELIMITER_ELEMENT, delimiter); //$NON-NLS-1$
   }
   
-  public String getDelimiter() {
+  public ActionInputConstant getDelimiter() {
+    ActionInputConstant actionInputConstant = IActionInputValueProvider.NULL_INPUT;
     String delimiter = getComponentDefinitionValue(PRINT_PARAMS_COMMAND + "/" + DELIMITER_ELEMENT); //$NON-NLS-1$
     if (delimiter != null) {
       if (delimiter.startsWith("\"") && delimiter.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -74,7 +77,62 @@ public class PrintParamAction extends ActionDefinition {
           delimiter = delimiter.substring(1, delimiter.length() - 1);
         }
       }
+      actionInputConstant = new ActionInputConstant(delimiter);
     }
-    return delimiter;
+    return actionInputConstant;
+  }
+  
+  public IActionInputValueProvider[] getInputsToPrint() {
+    ArrayList printParams = new ArrayList();
+    Element[] elements = getComponentDefElements(PRINT_PARAMS_XPATH);
+    for (int i = 0; i < elements.length; i++) {
+      String printParamName = elements[i].getText();
+      IActionInputValueProvider key = getActionInputValue(printParamName);
+      if (key != IActionInputValueProvider.NULL_INPUT) {
+        printParams.add(key);
+      }
+    }
+    return (IActionInputValueProvider[])printParams.toArray(new IActionInputValueProvider[0]);
+  }
+  
+  
+  public void setInputsToPrint(IActionInputValueProvider[] values) {
+    Object[] oldPrintParams = getInputsToPrint();
+    for (int i = 0; i < oldPrintParams.length; i++) {
+      if (oldPrintParams[i] instanceof ActionInput) {
+        ((ActionInput)oldPrintParams[i]).delete();
+      }
+    }
+    setComponentDefinition(PRINT_PARAMS_XPATH, new String[0]);
+    
+    ArrayList printParamNames = new ArrayList();
+    for (int i = 0; i < values.length; i++) {
+      if (values[i] instanceof IActionInputVariable) {
+        IActionInputVariable actionVariable = (IActionInputVariable)values[i];
+        printParamNames.add(actionVariable.getVariableName());
+        setActionInputValue(actionVariable.getVariableName(), actionVariable);
+      } else if ((values[i] instanceof ActionInputConstant) && (values[i].getValue() != null)) {
+        String printParamName = getUniqueNameParam();
+        printParamNames.add(printParamName);
+        setActionInputValue(printParamName, values[i]);
+      } else if (values[i] instanceof ActionInput) {
+        ActionInput actionInput = (ActionInput)values[i];
+        printParamNames.add(actionInput.getName());
+        setInputParam(actionInput.getName(), actionInput.getReferencedVariableName(), actionInput.getType());
+      }
+    }
+    if (printParamNames.size() > 0) {
+      setComponentDefinition(PRINT_PARAMS_XPATH, (String[])printParamNames.toArray(new String[0]));
+    }
+  }
+  
+  private String getUniqueNameParam() {
+    String name = null;
+    boolean isUnique = false;
+    for (int i = 1; !isUnique; i++) {
+      name = PRINT_PARAM_PREFIX + i;
+      isUnique = (getInputParam(name) == null) && (getComponentDefElement(name) == null);
+    }
+    return name;
   }
 }
