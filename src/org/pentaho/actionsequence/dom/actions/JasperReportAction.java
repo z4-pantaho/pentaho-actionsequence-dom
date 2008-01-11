@@ -21,6 +21,7 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class JasperReportAction extends ActionDefinition {
@@ -84,97 +85,54 @@ public class JasperReportAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setConnection(String value) {
-    setInputValue(CONNECTION_ELEMENT, value);
-    if (value != null) {
+  public void setConnection(IActionInputValueProvider value) {
+    setActionInputValue(CONNECTION_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public String getConnection() {
-    return getComponentDefinitionValue(CONNECTION_ELEMENT);
+  public IActionInputValueProvider getConnection() {
+    return getActionInputValue(CONNECTION_ELEMENT);
   }
   
-  public void setConnectionParam(IActionInputVariable variable) {
-    setInputParam(CONNECTION_ELEMENT, variable);
-    if (variable != null) {
+  public void setUserId(IActionInputValueProvider value) {
+    setActionInputValue(USER_ID_ELEMENT, value);
+		if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public ActionInput getConnectionParam() {
-    return getInputParam(CONNECTION_ELEMENT);
+  public IActionInputValueProvider getUserId() {
+    return getActionInputValue(USER_ID_ELEMENT);
   }
-  
-  public void setUserId(String value) {
-    setInputValue(USER_ID_ELEMENT, value);
-    if (value != null) {
+
+  public void setDriver(IActionInputValueProvider value) {
+    setActionInputValue(DRIVER_ELEMENT, value);
+		if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public String getUserId() {
-    return getComponentDefinitionValue(USER_ID_ELEMENT);
+  public IActionInputValueProvider getDriver() {
+    return getActionInputValue(DRIVER_ELEMENT);
   }
   
-  public void setUserIdParam(IActionInputVariable variable) {
-    setInputParam(USER_ID_ELEMENT, variable);
-    if (variable != null) {
+  public void setPassword(IActionInputValueProvider value) {
+    setActionInputValue(PASSWORD_ELEMENT, value);
+		if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+
       setJndi(null);
     }
   }
   
-  public ActionInput getUserIdParam() {
-    return getInputParam(USER_ID_ELEMENT);
+  public IActionInputValueProvider getPassword() {
+    return getActionInputValue(PASSWORD_ELEMENT);
   }
-  
-  public void setDriver(String value) {
-    setInputValue(DRIVER_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-    }
-  }
-  
-  public String getDriver() {
-    return getComponentDefinitionValue(DRIVER_ELEMENT);
-  }
-  
-  public void setDriverParam(IActionInputVariable variable) {
-    setInputParam(DRIVER_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-    }
-  }
-  
-  public ActionInput getDriverParam() {
-    return getInputParam(DRIVER_ELEMENT);
-  }
-  
-  public void setPassword(String value) {
-    setInputValue(PASSWORD_ELEMENT, value);
-    if (value != null) {
-      setJndi(null);
-    }
-  }
-  
-  public String getPassword() {
-    return getComponentDefinitionValue(PASSWORD_ELEMENT);
-  }
-  
-  public void setPasswordParam(IActionInputVariable variable) {
-    setInputParam(PASSWORD_ELEMENT, variable);
-    if (variable != null) {
-      setJndi(null);
-    }
-  }
-  
-  public ActionInput getPasswordParam() {
-    return getInputParam(PASSWORD_ELEMENT);
-  }
-  
-  public void setJndi(String value) {
-    setInputValue(JNDI_ELEMENT, value);
-    if (value != null) {
+
+  public void setJndi(IActionInputValueProvider value) {
+    setActionInputValue(JNDI_ELEMENT, value);
+    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
       setDriver(null);
       setConnection(null);
       setUserId(null);
@@ -182,30 +140,16 @@ public class JasperReportAction extends ActionDefinition {
     }
   }
   
-  public String getJndi() {
-    return getComponentDefinitionValue(JNDI_ELEMENT);
+  public IActionInputValueProvider getJndi() {
+    return getActionInputValue(JNDI_ELEMENT);
   }
   
-  public void setJndiParam(IActionInputVariable variable) {
-    setInputParam(JNDI_ELEMENT, variable);
-    if (variable != null) {
-      setDriver(null);
-      setConnection(null);
-      setUserId(null);
-      setPassword(null);
-    }
+  public void setOutputType(IActionInputValueProvider value) {
+    setActionInputValue(OUTPUT_TYPE_ELEMENT, value);
   }
   
-  public ActionInput getJndiParam() {
-    return getInputParam(JNDI_ELEMENT);
-  }
-  
-  public void setOutputType(String value) {
-    setInputValue(OUTPUT_TYPE_ELEMENT, value);
-  }
-  
-  public String getOutputType() {
-    return getComponentDefinitionValue(OUTPUT_TYPE_ELEMENT);
+  public IActionInputValueProvider getOutputType() {
+    return getActionInputValue(OUTPUT_TYPE_ELEMENT);
   }
   
   public void setOutputTypeParam(IActionInputVariable variable) {
