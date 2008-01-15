@@ -98,14 +98,15 @@ public class BirtReportAction extends ActionDefinition {
   }
   
   public ActionOutput getOutputReportParam() {
-    String privateOutputName = REPORT_OUTPUT_ELEMENT;
-    if (getOutputParam(privateOutputName) ==  null) { 
+    ActionOutput actionOutput = getOutputParam(REPORT_OUTPUT_ELEMENT);
+    
+    if (actionOutput ==  null) { 
       ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
-        privateOutputName = actionOutputs[0].getName();
+        actionOutput = actionOutputs[0];
       }
     }
-    return getOutputParam(REPORT_OUTPUT_ELEMENT);
+    return actionOutput;
   }
   
   public ActionSequenceValidationError[] validate() {
