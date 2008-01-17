@@ -58,7 +58,7 @@ public class SqlConnectionAction extends ActionDefinition {
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
     setJndi(new ActionInputConstant("")); //$NON-NLS-1$
-    setOutputConnectionName(DEFAULT_CONNECTION_NAME);
+    setOutputConnection(DEFAULT_CONNECTION_NAME);
   }
   
   public static boolean accepts(Element element) {
@@ -140,15 +140,11 @@ public class SqlConnectionAction extends ActionDefinition {
   }
   
   
-  public void setOutputConnectionName(String name) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.SQL_CONNECTION_TYPE);
+  public void setOutputConnection(String publicOutputName) {
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.SQL_CONNECTION_TYPE);
   }
   
-  public String getOutputConnectionName() {
-    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputConnectionParam() {
+  public ActionOutput getOutputConnection() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   

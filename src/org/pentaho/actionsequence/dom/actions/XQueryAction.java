@@ -113,27 +113,14 @@ public class XQueryAction extends ActionDefinition {
     return getActionInputValue(LIVE_CONNECTION_ELEMENT); 
   }
   
-  public void setOutputResultSetName(String name) {
-    setOutputParam(QUERY_RESULT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputPreparedStatementName(null);
+  public void setOutputResultSet(String publicOutputName) {
+    setOutputParam(QUERY_RESULT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
+      setOutputPreparedStatement(null);
     }
   }
   
-  public String getOutputResultSetName() {
-    String name = getPublicOutputName(QUERY_RESULT_ELEMENT);
-    
-    // This if statement provides backward compatibility for deprecated functionality.
-    if (name == null) {
-      ActionOutput[] outputs = getAllOutputParams();
-      if (outputs.length > 0) {
-        name = outputs[0].getPublicName();
-      }
-    }
-    return name;
-  }
-  
-  public ActionOutput getOutputResultSetParam() {
+  public ActionOutput getOutputResultSet() {
     ActionOutput actionOutput = getOutputParam(QUERY_RESULT_ELEMENT);
     // This if statement provides backward compatibility for deprecated functionality.
     if (actionOutput == null) {
@@ -145,10 +132,10 @@ public class XQueryAction extends ActionDefinition {
     return actionOutput;
   }
   
-  public void setOutputPreparedStatementName(String name) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.XQUERY_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputResultSetName(null);
+  public void setOutputPreparedStatement(String publicOutputName) {
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.XQUERY_TYPE);
+    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
+      setOutputResultSet(null);
       ActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (!actionOutputs[i].getType().equals(ActionSequenceDocument.XQUERY_TYPE)) {
@@ -158,11 +145,7 @@ public class XQueryAction extends ActionDefinition {
     }
   }
   
-  public String getOutputPreparedStatementName() {
-    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
-  }  
-  
-  public ActionOutput getOutputPreparedStatementParam() {
+  public ActionOutput getOutputPreparedStatement() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
@@ -226,7 +209,7 @@ public class XQueryAction extends ActionDefinition {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
+    setOutputResultSet(DEFAULT_QUERY_RESULTS_NAME);
   }
   
   public ActionResource setXmlDocument(URI uri, String mimeType) {

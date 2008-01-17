@@ -60,15 +60,11 @@ public class XQueryConnectionAction extends ActionDefinition {
     return new String[0];
   }
   
-  public void setOutputConnectionName(String name) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.XQUERY_CONNECTION_TYPE);
+  public void setOutputConnection(String publicOutputName) {
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.XQUERY_CONNECTION_TYPE);
   }
   
-  public String getOutputConnectionName() {
-    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputConnectionParam() {
+  public ActionOutput getOutputConnection() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
@@ -88,7 +84,7 @@ public class XQueryConnectionAction extends ActionDefinition {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setOutputConnectionName(DEFAULT_CONNECTION_NAME);
+    setOutputConnection(DEFAULT_CONNECTION_NAME);
   }
   
 }

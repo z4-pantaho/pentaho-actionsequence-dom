@@ -3,7 +3,6 @@ package org.pentaho.actionsequence.dom.actions;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
@@ -12,7 +11,6 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
-import org.pentaho.actionsequence.dom.actions.EmailAction.HTMLMsgInput;
 
 public abstract class AbstractRelationalDbAction extends ActionDefinition {
 
@@ -297,27 +295,18 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     return getActionInputValue(TRANSFORM_ORDERED_MAPS);
   }
   
-  public void setOutputResultSetName(String name) {
+  public void setOutputResultSet(String publicOutputName) {
     // This removes deprecated functionality.
     setInputValue(OUTPUT_NAME_ELEMENT, null);
     // End deprecated functionality.
     
-    setOutputParam(QUERY_RESULT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputPreparedStatementName(null);
+    setOutputParam(QUERY_RESULT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
+      setOutputPreparedStatement(null);
     }
   }
   
-  public String getOutputResultSetName() {
-    String publicName = null;
-    ActionOutput actionOutput = getOutputResultSetParam();
-    if (actionOutput != null) {
-      publicName = actionOutput.getPublicName();
-    }
-    return publicName;
-  }
-  
-  public ActionOutput getOutputResultSetParam() {
+  public ActionOutput getOutputResultSet() {
     // This is deprecated functionality.
     Object outputName = getActionInputValue(OUTPUT_NAME_ELEMENT).getValue();
     if (outputName == null) {
@@ -339,20 +328,6 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     return actionOutput;
   }
   
-  public void setOutputResultSet(Object object) {
-    ActionOutput actionOutput = getOutputResultSetParam();
-    if (actionOutput != null) {
-      actionOutput.setValue(object);
-    }
-  }
-  
-  public void setOutputPreparedStatement(Object object) {
-    ActionOutput actionOutput = getOutputPreparedStatementParam();
-    if (actionOutput != null) {
-      actionOutput.setValue(object);
-    }
-  }
-  
   public void setMaxRows(IActionInputValueProvider value) {
     setActionInputValue(MAX_ROWS_ELEMENT, value);
   }
@@ -361,10 +336,10 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     return getActionInputValue(MAX_ROWS_ELEMENT);
   }
   
-  public void setOutputPreparedStatementName(String name) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.SQL_QUERY_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputResultSetName(null);
+  public void setOutputPreparedStatement(String publicOutputName) {
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.SQL_QUERY_TYPE);
+    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
+      setOutputResultSet(null);
       ActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (!actionOutputs[i].getType().equals(ActionSequenceDocument.SQL_QUERY_TYPE)) {
@@ -374,11 +349,7 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
   
-  public String getOutputPreparedStatementName() {
-    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputPreparedStatementParam() {
+  public ActionOutput getOutputPreparedStatement() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   

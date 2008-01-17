@@ -97,12 +97,12 @@ public class FormatMsgAction extends ActionDefinition {
     return formatString == null ? IActionInputValueProvider.NULL_INPUT : new ActionInputConstant(formatString);
   }
   
-  public void setOutputStringName(String name) {
+  public void setOutputString(String publicOutputName) {
     String privateName = getComponentDefinitionValue(RETURN_NAME_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
-    ActionOutput actionOutput = setOutputParam(privateName, name, ActionSequenceDocument.STRING_TYPE);
+    ActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(RETURN_NAME_XPATH, (String)null);
     } else {
@@ -110,15 +110,7 @@ public class FormatMsgAction extends ActionDefinition {
     }
   }
   
-  public String getOutputStringName() {
-    String privateName = getComponentDefinitionValue(RETURN_NAME_XPATH);
-    if ((privateName == null) || (privateName.trim().length() == 0)) {
-      privateName = OUTPUT_STRING_ELEMENT;
-    }  
-    return getPublicOutputName(privateName);
-  }
-  
-  public ActionOutput getOutputStringParam() {
+  public ActionOutput getOutputString() {
     String privateName = getComponentDefinitionValue(RETURN_NAME_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;

@@ -19,6 +19,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class ContentOutputAction extends ActionDefinition {
@@ -48,40 +49,28 @@ public class ContentOutputAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setMimeType(String value) {
-    setInputValue(MIME_TYPE_ELEMENT, value);
+  public void setMimeType(IActionInputValueProvider value) {
+    setActionInputValue(MIME_TYPE_ELEMENT, value);
   }
   
-  public String getMimeType() {
-    return getComponentDefinitionValue(MIME_TYPE_ELEMENT);
+  public IActionInputValueProvider getMimeType() {
+    return getActionInputValue(MIME_TYPE_ELEMENT);
   }
   
-  public void setMimeTypeParam(IActionInputVariable variable) {
-    setInputParam(MIME_TYPE_ELEMENT, variable);
+  public void setInput(IActionInputVariable value) {
+    setActionInputValue(CONTENT_INPUT_ELEMENT, value);
   }
   
-  public ActionInput getMimeTypeParam() {
-    return getInputParam(MIME_TYPE_ELEMENT);
+  public IActionInputValueProvider getInput() {
+    return getActionInputValue(CONTENT_INPUT_ELEMENT);
   }
   
-  public void setInputParam(IActionInputVariable variable) {
-    setInputParam(CONTENT_INPUT_ELEMENT, variable);
-  }
-  
-  public ActionInput getInputParam() {
-    return getInputParam(CONTENT_INPUT_ELEMENT);
-  }
-  
-  public String getOutputName() {
-    return getPublicOutputName(CONTENT_OUTPUT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputParam() {
+  public ActionOutput getOutput() {
     return getOutputParam(CONTENT_OUTPUT_ELEMENT);
   }
   
-  public void setOutputName(String name) {
-    setOutputParam(CONTENT_OUTPUT_ELEMENT, name, ActionSequenceDocument.CONTENT_TYPE);
+  public void setOutput(String outputPublicName) {
+    setOutputParam(CONTENT_OUTPUT_ELEMENT, outputPublicName, ActionSequenceDocument.CONTENT_TYPE);
   }
   
   public ActionSequenceValidationError[] validate() {

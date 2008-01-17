@@ -152,17 +152,9 @@ public class JasperReportAction extends ActionDefinition {
     return getActionInputValue(OUTPUT_TYPE_ELEMENT);
   }
   
-  public void setOutputTypeParam(IActionInputVariable variable) {
-    setInputParam(OUTPUT_TYPE_ELEMENT, variable);
-  }
-  
-  public ActionInput getOutputTypeParam() {
-    return getInputParam(OUTPUT_TYPE_ELEMENT);
-  }
-  
-  public void setOutputReportName(String name) {
-    setOutputParam(REPORT_OUTPUT_ELEMENT, name, ActionSequenceDocument.CONTENT_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
+  public void setOutputReport(String publicOutputName) {
+    setOutputParam(REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
+    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
       ActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (actionOutputs[i].getType().equals(ActionSequenceDocument.CONTENT_TYPE)
@@ -173,18 +165,7 @@ public class JasperReportAction extends ActionDefinition {
     }
   }
   
-  public String getOutputReportName() {
-    String privateOutputName = REPORT_OUTPUT_ELEMENT;
-    if (getOutputParam(privateOutputName) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
-      if (actionOutputs.length > 0) {
-        privateOutputName = actionOutputs[0].getName();
-      }
-    }
-    return getPublicOutputName(privateOutputName);
-  }
-  
-  public ActionOutput getOutputReportParam() {
+  public ActionOutput getOutputReport() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(privateOutputName) ==  null) { 
       ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);

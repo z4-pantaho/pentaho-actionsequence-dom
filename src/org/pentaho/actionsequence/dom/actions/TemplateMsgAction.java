@@ -116,15 +116,11 @@ public class TemplateMsgAction extends ActionDefinition {
     setActionInputValue(EXTENSION, value);
   }
   
-  public void setOutputStringName(String name) {
-    setOutputParam(OUTPUT_MSG_ELEMENT, name, ActionSequenceDocument.STRING_TYPE);
+  public void setOutputString(String publicOutputName) {
+    setOutputParam(OUTPUT_MSG_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
   }
   
-  public String getOutputStringName() {
-    return getPublicOutputName(OUTPUT_MSG_ELEMENT);
-  }
-  
-  public ActionOutput getOutputStringParam() {
+  public ActionOutput getOutputString() {
     return getOutputParam(OUTPUT_MSG_ELEMENT);
   }
 }

@@ -27,7 +27,7 @@ public class ResultSetCompareAction extends ActionDefinition {
   public static final String OUTPUT_MISMATCHES_ELEMENT = "output_mismatches"; //$NON-NLS-1$
   public static final String STOP_ON_ERROR_ELEMENT = "stop-on-error"; //$NON-NLS-1$
   public static final String COMPARE_RESULT_ELEMENT = "compare-result"; //$NON-NLS-1$
-  public static final String OUTPUT_STRING = "output-string"; //$NON-NLS-1$
+  public static final String OUTPUT_COMPARE_RESULT = "output-compare-result"; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     COMPARE_FROM_ELEMENT,
@@ -134,12 +134,12 @@ public class ResultSetCompareAction extends ActionDefinition {
     return getInputParam(STOP_ON_ERROR_ELEMENT);
   }
   
-  public void setOutputStringName(String name) {
+  public void setOutputCompareResult(String publicOutputName) {
     String privateName = getComponentDefinitionValue(COMPARE_RESULT_ELEMENT);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;
     }  
-    ActionOutput actionOutput = setOutputParam(privateName, name, ActionSequenceDocument.STRING_TYPE);
+    ActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COMPARE_RESULT_ELEMENT, (String)null);
     } else {
@@ -147,15 +147,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     }
   }
   
-  public String getOutputStringName() {
-    String privateName = getComponentDefinitionValue(COMPARE_RESULT_ELEMENT);
-    if ((privateName == null) || (privateName.trim().length() == 0)) {
-      privateName = COMPARE_RESULT_ELEMENT;
-    }  
-    return getPublicOutputName(privateName);
-  }
-  
-  public ActionOutput getOutputStringParam() {
+  public ActionOutput getOutputCompareResult() {
     String privateName = getComponentDefinitionValue(COMPARE_RESULT_ELEMENT);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;

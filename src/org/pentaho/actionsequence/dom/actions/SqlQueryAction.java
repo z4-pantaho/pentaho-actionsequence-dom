@@ -59,7 +59,7 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
     super.initNewActionDefinition();
     setJndi(new ActionInputConstant("")); //$NON-NLS-1$
     setQuery(new ActionInputConstant("")); //$NON-NLS-1$
-    setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
+    setOutputResultSet(DEFAULT_QUERY_RESULTS_NAME);
     setLive(new ActionInputConstant(true));
   }
   

@@ -85,7 +85,7 @@ public class MdxConnectionAction extends ActionDefinition {
     super.initNewActionDefinition();
     setJndi(new ActionInputConstant("")); //$NON-NLS-1$
     setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-    setOutputConnectionName(DEFAULT_CONNECTION_NAME);
+    setOutputConnection(DEFAULT_CONNECTION_NAME);
   }
   
   public String[] getReservedInputNames() {
@@ -260,15 +260,11 @@ public class MdxConnectionAction extends ActionDefinition {
     return getActionInputValue(JNDI_ELEMENT);
   }
   
-  public void setOutputConnectionName(String name) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.MDX_CONNECTION_TYPE);
+  public void setOutputConnection(String publicOutputName) {
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.MDX_CONNECTION_TYPE);
   }
   
-  public String getOutputConnectionName() {
-    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputConnectionParam() {
+  public ActionOutput getOutputConnection() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   

@@ -82,7 +82,7 @@ public class CopyParamAction extends ActionDefinition {
       setComponentDefinition(CopyParamAction.COPY_FROM_XPATH, COPY_FROM_ELEMENT, false);
     }
     setActionInputValue(COPY_FROM_ELEMENT, value);
-    ActionOutput actionOutput = getOutputCopyParam();
+    ActionOutput actionOutput = getOutputCopy();
     if (actionOutput != null) {
       actionOutput.setType(value.getType());
     }
@@ -96,13 +96,13 @@ public class CopyParamAction extends ActionDefinition {
     return getActionInputValue(copyFromVarName);
   }
   
-  public void setOutputCopyName(String name) {
+  public void setOutputCopy(String publicOutputName) {
     String privateName = getComponentDefinitionValue(COPY_RETURN_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
     }
     ActionInput copyFrom = (ActionInput)getCopyFrom();
-    ActionOutput actionOutput = setOutputParam(privateName, name, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
+    ActionOutput actionOutput = setOutputParam(privateName, publicOutputName, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COPY_RETURN_XPATH, (String)null);
     } else {
@@ -110,15 +110,7 @@ public class CopyParamAction extends ActionDefinition {
     }
   }
   
-  public String getOutputCopyName() {
-    String privateName = getComponentDefinitionValue(COPY_RETURN_XPATH);
-    if ((privateName == null) || (privateName.trim().length() == 0)) {
-      privateName = COPY_TO_ELEMENT;
-    }  
-    return getPublicOutputName(privateName);
-  }
-  
-  public ActionOutput getOutputCopyParam() {
+  public ActionOutput getOutputCopy() {
     String privateName = getComponentDefinitionValue(COPY_RETURN_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
@@ -166,12 +158,12 @@ public class CopyParamAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public Object getValueToCopy() {
-    Object value = null;
-    ActionInput actionInput = (ActionInput)getCopyFrom();
-    if (actionInput != null) {
-      value = actionInput.getValue();
-    }
-    return value;
-  }
+//  public Object getValueToCopy() {
+//    Object value = null;
+//    ActionInput actionInput = (ActionInput)getCopyFrom();
+//    if (actionInput != null) {
+//      value = actionInput.getValue();
+//    }
+//    return value;
+//  }
 }

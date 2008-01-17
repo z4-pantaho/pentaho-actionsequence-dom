@@ -12,13 +12,11 @@
 */
 package org.pentaho.actionsequence.dom.actions;
 
-import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
@@ -72,7 +70,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     setJndi(new ActionInputConstant("")); //$NON-NLS-1$
     setQuery(new ActionInputConstant("")); //$NON-NLS-1$
     setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-    setOutputResultSetName(DEFAULT_QUERY_RESULTS_NAME);
+    setOutputResultSet(DEFAULT_QUERY_RESULTS_NAME);
   }
   
   public static boolean accepts(Element element) {
@@ -155,18 +153,14 @@ public class MdxQueryAction extends MdxConnectionAction {
     return getActionInputValue(QUERY_ELEMENT);
   }
   
-  public void setOutputResultSetName(String name) {
-    setOutputParam(QUERY_RESULTS_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputPreparedStatementName(null);
+  public void setOutputResultSet(String publicOutputName) {
+    setOutputParam(QUERY_RESULTS_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
+      setOutputPreparedStatement(null);
     }
   }
   
-  public String getOutputResultSetName() {
-    return getPublicOutputName(QUERY_RESULTS_ELEMENT);
-  }
-  
-  public ActionOutput getOutputResultSetParam() {
+  public ActionOutput getOutputResultSet() {
     ActionOutput actionOutput = getOutputParam(QUERY_RESULTS_ELEMENT);
     if (actionOutput == null) {
       ActionOutput[] allOutputs = getAllOutputParams();
@@ -177,18 +171,14 @@ public class MdxQueryAction extends MdxConnectionAction {
     return actionOutput;
   }
   
-  public void setOutputPreparedStatementName(String name) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.MDX_QUERY_TYPE);
-    if ((name != null) && (name.trim().length() > 0)) {
-      setOutputResultSetName(null);
+  public void setOutputPreparedStatement(String publicOutputName) {
+    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.MDX_QUERY_TYPE);
+    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
+      setOutputResultSet(null);
     }
   }
   
-  public String getOutputPreparedStatementName() {
-    return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
-  }  
-  
-  public ActionOutput getOutputPreparedStatementParam() {
+  public ActionOutput getOutputPreparedStatement() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   

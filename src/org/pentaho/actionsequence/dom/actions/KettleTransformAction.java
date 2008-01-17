@@ -102,15 +102,11 @@ public class KettleTransformAction extends ActionDefinition {
     return getActionInputValue(TRANSFORMATION_STEP_ELEMENT);
   }
   
-  public void setOutputResultSetName(String name) {
-    setOutputParam(TRANSFORMATION_OUTPUT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
+  public void setOutputResultSet(String publicOutputName) {
+    setOutputParam(TRANSFORMATION_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
   }
   
-  public String getOutputResultSetName() {
-    return getPublicOutputName(TRANSFORMATION_OUTPUT_ELEMENT);
-  }
-  
-  public ActionOutput getOutputResultSetParam() {
+  public ActionOutput getOutputResultSet() {
     return getOutputParam(TRANSFORMATION_OUTPUT_ELEMENT);
   }
   
