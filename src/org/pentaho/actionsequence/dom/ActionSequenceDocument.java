@@ -1278,7 +1278,7 @@ public class ActionSequenceDocument {
     sqlQueryAction.setQuery(new ActionInputConstant("select * from customers"));
     
     // Set up the name of the output result set.
-    sqlQueryAction.setOutputResultSetName("queryResults");
+    sqlQueryAction.setOutputResultSet("queryResults");
     
     // Set the query results as an output of the action sequence.
     ActionSequenceOutput actionSequenceOutput = actionSequenceDocument.createOutput("queryResults", ActionSequenceDocument.RESULTSET_TYPE);
@@ -1308,7 +1308,7 @@ public class ActionSequenceDocument {
     // Set up the sql query actions to use the action sequence inputs.
     sqlQueryAction.setJndi(jndiInput);
     sqlQueryAction.setQuery(queryInput);
-    sqlQueryAction.setOutputResultSetName("queryResults");
+    sqlQueryAction.setOutputResultSet("queryResults");
     
     // Set the query results as an output of the action sequence.
     actionSequenceOutput = actionSequenceDocument.createOutput("queryResults", ActionSequenceDocument.RESULTSET_TYPE);
