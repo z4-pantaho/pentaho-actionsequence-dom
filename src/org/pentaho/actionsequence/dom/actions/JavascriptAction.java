@@ -15,9 +15,8 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 
 public class JavascriptAction extends ActionDefinition {
 
@@ -44,20 +43,12 @@ public class JavascriptAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setScript(String value) {
-    setInputValue(SCRIPT_ELEMENT, value);
+  public void setScript(IActionInputValueProvider value) {
+    setActionInputValue(SCRIPT_ELEMENT, value);
   }
   
-  public String getScript() {
-    return getComponentDefinitionValue(SCRIPT_ELEMENT);
-  }
-  
-  public void setScriptParam(IActionInputVariable variable) {
-    setInputParam(SCRIPT_ELEMENT, variable);
-  }
-  
-  public ActionInput getScriptParam() {
-    return getInputParam(SCRIPT_ELEMENT);
+  public IActionInputValueProvider getScript() {
+    return getActionInputValue(SCRIPT_ELEMENT);
   }
   
   public ActionSequenceValidationError[] validate() {
