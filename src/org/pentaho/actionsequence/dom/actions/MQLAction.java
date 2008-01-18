@@ -24,6 +24,7 @@ public class MQLAction extends AbstractRelationalDbAction {
   public static final String OUTPUT_RESULT_SET = "output-result-set"; //$NON-NLS-1$
   public static final String DISABLE_DISTINCT_ELEMENT = "DisableDistinct"; //$NON-NLS-1$
   public static final String FORCE_DB_DIALECT_ELEMENT = "ForceDBDialect"; //$NON-NLS-1$
+  public static final String MQLQUERY_CLASSNAME = "MQLQueryClassName"; //$NON-NLS-1$
     
   protected static final String[] EXPECTED_INPUTS = new String[] {
     QUERY_ELEMENT
@@ -117,6 +118,19 @@ public class MQLAction extends AbstractRelationalDbAction {
   public IActionInputValueProvider getForceDbDialect() {
     return getActionInputValue(FORCE_DB_DIALECT_ELEMENT);
   }
+  
+  public void setMqlQueryClassName(IActionInputValueProvider value) {
+    setActionInputValue(MQLQUERY_CLASSNAME, value);
+  }
+  
+  // forces the use of the metadata.xmi's dialect, even if the actual 
+  // connection is of a different database.  this may be necessary if 
+  // there are issues with detecting the correct database.  The value
+  // defaults to false if not specified.
+  public IActionInputValueProvider getMqlQueryClassName() {
+    return getActionInputValue(MQLQUERY_CLASSNAME);
+  }
+  
   
   private Document prettyPrint( Document document ) {
     try {
