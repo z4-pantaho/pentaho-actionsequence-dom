@@ -13,9 +13,10 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class ResultSetCompareAction extends ActionDefinition {
@@ -68,72 +69,46 @@ public class ResultSetCompareAction extends ActionDefinition {
     return new String[]{expectedOutput};
   }
   
-  public void setCompareColumn(String value) {
-    setInputValue(COMPARE_COLUMN_ELEMENT, value);
+  public void setCompareColumnNum(IActionInputVariable value) {
+    setActionInputValue(COMPARE_COLUMN_ELEMENT, value);
   }
   
-  public String getCompareColumn() {
-    return getComponentDefinitionValue(COMPARE_COLUMN_ELEMENT);
+  public IActionInputValueProvider getCompareColumnNum() {
+    return getActionInputValue(COMPARE_COLUMN_ELEMENT);
   }
   
-  public void setCompareColumnParam(IActionInputVariable variable) {
-    setInputParam(COMPARE_COLUMN_ELEMENT, variable);
+  public void setResultSet1(IActionInputVariable variable) {
+    setActionInputValue(COMPARE_FROM_ELEMENT, variable);
   }
   
-  public ActionInput getCompareColumnParam() {
-    return getInputParam(COMPARE_COLUMN_ELEMENT);
+  public IActionInputValueProvider getResultSet1() {
+    return getActionInputValue(COMPARE_FROM_ELEMENT);
   }
   
-  public void setResultSetFromParam(IActionInputVariable variable) {
-    setInputParam(COMPARE_FROM_ELEMENT, variable);
+  public void setResultSet2(IActionInputVariable variable) {
+    setActionInputValue(COMPARE_TO_ELEMENT, variable);
   }
   
-  public ActionInput getResultSetFromParam() {
-    return getInputParam(COMPARE_FROM_ELEMENT);
-  }
-  
-  public void setResultSetToParam(IActionInputVariable variable) {
-    setInputParam(COMPARE_TO_ELEMENT, variable);
-  }
-  
-  public ActionInput getResultSetToParam() {
-    return getInputParam(COMPARE_TO_ELEMENT);
+  public IActionInputValueProvider getResultSet2() {
+    return getActionInputValue(COMPARE_TO_ELEMENT);
   }
 
-  public void setOutputMismatches(boolean value) {
-    setInputValue(OUTPUT_MISMATCHES_ELEMENT, value ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setOutputMismatches(IActionInputValueProvider value) {
+    setActionInputValue(OUTPUT_MISMATCHES_ELEMENT, value.getBooleanValue() ? new ActionInputConstant("true") : new ActionInputConstant("false")); //$NON-NLS-1$ //$NON-NLS-2$
   }
   
-  public boolean getOutputMismatches() {
-    String value = getComponentDefinitionValue(OUTPUT_MISMATCHES_ELEMENT);
-    return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
+  public IActionInputValueProvider getOutputMismatches() {
+    return getActionInputValue(OUTPUT_MISMATCHES_ELEMENT);    
   }
   
-  public void setOutputMismatchesParam(IActionInputVariable variable) {
-    setInputParam(OUTPUT_MISMATCHES_ELEMENT, variable);
+  public void setStopOnError(IActionInputValueProvider value) {
+    setInputValue(STOP_ON_ERROR_ELEMENT, value.getBooleanValue(true) ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
   }
   
-  public ActionInput getOutputMismatchesParam() {
-    return getInputParam(OUTPUT_MISMATCHES_ELEMENT);
+  public IActionInputValueProvider getStopOnError() {
+    return getActionInputValue(STOP_ON_ERROR_ELEMENT);    
   }
-  
-  public void setStopOnError(boolean value) {
-    setInputValue(STOP_ON_ERROR_ELEMENT, value ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
-  }
-  
-  public boolean getStopOnError() {
-    String value = getComponentDefinitionValue(STOP_ON_ERROR_ELEMENT);
-    return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
-  }
-  
-  public void setStopOnErrorParam(IActionInputVariable variable) {
-    setInputParam(STOP_ON_ERROR_ELEMENT, variable);
-  }
-  
-  public ActionInput getStopOnErrorParam() {
-    return getInputParam(STOP_ON_ERROR_ELEMENT);
-  }
-  
+
   public void setOutputCompareResult(String publicOutputName) {
     String privateName = getComponentDefinitionValue(COMPARE_RESULT_ELEMENT);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
