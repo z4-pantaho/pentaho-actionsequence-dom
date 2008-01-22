@@ -122,7 +122,6 @@ public class ActionInputConstant implements IActionInputValueProvider {
     return intValue != null ? intValue.intValue() : defaultValue;
   }
 
-  @Override
   public boolean equals(Object obj) {
     return value != null && (obj instanceof ActionInputConstant) && value.equals(((ActionInputConstant)obj).getValue());
   }
