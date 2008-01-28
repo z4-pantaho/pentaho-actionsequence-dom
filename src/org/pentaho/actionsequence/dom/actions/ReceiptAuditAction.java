@@ -13,7 +13,7 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class ReceiptAuditAction extends ActionDefinition {
@@ -43,35 +43,19 @@ public class ReceiptAuditAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setMessage(String value) {
-    setInputValue(MESSAGE_ELEMENT, value);
+  public void setMessage(IActionInputValueProvider value) {
+    setActionInputValue(MESSAGE_ELEMENT, value);
   }
   
-  public String getMessage() {
-    return getComponentDefinitionValue(MESSAGE_ELEMENT);
-  }
-  
-  public void setMessageParam(IActionInputVariable variable) {
-    setInputParam(MESSAGE_ELEMENT, variable);
-  }
-  
-  public ActionInput getMessageParam() {
-    return getInputParam(MESSAGE_ELEMENT);
+  public IActionInputValueProvider getMessage() {
+    return getActionInputValue(MESSAGE_ELEMENT);
   }
 
-  public void setDt(String value) {
-    setInputValue(TIMESTAMP_ELEMENT, value);
+  public void setDt(IActionInputVariable value) {
+    setActionInputValue(TIMESTAMP_ELEMENT, value);
   }
   
-  public String getDt() {
-    return getComponentDefinitionValue(TIMESTAMP_ELEMENT);
-  }
-  
-  public void setDtParam(IActionInputVariable variable) {
-    setInputParam(TIMESTAMP_ELEMENT, variable);
-  }
-  
-  public ActionInput getDtParam() {
-    return getInputParam(TIMESTAMP_ELEMENT);
+  public IActionInputValueProvider getDt() {
+    return getActionInputValue(TIMESTAMP_ELEMENT);
   }
 }
