@@ -20,6 +20,7 @@ import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
@@ -56,7 +57,10 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public static boolean accepts(Element element) {
-    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+    return ActionDefinition.accepts(element) 
+        && hasComponentName(element, COMPONENT_NAME)
+        && ((element.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + QUERY_ELEMENT) != null) //$NON-NLS-1$
+          || (element.selectSingleNode(ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + QUERY_ELEMENT) != null)); //$NON-NLS-1$;
   }
   
   public String[] getReservedInputNames() {
