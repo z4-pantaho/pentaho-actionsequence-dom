@@ -7,44 +7,81 @@
 	<property file="build.properties" />
 	<property file="version.properties" />
 
-	<path id="classpath">
+	<path id="compile.classpath">
 		<fileset dir="lib">
 			<include name="**/*.jar" />
+			<exclude name="test/*.jar" />
 			<include name="**/*.zip" />
 		</fileset>
 	</path>
 
+	<path id="test.classpath">
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+		<dirset dir="bin"/>
+		<dirset dir="testbin"/>
+	</path>
+
 	<!-- ===================================================================
-        target: clean              
+        target: clean
        =================================================================== -->
 	<target name="clean" depends="">
 		<delete dir="bin" />
 		<delete dir="dist" />
+		<delete dir="testbin" />
 	</target>
 
 
 	<!-- ===================================================================
-        target: init              
+        target: init
        =================================================================== -->
 	<target name="init">
 		<mkdir dir="bin" />
 		<mkdir dir="dist" />
+		<mkdir dir="testbin" />
 		<copy todir="bin">
 		  <fileset dir="src" includes="**/*.properties"/>
 		  <fileset dir="src" includes="**/*.gif"/>
 		</copy>
 	</target>
 
+	<!-- ===================================================================
+        target: compile
+       =================================================================== -->
 	<target name="compile" depends="init">
-		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="1.4" target="1.4" fork="true">
+		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="${build.source}" target="${build.target}" fork="true">
 			<src path="src" />
-			<classpath refid="classpath" />
+			<classpath refid="classpath"/>
 		</javac>
 	</target>
 	
+	<!-- ===================================================================
+        target: dist
+       =================================================================== -->
 	<target name="dist" depends="compile">
 		<jar basedir="bin" destfile="dist/pentaho-actionsequence-dom-${release.major.number}.${release.minor.number}.${release.milestone.number}.jar" />
 	</target>
 	
-	
+	<!-- ===================================================================
+        target: test
+       =================================================================== -->
+	<target name="test" depends="compile">
+		<javac destdir="testbin" debug="true" optimize="false" source="${build.source}" target="${build.target}" fork="true">
+			<src path="test"/>
+			<classpath refid="test.classpath"/>
+		</javac>
+		
+	    <junit printsummary="yes" haltonfailure="yes">
+	      <classpath refid="test.classpath"/>
+	      <formatter type="plain"/>
+	      <batchtest fork="yes" todir="testbin">
+	        <fileset dir="test" casesensitive="yes">
+	          <include name="**/Test*.java"/>
+	          <include name="**/*Test.java"/>
+	        </fileset>
+	      </batchtest>
+	    </junit>
+	</target>
 </project>

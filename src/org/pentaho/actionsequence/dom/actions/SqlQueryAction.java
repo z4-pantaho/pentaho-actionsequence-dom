@@ -158,11 +158,11 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
       errors.add(validationError);
     }
     
-    validationError = validateInputParam(QUERY_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
           validationError.errorMsg = "Missing query input parameter.";
+          validationError = validateInputParam(QUERY_ELEMENT);
           break;
         case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
           validationError.errorMsg = "Query input parameter references unknown variable.";
