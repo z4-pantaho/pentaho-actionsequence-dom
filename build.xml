@@ -53,7 +53,7 @@
 	<target name="compile" depends="init">
 		<javac destdir="bin" debug="${debug}" optimize="${optimize}" deprecation="${deprecation}" compiler="modern" source="${build.source}" target="${build.target}" fork="true">
 			<src path="src" />
-			<classpath refid="classpath"/>
+			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
 	
@@ -61,7 +61,7 @@
         target: dist
        =================================================================== -->
 	<target name="dist" depends="compile">
-		<jar basedir="bin" destfile="dist/pentaho-actionsequence-dom-${release.major.number}.${release.minor.number}.${release.milestone.number}.jar" />
+		<jar basedir="bin" destfile="dist/pentaho-actionsequence-dom-${release.major.number}.${release.minor.number}.${release.milestone.number}.${release.build.number}.jar" />
 	</target>
 	
 	<!-- ===================================================================
