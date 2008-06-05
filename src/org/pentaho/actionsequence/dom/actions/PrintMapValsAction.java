@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class PrintMapValsAction extends ActionDefinition {
 
@@ -71,7 +71,7 @@ public class PrintMapValsAction extends ActionDefinition {
   
   public IActionInputValueProvider getPropertyMap() {
     String mapParamName = getComponentDefinitionValue(TARGET_MAP_XPATH);
-    IActionInputValueProvider actionInput = IActionInputValueProvider.NULL_INPUT;
+    IActionInputValueProvider actionInput = ActionInputConstant.NULL_INPUT;
     if ((mapParamName != null) && (mapParamName.trim().length() > 0)) {
       actionInput = getActionInputValue(mapParamName);
     }
@@ -95,7 +95,7 @@ public class PrintMapValsAction extends ActionDefinition {
         ((ActionInput)oldKeys[i]).delete();
       }
     }
-    ActionOutput[] oldOutputs = getAllOutputParams();
+    IActionOutput[] oldOutputs = getAllOutputParams();
     for (int i = 0; i < oldOutputs.length; i++) {
       oldOutputs[i].delete();
     }

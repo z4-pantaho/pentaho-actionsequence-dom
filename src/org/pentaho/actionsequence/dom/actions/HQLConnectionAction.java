@@ -17,10 +17,11 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class HQLConnectionAction extends ActionDefinition {
 
@@ -81,11 +82,11 @@ public class HQLConnectionAction extends ActionDefinition {
     return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionOutput getOutputConnectionParam() {
+  public IActionOutput getOutputConnectionParam() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(CLASSNAMES);
@@ -129,11 +130,11 @@ public class HQLConnectionAction extends ActionDefinition {
     return getActionInputValue(CLASSNAMES);
   }
   
-  public ActionResource setHibernateConfig(URI uri, String mimeType) {
+  public IActionResource setHibernateConfig(URI uri, String mimeType) {
     return setResourceUri(HIBERNATE_CONFIG, uri, mimeType);
   }
   
-  public ActionResource getHibernateConfigResource() {
+  public IActionResource getHibernateConfigResource() {
     return getResourceParam(HIBERNATE_CONFIG);
   }
 }

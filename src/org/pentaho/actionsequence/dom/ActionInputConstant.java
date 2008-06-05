@@ -7,6 +7,8 @@ public class ActionInputConstant implements IActionInputValueProvider {
   Object value;
   IActionParameterMgr actionParameterMgr;
   
+  public static final ActionInputConstant NULL_INPUT = new ActionInputConstant((Object)null);
+  
   public ActionInputConstant(Object value) {
     this(value, null);
   }

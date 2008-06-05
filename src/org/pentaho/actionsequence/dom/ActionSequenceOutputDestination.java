@@ -16,7 +16,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
-public class ActionSequenceOutputDestination {
+public class ActionSequenceOutputDestination implements IActionSequenceOutputDestination {
   
   Element destinationElement;
   IActionParameterMgr actionInputProvider;
@@ -44,7 +44,7 @@ public class ActionSequenceOutputDestination {
     return destinationElement.getText();
   }
   
-  public ActionSequenceOutput getActionSequenceOutput() {
+  public IActionSequenceOutput getActionSequenceOutput() {
     ActionSequenceOutput actionSequenceOutput = null;
     if (destinationElement != null) {
       Element ancestorElement = destinationElement.getParent();
@@ -61,7 +61,7 @@ public class ActionSequenceOutputDestination {
   public void delete() {
     Document doc = destinationElement.getDocument();
     if (doc != null) {
-      ActionSequenceOutput actionSequenceOutput = getActionSequenceOutput();
+      IActionSequenceOutput actionSequenceOutput = getActionSequenceOutput();
       destinationElement.detach();
       ActionSequenceDocument.fireIoChanged(actionSequenceOutput);
     }

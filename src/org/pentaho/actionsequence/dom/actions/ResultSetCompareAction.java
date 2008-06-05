@@ -14,10 +14,10 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class ResultSetCompareAction extends ActionDefinition {
 
@@ -114,7 +114,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;
     }  
-    ActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+    IActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COMPARE_RESULT_ELEMENT, (String)null);
     } else {
@@ -122,7 +122,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputCompareResult() {
+  public IActionOutput getOutputCompareResult() {
     String privateName = getComponentDefinitionValue(COMPARE_RESULT_ELEMENT);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;

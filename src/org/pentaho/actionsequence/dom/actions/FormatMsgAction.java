@@ -17,11 +17,12 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class FormatMsgAction extends ActionDefinition {
 
@@ -94,7 +95,7 @@ public class FormatMsgAction extends ActionDefinition {
         formatString = formatString.substring(1, formatString.length() - 1);
       }
     }
-    return formatString == null ? IActionInputValueProvider.NULL_INPUT : new ActionInputConstant(formatString);
+    return formatString == null ? ActionInputConstant.NULL_INPUT : new ActionInputConstant(formatString);
   }
   
   public void setOutputString(String publicOutputName) {
@@ -102,7 +103,7 @@ public class FormatMsgAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
-    ActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+    IActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(RETURN_NAME_XPATH, (String)null);
     } else {
@@ -110,7 +111,7 @@ public class FormatMsgAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputString() {
+  public IActionOutput getOutputString() {
     String privateName = getComponentDefinitionValue(RETURN_NAME_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
@@ -118,10 +119,10 @@ public class FormatMsgAction extends ActionDefinition {
     return getOutputParam(privateName);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = null;
-    if (getFormatString() == IActionInputValueProvider.NULL_INPUT){ //$NON-NLS-1$
+    if (getFormatString() == ActionInputConstant.NULL_INPUT){ //$NON-NLS-1$
       validationError = new ActionSequenceValidationError();
       validationError.actionDefinition = this;
       validationError.errorCode = ActionSequenceValidationError.INPUT_MISSING;
@@ -152,7 +153,7 @@ public class FormatMsgAction extends ActionDefinition {
     for (int i = 0; i < elements.length; i++) {
       String msgInputParamName = elements[i].getText();
       IActionInputValueProvider msgInput = getActionInputValue(msgInputParamName);
-      if (msgInput != IActionInputValueProvider.NULL_INPUT) {
+      if (msgInput != ActionInputConstant.NULL_INPUT) {
         msgInputs.add(msgInput);
       }
     }

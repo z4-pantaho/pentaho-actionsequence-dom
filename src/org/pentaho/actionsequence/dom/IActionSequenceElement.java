@@ -35,5 +35,5 @@ public interface IActionSequenceElement {
    * @return an action sequence document that wraps the dom document containing
    * the element wrapped by this object.
    */
-  public ActionSequenceDocument getDocument();
+  public IActionSequenceDocument getDocument();
 }

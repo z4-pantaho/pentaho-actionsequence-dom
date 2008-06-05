@@ -3,17 +3,16 @@ package org.pentaho.actionsequence.dom.actions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.activation.DataSource;
-
-import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.commons.connection.IPentahoStreamSource;
 
 public interface IActionParameterMgr {
-  public Object getInputValue(ActionInput actionInput);
+  public Object getInputValue(IActionInput actionInput);
   public String replaceParameterReferences(String inputString);
-  public DataSource getDataSource(ActionResource actionResource) throws FileNotFoundException;
-  public DataSource getDataSource(ActionInput actionInput);
-  public void setOutputValue(ActionOutput actionOutput, Object value);
-  public String getString(ActionResource actionResource) throws IOException;
+  public IPentahoStreamSource getDataSource(IActionResource actionResource) throws FileNotFoundException;
+  public IPentahoStreamSource getDataSource(IActionInput actionInput);
+  public void setOutputValue(IActionOutput actionOutput, Object value);
+  public String getString(IActionResource actionResource) throws IOException;
 }

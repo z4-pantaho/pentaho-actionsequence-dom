@@ -13,12 +13,12 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class JMSAction extends ActionDefinition {
 
-  public static final String COMPONENT_NAME = "com.pentaho.component.JMSComponent"; //$NON-NLS-1$
+  public static final String COMPONENT_NAME = "org.pentaho.component.JMSComponent"; //$NON-NLS-1$
   public static final String SOLUTION_NAME_ELEMENT = "solution-name"; //$NON-NLS-1$
   public static final String ACTION_PATH_ELEMENT = "action-path"; //$NON-NLS-1$
   public static final String ACTION_NAME_ELEMENT = "action-name"; //$NON-NLS-1$
@@ -59,7 +59,7 @@ public class JMSAction extends ActionDefinition {
     setInputParam(SOLUTION_NAME_ELEMENT, variable);
   }
   
-  public ActionInput getSolutionNameParam() {
+  public IActionInput getSolutionNameParam() {
     return getInputParam(SOLUTION_NAME_ELEMENT);
   }
   
@@ -75,7 +75,7 @@ public class JMSAction extends ActionDefinition {
     setInputParam(ACTION_PATH_ELEMENT, variable);
   }
   
-  public ActionInput getActionPathParam() {
+  public IActionInput getActionPathParam() {
     return getInputParam(ACTION_PATH_ELEMENT);
   }
   
@@ -91,7 +91,7 @@ public class JMSAction extends ActionDefinition {
     setInputParam(ACTION_NAME_ELEMENT, variable);
   }
   
-  public ActionInput getActionNameParam() {
+  public IActionInput getActionNameParam() {
     return getInputParam(ACTION_NAME_ELEMENT);
   }
   
@@ -107,7 +107,7 @@ public class JMSAction extends ActionDefinition {
     setInputParam(QUEUE_NAME_ELEMENT, variable);
   }
   
-  public ActionInput getJmsQueueNameParam() {
+  public IActionInput getJmsQueueNameParam() {
     return getInputParam(QUEUE_NAME_ELEMENT);
   }
 }

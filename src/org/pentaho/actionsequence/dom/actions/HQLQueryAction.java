@@ -4,9 +4,9 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class HQLQueryAction extends HQLConnectionAction {
   public static final String COMPONENT_NAME = "org.pentaho.component.HQLLookupRule"; //$NON-NLS-1$
@@ -46,7 +46,7 @@ public class HQLQueryAction extends HQLConnectionAction {
     public String[] getReservedOutputNames() {
       String expectedOutput = QUERY_RESULT_ELEMENT;
       if (getOutputParam(expectedOutput) ==  null) { 
-        ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+        IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
         if (actionOutputs.length > 0) {
           expectedOutput = actionOutputs[0].getName();
         }
@@ -73,18 +73,18 @@ public class HQLQueryAction extends HQLConnectionAction {
       return getPublicOutputName(QUERY_RESULT_ELEMENT);
     }
 
-    public ActionOutput getOutputResultSetParam() {
+    public IActionOutput getOutputResultSetParam() {
       /*
        * First check for query-result as an output.
        * If not present then check for DEPRECATED_OUTPUT_NAME
        * Else get the first output name that's not PREPARED_COMPONENT
        */
-      ActionOutput actionOutput =  getOutputParam(QUERY_RESULT_ELEMENT);
+      IActionOutput actionOutput =  getOutputParam(QUERY_RESULT_ELEMENT);
       if (actionOutput == null) {
         //NOTE: Code below is Deprecated.
         actionOutput = getOutputParam(DEPRECATED_OUTPUT_NAME);
         if (actionOutput == null) {
-          ActionOutput[] actionOutputs = getAllOutputParams();
+          IActionOutput[] actionOutputs = getAllOutputParams();
           for (int i = 0; i < actionOutputs.length; i++) {
             if (!actionOutputs[i].getName().equals(PREPARED_COMPONENT_ELEMENT)) {
               actionOutput = actionOutputs[i];
@@ -108,7 +108,7 @@ public class HQLQueryAction extends HQLConnectionAction {
       return getPublicOutputName(PREPARED_COMPONENT_ELEMENT);
     }  
     
-    public ActionOutput getOutputPreparedStatementParam() {
+    public IActionOutput getOutputPreparedStatementParam() {
       return getOutputParam(PREPARED_COMPONENT_ELEMENT);
     }
 

@@ -15,10 +15,10 @@ package org.pentaho.actionsequence.dom.actions;
 import java.net.URI;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
 
 public class PrinterAction extends ActionDefinition {
 
@@ -68,11 +68,11 @@ public class PrinterAction extends ActionDefinition {
     return getActionInputValue(PRINT_FILE);
   }
 
-  public ActionResource setResourcesPrintFile(URI uri, String mimeType) {
+  public IActionResource setResourcesPrintFile(URI uri, String mimeType) {
     return setResourceUri(PRINT_FILE, uri, mimeType);
   }
   
-  public ActionResource getResourcesPrintFile() {
+  public IActionResource getResourcesPrintFile() {
     return getResourceParam(PRINT_FILE);
   }
   
@@ -108,11 +108,11 @@ public class PrinterAction extends ActionDefinition {
     return getActionInputValue(DEFAULT_PRINTER);    
   }
   
-  public ActionResource setResourcesFileToPrint(URI uri, String mimeType) {
+  public IActionResource setResourcesFileToPrint(URI uri, String mimeType) {
     return setResourceUri(FILE_TO_PRINT, uri, mimeType);
   }
   
-  public ActionResource getResourcesFileToPrint() {
+  public IActionResource getResourcesFileToPrint() {
     return getResourceParam(FILE_TO_PRINT);
   }
   
@@ -120,7 +120,7 @@ public class PrinterAction extends ActionDefinition {
     setOutputParam(PRINTER_NAME, publicOutputName, ActionSequenceDocument.STRING_TYPE);
   }
   
-  public ActionOutput getOutputPrinterName() {
+  public IActionOutput getOutputPrinterName() {
     return getOutputParam(PRINTER_NAME);
   }
 
@@ -128,7 +128,7 @@ public class PrinterAction extends ActionDefinition {
     setOutputParam(DEFAULT_PRINTER, publicOutputName, ActionSequenceDocument.STRING_TYPE);
   }
   
-  public ActionOutput getOutputDefaultPrinter() {
+  public IActionOutput getOutputDefaultPrinter() {
     return getOutputParam(DEFAULT_PRINTER);
   }
 

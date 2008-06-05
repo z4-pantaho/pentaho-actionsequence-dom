@@ -7,10 +7,10 @@ import java.text.SimpleDateFormat;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
 
 public abstract class AbstractRelationalDbAction extends ActionDefinition {
 
@@ -318,7 +318,7 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
 
-  public ActionOutput getOutputResultSet() {
+  public IActionOutput getOutputResultSet() {
     // This is deprecated functionality.
     Object outputName = getActionInputValue(OUTPUT_NAME_ELEMENT).getValue();
     if (outputName == null) {
@@ -326,11 +326,11 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
     // End deprecated functionality.
 
-    ActionOutput actionOutput = getOutputParam(outputName.toString());
+    IActionOutput actionOutput = getOutputParam(outputName.toString());
 
     // More deprecated functionality.
     if (actionOutput == null) {
-      ActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getAllOutputParams();
       if (actionOutputs.length > 0) {
         actionOutput = actionOutputs[0];
       }
@@ -352,7 +352,7 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.SQL_QUERY_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
       setOutputResultSet(null);
-      ActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (!actionOutputs[i].getType().equals(ActionSequenceDocument.SQL_QUERY_TYPE)) {
           actionOutputs[i].delete();
@@ -361,7 +361,7 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     }
   }
 
-  public ActionOutput getOutputPreparedStatement() {
+  public IActionOutput getOutputPreparedStatement() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
 

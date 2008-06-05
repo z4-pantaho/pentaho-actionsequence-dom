@@ -16,11 +16,12 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class MdxQueryAction extends MdxConnectionAction {
 
@@ -87,7 +88,7 @@ public class MdxQueryAction extends MdxConnectionAction {
   public String[] getReservedOutputNames() {
     String expectedOutput = QUERY_RESULTS_ELEMENT;
     if (getOutputParam(expectedOutput) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -99,7 +100,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     super.setUserId(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
+      if (getLocation() == ActionInputConstant.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
@@ -109,7 +110,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     super.setPassword(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
+      if (getLocation() == ActionInputConstant.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
@@ -119,7 +120,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     super.setMdxConnectionString(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
     	setMdxConnection(null);
-	    if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
+	    if (getLocation() == ActionInputConstant.NULL_INPUT) {
   	    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     	}
     }
@@ -129,7 +130,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     super.setConnection(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
+      if (getLocation() == ActionInputConstant.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
@@ -139,7 +140,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     super.setJndi(value);
     if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == IActionInputValueProvider.NULL_INPUT) {
+      if (getLocation() == ActionInputConstant.NULL_INPUT) {
         setLocation(new ActionInputConstant(DEFAULT_LOCATION));
       }    
     }
@@ -160,10 +161,10 @@ public class MdxQueryAction extends MdxConnectionAction {
     }
   }
   
-  public ActionOutput getOutputResultSet() {
-    ActionOutput actionOutput = getOutputParam(QUERY_RESULTS_ELEMENT);
+  public IActionOutput getOutputResultSet() {
+    IActionOutput actionOutput = getOutputParam(QUERY_RESULTS_ELEMENT);
     if (actionOutput == null) {
-      ActionOutput[] allOutputs = getAllOutputParams();
+      IActionOutput[] allOutputs = getAllOutputParams();
       if (allOutputs.length > 0) {
         actionOutput = allOutputs[0];
       }
@@ -178,7 +179,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     }
   }
   
-  public ActionOutput getOutputPreparedStatement() {
+  public IActionOutput getOutputPreparedStatement() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
@@ -198,7 +199,7 @@ public class MdxQueryAction extends MdxConnectionAction {
     return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(MDX_CONNECTION_ELEMENT);

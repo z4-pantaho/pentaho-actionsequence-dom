@@ -15,14 +15,14 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.ActionSequenceResource;
+import org.pentaho.actionsequence.dom.ActionSequenceResourceDom;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class SqlConnectionAction extends ActionDefinition {
 
@@ -66,7 +66,7 @@ public class SqlConnectionAction extends ActionDefinition {
     if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       Element connectionOutput = (Element)element.selectSingleNode(ActionSequenceDocument.ACTION_OUTPUTS_NAME + "/" + PREPARED_COMPONENT_ELEMENT); //$NON-NLS-1$
       result = (connectionOutput != null)
-        && ActionSequenceDocument.SQL_CONNECTION_TYPE.equals(connectionOutput.attributeValue(ActionSequenceResource.TYPE_NAME));
+        && ActionSequenceDocument.SQL_CONNECTION_TYPE.equals(connectionOutput.attributeValue(ActionSequenceResourceDom.TYPE_NAME));
     }
     return result;
   }
@@ -144,11 +144,11 @@ public class SqlConnectionAction extends ActionDefinition {
     setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.SQL_CONNECTION_TYPE);
   }
   
-  public ActionOutput getOutputConnection() {
+  public IActionOutput getOutputConnection() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(CONNECTION_ELEMENT);

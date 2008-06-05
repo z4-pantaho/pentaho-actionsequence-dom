@@ -22,10 +22,8 @@ import org.pentaho.actionsequence.dom.messages.Messages;
  * @author Angelo Rodriguez
  *
  */
-public abstract class AbstractIOElement implements IGenericIOElement {
+public abstract class AbstractIOElement implements IGenericIOElement, IAbstractIOElement {
 
-  public static final String TYPE_NAME = "type"; //$NON-NLS-1$
-  
   Element ioElement;
   IActionParameterMgr actionInputProvider;
   
@@ -107,8 +105,8 @@ public abstract class AbstractIOElement implements IGenericIOElement {
   /* (non-Javadoc)
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getDocument()
    */
-  public ActionSequenceDocument getDocument() {
-    ActionSequenceDocument doc = null;
+  public IActionSequenceDocument getDocument() {
+    IActionSequenceDocument doc = null;
     if ((ioElement != null) && (ioElement.getDocument() != null)) {
       doc = new ActionSequenceDocument(ioElement.getDocument(), actionInputProvider);
     }

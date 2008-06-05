@@ -17,13 +17,12 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class XQueryAction extends ActionDefinition {
 
@@ -70,7 +69,7 @@ public class XQueryAction extends ActionDefinition {
   public String[] getReservedOutputNames() {
     String expectedOutput = QUERY_RESULT_ELEMENT;
     if (getOutputParam(expectedOutput) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -124,11 +123,11 @@ public class XQueryAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputResultSet() {
-    ActionOutput actionOutput = getOutputParam(QUERY_RESULT_ELEMENT);
+  public IActionOutput getOutputResultSet() {
+    IActionOutput actionOutput = getOutputParam(QUERY_RESULT_ELEMENT);
     // This if statement provides backward compatibility for deprecated functionality.
     if (actionOutput == null) {
-      ActionOutput[] outputs = getAllOutputParams();
+      IActionOutput[] outputs = getAllOutputParams();
       if (outputs.length > 0) {
         actionOutput = outputs[0];
       }
@@ -140,7 +139,7 @@ public class XQueryAction extends ActionDefinition {
     setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.XQUERY_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
       setOutputResultSet(null);
-      ActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (!actionOutputs[i].getType().equals(ActionSequenceDocument.XQUERY_TYPE)) {
           actionOutputs[i].delete();
@@ -149,11 +148,11 @@ public class XQueryAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputPreparedStatement() {
+  public IActionOutput getOutputPreparedStatement() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(DOCUMENT_ELEMENT);
@@ -216,11 +215,11 @@ public class XQueryAction extends ActionDefinition {
     setOutputResultSet(DEFAULT_QUERY_RESULTS_NAME);
   }
   
-  public ActionResource setXmlDocument(URI uri, String mimeType) {
+  public IActionResource setXmlDocument(URI uri, String mimeType) {
     return setResourceUri(DOCUMENT_ELEMENT, uri, mimeType);
   }
   
-  public ActionResource getXmlDocument() {
+  public IActionResource getXmlDocument() {
     return getResourceParam(DOCUMENT_ELEMENT);
   }
 }

@@ -13,7 +13,6 @@
 package org.pentaho.actionsequence.dom;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -24,7 +23,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionLoop extends ActionControlStatement {
+public class ActionLoop extends ActionControlStatement implements IActionLoop {
 
   public ActionLoop(Element loopElement, IActionParameterMgr actionInputProvider) {
     super(loopElement, actionInputProvider);
@@ -61,7 +60,7 @@ public class ActionLoop extends ActionControlStatement {
     return controlElement.attributeValue(ActionSequenceDocument.LOOP_ON_NAME);
   }
 
-  protected ActionSequenceValidationError[] validateThis() {
+  protected IActionSequenceValidationError[] validateThis() {
     ArrayList errors = new ArrayList();
     String loopOn = getLoopOn();
     if (loopOn.trim().length() == 0) {

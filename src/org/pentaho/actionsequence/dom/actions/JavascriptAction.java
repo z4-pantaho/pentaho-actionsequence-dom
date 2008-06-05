@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class JavascriptAction extends ActionDefinition {
 
@@ -51,7 +52,7 @@ public class JavascriptAction extends ActionDefinition {
     return getActionInputValue(SCRIPT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(SCRIPT_ELEMENT);
     if (validationError != null) {

@@ -24,7 +24,7 @@ import org.pentaho.actionsequence.dom.actions.ActionDefinition;
 import org.pentaho.actionsequence.dom.actions.ActionFactory;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
-public abstract class ActionControlStatement implements IActionSequenceExecutableStatement {
+public abstract class ActionControlStatement implements IActionControlStatement {
 
   Element controlElement;
   IActionParameterMgr actionInputProvider;
@@ -35,8 +35,12 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
   }
 
   public Element getElement() {
-    return controlElement;
-  }
+	    return controlElement;
+	  }
+
+  public Element getControlElement() {
+	    return controlElement;
+	  }
 
   
   /**
@@ -48,7 +52,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * @throws IllegalAccessException 
    * @throws InstantiationException 
    */
-  public ActionDefinition addAction(Class actionDefinitionClass) {
+  public IActionDefinition addAction(Class actionDefinitionClass) {
     ActionDefinition action = null;   
     try {
       action = (ActionDefinition) actionDefinitionClass.newInstance();
@@ -71,8 +75,8 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * @throws IllegalAccessException 
    * @throws InstantiationException 
    */
-  public ActionDefinition addAction(Class actionDefClass, int index) {
-    ActionDefinition actionDef = null;
+  public IActionDefinition addAction(Class actionDefClass, int index) {
+    IActionDefinition actionDef = null;
     try {
       Object[] children = getChildren();
       if (index >= children.length) {
@@ -121,7 +125,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
   /* (non-Javadoc)
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getDocument()
    */
-  public ActionSequenceDocument getDocument() {
+  public IActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((controlElement != null) && (controlElement.getDocument() != null)) {
       doc = new ActionSequenceDocument(controlElement.getDocument(), actionInputProvider);
@@ -143,8 +147,8 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
   /**
    * @return the control statement that contains this action definition or null if there is no parent control statement.
    */
-  public ActionControlStatement getParent() {
-    ActionControlStatement controlStatement = null;
+  public IActionControlStatement getParent() {
+    IActionControlStatement controlStatement = null;
     if (controlElement != null) {
       Element ancestorElement = controlElement.getParent();
       if ((ancestorElement != null) 
@@ -166,7 +170,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * definition.
    * @param actionDef the action definition to be added.
    */
-  public void add(ActionDefinition actionDef) {
+  public void add(IActionDefinition actionDef) {
     actionDef.delete();
     controlElement.elements().add(actionDef.getElement());
     ActionSequenceDocument.fireActionAdded(actionDef);
@@ -179,7 +183,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * is greater than the number of children then the new action is added
    * at the end of the list of children.
    */
-  public void add(ActionDefinition actionDef, int index) {
+  public void add(IActionDefinition actionDef, int index) {
     IActionSequenceElement[] children = getChildren();
     if (index >= children.length) {
       add(actionDef);
@@ -206,9 +210,9 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * children. This control statement becomes the new parent of the specified control statement.
    * @param controlStatement the control statment to be added.
    */
-  void add(ActionControlStatement controlStatement) {
+  public void add(IActionControlStatement controlStatement) {
     controlStatement.delete();
-    controlElement.elements().add(controlStatement.controlElement);
+    controlElement.elements().add(controlStatement.getControlElement());
     ActionSequenceDocument.fireControlStatementAdded(controlStatement);
   }
   
@@ -220,7 +224,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * is greater than the number of children then the new control statement is added
    * at the end of the list of children.
    */
-  void add(ActionControlStatement controlStatement, int index) {
+  public void add(IActionControlStatement controlStatement, int index) {
     IActionSequenceElement[] children = getChildren();
     if (index >= children.length) {
       add(controlStatement);
@@ -234,7 +238,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
         if  ((actionLoopIndex >= 0) && (actionLoopIndex < index)) {
           index--;
         }
-        controlElement.elements().add(index, controlStatement.controlElement);
+        controlElement.elements().add(index, controlStatement.getControlElement());
         ActionSequenceDocument.fireControlStatementAdded(controlStatement);
       } else {
         add(controlStatement);
@@ -246,7 +250,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * Creates a new child action loop to the end of this control statement's children.
    * @param loopOn the loop on variable name
    */
-  public ActionLoop addLoop(String loopOn) {
+  public IActionLoop addLoop(String loopOn) {
     Element child = createLoopElement();
     controlElement.elements().add(child);
     ActionLoop loop = new ActionLoop(child, actionInputProvider);
@@ -261,9 +265,9 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * is greater than the number of children then the new loop is added
    * at the end of the list of children.
    */
-  public ActionLoop addLoop(String loopOn, int index) {
+  public IActionLoop addLoop(String loopOn, int index) {
     Object[] children = getChildren();
-    ActionLoop actionLoop = null;
+    IActionLoop actionLoop = null;
     if (index >= children.length) {
       actionLoop = addLoop(loopOn);
     } else {
@@ -287,7 +291,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * Creates a new child if statement to the end of this control statement's children.
    * @param condition the if condition
    */
-  public ActionIfStatement addIf(String condition) {
+  public IActionIfStatement addIf(String condition) {
     Element child = createIfElement();
     controlElement.elements().add(child);
     ActionIfStatement actionIf = new ActionIfStatement(child, actionInputProvider);
@@ -302,9 +306,9 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * is greater than the number of children then the new if statement is added
    * at the end of the list of children.
    */
-  public ActionIfStatement addIf(String condition, int index) {
+  public IActionIfStatement addIf(String condition, int index) {
     Object[] children = getChildren();
-    ActionIfStatement actionIf = null;
+    IActionIfStatement actionIf = null;
     if (index >= children.length) {
       actionIf = addIf(condition);
     } else {
@@ -363,7 +367,7 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
    * @param types the desired input type
    * @return the preceding acton defintions.
    */
-  public ActionDefinition[] getPrecedingActionDefinitions() {
+  public IActionDefinition[] getPrecedingActionDefinitions() {
     return getDocument().getPrecedingActionDefinitions(this);
   }
 
@@ -371,13 +375,13 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
     return getDocument().getPrecedingExecutables(this);
   }
   
-  protected abstract ActionSequenceValidationError[] validateThis();
+  protected abstract IActionSequenceValidationError[] validateThis();
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     return validate(false);
   }
   
-  public ActionSequenceValidationError[] validate(boolean validateDescendants) {
+  public IActionSequenceValidationError[] validate(boolean validateDescendants) {
     ArrayList errors = new ArrayList();
     errors.add(validateThis());
     if (validateDescendants) {
@@ -392,17 +396,17 @@ public abstract class ActionControlStatement implements IActionSequenceExecutabl
         }
       }
     }
-    return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
+    return (IActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public void moveTo(ActionControlStatement newParentControlStatement, int index) {
+  public void moveTo(IActionControlStatement newParentControlStatement, int index) {
     if (newParentControlStatement == null) {
       newParentControlStatement = getDocument().getRootLoop();
     }
     newParentControlStatement.add(this, index);
   }
   
-  public void moveTo(ActionControlStatement newParentControlStatement) {
+  public void moveTo(IActionControlStatement newParentControlStatement) {
     if (newParentControlStatement == null) {
       newParentControlStatement = getDocument().getRootLoop();
     }

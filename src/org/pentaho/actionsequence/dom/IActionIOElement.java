@@ -1,6 +1,5 @@
 package org.pentaho.actionsequence.dom;
 
-import org.pentaho.actionsequence.dom.actions.ActionDefinition;
 
 public interface IActionIOElement extends IGenericIOElement {
   public String getMapping();
@@ -14,5 +13,6 @@ public interface IActionIOElement extends IGenericIOElement {
   /**
    * @return the action definition to which this input/output belongs.
    */
-  public ActionDefinition getActionDefinition();
+  public IActionDefinition getActionDefinition();
 }
+

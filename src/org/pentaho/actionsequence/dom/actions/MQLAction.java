@@ -9,9 +9,9 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class MQLAction extends AbstractRelationalDbAction {
   public static final String QUERY_RESULT_OUTPUT_NAME = "query-result"; //$NON-NLS-1$
@@ -44,7 +44,7 @@ public class MQLAction extends AbstractRelationalDbAction {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    ActionOutput actionOutput = setOutputParam(QUERY_RESULT_OUTPUT_NAME, QUERY_RESULT_OUTPUT_NAME, ActionSequenceDocument.RESULTSET_TYPE);
+    IActionOutput actionOutput = setOutputParam(QUERY_RESULT_OUTPUT_NAME, QUERY_RESULT_OUTPUT_NAME, ActionSequenceDocument.RESULTSET_TYPE);
     actionOutput.setMapping(MAPPED_QUERY_OUTPUT_NAME);
   }
   
@@ -58,7 +58,7 @@ public class MQLAction extends AbstractRelationalDbAction {
     if (compDefVal != null) {
       expectedOutput = compDefVal;
     } else if (getOutputParam(expectedOutput) == null) {
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -73,7 +73,7 @@ public class MQLAction extends AbstractRelationalDbAction {
     // The following condition covers an alternative way to store the mql
     // within the action definition. This class does not use this method when
     // writing to the dom.
-    if (query == IActionInputValueProvider.NULL_INPUT) {
+    if (query == ActionInputConstant.NULL_INPUT) {
       Element element = getComponentDefElement(MQL_ELEMENT);
       if (element != null) {
         try {

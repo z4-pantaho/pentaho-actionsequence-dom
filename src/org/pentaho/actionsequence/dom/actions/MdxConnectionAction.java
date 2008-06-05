@@ -21,12 +21,13 @@ import java.util.Properties;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class MdxConnectionAction extends ActionDefinition {
 
@@ -219,7 +220,7 @@ public class MdxConnectionAction extends ActionDefinition {
   }
 
   public IActionInputValueProvider getConnectionProps() {
-    IActionInputValueProvider actionInput = IActionInputValueProvider.NULL_INPUT;
+    IActionInputValueProvider actionInput = ActionInputConstant.NULL_INPUT;
     Element connectionPropsElement = getComponentDefElement(CONNECTION_PROPS);
     if (connectionPropsElement != null) {
       Properties properties = new Properties();
@@ -264,11 +265,11 @@ public class MdxConnectionAction extends ActionDefinition {
     setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.MDX_CONNECTION_TYPE);
   }
   
-  public ActionOutput getOutputConnection() {
+  public IActionOutput getOutputConnection() {
     return getOutputParam(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(MDX_CONNECTION_ELEMENT);
@@ -335,11 +336,11 @@ public class MdxConnectionAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public ActionResource setCatalogResource(URI uri, String mimeType) {
+  public IActionResource setCatalogResource(URI uri, String mimeType) {
     return setResourceUri(CATALOG_ELEMENT, uri, mimeType);
   }
   
-  public ActionResource getCatalogResource() {
+  public IActionResource getCatalogResource() {
     return getResourceParam(CATALOG_ELEMENT);
   }
   

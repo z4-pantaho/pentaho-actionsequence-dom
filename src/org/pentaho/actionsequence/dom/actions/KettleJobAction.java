@@ -16,11 +16,13 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceDocument;
+import org.pentaho.actionsequence.dom.IActionSequenceResourceDom;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class KettleJobAction extends ActionDefinition {
 
@@ -83,7 +85,7 @@ public class KettleJobAction extends ActionDefinition {
     return getActionInputValue(REPOSITORY_DIRECTORY);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(REPOSITORY_DIRECTORY);
@@ -131,18 +133,18 @@ public class KettleJobAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public ActionResource setJobFile(URI uri, String mimeType) {
+  public IActionResource setJobFile(URI uri, String mimeType) {
     // We never want to get rid of the kettle job resource element. 
     // That's what's used to differentiate a kettle transformation action from a kettle job action.
     // If the uri is null we'll either delete the action sequence resource that is referenced
     // of map the resource to an invalid name.
-    ActionResource actionResource = null;
+    IActionResource actionResource = null;
     if (uri == null) {
       actionResource = getResourceParam(JOB_FILE_ELEMENT);
       if (actionResource != null) {
-        ActionSequenceDocument actionSequenceDocument = getDocument();
-        ActionSequenceResource actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
-        ActionResource[] actionResources = actionSequenceDocument.getReferencesTo(actionSequenceResource);
+        IActionSequenceDocument actionSequenceDocument = getDocument();
+        IActionSequenceResourceDom actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
+        IActionResource[] actionResources = actionSequenceDocument.getReferencesTo(actionSequenceResource);
         if ((actionResources.length == 1) && actionResources[0].equals(actionResource)) {
           actionSequenceResource.delete();
         } else {
@@ -156,7 +158,7 @@ public class KettleJobAction extends ActionDefinition {
     return actionResource;
   }
   
-  public ActionResource getJobFile() {
+  public IActionResource getJobFile() {
     return getResourceParam(JOB_FILE_ELEMENT);
   }
   

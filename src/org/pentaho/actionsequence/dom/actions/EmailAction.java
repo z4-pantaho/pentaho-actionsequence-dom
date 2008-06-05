@@ -23,6 +23,7 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class EmailAction extends ActionDefinition {
 
@@ -207,7 +208,7 @@ public class EmailAction extends ActionDefinition {
     return actionInput;
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(TO_ELEMENT);
     if (validationError != null) {

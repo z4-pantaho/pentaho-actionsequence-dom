@@ -3,16 +3,16 @@ package org.pentaho.actionsequence.dom.actions;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.activation.DataSource;
-
 import org.dom4j.Attribute;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionSequenceElement;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceDocument;
+import org.pentaho.actionsequence.dom.IActionSequenceElement;
+import org.pentaho.commons.connection.IPentahoStreamSource;
 
 public class EmailAttachment implements IActionSequenceElement {
 
@@ -66,13 +66,13 @@ public class EmailAttachment implements IActionSequenceElement {
     }
     attribute = attachmentElement.attribute(ATTACHMENT_RESOURCE_ATTRIBUTE);
     if (attribute != null) {
-      ActionResource actionResource = emailAction.getResourceParam(attribute.getValue().trim());
+      IActionResource actionResource = emailAction.getResourceParam(attribute.getValue().trim());
       actionResource.setURI(null);
     }
     attachmentElement.detach();
   }
 
-  public ActionSequenceDocument getDocument() {
+  public IActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((attachmentElement != null) && (attachmentElement.getDocument() != null)) {
       doc = new ActionSequenceDocument(attachmentElement.getDocument(), actionInputProvider);
@@ -155,8 +155,8 @@ public class EmailAttachment implements IActionSequenceElement {
     }  
   }
   
-  public ActionInput getNameParam() {
-    ActionInput actionInput = null;
+  public IActionInput getNameParam() {
+    IActionInput actionInput = null;
     String paramName = isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim();
     if (paramName != null) {
       actionInput = getEmailAction().getInputParam(paramName);
@@ -180,8 +180,8 @@ public class EmailAttachment implements IActionSequenceElement {
     }  
   }
   
-  public ActionInput getContentParam() {
-    ActionInput actionInput = null;
+  public IActionInput getContentParam() {
+    IActionInput actionInput = null;
     if (isDeprecatedAttachmentStyle()) {
       Element oldAttachmentElement = (Element)getEmailAction().getElement().selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + OLD_ATTACHMENT_ELEMENT);
       String attachmentParam = oldAttachmentElement.getText();
@@ -195,8 +195,8 @@ public class EmailAttachment implements IActionSequenceElement {
     return actionInput;
   }
   
-  public ActionResource getContentResource() {
-    ActionResource actionResource = null;
+  public IActionResource getContentResource() {
+    IActionResource actionResource = null;
     if (!isDeprecatedAttachmentStyle()) {
       Attribute attribute = attachmentElement.attribute(ATTACHMENT_RESOURCE_ATTRIBUTE);
       if (attribute != null) {
@@ -206,16 +206,16 @@ public class EmailAttachment implements IActionSequenceElement {
     return actionResource;
   }
   
-  public ActionResource setContentResource(URI uri, String mimeType) {
+  public IActionResource setContentResource(URI uri, String mimeType) {
     if (uri == null) {
       throw new IllegalArgumentException();
     }
-    ActionResource actionResource = null;
+    IActionResource actionResource = null;
     if (isDeprecatedAttachmentStyle()) {
       convertToNewAttachmentStyle();
     }
     if (uri != null) {
-      ActionInput actionInput = getContentParam();
+      IActionInput actionInput = getContentParam();
       if (actionInput != null) {
         actionInput.delete();
       }
@@ -256,9 +256,9 @@ public class EmailAttachment implements IActionSequenceElement {
     return emailAction != null;
   }
   
-  public DataSource getContent() throws IOException {
-    DataSource dataSrc = null;
-    ActionResource actionResource = null;
+  public IPentahoStreamSource getContent() throws IOException {
+    IPentahoStreamSource dataSrc = null;
+    IActionResource actionResource = null;
     Attribute attribute = getElement().attribute(EmailAttachment.ATTACHMENT_RESOURCE_ATTRIBUTE);
     if (attribute != null) {
       actionResource = getEmailAction().getResourceParam(attribute.getValue().trim());
@@ -266,7 +266,7 @@ public class EmailAttachment implements IActionSequenceElement {
     if (actionResource != null) {
       dataSrc = actionResource.getDataSource();
     } else if (actionInputProvider != null) {
-      ActionInput contentParam = getContentParam();
+      IActionInput contentParam = getContentParam();
       if (contentParam != null) {
         dataSrc = actionInputProvider.getDataSource(contentParam);
       }

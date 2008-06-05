@@ -13,12 +13,10 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class SqlExecuteAction extends AbstractRelationalDbAction {
 
@@ -67,7 +65,7 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
     if (compDefVal != null) {
       expectedOutput = compDefVal;
     } else if (getOutputParam(expectedOutput) == null) {
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }

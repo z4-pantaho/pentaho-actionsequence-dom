@@ -16,9 +16,10 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class SqlQueryAction extends AbstractRelationalDbAction {
 
@@ -73,7 +74,7 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
     if (compDefVal != null) {
       expectedOutput = compDefVal;
     } else if (getOutputParam(expectedOutput) == null) {
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -85,7 +86,7 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
   
   
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(CONNECTION_ELEMENT);

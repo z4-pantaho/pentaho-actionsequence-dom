@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class SqlDataAction extends AbstractRelationalDbAction {
 
@@ -71,7 +71,7 @@ public class SqlDataAction extends AbstractRelationalDbAction {
     return EXPECTED_OUTPUTS;
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(CONNECTION_ELEMENT);

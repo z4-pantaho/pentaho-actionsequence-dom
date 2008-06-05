@@ -12,7 +12,6 @@
 */
 package org.pentaho.actionsequence.dom;
 
-import org.pentaho.actionsequence.dom.actions.ActionDefinition;
 
 /**
  * Classes that implement this interface can be notified of changes to an action sequence.
@@ -22,24 +21,24 @@ import org.pentaho.actionsequence.dom.actions.ActionDefinition;
  */
 public interface IActionSequenceDocumentListener {
   
-  public void ioAdded(AbstractIOElement io);
-  public void ioRemoved(Object parent, AbstractIOElement io);
-  public void ioRenamed(AbstractIOElement io);
-  public void ioChanged(AbstractIOElement io);
+  public void ioAdded(IAbstractIOElement io);
+  public void ioRemoved(Object parent, IAbstractIOElement io);
+  public void ioRenamed(IAbstractIOElement io);
+  public void ioChanged(IAbstractIOElement io);
   
   public void resourceAdded(Object resource);
   public void resourceRemoved(Object parent, Object resource);
   public void resourceRenamed(Object resource);
   public void resourceChanged(Object resource);
   
-  public void actionAdded(ActionDefinition action);
-  public void actionRemoved(Object parent, ActionDefinition action);
-  public void actionRenamed(ActionDefinition action);
-  public void actionChanged(ActionDefinition action);
+  public void actionAdded(IActionDefinition action);
+  public void actionRemoved(Object parent, IActionDefinition action);
+  public void actionRenamed(IActionDefinition action);
+  public void actionChanged(IActionDefinition action);
   
-  public void controlStatementAdded(ActionControlStatement controlStatement);
-  public void controlStatementRemoved(Object parent, ActionControlStatement controlStatement);
-  public void controlStatementChanged(ActionControlStatement controlStatement);
+  public void controlStatementAdded(IActionControlStatement controlStatement);
+  public void controlStatementRemoved(Object parent, IActionControlStatement controlStatement);
+  public void controlStatementChanged(IActionControlStatement controlStatement);
   
-  public void headerChanged(ActionSequenceDocument actionSequenceDocument);
+  public void headerChanged(IActionSequenceDocument actionSequenceDocument);
 }

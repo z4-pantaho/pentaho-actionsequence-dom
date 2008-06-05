@@ -67,7 +67,7 @@ public class PrintParamAction extends ActionDefinition {
   }
   
   public ActionInputConstant getDelimiter() {
-    ActionInputConstant actionInputConstant = IActionInputValueProvider.NULL_INPUT;
+    ActionInputConstant actionInputConstant = ActionInputConstant.NULL_INPUT;
     String delimiter = getComponentDefinitionValue(PRINT_PARAMS_COMMAND + "/" + DELIMITER_ELEMENT); //$NON-NLS-1$
     if (delimiter != null) {
       if (delimiter.startsWith("\"") && delimiter.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -88,7 +88,7 @@ public class PrintParamAction extends ActionDefinition {
     for (int i = 0; i < elements.length; i++) {
       String printParamName = elements[i].getText();
       IActionInputValueProvider key = getActionInputValue(printParamName);
-      if (key != IActionInputValueProvider.NULL_INPUT) {
+      if (key != ActionInputConstant.NULL_INPUT) {
         printParams.add(key);
       }
     }

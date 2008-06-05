@@ -25,27 +25,27 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceOutput extends AbstractIOElement {
+public class ActionSequenceOutput extends AbstractIOElement implements IActionSequenceOutput {
 
   protected ActionSequenceOutput(Element outputElement, IActionParameterMgr actionInputProvider) {
     super(outputElement, actionInputProvider);
   }
   
-  public ActionSequenceOutputDestination[] getDestinations() {
+  public IActionSequenceOutputDestination[] getDestinations() {
     ArrayList outputDestinations = new ArrayList();
     List destinationElements = ioElement.selectNodes(ActionSequenceDocument.OUTPUTS_DESTINATIONS_NAME + "/*"); //$NON-NLS-1$
     for (Iterator iter = destinationElements.iterator(); iter.hasNext();) {
       outputDestinations.add(new ActionSequenceOutputDestination((Element)iter.next(), actionInputProvider));
     }
-    return (ActionSequenceOutputDestination[])outputDestinations.toArray(new ActionSequenceOutputDestination[0]);
+    return (IActionSequenceOutputDestination[])outputDestinations.toArray(new ActionSequenceOutputDestination[0]);
   }
   
   
-  public ActionSequenceOutputDestination addDestination(String destination, String name) {
+  public IActionSequenceOutputDestination addDestination(String destination, String name) {
     Element destinationParent = DocumentHelper.makeElement(ioElement, ActionSequenceDocument.OUTPUTS_DESTINATIONS_NAME);     
     Element newDestinationElement = destinationParent.addElement(destination);
     newDestinationElement.setText(name);
-    ActionSequenceOutputDestination actionSequenceOutputDestination = new ActionSequenceOutputDestination(newDestinationElement, actionInputProvider);
+    IActionSequenceOutputDestination actionSequenceOutputDestination = new ActionSequenceOutputDestination(newDestinationElement, actionInputProvider);
     ActionSequenceDocument.fireIoChanged(this);
     return actionSequenceOutputDestination;
   }

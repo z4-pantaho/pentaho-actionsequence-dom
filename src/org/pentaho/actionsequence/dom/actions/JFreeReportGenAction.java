@@ -17,13 +17,13 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class JFreeReportGenAction extends ActionDefinition {
 
-  public static final String COMPONENT_NAME = "com.pentaho.component.JFreeReportGeneratorComponent"; //$NON-NLS-1$
+  public static final String COMPONENT_NAME = "org.pentaho.component.JFreeReportGeneratorComponent"; //$NON-NLS-1$
   public static final String RESULT_SET = "result-set"; //$NON-NLS-1$
   public static final String COMPONENT_SETTINGS = "component-settings"; //$NON-NLS-1$
   public static final String TEMPLATE_PATH_PROP = "template-path"; //$NON-NLS-1$
@@ -74,7 +74,7 @@ public class JFreeReportGenAction extends ActionDefinition {
   private IActionInputValueProvider getComponentValue(String elementName) {
 	  IActionInputValueProvider value = getActionInputValue(elementName);
 	  try {
-		  if (value == IActionInputValueProvider.NULL_INPUT) {
+		  if (value == ActionInputConstant.NULL_INPUT) {
 			value = getActionInputValue(COMPONENT_SETTINGS);
 			Document doc = DocumentHelper.parseText(value.getStringValue());
 		    Node componentNode = doc.getRootElement();	      
@@ -254,7 +254,7 @@ public class JFreeReportGenAction extends ActionDefinition {
     setOutputParam(REPORT_DEFINITION, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
   }
   
-  public ActionOutput getOutputReportDefinition() {
+  public IActionOutput getOutputReportDefinition() {
 	  return getOutputParam(REPORT_DEFINITION);
   }
 }

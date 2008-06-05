@@ -1,6 +1,7 @@
 package org.pentaho.actionsequence.dom;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 public class SimpleActionInputVariable implements IActionInputVariable {
 
@@ -79,11 +80,16 @@ public class SimpleActionInputVariable implements IActionInputVariable {
   public void delete() {
   }
 
-  public ActionSequenceDocument getDocument() {
+  public IActionSequenceDocument getDocument() {
     return null;
   }
 
   public Element getElement() {
     return null;
   }
+  
+  public IActionParameterMgr getParameterMgr() {
+	  return null;
+  }
+
 }

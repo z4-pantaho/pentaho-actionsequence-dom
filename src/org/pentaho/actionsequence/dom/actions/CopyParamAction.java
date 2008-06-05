@@ -16,11 +16,12 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class CopyParamAction extends ActionDefinition {
 
@@ -82,7 +83,7 @@ public class CopyParamAction extends ActionDefinition {
       setComponentDefinition(CopyParamAction.COPY_FROM_XPATH, COPY_FROM_ELEMENT, false);
     }
     setActionInputValue(COPY_FROM_ELEMENT, value);
-    ActionOutput actionOutput = getOutputCopy();
+    IActionOutput actionOutput = getOutputCopy();
     if (actionOutput != null) {
       actionOutput.setType(value.getType());
     }
@@ -102,7 +103,7 @@ public class CopyParamAction extends ActionDefinition {
       privateName = COPY_TO_ELEMENT;
     }
     ActionInput copyFrom = (ActionInput)getCopyFrom();
-    ActionOutput actionOutput = setOutputParam(privateName, publicOutputName, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
+    IActionOutput actionOutput = setOutputParam(privateName, publicOutputName, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COPY_RETURN_XPATH, (String)null);
     } else {
@@ -110,7 +111,7 @@ public class CopyParamAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputCopy() {
+  public IActionOutput getOutputCopy() {
     String privateName = getComponentDefinitionValue(COPY_RETURN_XPATH);
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
@@ -118,7 +119,7 @@ public class CopyParamAction extends ActionDefinition {
     return getOutputParam(privateName);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     String copyFromVarName = getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH);
     if ((copyFromVarName == null) || (copyFromVarName.trim().length() == 0)) {
       copyFromVarName = COPY_FROM_ELEMENT;

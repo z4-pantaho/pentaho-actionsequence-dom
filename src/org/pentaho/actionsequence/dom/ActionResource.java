@@ -16,14 +16,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.activation.DataSource;
-
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.actions.ActionDefinition;
 import org.pentaho.actionsequence.dom.actions.ActionFactory;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
+import org.pentaho.commons.connection.IPentahoStreamSource;
 
 /**
  * A wrapper class for an action definition resource element.
@@ -122,7 +121,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   /* (non-Javadoc)
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getDocument()
    */
-  public ActionSequenceDocument getDocument() {
+  public IActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((ioElement != null) && (ioElement.getDocument() != null)) {
       doc = new ActionSequenceDocument(ioElement.getDocument(), actionInputProvider);
@@ -138,7 +137,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
     return ((mapping != null) && (mapping.trim().length() > 0)) ? mapping.trim() : ioElement.getName();
   }
   
-  public ActionDefinition getActionDefinition() {
+  public IActionDefinition getActionDefinition() {
     ActionDefinition actionDefinition = null;
     if (ioElement != null) {
       Element ancestorElement = ioElement.getParent();
@@ -154,7 +153,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
 
   public String getType() {
     return null;
-  }
+}
 
   public void setType(String ioType) {
     throw new UnsupportedOperationException();
@@ -162,7 +161,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public URI getUri() {
     URI uri = null;
-    ActionSequenceResource actionSequenceResource = getDocument().getResource(getPublicName());
+    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(getPublicName());
     if (actionSequenceResource != null) {
       uri = actionSequenceResource.getUri();
     }
@@ -171,7 +170,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public String getMimeType() {
     String mimeType = null;
-    ActionSequenceResource actionSequenceResource = getDocument().getResource(getPublicName());
+    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(getPublicName());
     if (actionSequenceResource != null) {
       mimeType = actionSequenceResource.getMimeType();
     }
@@ -180,9 +179,9 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public void setURI(URI uri) {
     String logicalName = getPublicName();
-    ActionSequenceResource actionSequenceResource = getDocument().getResource(logicalName);
+    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(logicalName);
     if (uri == null) {
-      ActionSequenceDocument document = getDocument();
+      IActionSequenceDocument document = getDocument();
       delete();
       if ((actionSequenceResource != null) && (document.getReferencesTo(actionSequenceResource).length == 0)) {
     	  document.setResourceUri(logicalName, null, null);
@@ -192,7 +191,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
         getDocument().setResourceUri(logicalName, uri, "text/plain");
       } else {
         String mimeType = actionSequenceResource.getMimeType();
-        ActionResource[] actionResources = getDocument().getReferencesTo(actionSequenceResource);
+        IActionResource[] actionResources = getDocument().getReferencesTo(actionSequenceResource);
         if ((actionResources.length == 1) && actionResources[0].equals(this)) {
           getDocument().setResourceUri(logicalName, uri, mimeType);
         } else {
@@ -206,9 +205,9 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public void setMimeType(String mimeType) {
     String logicalName = getPublicName();
-    ActionSequenceResource actionSequenceResource = getDocument().getResource(logicalName);
+    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(logicalName);
     if (actionSequenceResource != null) {
-      ActionResource[] actionResources = getDocument().getReferencesTo(actionSequenceResource);
+      IActionResource[] actionResources = getDocument().getReferencesTo(actionSequenceResource);
       if ((actionResources.length == 1) && actionResources[0].equals(this)) {
         getDocument().setResourceUri(logicalName, actionSequenceResource.getUri(), mimeType);
       } else {
@@ -230,8 +229,8 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
     return logicalName;
   }
   
-  public DataSource getDataSource() throws FileNotFoundException {
-    DataSource dataSource = null;
+  public IPentahoStreamSource getDataSource() throws FileNotFoundException {
+    IPentahoStreamSource dataSource = null;
     if (actionInputProvider != null) {
       dataSource = actionInputProvider.getDataSource(this);
     }
@@ -245,4 +244,5 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
     }
     return stringValue;
   }
+  
 }

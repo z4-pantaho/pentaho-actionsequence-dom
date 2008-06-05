@@ -13,7 +13,7 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SharkWorkflowAction extends ActionDefinition {
@@ -56,7 +56,7 @@ public class SharkWorkflowAction extends ActionDefinition {
     setInputParam(PACKAGE_NAME_ELEMENT, variable);
   }
   
-  public ActionInput getPackageNameParam() {
+  public IActionInput getPackageNameParam() {
     return getInputParam(PACKAGE_NAME_ELEMENT);
   }
 
@@ -72,7 +72,7 @@ public class SharkWorkflowAction extends ActionDefinition {
     setInputParam(PROCESS_NAME_ELEMENT, variable);
   }
   
-  public ActionInput getProcessNameParam() {
+  public IActionInput getProcessNameParam() {
     return getInputParam(PROCESS_NAME_ELEMENT);
   }
   
@@ -89,7 +89,7 @@ public class SharkWorkflowAction extends ActionDefinition {
     setInputParam(NEW_INSTANCE_ELEMENT, variable);
   }
   
-  public ActionInput getNewInstanceParam() {
+  public IActionInput getNewInstanceParam() {
     return getInputParam(NEW_INSTANCE_ELEMENT);
   }
 }

@@ -32,7 +32,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceInput extends AbstractIOElement implements IActionInputVariable {
+public class ActionSequenceInput extends AbstractIOElement implements IActionInputVariable, IActionSequenceInput {
 
   public static final int REQUEST_INPUT_SOURCE_ID = 1;
   public static final int SESSION_INPUT_SOURCE_ID = 2;
@@ -76,7 +76,7 @@ public class ActionSequenceInput extends AbstractIOElement implements IActionInp
       } else {
         defValElement.clearContent();
       }
-      defValElement.addAttribute(ActionSequenceResource.TYPE_NAME, null);
+      defValElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, null);
       if (defValue.length() > 0) {
         defValElement.addCDATA(defValue);
       }
@@ -103,7 +103,7 @@ public class ActionSequenceInput extends AbstractIOElement implements IActionInp
         defValElement.clearContent();
       }
       if (defValue.length > 0) {
-        defValElement.addAttribute(ActionSequenceResource.TYPE_NAME, ActionSequenceDocument.STRING_LIST_TYPE);
+        defValElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, ActionSequenceDocument.STRING_LIST_TYPE);
         for (int i = 0; i < defValue.length; i++) {
           defValElement.addElement(ActionSequenceDocument.DEFAULT_STRING_LIST_ITEM).setText(defValue[i]); 
         }
@@ -131,7 +131,7 @@ public class ActionSequenceInput extends AbstractIOElement implements IActionInp
         defValElement.clearContent();
       }
       if (paramMap.size() > 0) {
-        defValElement.addAttribute(ActionSequenceResource.TYPE_NAME, ActionSequenceDocument.PROPERTY_MAP_TYPE);
+        defValElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, ActionSequenceDocument.PROPERTY_MAP_TYPE);
         
         DefaultTableModel defaultTableModel = new DefaultTableModel();
         for (Iterator keyIter = paramMap.keySet().iterator(); keyIter.hasNext();) {
@@ -179,7 +179,7 @@ public class ActionSequenceInput extends AbstractIOElement implements IActionInp
         defValElement.clearContent();
       }
       if (defValue.getColumnCount() > 0) {
-        defValElement.addAttribute(ActionSequenceResource.TYPE_NAME, ActionSequenceDocument.PROPERTY_MAP_LIST_TYPE);
+        defValElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, ActionSequenceDocument.PROPERTY_MAP_LIST_TYPE);
         initPropertyMap(defValElement, defValue);
       }
       ActionSequenceDocument.fireIoChanged(this);
@@ -201,10 +201,10 @@ public class ActionSequenceInput extends AbstractIOElement implements IActionInp
         defValElement.clearContent();
       }
       if (defValue.getColumnCount() > 0) {
-        defValElement.addAttribute(ActionSequenceResource.TYPE_NAME, ActionSequenceDocument.RESULTSET_TYPE);
+        defValElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, ActionSequenceDocument.RESULTSET_TYPE);
         Element columnsElement = ioElement.addElement(ActionSequenceDocument.RESULTSET_DEFAULT_COLUMNS);
         for (int colIdx = 0; colIdx < defValue.getColumnCount(); colIdx ++) {
-          columnsElement.addElement(defValue.getColumnName(colIdx)).addAttribute(ActionSequenceResource.TYPE_NAME, ActionSequenceDocument.STRING_TYPE);
+          columnsElement.addElement(defValue.getColumnName(colIdx)).addAttribute(ActionSequenceResourceDom.TYPE_NAME, ActionSequenceDocument.STRING_TYPE);
         }
         for (int rowIdx = 0; rowIdx < defValue.getRowCount(); rowIdx++) {
           Element rowElement = defValElement.addElement(ActionSequenceDocument.RESULTSET_ROW);
@@ -378,25 +378,25 @@ public class ActionSequenceInput extends AbstractIOElement implements IActionInp
     return defVal;
   }
   
-  public ActionSequenceInputSource[] getSources() {
+  public IActionSequenceInputSource[] getSources() {
     ArrayList inputSources = new ArrayList();
     List sourceElements = ioElement.selectNodes(ActionSequenceDocument.INPUT_SOURCES_NAME + "/*"); //$NON-NLS-1$
     for (Iterator iter = sourceElements.iterator(); iter.hasNext();) {
       inputSources.add(new ActionSequenceInputSource((Element)iter.next(), actionInputProvider));
     }
-    return (ActionSequenceInputSource[])inputSources.toArray(new ActionSequenceInputSource[0]);
+    return (IActionSequenceInputSource[])inputSources.toArray(new ActionSequenceInputSource[0]);
   }
   
-  public ActionSequenceInputSource addSource(String origin, String name) {
+  public IActionSequenceInputSource addSource(String origin, String name) {
     Element sourceParent = DocumentHelper.makeElement(ioElement, ActionSequenceDocument.INPUT_SOURCES_NAME);     
     Element newSourceElement = sourceParent.addElement(origin);
     newSourceElement.setText(name);
-    ActionSequenceInputSource actionSequenceInputSource = new ActionSequenceInputSource(newSourceElement, actionInputProvider);
+    IActionSequenceInputSource actionSequenceInputSource = new ActionSequenceInputSource(newSourceElement, actionInputProvider);
     ActionSequenceDocument.fireIoChanged(this);
     return actionSequenceInputSource;
   }
   
-  public ActionSequenceInputSource addSource(int index, String origin, String name) {
+  public IActionSequenceInputSource addSource(int index, String origin, String name) {
     if (index >= getSources().length) {
       throw new ArrayIndexOutOfBoundsException();
       }

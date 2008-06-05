@@ -15,12 +15,12 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class ContentOutputAction extends ActionDefinition {
 
@@ -65,7 +65,7 @@ public class ContentOutputAction extends ActionDefinition {
     return getActionInputValue(CONTENT_INPUT_ELEMENT);
   }
   
-  public ActionOutput getOutput() {
+  public IActionOutput getOutput() {
     return getOutputParam(CONTENT_OUTPUT_ELEMENT);
   }
   
@@ -73,7 +73,7 @@ public class ContentOutputAction extends ActionDefinition {
     setOutputParam(CONTENT_OUTPUT_ELEMENT, outputPublicName, ActionSequenceDocument.CONTENT_TYPE);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     
     ActionSequenceValidationError validationError = validateInputParam(CONTENT_INPUT_ELEMENT);

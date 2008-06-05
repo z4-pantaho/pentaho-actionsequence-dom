@@ -20,7 +20,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionIfStatement extends ActionControlStatement {
+public class ActionIfStatement extends ActionControlStatement implements IActionIfStatement {
 
   private static final ActionSequenceValidationError[] EMPTY_ARRAY = new ActionSequenceValidationError[0];
   public ActionIfStatement(Element controlElement, IActionParameterMgr actionInputProvider) {
@@ -53,7 +53,7 @@ public class ActionIfStatement extends ActionControlStatement {
     return condition;
   }
 
-  protected ActionSequenceValidationError[] validateThis() {
+  protected IActionSequenceValidationError[] validateThis() {
     return EMPTY_ARRAY;
   }
   

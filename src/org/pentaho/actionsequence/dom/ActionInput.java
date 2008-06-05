@@ -20,7 +20,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionInput extends AbstractActionIOElement implements IActionInputValueProvider {
+public class ActionInput extends AbstractActionIOElement implements IActionInput {
 
   public ActionInput(Element ioElement, IActionParameterMgr actionInputProvider) {
     super(ioElement, actionInputProvider);
@@ -52,7 +52,7 @@ public class ActionInput extends AbstractActionIOElement implements IActionInput
     Integer intValue = null;
     String stringValue = getStringValue();
     if (stringValue != null) {
-      intValue = Integer.parseInt(stringValue);
+      intValue = new Integer(stringValue);
     }
     return intValue;
   }

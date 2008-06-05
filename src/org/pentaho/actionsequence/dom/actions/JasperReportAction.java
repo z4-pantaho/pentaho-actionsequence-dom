@@ -16,13 +16,13 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class JasperReportAction extends ActionDefinition {
 
@@ -73,7 +73,7 @@ public class JasperReportAction extends ActionDefinition {
   public String[] getReservedOutputNames() {
     String expectedOutput = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(expectedOutput) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -155,7 +155,7 @@ public class JasperReportAction extends ActionDefinition {
   public void setOutputReport(String publicOutputName) {
     setOutputParam(REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
-      ActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (actionOutputs[i].getType().equals(ActionSequenceDocument.CONTENT_TYPE)
             && !actionOutputs[i].getName().equals(REPORT_OUTPUT_ELEMENT)) {
@@ -165,10 +165,10 @@ public class JasperReportAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputReport() {
+  public IActionOutput getOutputReport() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(privateOutputName) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         privateOutputName = actionOutputs[0].getName();
       }
@@ -176,7 +176,7 @@ public class JasperReportAction extends ActionDefinition {
     return getOutputParam(REPORT_OUTPUT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(DRIVER_ELEMENT);
@@ -268,11 +268,11 @@ public class JasperReportAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public ActionResource setReportDefinition(URI uri, String mimeType) {
+  public IActionResource setReportDefinition(URI uri, String mimeType) {
     return setResourceUri(REPORT_DEFINITION_ELEMENT, uri, mimeType);
   }
   
-  public ActionResource getReportDefinition() {
+  public IActionResource getReportDefinition() {
     return getResourceParam(REPORT_DEFINITION_ELEMENT);
   }
 }

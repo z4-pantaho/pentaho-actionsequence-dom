@@ -17,18 +17,20 @@ import java.net.URI;
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-import javax.activation.DataSource;
-
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
+import org.pentaho.commons.connection.IPentahoStreamSource;
 
 public class JFreeReportAction extends ActionDefinition {
 
@@ -161,13 +163,13 @@ public class JFreeReportAction extends ActionDefinition {
       }
     }
     
-    public ActionInput getDataClassParam() {
+    public IActionInput getDataClassParam() {
       return getInputParam(JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT);
 
     }
     
-    public ActionResource setJar(URI uri) {
-      ActionResource actionResource = setResourceUri(JFreeReportAction.REPORT_DATA_JAR_ELEMENT, uri, "application/java-archive");
+    public IActionResource setJar(URI uri) {
+      IActionResource actionResource = setResourceUri(JFreeReportAction.REPORT_DATA_JAR_ELEMENT, uri, "application/java-archive");
       if (uri != null) {
         setData(null);
         setDataComponent(null);
@@ -185,7 +187,7 @@ public class JFreeReportAction extends ActionDefinition {
       return actionResource;
     }
     
-    public ActionResource getJar() {
+    public IActionResource getJar() {
       return getResourceParam(JFreeReportAction.REPORT_DATA_JAR_ELEMENT);
     }
   }
@@ -225,13 +227,13 @@ public class JFreeReportAction extends ActionDefinition {
       }
     }
     
-    public ActionInput getReportLocationParam() {
+    public IActionInput getReportLocationParam() {
       return getInputParam(REPORT_LOC_IN_JAR_ELEMENT);
 
     }
     
-    public ActionResource setJar(URI uri) {
-      ActionResource actionResource = setResourceUri(REPORT_JAR_ELEMENT, uri, "application/java-archive");
+    public IActionResource setJar(URI uri) {
+      IActionResource actionResource = setResourceUri(REPORT_JAR_ELEMENT, uri, "application/java-archive");
       if (uri != null) {
         if (!getComponentName().endsWith("JFreeReportComponent")) {
           setComponentName("JFreeReportComponent");
@@ -242,7 +244,7 @@ public class JFreeReportAction extends ActionDefinition {
       return actionResource;
     }
     
-    public ActionResource getJar() {
+    public IActionResource getJar() {
       return getResourceParam(JFreeReportAction.REPORT_JAR_ELEMENT);
     }
   }
@@ -323,7 +325,7 @@ public class JFreeReportAction extends ActionDefinition {
   public String[] getReservedOutputNames() {
     String expectedOutput = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(expectedOutput) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -534,7 +536,7 @@ public class JFreeReportAction extends ActionDefinition {
   public void setOutputReport(String publicOutputName) {
     setOutputParam(REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
-      ActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (actionOutputs[i].getType().equals(ActionSequenceDocument.CONTENT_TYPE)
             && !actionOutputs[i].getName().equals(REPORT_OUTPUT_ELEMENT)) {
@@ -544,10 +546,10 @@ public class JFreeReportAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputReport() {
+  public IActionOutput getOutputReport() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(privateOutputName) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+     IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         privateOutputName = actionOutputs[0].getName();
       }
@@ -555,7 +557,7 @@ public class JFreeReportAction extends ActionDefinition {
     return getOutputParam(REPORT_OUTPUT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(DATA_ELEMENT);
     if (validationError != null) {
@@ -591,8 +593,8 @@ public class JFreeReportAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public ActionResource setReportDefinition(URI uri, String mimeType) {
-    ActionResource actionResource = null;
+  public IActionResource setReportDefinition(URI uri, String mimeType) {
+    IActionResource actionResource = null;
     if (uri == null) {
       setResourceUri(REPORT_DEFINITION_ELEMENT, null, mimeType);
       setResourceUri(REPORT_WIZ_SPEC_ELEMENT, null, mimeType);
@@ -620,7 +622,7 @@ public class JFreeReportAction extends ActionDefinition {
   
   public Object getReportDefinition() {
     Object reportDefinition;
-    ActionResource actionResource = null;
+    IActionResource actionResource = null;
     if (getComponentName().endsWith("JFreeReportComponent")) {
       actionResource = getResourceParam(REPORT_DEFINITION_ELEMENT);
     } else if (getComponentName().endsWith("ReportWizardSpecComponent")){
@@ -640,7 +642,7 @@ public class JFreeReportAction extends ActionDefinition {
     return reportDefinition;
   }
   
-  public DataSource getReportDefinitionDataSource() throws FileNotFoundException {
+  public IPentahoStreamSource getReportDefinitionDataSource() throws FileNotFoundException {
     Object reportDefinition = getReportDefinition();
     return reportDefinition instanceof ActionResource ? ((ActionResource)reportDefinition).getDataSource() : null;
   }
@@ -746,20 +748,20 @@ public class JFreeReportAction extends ActionDefinition {
     return actionInput;
   }
   
-  public ActionInput[] getSubreportQueryParams() {
+  public IActionInput[] getSubreportQueryParams() {
     ArrayList subreportQueryParams = new ArrayList();
     ActionInput mainReportData = (ActionInput)getData();
-    ActionInput[] actionInputs = getInputParams(new String[] {ActionSequenceDocument.RESULTSET_TYPE, ActionSequenceDocument.MDX_QUERY_TYPE, ActionSequenceDocument.SQL_QUERY_TYPE, ActionSequenceDocument.XQUERY_TYPE, ActionSequenceDocument.HQL_QUERY_TYPE});
+    IActionInput[] actionInputs = getInputParams(new String[] {ActionSequenceDocument.RESULTSET_TYPE, ActionSequenceDocument.MDX_QUERY_TYPE, ActionSequenceDocument.SQL_QUERY_TYPE, ActionSequenceDocument.XQUERY_TYPE, ActionSequenceDocument.HQL_QUERY_TYPE});
     for (int i = 0; i < actionInputs.length; i++) {
       if (!actionInputs[i].equals(mainReportData)) {
         subreportQueryParams.add(actionInputs[i]);
       }
     }
-    return (ActionInput[])subreportQueryParams.toArray(new ActionInput[0]);
+    return (IActionInput[])subreportQueryParams.toArray(new ActionInput[0]);
   }
   
   public void setSubReportQueryParams(IActionInputVariable[] subQueryVariables) {
-    ActionInput[] actionInputs = getSubreportQueryParams();
+    IActionInput[] actionInputs = getSubreportQueryParams();
     for (int i = 0; i < actionInputs.length; i++) {
       actionInputs[i].delete();
     }

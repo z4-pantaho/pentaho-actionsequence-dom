@@ -3,9 +3,10 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public abstract class AbstractChartAction extends ActionDefinition {
 
@@ -74,7 +75,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     setInputParam(CHART_DATA_ELEMENT, variable);
   }
   
-  public ActionInput getChartDataParam() {
+  public IActionInput getChartDataParam() {
     return getInputParam(CHART_DATA_ELEMENT);
   }
 
@@ -90,7 +91,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     setInputParam(CHART_WIDTH_ELEMENT, variable);
   }
   
-  public ActionInput getWidthParam() {
+  public IActionInput getWidthParam() {
     return getInputParam(CHART_WIDTH_ELEMENT);
   }
 
@@ -106,7 +107,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     setInputParam(CHART_HEIGHT_ELEMENT, variable);
   }
   
-  public ActionInput getHeightParam() {
+  public IActionInput getHeightParam() {
     return getInputParam(CHART_HEIGHT_ELEMENT);
   }
 
@@ -122,7 +123,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     setInputParam(CHART_TITLE_ELEMENT, variable);
   }
   
-  public ActionInput getTitleParam() {
+  public IActionInput getTitleParam() {
     return getInputParam(CHART_TITLE_ELEMENT);
   }
   
@@ -157,7 +158,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     setInputParam(CHART_BY_ROW_ELEMENT, variable);
   }
   
-  public ActionInput getByRowParam() {
+  public IActionInput getByRowParam() {
     return getInputParam(CHART_BY_ROW_ELEMENT);
   }
   
@@ -210,7 +211,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return getComponentDefinitionValue(CHART_TYPE_XPATH);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(CHART_DATA_ELEMENT);
     if (validationError != null) {

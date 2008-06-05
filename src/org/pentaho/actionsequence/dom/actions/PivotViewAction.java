@@ -13,8 +13,8 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class PivotViewAction extends ActionDefinition {
@@ -81,7 +81,7 @@ public class PivotViewAction extends ActionDefinition {
     setInputParam(MODE_ELEMENT, variable);
   }
   
-  public ActionInput getModeParam() {
+  public IActionInput getModeParam() {
     return getInputParam(MODE_ELEMENT);
   }
 
@@ -97,7 +97,7 @@ public class PivotViewAction extends ActionDefinition {
     setInputParam(VIEWER_ELEMENT, variable);
   }
   
-  public ActionInput getViewerParam() {
+  public IActionInput getViewerParam() {
     return getInputParam(VIEWER_ELEMENT);
   }
 
@@ -113,7 +113,7 @@ public class PivotViewAction extends ActionDefinition {
     setInputParam(MODEL_ELEMENT, variable);
   }
   
-  public ActionInput getModelParam() {
+  public IActionInput getModelParam() {
     return getInputParam(MODEL_ELEMENT);
   }
 
@@ -129,7 +129,7 @@ public class PivotViewAction extends ActionDefinition {
     setInputParam(JNDI_ELEMENT, variable);
   }
   
-  public ActionInput getJndiParam() {
+  public IActionInput getJndiParam() {
     return getInputParam(JNDI_ELEMENT);
   }
 
@@ -145,7 +145,7 @@ public class PivotViewAction extends ActionDefinition {
     setInputParam(ROLE_ELEMENT, variable);
   }
   
-  public ActionInput getRoleParam() {
+  public IActionInput getRoleParam() {
     return getInputParam(ROLE_ELEMENT);
   }
 
@@ -161,7 +161,7 @@ public class PivotViewAction extends ActionDefinition {
     setInputParam(QUERY_ELEMENT, variable);
   }
   
-  public ActionInput getQueryParam() {
+  public IActionInput getQueryParam() {
     return getInputParam(QUERY_ELEMENT);
   }
 }

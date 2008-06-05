@@ -26,7 +26,7 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceResource extends AbstractIOElement {
+public class ActionSequenceResourceDom extends AbstractIOElement implements IActionSequenceResourceDom {
 
   // Document Resources nodes
   public static final String SOLUTION_FILE_RESOURCE_TYPE = "solution-file"; //$NON-NLS-1$
@@ -39,7 +39,30 @@ public class ActionSequenceResource extends AbstractIOElement {
   public static final String SOLUTION_SCHEME = "solution"; //$NON-NLS-1$
   public static final String FILE_SCHEME = "file"; //$NON-NLS-1$
   
-  public ActionSequenceResource(Element resourceElement, IActionParameterMgr actionInputProvider) {
+/*
+
+* This is from a JD merge, and needs to be incorporated/handled
+* in the engine layer
+
+  private org.pentaho.core.solution.ActionSequenceResource resource;
+  
+  public ActionSequenceResourceDom(Element resourceElement, IActionParameterMgr actionInputProvider) {
+    super(resourceElement, actionInputProvider);
+    
+    String name = getName();
+    int sourceType = org.pentaho.core.solution.ActionSequenceResource.getResourceType( getType() );
+    String mimeType = getMimeType();
+    String path = getPath();
+    resource = new org.pentaho.core.solution.ActionSequenceResource( name, sourceType, mimeType, path );
+  }
+  
+  public org.pentaho.core.solution.ActionSequenceResource getObject() {
+	  return resource;
+  }
+
+*/
+
+  public ActionSequenceResourceDom(Element resourceElement, IActionParameterMgr actionInputProvider) {
     super(resourceElement, actionInputProvider);
   }
   
@@ -251,7 +274,7 @@ public class ActionSequenceResource extends AbstractIOElement {
     boolean result = false;
     if (arg0 != null) {
       if (arg0.getClass() == this.getClass()) {
-        ActionSequenceResource resource = (ActionSequenceResource)arg0;
+        ActionSequenceResourceDom resource = (ActionSequenceResourceDom)arg0;
         result = (resource.ioElement != null ? resource.ioElement.equals(this.ioElement) : (resource == this));
       }
     }
@@ -261,7 +284,7 @@ public class ActionSequenceResource extends AbstractIOElement {
   /* (non-Javadoc)
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getDocument()
    */
-  public ActionSequenceDocument getDocument() {
+  public IActionSequenceDocument getDocument() {
     ActionSequenceDocument doc = null;
     if ((ioElement != null) && (ioElement.getDocument() != null)) {
       doc = new ActionSequenceDocument(ioElement.getDocument(), actionInputProvider);
@@ -273,9 +296,9 @@ public class ActionSequenceResource extends AbstractIOElement {
     URI uri = null;
     try {
       String schemaSpecificPart = getPath();
-      if (getType().equals(ActionSequenceResource.SOLUTION_FILE_RESOURCE_TYPE)) {
+      if (getType().equals(ActionSequenceResourceDom.SOLUTION_FILE_RESOURCE_TYPE)) {
         uri = new URI(SOLUTION_SCHEME, schemaSpecificPart, null);
-      } else if (getType().equals(ActionSequenceResource.FILE_RESOURCE_TYPE)) {
+      } else if (getType().equals(ActionSequenceResourceDom.FILE_RESOURCE_TYPE)) {
         uri = new URI(FILE_SCHEME, schemaSpecificPart, null);
       } else {
         uri = new URI(schemaSpecificPart);
@@ -289,18 +312,18 @@ public class ActionSequenceResource extends AbstractIOElement {
   
   public void setUri(URI uri) {
     if (!uri.isAbsolute() || FILE_SCHEME.equals(uri.getScheme())) {
-      setType(ActionSequenceResource.FILE_RESOURCE_TYPE);
+      setType(ActionSequenceResourceDom.FILE_RESOURCE_TYPE);
       setPath(uri.getSchemeSpecificPart());
     } else if (SOLUTION_SCHEME.equals(uri.getScheme())) {
-      setType(ActionSequenceResource.SOLUTION_FILE_RESOURCE_TYPE);
+      setType(ActionSequenceResourceDom.SOLUTION_FILE_RESOURCE_TYPE);
       setPath(uri.getSchemeSpecificPart());
     } else {
       try {
         URL url = uri.toURL();
-        setType(ActionSequenceResource.URL_RESOURCE_TYPE);
+        setType(ActionSequenceResourceDom.URL_RESOURCE_TYPE);
         setPath(url.toString());
       } catch (Exception ex) {
-        setType(ActionSequenceResource.FILE_RESOURCE_TYPE);
+        setType(ActionSequenceResourceDom.FILE_RESOURCE_TYPE);
         setPath(uri.toString());
       }
     }

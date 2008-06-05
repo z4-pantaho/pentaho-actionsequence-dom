@@ -14,7 +14,6 @@ package org.pentaho.actionsequence.dom;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.actions.ActionDefinition;
 import org.pentaho.actionsequence.dom.actions.ActionFactory;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
@@ -68,8 +67,8 @@ public abstract class AbstractActionIOElement extends AbstractIOElement implemen
   /**
    * @return the action definition to which this input/output belongs.
    */
-  public ActionDefinition getActionDefinition() {
-    ActionDefinition actionDefinition = null;
+  public IActionDefinition getActionDefinition() {
+    IActionDefinition actionDefinition = null;
     if (ioElement != null) {
       Element ancestorElement = ioElement.getParent();
       if (ancestorElement != null) {

@@ -16,12 +16,14 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.ActionSequenceResource;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceDocument;
+import org.pentaho.actionsequence.dom.IActionSequenceResourceDom;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class KettleTransformAction extends ActionDefinition {
 
@@ -106,11 +108,11 @@ public class KettleTransformAction extends ActionDefinition {
     setOutputParam(TRANSFORMATION_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
   }
   
-  public ActionOutput getOutputResultSet() {
+  public IActionOutput getOutputResultSet() {
     return getOutputParam(TRANSFORMATION_OUTPUT_ELEMENT);
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateInputParam(REPOSITORY_DIRECTORY);
     if (validationError == null) {
@@ -157,8 +159,8 @@ public class KettleTransformAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public ActionResource setTransformationFile(URI uri, String mimeType) {
-    ActionResource actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
+  public IActionResource setTransformationFile(URI uri, String mimeType) {
+    IActionResource actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
     // We never want to get rid of the kettle transformation resource element. 
     // That's what's used to differentiate a kettle transformation action from a kettle job action.
     // If the uri is null we'll either delete the action sequence resource that is referenced
@@ -166,9 +168,9 @@ public class KettleTransformAction extends ActionDefinition {
     if (uri == null) {
       actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
       if (actionResource != null) {
-        ActionSequenceDocument actionSequenceDocument = getDocument();
-        ActionSequenceResource actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
-        ActionResource[] actionResources = actionSequenceDocument.getReferencesTo(actionSequenceResource);
+        IActionSequenceDocument actionSequenceDocument = getDocument();
+        IActionSequenceResourceDom actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
+        IActionResource[] actionResources = actionSequenceDocument.getReferencesTo(actionSequenceResource);
         if ((actionResources.length == 1) && actionResources[0].equals(actionResource)) {
           actionSequenceResource.delete();
         } else {
@@ -182,8 +184,8 @@ public class KettleTransformAction extends ActionDefinition {
     return actionResource;
   }
   
-  public ActionResource getTransformationFile() {
-    ActionResource actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
+  public IActionResource getTransformationFile() {
+    IActionResource actionResource = getResourceParam(TRANSFORMATION_FILE_ELEMENT);
     if ((actionResource != null) && NULL_MAPPING.equals(actionResource.getMapping())) {
       actionResource = null;
     }

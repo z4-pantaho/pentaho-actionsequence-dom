@@ -16,11 +16,12 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
+import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class BirtReportAction extends ActionDefinition {
 
@@ -53,7 +54,7 @@ public class BirtReportAction extends ActionDefinition {
   public String[] getReservedOutputNames() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
     if (getOutputParam(privateOutputName) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         privateOutputName = actionOutputs[0].getName();
       }
@@ -76,7 +77,7 @@ public class BirtReportAction extends ActionDefinition {
   public void setOutputReport(String publicOutputName) {
     setOutputParam(REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
-      ActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getAllOutputParams();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (actionOutputs[i].getType().equals(ActionSequenceDocument.CONTENT_TYPE)
             && !actionOutputs[i].getName().equals(REPORT_OUTPUT_ELEMENT)) {
@@ -86,11 +87,11 @@ public class BirtReportAction extends ActionDefinition {
     }
   }
   
-  public ActionOutput getOutputReport() {
-    ActionOutput actionOutput = getOutputParam(REPORT_OUTPUT_ELEMENT);
+  public IActionOutput getOutputReport() {
+    IActionOutput actionOutput = getOutputParam(REPORT_OUTPUT_ELEMENT);
     
     if (actionOutput ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         actionOutput = actionOutputs[0];
       }
@@ -98,7 +99,7 @@ public class BirtReportAction extends ActionDefinition {
     return actionOutput;
   }
   
-  public ActionSequenceValidationError[] validate() {
+  public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = validateResourceParam(REPORT_DEFINITION_ELEMENT);
     if (validationError != null) {
@@ -139,11 +140,11 @@ public class BirtReportAction extends ActionDefinition {
     return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
   
-  public ActionResource setReportDefinition(URI uri, String mimeType) {
+  public IActionResource setReportDefinition(URI uri, String mimeType) {
     return setResourceUri(REPORT_DEFINITION_ELEMENT, uri, mimeType);
   }
   
-  public ActionResource getReportDefinition() {
+  public IActionResource getReportDefinition() {
     return getResourceParam(REPORT_DEFINITION_ELEMENT);
   }
 }

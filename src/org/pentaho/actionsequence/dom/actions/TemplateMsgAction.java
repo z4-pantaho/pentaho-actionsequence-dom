@@ -15,11 +15,11 @@ package org.pentaho.actionsequence.dom.actions;
 import java.net.URI;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionOutput;
-import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInputValueProvider;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionOutput;
+import org.pentaho.actionsequence.dom.IActionResource;
 
 public class TemplateMsgAction extends ActionDefinition {
 
@@ -58,7 +58,7 @@ public class TemplateMsgAction extends ActionDefinition {
   public String[] getReservedOutputNames() {
     String expectedOutput = OUTPUT_MSG_ELEMENT;
     if (getOutputParam(expectedOutput) ==  null) { 
-      ActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.STRING_TYPE);
+      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.STRING_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -74,8 +74,8 @@ public class TemplateMsgAction extends ActionDefinition {
     setInputValue(TEMPLATE_ELEMENT, ""); //$NON-NLS-1$
   }
 
-  public ActionResource setTemplateResource(URI uri, String mimeType) {
-    ActionResource templateResource = setResourceUri(TEMPLATE_ELEMENT, uri, mimeType);
+  public IActionResource setTemplateResource(URI uri, String mimeType) {
+    IActionResource templateResource = setResourceUri(TEMPLATE_ELEMENT, uri, mimeType);
     // Cleaning up the template from input since we would be using 
     // template based on resource
     if (uri != null) {
@@ -84,7 +84,7 @@ public class TemplateMsgAction extends ActionDefinition {
     return templateResource;
   }
 	
-  public ActionResource getTemplateResource() {
+  public IActionResource getTemplateResource() {
     return getResourceParam(TEMPLATE_ELEMENT);
   }
 
@@ -120,7 +120,7 @@ public class TemplateMsgAction extends ActionDefinition {
     setOutputParam(OUTPUT_MSG_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
   }
   
-  public ActionOutput getOutputString() {
+  public IActionOutput getOutputString() {
     return getOutputParam(OUTPUT_MSG_ELEMENT);
   }
 }
