@@ -18,7 +18,8 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
@@ -75,7 +76,7 @@ public class HQLConnectionAction extends ActionDefinition {
   }
   
   public void setOutputConnectionName(String name) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, name, HQL_CONNECTION_TYPE);
+    setOutput(PREPARED_COMPONENT_ELEMENT, name, HQL_CONNECTION_TYPE);
   }
   
   public String getOutputConnectionName() {
@@ -83,13 +84,13 @@ public class HQLConnectionAction extends ActionDefinition {
   }
   
   public IActionOutput getOutputConnectionParam() {
-    return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+    return getOutput(PREPARED_COMPONENT_ELEMENT);
   }
   
   public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(CLASSNAMES);
+    ActionSequenceValidationError validationError = validateInput(CLASSNAMES);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
         validationError.errorMsg = "Database connection input parameter references unknown variable.";
@@ -100,7 +101,7 @@ public class HQLConnectionAction extends ActionDefinition {
       }
     }
     
-    validationError = validateInputParam(HIBERNATE_CONFIG);
+    validationError = validateInput(HIBERNATE_CONFIG);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
         validationError.errorMsg = "Database connection input parameter references unknown variable.";
@@ -111,7 +112,7 @@ public class HQLConnectionAction extends ActionDefinition {
       }
     }
      
-    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    validationError = validateOutput(PREPARED_COMPONENT_ELEMENT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
         validationError.errorMsg = "Missing output connection name.";
@@ -122,12 +123,12 @@ public class HQLConnectionAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
 
-  public void setClassNames(IActionInputValueProvider value) {
+  public void setClassNames(IActionInputSource value) {
     setActionInputValue(CLASSNAMES, value);
   }
   
-  public IActionInputValueProvider getClassNames() {
-    return getActionInputValue(CLASSNAMES);
+  public IActionInput getClassNames() {
+    return getInput(CLASSNAMES);
   }
   
   public IActionResource setHibernateConfig(URI uri, String mimeType) {
@@ -135,7 +136,7 @@ public class HQLConnectionAction extends ActionDefinition {
   }
   
   public IActionResource getHibernateConfigResource() {
-    return getResourceParam(HIBERNATE_CONFIG);
+    return getResource(HIBERNATE_CONFIG);
   }
 }
 

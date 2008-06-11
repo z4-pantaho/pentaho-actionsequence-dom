@@ -12,7 +12,6 @@
 */
 package org.pentaho.actionsequence.dom;
 
-import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 /**
@@ -20,13 +19,10 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  * @author Angelo Rodriguez
  *
  */
-public interface IAbstractIOElement extends IGenericIOElement {
+public interface IAbstractIOElement extends IActionSequenceElement {
 
   public static final String TYPE_NAME = "type"; //$NON-NLS-1$
-
-  /**
-   * @return the name of the action sequence input/output
-   */
+  
   public String getName();
   
   /**
@@ -45,21 +41,6 @@ public interface IAbstractIOElement extends IGenericIOElement {
    * @param ioType the io type
    */
   public void setType(String ioType);
-  
-  /* (non-Javadoc)
-   * @see org.pentaho.designstudio.dom.IActionSequenceElement#delete()
-   */
-  public void delete();
-  
-  /* (non-Javadoc)
-   * @see org.pentaho.designstudio.dom.IActionSequenceElement#getElement()
-   */
-  public Element getElement();
-
-  /* (non-Javadoc)
-   * @see org.pentaho.designstudio.dom.IActionSequenceElement#getDocument()
-   */
-  public IActionSequenceDocument getDocument();
   
   public IActionParameterMgr getParameterMgr();
 }

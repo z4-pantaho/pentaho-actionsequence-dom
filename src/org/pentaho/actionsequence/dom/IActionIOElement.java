@@ -1,7 +1,7 @@
 package org.pentaho.actionsequence.dom;
 
 
-public interface IActionIOElement extends IGenericIOElement {
+public interface IActionIOElement extends IAbstractIOElement {
   public String getMapping();
   
   /**

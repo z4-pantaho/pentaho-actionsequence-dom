@@ -153,7 +153,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
 
   public String getType() {
     return null;
-}
+  }
 
   public void setType(String ioType) {
     throw new UnsupportedOperationException();
@@ -161,7 +161,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public URI getUri() {
     URI uri = null;
-    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(getPublicName());
+    IActionSequenceResource actionSequenceResource = getDocument().getResource(getPublicName());
     if (actionSequenceResource != null) {
       uri = actionSequenceResource.getUri();
     }
@@ -170,7 +170,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public String getMimeType() {
     String mimeType = null;
-    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(getPublicName());
+    IActionSequenceResource actionSequenceResource = getDocument().getResource(getPublicName());
     if (actionSequenceResource != null) {
       mimeType = actionSequenceResource.getMimeType();
     }
@@ -179,7 +179,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public void setURI(URI uri) {
     String logicalName = getPublicName();
-    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(logicalName);
+    IActionSequenceResource actionSequenceResource = getDocument().getResource(logicalName);
     if (uri == null) {
       IActionSequenceDocument document = getDocument();
       delete();
@@ -205,7 +205,7 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
   
   public void setMimeType(String mimeType) {
     String logicalName = getPublicName();
-    IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(logicalName);
+    IActionSequenceResource actionSequenceResource = getDocument().getResource(logicalName);
     if (actionSequenceResource != null) {
       IActionResource[] actionResources = getDocument().getReferencesTo(actionSequenceResource);
       if ((actionResources.length == 1) && actionResources[0].equals(this)) {

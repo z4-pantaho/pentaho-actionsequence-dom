@@ -16,7 +16,8 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public abstract class AbstractJobSchedulerAction extends ActionDefinition {
@@ -34,18 +35,18 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
     super(componentName);
   }
   
-  public void setJobName(IActionInputValueProvider value) {
+  public void setJobName(IActionInputVariable value) {
     setActionInputValue(JOB_NAME_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getJobName() {
-   return getActionInputValue(JOB_NAME_ELEMENT);
+  public IActionInput getJobName() {
+   return getInput(JOB_NAME_ELEMENT);
   }
   
   
   public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(JOB_ACTION_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(JOB_ACTION_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -61,7 +62,7 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    validationError = validateInputParam(JOB_NAME_ELEMENT);
+    validationError = validateInput(JOB_NAME_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:

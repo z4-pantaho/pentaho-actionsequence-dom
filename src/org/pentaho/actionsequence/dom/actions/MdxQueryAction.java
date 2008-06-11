@@ -18,10 +18,10 @@ import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
-import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class MdxQueryAction extends MdxConnectionAction {
 
@@ -36,7 +36,6 @@ public class MdxQueryAction extends MdxConnectionAction {
   public static final String QUERY_RESULTS_ELEMENT = "query-results"; //$NON-NLS-1$
   public static final String CATALOG_ELEMENT = "catalog"; //$NON-NLS-1$
   public static final String ROLE_ELEMENT = "role"; //$NON-NLS-1$
-  public static final String DEFAULT_LOCATION = "mondrian"; //$NON-NLS-1$
   public static final String PREPARED_COMPONENT_ELEMENT = "prepared_component"; //$NON-NLS-1$
   public static final String DEFAULT_QUERY_RESULTS_NAME = "query_result"; //$NON-NLS-1$
   public static final String MDX_CONNECTION = "mdx-connection"; //$NON-NLS-1$
@@ -67,7 +66,6 @@ public class MdxQueryAction extends MdxConnectionAction {
   }
 
   protected void initNewActionDefinition() {
-    super.initNewActionDefinition();
     setJndi(new ActionInputConstant("")); //$NON-NLS-1$
     setQuery(new ActionInputConstant("")); //$NON-NLS-1$
     setLocation(new ActionInputConstant(DEFAULT_LOCATION));
@@ -87,8 +85,8 @@ public class MdxQueryAction extends MdxConnectionAction {
   
   public String[] getReservedOutputNames() {
     String expectedOutput = QUERY_RESULTS_ELEMENT;
-    if (getOutputParam(expectedOutput) ==  null) { 
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+    if (getOutput(expectedOutput) ==  null) { 
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -96,75 +94,60 @@ public class MdxQueryAction extends MdxConnectionAction {
     return new String[]{expectedOutput};
   }
   
-  public void setUserId(IActionInputValueProvider value) {
+  public void setUserId(IActionInputSource value) {
     super.setUserId(value);
-    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == ActionInputConstant.NULL_INPUT) {
-        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-      }    
     }
   }
   
-  public void setPassword(IActionInputValueProvider value) {
+  public void setPassword(IActionInputSource value) {
     super.setPassword(value);
-    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == ActionInputConstant.NULL_INPUT) {
-        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-      }    
     }
   }
   
-  public void setMdxConnectionString(IActionInputValueProvider value) {
+  public void setMdxConnectionString(IActionInputSource value) {
     super.setMdxConnectionString(value);
-    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (((ActionInputConstant)value).getValue() != null))) {
     	setMdxConnection(null);
-	    if (getLocation() == ActionInputConstant.NULL_INPUT) {
-  	    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-    	}
     }
   }
   
-  public void setConnection(IActionInputValueProvider value) {
+  public void setConnection(IActionInputSource value) {
     super.setConnection(value);
-    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == ActionInputConstant.NULL_INPUT) {
-        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-      }    
     }
   }
   
-  public void setJndi(IActionInputValueProvider value) {
+  public void setJndi(IActionInputSource value) {
     super.setJndi(value);
-    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value instanceof ActionInputConstant) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnection(null);
-      if (getLocation() == ActionInputConstant.NULL_INPUT) {
-        setLocation(new ActionInputConstant(DEFAULT_LOCATION));
-      }    
     }
   }
   
-  public void setQuery(IActionInputValueProvider value) {
+  public void setQuery(IActionInputSource value) {
     setActionInputValue(QUERY_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getQuery() {
-    return getActionInputValue(QUERY_ELEMENT);
+  public IActionInput getQuery() {
+    return getInput(QUERY_ELEMENT);
   }
   
   public void setOutputResultSet(String publicOutputName) {
-    setOutputParam(QUERY_RESULTS_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+    setOutput(QUERY_RESULTS_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
       setOutputPreparedStatement(null);
     }
   }
   
   public IActionOutput getOutputResultSet() {
-    IActionOutput actionOutput = getOutputParam(QUERY_RESULTS_ELEMENT);
+    IActionOutput actionOutput = getOutput(QUERY_RESULTS_ELEMENT);
     if (actionOutput == null) {
-      IActionOutput[] allOutputs = getAllOutputParams();
+      IActionOutput[] allOutputs = getOutputs();
       if (allOutputs.length > 0) {
         actionOutput = allOutputs[0];
       }
@@ -173,14 +156,14 @@ public class MdxQueryAction extends MdxConnectionAction {
   }
   
   public void setOutputPreparedStatement(String publicOutputName) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.MDX_QUERY_TYPE);
+    setOutput(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.MDX_QUERY_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
       setOutputResultSet(null);
     }
   }
   
   public IActionOutput getOutputPreparedStatement() {
-    return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+    return getOutput(PREPARED_COMPONENT_ELEMENT);
   }
   
   public void setMdxConnection(IActionInputVariable variable) {
@@ -195,14 +178,14 @@ public class MdxQueryAction extends MdxConnectionAction {
     }
   }
   
-  public IActionInputValueProvider getMdxConnection() {
-    return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
+  public IActionInput getMdxConnection() {
+    return getInput(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public IActionSequenceValidationError[] validate() {
+  public ActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(MDX_CONNECTION_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(MDX_CONNECTION_ELEMENT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
         validationError.errorMsg = "Database connection input parameter references unknown variable.";
@@ -211,7 +194,7 @@ public class MdxQueryAction extends MdxConnectionAction {
         validationError.errorMsg = "Database connection input parameter is uninitialized.";
         errors.add(validationError);
       } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-        validationError = validateResourceParam(CATALOG_ELEMENT);
+        validationError = validateResource(CATALOG_ELEMENT);
         if (validationError != null) {
           switch (validationError.errorCode) {
             case ActionSequenceValidationError.INPUT_MISSING:
@@ -227,11 +210,11 @@ public class MdxQueryAction extends MdxConnectionAction {
           errors.add(validationError);
         }
         
-        validationError = validateInputParam(CONNECTION_ELEMENT);
+        validationError = validateInput(CONNECTION_ELEMENT);
         if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-          validationError = validateInputParam(JNDI_ELEMENT);
+          validationError = validateInput(JNDI_ELEMENT);
           if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-            validationError = validateInputParam(PREPARED_COMPONENT_ELEMENT);
+            validationError = validateInput(PREPARED_COMPONENT_ELEMENT);
             if (validationError != null) {
               switch (validationError.errorCode) {
                 case ActionSequenceValidationError.INPUT_MISSING:
@@ -263,7 +246,7 @@ public class MdxQueryAction extends MdxConnectionAction {
       }
     }
     
-    validationError = validateInputParam(QUERY_ELEMENT);
+    validationError = validateInput(QUERY_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -279,9 +262,9 @@ public class MdxQueryAction extends MdxConnectionAction {
       errors.add(validationError);
     }
 
-    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    validationError = validateOutput(PREPARED_COMPONENT_ELEMENT);
     if (validationError != null) {
-      validationError = validateOutputParam(QUERY_RESULTS_ELEMENT);
+      validationError = validateOutput(QUERY_RESULTS_ELEMENT);
       if (validationError != null) {
         validationError.errorMsg = "Missing query results output parameter.";
         errors.add(validationError);

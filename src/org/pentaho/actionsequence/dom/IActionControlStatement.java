@@ -137,10 +137,6 @@ public interface IActionControlStatement extends IActionSequenceExecutableStatem
   
   public IActionSequenceValidationError[] validate(boolean validateDescendants);
   
-  public void moveTo(IActionControlStatement newParentControlStatement, int index);
-  
-  public void moveTo(IActionControlStatement newParentControlStatement);
-  
   public Element getControlElement();
   
 }

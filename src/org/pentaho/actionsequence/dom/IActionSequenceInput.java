@@ -78,21 +78,4 @@ public interface IActionSequenceInput extends IActionInputVariable, IAbstractIOE
 
   public String getVariableName();
 
-  public Object getValue();
-  
-  public Boolean getBooleanValue();
-
-  public Integer getIntValue();
-
-  public String getStringValue();
-
-  public String getStringValue(boolean replaceParamReferences);
-
-  public boolean getBooleanValue(boolean defaultValue);
-
-  public int getIntValue(int defaultValue);
-
-  public String getStringValue(boolean replaceParamReferences, String defaultValue);
-
-  public String getStringValue(String defaultValue);
 }

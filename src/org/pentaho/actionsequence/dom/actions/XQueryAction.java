@@ -19,7 +19,8 @@ import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
@@ -68,8 +69,8 @@ public class XQueryAction extends ActionDefinition {
   
   public String[] getReservedOutputNames() {
     String expectedOutput = QUERY_RESULT_ELEMENT;
-    if (getOutputParam(expectedOutput) ==  null) { 
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+    if (getOutput(expectedOutput) ==  null) { 
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -81,65 +82,68 @@ public class XQueryAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setSharedConnection(IActionInputValueProvider value) {
+  public void setSharedConnection(IActionInputSource value) {
     if (value instanceof ActionInputConstant) {
       throw new IllegalArgumentException();
     }
     setActionInputValue(PREPARED_COMPONENT_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getSharedConnection() {
-    return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
+  public IActionInput getSharedConnection() {
+    return getInput(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public void setSourceXml(IActionInputValueProvider value) {
+  public void setSourceXml(IActionInputSource value) {
     setActionInputValue(DOCUMENT_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getSourceXml() {
-    return getActionInputValue(DOCUMENT_ELEMENT);
+  public IActionInput getSourceXml() {
+    return getInput(DOCUMENT_ELEMENT);
   }
   
-  public void setQuery(IActionInputValueProvider value) {
+  public void setQuery(IActionInputSource value) {
     setActionInputValue(QUERY_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getQuery() {
-    return getActionInputValue(QUERY_ELEMENT);
+  public IActionInput getQuery() {
+    return getInput(QUERY_ELEMENT);
   }
   
-  public void setLive(IActionInputValueProvider value) {
+  public void setLive(IActionInputSource value) {
     setActionInputValue(LIVE_CONNECTION_ELEMENT, value); 
   }
   
-  public IActionInputValueProvider getLive() {
-    return getActionInputValue(LIVE_CONNECTION_ELEMENT); 
+  public IActionInput getLive() {
+    return getInput(LIVE_CONNECTION_ELEMENT); 
   }
   
   public void setOutputResultSet(String publicOutputName) {
-    setOutputParam(QUERY_RESULT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+    setOutput(QUERY_RESULT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
       setOutputPreparedStatement(null);
     }
   }
   
   public IActionOutput getOutputResultSet() {
-    IActionOutput actionOutput = getOutputParam(QUERY_RESULT_ELEMENT);
+    IActionOutput actionOutput = getOutput(QUERY_RESULT_ELEMENT);
     // This if statement provides backward compatibility for deprecated functionality.
     if (actionOutput == null) {
-      IActionOutput[] outputs = getAllOutputParams();
-      if (outputs.length > 0) {
-        actionOutput = outputs[0];
+      IActionOutput[] outputs = getOutputs();
+      for (int i = 0; i < outputs.length; i++) {
+        if (!outputs[i].getName().equals(PREPARED_COMPONENT_ELEMENT)) {
+          actionOutput = outputs[i];
+          break;
+        }
       }
     }
     return actionOutput;
   }
   
   public void setOutputPreparedStatement(String publicOutputName) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.XQUERY_TYPE);
+    setOutput(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.XQUERY_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
       setOutputResultSet(null);
-      IActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getOutputs();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (!actionOutputs[i].getType().equals(ActionSequenceDocument.XQUERY_TYPE)) {
           actionOutputs[i].delete();
@@ -149,16 +153,16 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public IActionOutput getOutputPreparedStatement() {
-    return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+    return getOutput(PREPARED_COMPONENT_ELEMENT);
   }
   
   public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(DOCUMENT_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(DOCUMENT_ELEMENT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-        validationError = validateResourceParam(DOCUMENT_ELEMENT);
+        validationError = validateResource(DOCUMENT_ELEMENT);
         if (validationError != null) {
           switch (validationError.errorCode) {
             case ActionSequenceValidationError.INPUT_MISSING:
@@ -182,7 +186,7 @@ public class XQueryAction extends ActionDefinition {
       }
     }
     
-    validationError = validateInputParam(QUERY_ELEMENT);
+    validationError = validateInput(QUERY_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -198,9 +202,9 @@ public class XQueryAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    validationError = validateOutput(PREPARED_COMPONENT_ELEMENT);
     if (validationError != null) {
-      validationError = validateOutputParam(QUERY_RESULT_ELEMENT);
+      validationError = validateOutput(QUERY_RESULT_ELEMENT);
       if (validationError != null) {
         validationError.errorMsg = "Missing query results output parameter.";
         errors.add(validationError);
@@ -220,6 +224,6 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public IActionResource getXmlDocument() {
-    return getResourceParam(DOCUMENT_ELEMENT);
+    return getResource(DOCUMENT_ELEMENT);
   }
 }

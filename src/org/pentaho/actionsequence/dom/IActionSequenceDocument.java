@@ -15,6 +15,7 @@ package org.pentaho.actionsequence.dom;
 import java.net.URI;
 
 import org.dom4j.Document;
+import org.pentaho.actionsequence.dom.actions.ActionDefinition;
 
 /**
  * A wrapper class for an action definition resource element.
@@ -300,13 +301,13 @@ public interface IActionSequenceDocument {
   /**
    * @return all the action sequence resources
    */
-  public IActionSequenceResourceDom[] getResources();
+  public IActionSequenceResource[] getResources();
   
   /**
    * @param resourceName the resource name.
    * @return the resource with the given name or null if it does not exist
    */
-  public IActionSequenceResourceDom getResource(String resourceName);
+  public IActionSequenceResource getResource(String resourceName);
   
   /**
    * Adds a new resource to this action sequence. 
@@ -316,7 +317,7 @@ public interface IActionSequenceDocument {
    * @param mimeType the resource mime type
    * @return the action sequence resource
    */
-  public IActionSequenceResourceDom setResourceUri(String resourceName, URI uri, String mimeType);
+  public IActionSequenceResource setResourceUri(String resourceName, URI uri, String mimeType);
   
   public IActionLoop getRootLoop();
   
@@ -399,11 +400,15 @@ public interface IActionSequenceDocument {
   
   public IActionSequenceElement[] getBrokenReferences();
     
-  public IActionResource[] getReferencesTo(IActionSequenceResourceDom actionSequenceResource);
+  public IActionResource[] getReferencesTo(IActionSequenceResource actionSequenceResource);
   
   public IActionSequenceElement[] getReferencesTo(IActionOutput actionOutput);  
   
   public IActionSequenceValidationError[] validate();
     
   public String toString();
+  
+  public void moveStatement(IActionSequenceExecutableStatement statementToMove, IActionControlStatement newParentControlStatement);
+  
+  public void moveStatement(IActionSequenceExecutableStatement statementToMove, IActionControlStatement newParentControlStatement, int index);
 }

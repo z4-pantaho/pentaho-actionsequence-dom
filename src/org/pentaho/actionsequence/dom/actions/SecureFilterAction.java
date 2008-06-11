@@ -13,7 +13,8 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 
 public class SecureFilterAction extends ActionDefinition {
 
@@ -41,19 +42,19 @@ public class SecureFilterAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setTarget(IActionInputValueProvider value) {
+  public void setTarget(IActionInputSource value) {
     setActionInputValue(TARGET_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getTarget() {
-    return getActionInputValue(TARGET_ELEMENT);
+  public IActionInput getTarget() {
+    return getInput(TARGET_ELEMENT);
   }
   
-  public void setXsl(IActionInputValueProvider value) {
+  public void setXsl(IActionInputSource value) {
     setActionInputValue(XSL_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getXsl() {
-    return getActionInputValue(XSL_ELEMENT);
+  public IActionInput getXsl() {
+    return getInput(XSL_ELEMENT);
   }
 }

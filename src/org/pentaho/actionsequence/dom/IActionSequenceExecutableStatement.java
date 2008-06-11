@@ -15,8 +15,4 @@ package org.pentaho.actionsequence.dom;
 
 public interface IActionSequenceExecutableStatement extends IActionSequenceElement {
   public IActionControlStatement getParent();
-  public IActionDefinition[] getPrecedingActionDefinitions();
-  public IActionSequenceExecutableStatement[] getPrecedingExecutableStatements();
-  public void moveTo(IActionControlStatement newParentControlStatement, int index);  
-  public void moveTo(IActionControlStatement newParentControlStatement);
 }

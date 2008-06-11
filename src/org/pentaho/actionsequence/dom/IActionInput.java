@@ -12,46 +12,16 @@
 */
 package org.pentaho.actionsequence.dom;
 
-import org.dom4j.Element;
-
-/**
- * Convenience class used to distinguish action inputs from action outputs.
- * @author Angelo Rodriguez
- *
- */
-public interface IActionInput extends IActionInputValueProvider, IAbstractIOElement {
-
+public interface IActionInput {
+  public static final ActionInputConstant NULL_INPUT = new ActionInputConstant((Object)null);
   public Object getValue();
-
-  public Boolean getBooleanValue();
-
-  public boolean getBooleanValue(boolean defaultValue);
-  
-  public Integer getIntValue();
-
-  public int getIntValue(int defaultValue);
-  
   public String getStringValue();
-
-  public String getStringValue(boolean replaceParamReferences);
-
-  public String getStringValue(boolean replaceParamReferences, String defaultValue);
-
   public String getStringValue(String defaultValue);
-
-  /**
-   * @return the mapped name if it exists, otherwise the input/output name is returned.
-   */
-  public String getReferencedVariableName();
-
-  public Element getElement();
-  
-  public IActionDefinition getActionDefinition();
-  
-  public void delete();
-  
-  public void setMapping( String referencedVariableName);
-  
-  public void setType(String inputType);
-
+  public String getStringValue(boolean replaceParamReferences);
+  public String getStringValue(boolean replaceParamReferences, String defaultValue);
+  public Boolean getBooleanValue();
+  public boolean getBooleanValue(boolean defaultValue);
+  public Integer getIntValue();
+  public int getIntValue(int defaultValue);
+  public String getName();
 }

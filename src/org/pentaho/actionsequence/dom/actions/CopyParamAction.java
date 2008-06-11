@@ -16,9 +16,10 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
@@ -89,12 +90,12 @@ public class CopyParamAction extends ActionDefinition {
     }
   }
   
-  public IActionInputValueProvider getCopyFrom() {
+  public IActionInput getCopyFrom() {
     String copyFromVarName = getComponentDefinitionValue(CopyParamAction.COPY_FROM_XPATH);
     if ((copyFromVarName == null) || (copyFromVarName.trim().length() == 0)) {
       copyFromVarName = COPY_FROM_ELEMENT;
     }
-    return getActionInputValue(copyFromVarName);
+    return getInput(copyFromVarName);
   }
   
   public void setOutputCopy(String publicOutputName) {
@@ -103,7 +104,7 @@ public class CopyParamAction extends ActionDefinition {
       privateName = COPY_TO_ELEMENT;
     }
     ActionInput copyFrom = (ActionInput)getCopyFrom();
-    IActionOutput actionOutput = setOutputParam(privateName, publicOutputName, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
+    IActionOutput actionOutput = setOutput(privateName, publicOutputName, copyFrom != null ? copyFrom.getType() : ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COPY_RETURN_XPATH, (String)null);
     } else {
@@ -116,7 +117,7 @@ public class CopyParamAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COPY_TO_ELEMENT;
     }  
-    return getOutputParam(privateName);
+    return getOutput(privateName);
   }
   
   public IActionSequenceValidationError[] validate() {
@@ -127,7 +128,7 @@ public class CopyParamAction extends ActionDefinition {
     
     ArrayList errors = new ArrayList();
     
-    ActionSequenceValidationError validationError = validateInputParam(copyFromVarName);
+    ActionSequenceValidationError validationError = validateInput(copyFromVarName);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -148,7 +149,7 @@ public class CopyParamAction extends ActionDefinition {
       privateName = COPY_TO_ELEMENT;
     }
     
-    validationError = validateOutputParam(privateName);
+    validationError = validateOutput(privateName);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
         validationError.errorMsg = "Missing output parameter to copy to.";

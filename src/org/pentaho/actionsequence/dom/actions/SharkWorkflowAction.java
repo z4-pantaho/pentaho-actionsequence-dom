@@ -13,7 +13,10 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 
 public class SharkWorkflowAction extends ActionDefinition {
@@ -44,52 +47,27 @@ public class SharkWorkflowAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setPackageName(String value) {
-    setInputValue(PACKAGE_NAME_ELEMENT, value);
+  public void setPackageName(IActionInputSource value) {
+    setActionInputValue(PACKAGE_NAME_ELEMENT, value);
   }
   
-  public String getPackageName() {
-    return getComponentDefinitionValue(PACKAGE_NAME_ELEMENT);
+  public IActionInput getPackageName() {
+    return getInput(PACKAGE_NAME_ELEMENT);
   }
   
-  public void setPackageNameParam(IActionInputVariable variable) {
-    setInputParam(PACKAGE_NAME_ELEMENT, variable);
+  public void setProcessName(IActionInputSource value) {
+    setActionInputValue(PROCESS_NAME_ELEMENT, value);
   }
   
-  public IActionInput getPackageNameParam() {
-    return getInputParam(PACKAGE_NAME_ELEMENT);
-  }
-
-  public void setProcessName(String value) {
-    setInputValue(PROCESS_NAME_ELEMENT, value);
+  public IActionInput getProcessName() {
+    return getInput(PROCESS_NAME_ELEMENT);
   }
   
-  public String getProcessName() {
-    return getComponentDefinitionValue(PROCESS_NAME_ELEMENT);
+  public void setNewInstance(IActionInputSource value) {
+    setActionInputValue(NEW_INSTANCE_ELEMENT, value);
   }
   
-  public void setProcessNameParam(IActionInputVariable variable) {
-    setInputParam(PROCESS_NAME_ELEMENT, variable);
-  }
-  
-  public IActionInput getProcessNameParam() {
-    return getInputParam(PROCESS_NAME_ELEMENT);
-  }
-  
-  public void setNewInstance(boolean value) {
-    setInputValue(NEW_INSTANCE_ELEMENT, value ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
-  }
-  
-  public boolean getNewInstance() {
-    String value = getComponentDefinitionValue(NEW_INSTANCE_ELEMENT);
-    return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
-  }
-  
-  public void setNewInstanceParam(IActionInputVariable variable) {
-    setInputParam(NEW_INSTANCE_ELEMENT, variable);
-  }
-  
-  public IActionInput getNewInstanceParam() {
-    return getInputParam(NEW_INSTANCE_ELEMENT);
+  public IActionInput getNewInstance() {
+    return getInput(NEW_INSTANCE_ELEMENT);
   }
 }

@@ -21,7 +21,7 @@ import org.dom4j.Element;
  * @author Angelo Rodriguez
  *
  */
-public interface IActionSequenceResourceDom extends IGenericIOElement {
+public interface IActionSequenceResource extends IAbstractIOElement {
 
   // Document Resources nodes
   public static final String SOLUTION_FILE_RESOURCE_TYPE = "solution-file"; //$NON-NLS-1$
@@ -29,7 +29,6 @@ public interface IActionSequenceResourceDom extends IGenericIOElement {
   public static final String FILE_RESOURCE_TYPE = "file"; //$NON-NLS-1$
   public static final String RES_LOCATION_NAME = "location"; //$NON-NLS-1$
   public static final String RES_MIME_TYPE_NAME = "mime-type"; //$NON-NLS-1$
-  public static final String TYPE_NAME = "type"; //$NON-NLS-1$
   
   public static final String SOLUTION_SCHEME = "solution"; //$NON-NLS-1$
   public static final String FILE_SCHEME = "file"; //$NON-NLS-1$

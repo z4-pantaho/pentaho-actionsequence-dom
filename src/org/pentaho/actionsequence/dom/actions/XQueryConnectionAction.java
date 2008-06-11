@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.ActionSequenceResourceDom;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IAbstractIOElement;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
@@ -44,7 +44,7 @@ public class XQueryConnectionAction extends ActionDefinition {
     if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       Element connectionOutput = (Element)element.selectSingleNode(ActionSequenceDocument.ACTION_OUTPUTS_NAME + "/" + PREPARED_COMPONENT_ELEMENT); //$NON-NLS-1$
       result = (connectionOutput != null)
-        && ActionSequenceDocument.XQUERY_CONNECTION_TYPE.equals(connectionOutput.attributeValue(ActionSequenceResourceDom.TYPE_NAME));
+        && ActionSequenceDocument.XQUERY_CONNECTION_TYPE.equals(connectionOutput.attributeValue(IAbstractIOElement.TYPE_NAME));
     }
     return result;
   }
@@ -62,16 +62,16 @@ public class XQueryConnectionAction extends ActionDefinition {
   }
   
   public void setOutputConnection(String publicOutputName) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.XQUERY_CONNECTION_TYPE);
+    setOutput(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.XQUERY_CONNECTION_TYPE);
   }
   
   public IActionOutput getOutputConnection() {
-    return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+    return getOutput(PREPARED_COMPONENT_ELEMENT);
   }
   
   public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError= validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    ActionSequenceValidationError validationError= validateOutput(PREPARED_COMPONENT_ELEMENT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
         validationError.errorMsg = "Missing output connection name.";

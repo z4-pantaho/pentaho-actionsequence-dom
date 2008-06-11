@@ -6,8 +6,11 @@ import java.net.URI;
 import org.dom4j.Attribute;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionResource;
 import org.pentaho.actionsequence.dom.IActionSequenceDocument;
@@ -58,15 +61,15 @@ public class EmailAttachment implements IActionSequenceElement {
     EmailAction emailAction = getEmailAction();
     Attribute attribute = attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE);
     if (attribute != null) {
-      emailAction.setInputValue(attribute.getValue().trim(), null);
+      emailAction.setActionInputValue(attribute.getValue().trim(), (IActionInputSource)null);
     }
     attribute = attachmentElement.attribute(ATTACHMENT_CONTENT_ATTRIBUTE);
     if (attribute != null) {
-      emailAction.setInputValue(attribute.getValue().trim(), null);
+      emailAction.setActionInputValue(attribute.getValue().trim(), (IActionInputSource)null);
     }
     attribute = attachmentElement.attribute(ATTACHMENT_RESOURCE_ATTRIBUTE);
     if (attribute != null) {
-      IActionResource actionResource = emailAction.getResourceParam(attribute.getValue().trim());
+      IActionResource actionResource = emailAction.getResource(attribute.getValue().trim());
       actionResource.setURI(null);
     }
     attachmentElement.detach();
@@ -111,7 +114,7 @@ public class EmailAttachment implements IActionSequenceElement {
     }    
     if (attachmentName != null) {
       attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, getUniqueNameParam());
-      emailAction.setInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), attachmentName);
+      emailAction.setActionInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), new ActionInputConstant(attachmentName));
     } else {
       attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, attachmentNameParam);
     }
@@ -127,14 +130,14 @@ public class EmailAttachment implements IActionSequenceElement {
     if (attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE) == null) {
       attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, getUniqueNameParam());
     }
-    getEmailAction().setInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), name.trim());
+    getEmailAction().setActionInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), new ActionInputConstant(name.trim()));
   }
 
   public String getName() {
     String paramName = isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim();
     Object name = null;
     if (paramName != null) {
-      name = getEmailAction().getActionInputValue(paramName).getValue();
+      name = getEmailAction().getInput(paramName).getValue();
     }
     if ((name != null) && (actionInputProvider != null)) {
       name = actionInputProvider.replaceParameterReferences(name.toString());
@@ -151,12 +154,12 @@ public class EmailAttachment implements IActionSequenceElement {
         attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, getUniqueNameParam());
       }
       String paramName = attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim();
-      getEmailAction().setInputParam(paramName, variable.getVariableName(), variable.getType());
+      getEmailAction().setActionInputValue(paramName, variable);
     }  
   }
   
-  public IActionInput getNameParam() {
-    IActionInput actionInput = null;
+  public ActionInput getNameParam() {
+    ActionInput actionInput = null;
     String paramName = isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim();
     if (paramName != null) {
       actionInput = getEmailAction().getInputParam(paramName);
@@ -176,12 +179,12 @@ public class EmailAttachment implements IActionSequenceElement {
       }
       
       attachmentElement.addAttribute(ATTACHMENT_CONTENT_ATTRIBUTE, variable.getVariableName());
-      getEmailAction().setInputParam(variable.getVariableName(), variable.getVariableName(), variable.getType());
+      getEmailAction().setActionInputValue(variable.getVariableName(), variable);
     }  
   }
   
-  public IActionInput getContentParam() {
-    IActionInput actionInput = null;
+  public ActionInput getContentParam() {
+    ActionInput actionInput = null;
     if (isDeprecatedAttachmentStyle()) {
       Element oldAttachmentElement = (Element)getEmailAction().getElement().selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + OLD_ATTACHMENT_ELEMENT);
       String attachmentParam = oldAttachmentElement.getText();
@@ -200,7 +203,7 @@ public class EmailAttachment implements IActionSequenceElement {
     if (!isDeprecatedAttachmentStyle()) {
       Attribute attribute = attachmentElement.attribute(ATTACHMENT_RESOURCE_ATTRIBUTE);
       if (attribute != null) {
-        actionResource = getEmailAction().getResourceParam(attribute.getValue().trim());
+        actionResource = getEmailAction().getResource(attribute.getValue().trim());
       }
     }
     return actionResource;
@@ -215,7 +218,7 @@ public class EmailAttachment implements IActionSequenceElement {
       convertToNewAttachmentStyle();
     }
     if (uri != null) {
-      IActionInput actionInput = getContentParam();
+      ActionInput actionInput = getContentParam();
       if (actionInput != null) {
         actionInput.delete();
       }
@@ -236,7 +239,7 @@ public class EmailAttachment implements IActionSequenceElement {
     boolean isUnique = false;
     for (int i = 1; !isUnique; i++) {
       name = ATTACHMENT_RESOURCE_PREFIX + i;
-      isUnique = (getEmailAction().getResourceParam(name) == null);
+      isUnique = (getEmailAction().getResource(name) == null);
     }
     return name;
   }
@@ -261,7 +264,7 @@ public class EmailAttachment implements IActionSequenceElement {
     IActionResource actionResource = null;
     Attribute attribute = getElement().attribute(EmailAttachment.ATTACHMENT_RESOURCE_ATTRIBUTE);
     if (attribute != null) {
-      actionResource = getEmailAction().getResourceParam(attribute.getValue().trim());
+      actionResource = getEmailAction().getResource(attribute.getValue().trim());
     }
     if (actionResource != null) {
       dataSrc = actionResource.getDataSource();

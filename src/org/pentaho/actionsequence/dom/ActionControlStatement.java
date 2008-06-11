@@ -35,8 +35,8 @@ public abstract class ActionControlStatement implements IActionControlStatement 
   }
 
   public Element getElement() {
-	    return controlElement;
-	  }
+    return controlElement;
+  }
 
   public Element getControlElement() {
 	    return controlElement;
@@ -370,7 +370,7 @@ public abstract class ActionControlStatement implements IActionControlStatement 
   public IActionDefinition[] getPrecedingActionDefinitions() {
     return getDocument().getPrecedingActionDefinitions(this);
   }
-
+  
   public IActionSequenceExecutableStatement[] getPrecedingExecutableStatements() {
     return getDocument().getPrecedingExecutables(this);
   }
@@ -397,20 +397,6 @@ public abstract class ActionControlStatement implements IActionControlStatement 
       }
     }
     return (IActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
-  }
-  
-  public void moveTo(IActionControlStatement newParentControlStatement, int index) {
-    if (newParentControlStatement == null) {
-      newParentControlStatement = getDocument().getRootLoop();
-    }
-    newParentControlStatement.add(this, index);
-  }
-  
-  public void moveTo(IActionControlStatement newParentControlStatement) {
-    if (newParentControlStatement == null) {
-      newParentControlStatement = getDocument().getRootLoop();
-    }
-    newParentControlStatement.add(this);
-  }
+  } 
   
 }

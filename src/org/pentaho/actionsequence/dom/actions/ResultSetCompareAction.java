@@ -13,9 +13,9 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 
@@ -29,6 +29,9 @@ public class ResultSetCompareAction extends ActionDefinition {
   public static final String STOP_ON_ERROR_ELEMENT = "stop-on-error"; //$NON-NLS-1$
   public static final String COMPARE_RESULT_ELEMENT = "compare-result"; //$NON-NLS-1$
   public static final String OUTPUT_COMPARE_RESULT = "output-compare-result"; //$NON-NLS-1$
+  public static final String RESULT_SET_1 = "result-set-1";
+  public static final String RESULT_SET_2 = "result-set-2";
+  public static final String COMPARE_COLUMN_NUM = "compare-column-num";
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     COMPARE_FROM_ELEMENT,
@@ -69,44 +72,44 @@ public class ResultSetCompareAction extends ActionDefinition {
     return new String[]{expectedOutput};
   }
   
-  public void setCompareColumnNum(IActionInputVariable value) {
+  public void setCompareColumnNum(IActionInputSource value) {
     setActionInputValue(COMPARE_COLUMN_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getCompareColumnNum() {
-    return getActionInputValue(COMPARE_COLUMN_ELEMENT);
+  public IActionInput getCompareColumnNum() {
+    return getInput(COMPARE_COLUMN_ELEMENT);
   }
   
   public void setResultSet1(IActionInputVariable variable) {
     setActionInputValue(COMPARE_FROM_ELEMENT, variable);
   }
   
-  public IActionInputValueProvider getResultSet1() {
-    return getActionInputValue(COMPARE_FROM_ELEMENT);
+  public IActionInput getResultSet1() {
+    return getInput(COMPARE_FROM_ELEMENT);
   }
   
   public void setResultSet2(IActionInputVariable variable) {
     setActionInputValue(COMPARE_TO_ELEMENT, variable);
   }
   
-  public IActionInputValueProvider getResultSet2() {
-    return getActionInputValue(COMPARE_TO_ELEMENT);
+  public IActionInput getResultSet2() {
+    return getInput(COMPARE_TO_ELEMENT);
   }
 
-  public void setOutputMismatches(IActionInputValueProvider value) {
-    setActionInputValue(OUTPUT_MISMATCHES_ELEMENT, value.getBooleanValue() ? new ActionInputConstant("true") : new ActionInputConstant("false")); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setOutputMismatches(IActionInputSource value) {
+    setActionInputValue(OUTPUT_MISMATCHES_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getOutputMismatches() {
-    return getActionInputValue(OUTPUT_MISMATCHES_ELEMENT);    
+  public IActionInput getOutputMismatches() {
+    return getInput(OUTPUT_MISMATCHES_ELEMENT);    
   }
   
-  public void setStopOnError(IActionInputValueProvider value) {
-    setInputValue(STOP_ON_ERROR_ELEMENT, value.getBooleanValue(true) ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setStopOnError(IActionInputSource value) {
+    setActionInputValue(STOP_ON_ERROR_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getStopOnError() {
-    return getActionInputValue(STOP_ON_ERROR_ELEMENT);    
+  public IActionInput getStopOnError() {
+    return getInput(STOP_ON_ERROR_ELEMENT);    
   }
 
   public void setOutputCompareResult(String publicOutputName) {
@@ -114,7 +117,7 @@ public class ResultSetCompareAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;
     }  
-    IActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+    IActionOutput actionOutput = setOutput(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(COMPARE_RESULT_ELEMENT, (String)null);
     } else {
@@ -127,6 +130,6 @@ public class ResultSetCompareAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = COMPARE_RESULT_ELEMENT;
     }  
-    return getOutputParam(privateName);
+    return getOutput(privateName);
   }
 }

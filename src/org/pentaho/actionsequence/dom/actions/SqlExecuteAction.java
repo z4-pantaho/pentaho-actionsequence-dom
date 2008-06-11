@@ -15,7 +15,8 @@ package org.pentaho.actionsequence.dom.actions;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class SqlExecuteAction extends AbstractRelationalDbAction {
@@ -64,8 +65,8 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
     String compDefVal = getComponentDefinitionValue(OUTPUT_NAME_ELEMENT);
     if (compDefVal != null) {
       expectedOutput = compDefVal;
-    } else if (getOutputParam(expectedOutput) == null) {
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+    } else if (getOutput(expectedOutput) == null) {
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -73,27 +74,27 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
     return new String[]{expectedOutput};
   }
     
-  public void setContinueOnException(IActionInputValueProvider value) {
+  public void setContinueOnException(IActionInputSource value) {
     setActionInputValue(CONTINUE_ON_EXCEPTION, value);
   }
   
-  public IActionInputValueProvider getContinueOnException() {
-    return getActionInputValue(CONTINUE_ON_EXCEPTION);
+  public IActionInput getContinueOnException() {
+    return getInput(CONTINUE_ON_EXCEPTION);
   }
   
-  public void setForceSingleStatement(IActionInputValueProvider value) {
+  public void setForceSingleStatement(IActionInputSource value) {
     setActionInputValue(FORCE_SINGLE_STATEMENT, value);
   }
   
-  public IActionInputValueProvider getForceSingleStatement() {
-    return getActionInputValue(FORCE_SINGLE_STATEMENT);
+  public IActionInput getForceSingleStatement() {
+    return getInput(FORCE_SINGLE_STATEMENT);
   }
   
-  public void setMultiStatementSeparator(IActionInputValueProvider value) {
+  public void setMultiStatementSeparator(IActionInputSource value) {
     setActionInputValue(MULTI_STATEMENT_SEPARATOR, value);
   }
   
-  public IActionInputValueProvider getMultiStatementSeparator() {
-    return getActionInputValue(MULTI_STATEMENT_SEPARATOR);
+  public IActionInput getMultiStatementSeparator() {
+    return getInput(MULTI_STATEMENT_SEPARATOR);
   }
 }

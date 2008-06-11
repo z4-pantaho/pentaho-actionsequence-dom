@@ -32,18 +32,17 @@ import org.pentaho.actionsequence.dom.ActionOutput;
 import org.pentaho.actionsequence.dom.ActionResource;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceInput;
-import org.pentaho.actionsequence.dom.ActionSequenceResourceDom;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IAbstractIOElement;
 import org.pentaho.actionsequence.dom.IActionControlStatement;
 import org.pentaho.actionsequence.dom.IActionDefinition;
 import org.pentaho.actionsequence.dom.IActionInput;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
 import org.pentaho.actionsequence.dom.IActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionSequenceExecutableStatement;
-import org.pentaho.actionsequence.dom.IActionSequenceResourceDom;
+import org.pentaho.actionsequence.dom.IActionSequenceResource;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.ImplicitActionResource;
 import org.pentaho.actionsequence.dom.messages.Messages;
@@ -53,7 +52,6 @@ import org.pentaho.actionsequence.dom.messages.Messages;
  * @author Angelo Rodriguez
  */
 public class ActionDefinition implements IActionDefinition {
-  
   
   private static final IActionSequenceValidationError[] EMPTY_ARRAY = new ActionSequenceValidationError[0];
   
@@ -97,7 +95,7 @@ public class ActionDefinition implements IActionDefinition {
    * @return the modified/created resource, or null if the resource is deleted.
    */
   public IActionResource setResourceUri(String privateResourceName, URI uri, String mimeType) {
-    IActionResource actionResource = getResourceParam(privateResourceName);
+    IActionResource actionResource = getResource(privateResourceName);
     if (uri == null) {
       if (actionResource != null) {
         actionResource.setURI(null);
@@ -105,7 +103,7 @@ public class ActionDefinition implements IActionDefinition {
       actionResource = null;
     } else {
       if (actionResource == null) {
-        actionResource = addResourceParam(privateResourceName);
+        actionResource = addResource(privateResourceName);
       }
       actionResource.setURI(uri);
       actionResource.setMimeType(mimeType);
@@ -197,8 +195,8 @@ public class ActionDefinition implements IActionDefinition {
    * @param inputType the input type
    * @return the action input
    */
-  public IActionInput addInputParam(String privateParamName, String inputType) {
-    IActionInput input = getInputParam(privateParamName);
+  public ActionInput addInput(String privateParamName, String inputType) {
+    ActionInput input = getInputParam(privateParamName);
     Element inputElement;
     if (input == null) {
       Element[] componentDefs = getComponentDefElements(privateParamName);
@@ -206,7 +204,7 @@ public class ActionDefinition implements IActionDefinition {
         componentDefs[i].detach();
       }
       inputElement = DocumentHelper.makeElement(actionDefElement, ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + privateParamName); //$NON-NLS-1$
-      inputElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, inputType);
+      inputElement.addAttribute(IAbstractIOElement.TYPE_NAME, inputType);
       input = new ActionInput(inputElement, actionParameterMgr);
       ActionSequenceDocument.fireIoAdded(input);
     } else {
@@ -215,15 +213,16 @@ public class ActionDefinition implements IActionDefinition {
     return input;
   }
   
-  public void setActionInputValue(String inputPrivateName, IActionInputValueProvider value) {
+  public void setActionInputValue(String inputPrivateName, IActionInputSource value) {
     if ((value == null) || (value instanceof ActionInputConstant)) {
-      setInputValue(inputPrivateName, value != null ? value.getStringValue(false) : null);
-    } else if (value instanceof IActionInputVariable) {
+      setInputValue(inputPrivateName, value != null ? ((ActionInputConstant)value).getStringValue(false) : null);
+    } else {
       setInputParam(inputPrivateName, (IActionInputVariable)value);
-    } else if (value instanceof ActionInput) {
-      ActionInput actionInput = (ActionInput)value;
-      setInputParam(inputPrivateName, actionInput.getReferencedVariableName(), actionInput.getType());
     }
+  }
+  
+  public void setActionInputValue(String inputPrivateName, ActionInput actionInput) {
+    setInputParam(inputPrivateName, actionInput.getReferencedVariableName(), actionInput.getType());
   }
   
   /**
@@ -252,14 +251,14 @@ public class ActionDefinition implements IActionDefinition {
    * @param value the value to be assigned. May be null.
    */
   public IActionInput setInputParam(String privateParamName, String referencedVariableName, String type) {
-    IActionInput actionInput = null;
+    ActionInput actionInput = null;
     if (referencedVariableName == null) {
       actionInput = getInputParam(privateParamName);
       if (actionInput != null) {
         actionInput.delete();
       }     
     } else {
-      actionInput = addInputParam(privateParamName, type != null ? type : ActionSequenceDocument.STRING_TYPE);
+      actionInput = addInput(privateParamName, type != null ? type : ActionSequenceDocument.STRING_TYPE);
       actionInput.setMapping(referencedVariableName);
     }
     return actionInput;
@@ -277,7 +276,7 @@ public class ActionDefinition implements IActionDefinition {
    * @param useCData indicates whether a CDATA node should be used to store the value.
    */
   public void setInputValue(String privateParamName, String value, boolean useCData) {
-    removeInputParam(privateParamName);
+    removeInput(privateParamName);
     if (value == null) {
       removeComponentDefinitions(privateParamName);
     } else {
@@ -285,41 +284,20 @@ public class ActionDefinition implements IActionDefinition {
     }
   }
   
-  public IActionInputValueProvider getActionInputValue(String privateParamName) {
-    IActionInputValueProvider inputParam = getInputParam(privateParamName);
+  public IActionInput getInput(String privateParamName) {
     
-    if ((inputParam == null) || (inputParam.getValue() == null)) {
-      String componentDefValue = getComponentDefinitionValue(privateParamName);
-      if (componentDefValue == null) {
-        if (inputParam == null) {
-          inputParam = ActionInputConstant.NULL_INPUT;
-        }
-      } else {
-        inputParam = new ActionInputConstant(componentDefValue, actionParameterMgr);
+    IActionInput inputParam = IActionInput.NULL_INPUT;
+    IActionInput[] allInputs = getInputs();
+    for (int i = 0; i < allInputs.length; i++) {
+      if (allInputs[i].getName().equals(privateParamName)) {
+        inputParam = allInputs[i];
+        break;
       }
     }
     
     return inputParam;
   }
   
-  /**
-   * Returns the value of the named action input. The value is determined by looking for a child element of the
-   * component definition element with the given name, and returning its text value.
-   * 
-   * @param privateParamName the name of the param as it is known by this action definition (the input element name).
-   * @return the assigned value, or null if no value has been assigned.
-   */
-//  public Object getInputValue(String privateParamName) {
-//    Object value = null;
-//    ActionInput actionInput = getInputParam(privateParamName);
-//    if (actionInput != null) {
-//      value = actionInput.getValue();
-//    }
-//    if (value == null) {
-//      value = getComponentDefinitionValue(privateParamName);
-//    }
-//    return value;
-//  }
   
   /**
    * Creates an input resource with the given name. No operation is performed if the resource already exists.
@@ -327,8 +305,8 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateResourceName the name of the resource as it is known by this action definition (the element name).
    * @return the newly created or existing resource.
    */
-  public IActionResource addResourceParam(String privateResourceName) {
-    return addResourceParam(privateResourceName, null);
+  public IActionResource addResource(String privateResourceName) {
+    return addResource(privateResourceName, null);
   }
   
   /**
@@ -338,12 +316,12 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateResourceName the name of the resource as it is known by this action definition (the element name).
    * @return the newly created or existing resource.
    */
-  public IActionResource addResourceParam(String privateResourceName, String referencedActionSequenceResource) {
-    IActionResource resource = getResourceParam(privateResourceName);
+   public IActionResource addResource(String privateResourceName, String referencedActionSequenceResource) {
+    IActionResource resource = getResource(privateResourceName);
     Element resourceElement;
     if (resource == null) {
       resourceElement = DocumentHelper.makeElement(actionDefElement, ActionSequenceDocument.ACTION_RESOURCES_NAME + "/" + privateResourceName); //$NON-NLS-1$
-      resourceElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, ActionSequenceDocument.RESOURCE_TYPE);
+      resourceElement.addAttribute(IAbstractIOElement.TYPE_NAME, ActionSequenceDocument.RESOURCE_TYPE);
       resource = new ActionResource(resourceElement, actionParameterMgr);
       if ((referencedActionSequenceResource != null) && (referencedActionSequenceResource.trim().length() > 0)) {
         resource.setMapping(referencedActionSequenceResource);
@@ -356,7 +334,7 @@ public class ActionDefinition implements IActionDefinition {
   /**
    * @return the resources referenced by this action definition
    */
-  public IActionResource[] getAllResourceParams() {
+  public IActionResource[] getResources() {
     List resourcesList =  actionDefElement.selectNodes(ActionSequenceDocument.ACTION_RESOURCES_NAME + "/*"); //$NON-NLS-1$
     ActionResource[] resources = new ActionResource[resourcesList.size()];
     int index = 0;
@@ -376,8 +354,8 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateResourceName the resource name
    * @return the resource with the given name or null if none exists.
    */
-  public IActionResource getResourceParam(String privateResourceName) {
-    return getResourceParam(privateResourceName, true);
+  public IActionResource getResource(String privateResourceName) {
+    return getResource(privateResourceName, true);
   }
   
   /**
@@ -391,14 +369,14 @@ public class ActionDefinition implements IActionDefinition {
    * @param includeImplicitResource whether to include implicit resource references.
    * @return the resource with the given name or null if none exists.
    */
-  public IActionResource getResourceParam(String privateResourceName, boolean includeImplicitResource) {
+  public IActionResource getResource(String privateResourceName, boolean includeImplicitResource) {
     Element inputElement = (Element)actionDefElement.selectSingleNode(ActionSequenceDocument.ACTION_RESOURCES_NAME + "/" + privateResourceName); //$NON-NLS-1$
     ActionResource actionResource = null;
     if (inputElement == null) {
       if (includeImplicitResource) {
         IActionSequenceDocument document = getDocument();
         if (document != null) {
-          IActionSequenceResourceDom actionSequenceResource = getDocument().getResource(privateResourceName);
+          IActionSequenceResource actionSequenceResource = getDocument().getResource(privateResourceName);
           if (actionSequenceResource != null) {
             actionResource = new ImplicitActionResource(this, privateResourceName, actionParameterMgr);
           }
@@ -417,14 +395,49 @@ public class ActionDefinition implements IActionDefinition {
    * 
    * @return the inputs list in the action inputs section
    */
-  public IActionInput[] getAllInputParams() {
-    List inputsList =  actionDefElement.selectNodes(ActionSequenceDocument.ACTION_INPUTS_NAME + "/*"); //$NON-NLS-1$
-    ActionInput[] inputs = new ActionInput[inputsList.size()];
+  public IActionInput[] getVariableInputs() {
+    List inputElements =  actionDefElement.selectNodes(ActionSequenceDocument.ACTION_INPUTS_NAME + "/*"); //$NON-NLS-1$
+    IActionInput[] variableInputs = new ActionInput[inputElements.size()];
     int index = 0;
-    for (Iterator iter = inputsList.iterator(); iter.hasNext();) {
-      inputs[index++] = new ActionInput((Element)iter.next(), actionParameterMgr);
+    for (Iterator iter = inputElements.iterator(); iter.hasNext();) {
+      variableInputs[index++] = new ActionInput((Element)iter.next(), actionParameterMgr);
     }
-    return inputs;
+    return variableInputs;
+  }
+  
+  protected ActionInputConstant[] getConstantInputs() {
+    ArrayList constantInputs = new ArrayList();
+    List componentDefElements =  actionDefElement.selectNodes(ActionSequenceDocument.COMPONENT_DEF_NAME + "/*"); //$NON-NLS-1$
+    for (Iterator iter = componentDefElements.iterator(); iter.hasNext();) {
+      Element componentDefElement = (Element)iter.next();
+      if (componentDefElement.elements().size() == 0) {
+        constantInputs.add(new ActionInputConstant(componentDefElement));
+      }
+    }
+    return (ActionInputConstant[])constantInputs.toArray(new ActionInputConstant[0]);
+  }
+  
+  public IActionInput[] getInputs() {
+    return getInputs((IActionInputFilter)null);
+  }
+  
+  public IActionInput[] getInputs(IActionInputFilter actionInputFilter) {
+    ArrayList inputs = new ArrayList();
+    IActionInput[] variableInputs = getVariableInputs();
+    for (int i = 0; i < variableInputs.length; i++) {
+      if ((actionInputFilter == null) || actionInputFilter.accepts(variableInputs[i])) {
+        inputs.add(variableInputs[i]);
+      }
+    }
+    
+    ActionInputConstant[] constants = getConstantInputs();
+    for (int i = 0; i < constants.length; i++) {
+      if ((actionInputFilter == null) || actionInputFilter.accepts(constants[i])) {
+        inputs.add(constants[i]);
+      }
+    }
+    
+    return (IActionInput[])inputs.toArray(new IActionInput[0]);
   }
   
   /**
@@ -435,54 +448,18 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateParamName the name of the param as it is known by this action definition (the input element name).
    * @return the input with the specified name or null if none exists.
    */
-  public IActionInput getInputParam(String privateInputName) {
+  public ActionInput getInputParam(String privateInputName) {
     Element inputElement = (Element)actionDefElement.selectSingleNode(ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + privateInputName); //$NON-NLS-1$
     return inputElement == null ? null : new ActionInput(inputElement, actionParameterMgr);
   }
   
-  /**
-   * Returns all the inputs that are listed in the action inputs section of this action definition that have any
-   * one of the specified types. Inputs that have been assigned a constant value appear in the component definition section and will
-   * not be returned by this method.
-   * 
-   * @param types data types of the desired inputs.
-   * @return the inputs of the specified types listed in the action inputs section of this action definition
-   */
-  public IActionInput[] getInputParams(String[] types) {
-    IActionInput[] allInputs = getAllInputParams();
-    List matchingInputs = new ArrayList();
-    if (types == null) {
-      matchingInputs.addAll(Arrays.asList(allInputs));
-    } else {
-      for (int outIdx = 0; outIdx < allInputs.length; outIdx++) {
-        for (int  typeIdx= 0; typeIdx < types.length; typeIdx++) {
-          if (types[typeIdx].equals(allInputs[outIdx].getType())) {
-            matchingInputs.add(allInputs[outIdx]);
-            break;
-          }
-        }
-      }
-    }
-    return (IActionInput[])matchingInputs.toArray(new ActionInput[0]);
-  }
   
-  /**
-   * Returns all the inputs that are listed in the action inputs section of this action definition that have the specified types. Inputs that have been assigned a constant value appear in the component definition section and will
-   * not be returned by this method.
-   * 
-   * @param type data type of the desired inputs.
-   * @return the inputs listed in the action inputs section of the specified type
-   */
-  public IActionInput[] getInputParams(String type) {
-    return getInputParams(new String[]{type});
-  }
-  
-  public IActionOutput addOutputParam(String privateParamName, String outputType) {
-    IActionOutput output = getOutputParam(privateParamName);
+  public IActionOutput addOutput(String privateParamName, String outputType) {
+    IActionOutput output = getOutput(privateParamName);
     Element outputElement;
     if (output == null) {
       outputElement = DocumentHelper.makeElement(actionDefElement, ActionSequenceDocument.ACTION_OUTPUTS_NAME + "/" + privateParamName); //$NON-NLS-1$
-      outputElement.addAttribute(ActionSequenceResourceDom.TYPE_NAME, outputType);
+      outputElement.addAttribute(IAbstractIOElement.TYPE_NAME, outputType);
       output = new ActionOutput(outputElement, actionParameterMgr);
       ActionSequenceDocument.fireIoAdded(output);
     } else {
@@ -496,7 +473,7 @@ public class ActionDefinition implements IActionDefinition {
    * 
    * @return the outputs list in the action input name
    */
-  public IActionOutput[] getAllOutputParams() {
+  public IActionOutput[] getOutputs() {
     List outputsList =  actionDefElement.selectNodes(ActionSequenceDocument.ACTION_OUTPUTS_NAME + "/*"); //$NON-NLS-1$
     ActionOutput[] outputs = new ActionOutput[outputsList.size()];
     int index = 0;
@@ -512,7 +489,7 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateParamName the name of the param as it is known by this action definition (the output element name).
    * @return the named output or null if none exists.
    */
-  public IActionOutput getOutputParam(String privateParamName) {
+  public IActionOutput getOutput(String privateParamName) {
     Element outputElement = (Element)actionDefElement.selectSingleNode(ActionSequenceDocument.ACTION_OUTPUTS_NAME + "/" + privateParamName); //$NON-NLS-1$
     return outputElement == null ? null : new ActionOutput(outputElement, actionParameterMgr);
   }
@@ -523,8 +500,8 @@ public class ActionDefinition implements IActionDefinition {
    * @param types data types of the desired outputs.
    * @return the outputs listed in the action outputs section of the specified type
    */
-  public IActionOutput[] getOutputParams(String[] types) {
-    IActionOutput[] allOutputs = getAllOutputParams();
+  public IActionOutput[] getOutputs(String[] types) {
+    IActionOutput[] allOutputs = getOutputs();
     List matchingOutputs = new ArrayList();
     if (types == null) {
       matchingOutputs.addAll(Arrays.asList(allOutputs));
@@ -547,8 +524,8 @@ public class ActionDefinition implements IActionDefinition {
    * @param type data types of the desired outputs.
    * @return the outputs listed in the action outputs section of the specified type
    */
-  public IActionOutput[] getOutputParams(String type) {
-    return getOutputParams(new String[]{type});
+  public IActionOutput[] getOutputs(String type) {
+    return getOutputs(new String[]{type});
   }
   
   /**
@@ -764,42 +741,13 @@ public class ActionDefinition implements IActionDefinition {
       ActionSequenceDocument.fireActionChanged(this);
     }
   }
-  
-  /**
-   * Returns the list of all ActionSequenceInputs and ActionOutputs that are available as inputs to 
-   * this action definition.
-   * @return
-   */
-  public IActionInputVariable[] getAvailInputVariables() {
-    return getDocument().getAvailInputVariables(this, (String[])null);
-  }
-  
-  /**
-   * Returns the list of ActionSequenceInputs and ActionOutputs that are available as inputs to 
-   * this action definition.
-   * @param types the desired input types
-   * @return
-   */
-  public IActionInputVariable[] getAvailInputVariables(String[] types) {
-    return getDocument().getAvailInputVariables(this, types);
-  }
-  
-  /**
-   * Returns the list of ActionSequenceInputs and ActionOutputs that are available as inputs to 
-   * this action definition.
-   * @param types the desired input type
-   * @return
-   */
-  public IActionInputVariable[] getAvailInputVariables(String type) {
-    return getDocument().getAvailInputVariables(this, new String[]{type});
-  }
-  
+    
   /**
    * Removes an output from this action definition
    * @param privateParamName the name of the output to be removed.
    */
-  private void removeOutputParam(String privateParamName) {
-    IActionOutput actionOutput = getOutputParam(privateParamName);
+  public void removeOutput(String privateParamName) {
+    IActionOutput actionOutput = getOutput(privateParamName);
     if (actionOutput != null) {
       actionOutput.delete();
     }
@@ -809,8 +757,8 @@ public class ActionDefinition implements IActionDefinition {
    * Removes an input from this action definition
    * @param inputName the name of the input to be removed.
    */
-  public void removeInputParam(String privateParamName) {
-    IActionInput actionInput = getInputParam(privateParamName);
+  public void removeInput(String privateParamName) {
+    ActionInput actionInput = getInputParam(privateParamName);
     if (actionInput != null) {
       actionInput.delete();
     }
@@ -823,9 +771,9 @@ public class ActionDefinition implements IActionDefinition {
    * @param oldName the name of the input to be renamed.
    * @param newName the new input name.
    */
-  public void renameInputParam(String oldName, String newName) {
+  public void renameInput(String oldName, String newName) {
     if (!oldName.equals(newName)) {
-      IActionInput actionInput = getInputParam(oldName);
+      ActionInput actionInput = getInputParam(oldName);
       if (actionInput != null) {
         Element componentDefElement = actionDefElement.element(ActionSequenceDocument.COMPONENT_DEF_NAME);
         try {
@@ -851,8 +799,8 @@ public class ActionDefinition implements IActionDefinition {
    * Removes a resource from this action definition
    * @param privateResourceName the name of the resource to be removed.
    */
-  public void removeResourceParam(String privateResourceName) {
-    IActionResource actionResource = getResourceParam(privateResourceName);
+  public void removeResource(String privateResourceName) {
+    IActionResource actionResource = getResource(privateResourceName);
     if (actionResource != null) {
       actionResource.delete();
     }
@@ -861,18 +809,18 @@ public class ActionDefinition implements IActionDefinition {
   /**
    * Removes all inputs from this action definition
    */
-  public void clearInputParams() {
-    IActionInput[] actionInputs = getAllInputParams();
+  public void deleteAllInputs() {
+    IActionInput[] actionInputs = getInputs(new VariableActionInputFilter());
     for (int i = 0; i < actionInputs.length; i++) {
-      actionInputs[i].delete();
+      ((ActionInput)actionInputs[i]).delete();
     }
   }
   
   /**
    * Removes all output from this action definition
    */
-  public void clearOutputParams() {
-    IActionOutput[] actionOutputs = getAllOutputParams();
+  public void deleteAllOutputs() {
+    IActionOutput[] actionOutputs = getOutputs();
     for (int i = 0; i < actionOutputs.length; i++) {
       actionOutputs[i].delete();
     }
@@ -881,8 +829,8 @@ public class ActionDefinition implements IActionDefinition {
   /**
    * Removes all resources from this action definition
    */
-  public void clearResourceParams() {
-    IActionResource[] actionResources = getAllResourceParams();
+  public void deleteAllResources() {
+    IActionResource[] actionResources = getResources();
     for (int i = 0; i < actionResources.length; i++) {
       actionResources[i].delete();
     }
@@ -925,7 +873,7 @@ public class ActionDefinition implements IActionDefinition {
    * @param actionInput the input to be moved.
    * @param index the new input position
    */
-  public void setInputParamIndex(IActionInput actionInput, int index) {
+  public void setInputIndex(ActionInput actionInput, int index) {
     if (this.equals(actionInput.getActionDefinition())) {
       Element inputsParent = actionDefElement.element(ActionSequenceDocument.ACTION_INPUTS_NAME);
       List inputs = inputsParent.elements();
@@ -973,25 +921,7 @@ public class ActionDefinition implements IActionDefinition {
   public String[] getReservedResourceNames() {
     return EXPECTED_RESOURCES;
   }
-  
-  /**
-   * Returns the all action definitions that precede this action definition in the action sequence document.
-   * 
-   * @return the preceding action definitions
-   */
-  public IActionDefinition[] getPrecedingActionDefinitions() {
-    return getDocument().getPrecedingActionDefinitions(this);
-  }
-
-  /**
-   * Returns the all action definitions, loops, and if statements that precede this action definition in the action sequence document.
-   * 
-   * @return the preceding executable statements
-   */
-  public IActionSequenceExecutableStatement[] getPrecedingExecutableStatements() {
-    return getDocument().getPrecedingExecutables(this);
-  }
-  
+    
   /**
    * Creates or modifies the named input parameter to refer to the provided variable. The referenced variable should
    * be an action sequence input of the parent action sequence document or an action output from an action
@@ -1003,12 +933,12 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateParamName the name of the param as it is known by this action definition (the input element name).
    * @param referencedVariable the variable to be referenced. May be null.
    */
-  protected IActionInput setInputParam(String privateParamName, IActionInputVariable referencedVariable) {
+  private IActionInput setInputParam(String privateParamName, IActionInputVariable referencedVariable) {
     IActionInput actionInput = null;
     if (referencedVariable != null) {
       actionInput = setInputParam(privateParamName, referencedVariable.getVariableName(), referencedVariable.getType());
     } else {
-      removeInputParam(privateParamName);
+      removeInput(privateParamName);
     }
     return actionInput;
   }
@@ -1024,12 +954,12 @@ public class ActionDefinition implements IActionDefinition {
    * @param outputType the output type. Ignored if the publicParamName is null.
    * @return the created/modified action output.
    */
-  protected IActionOutput setOutputParam(String privateParamName, String publicParamName, String outputType) {
+  protected IActionOutput setOutput(String privateParamName, String publicParamName, String outputType) {
     IActionOutput actionOutput = null;
     if ((publicParamName == null) || (publicParamName.trim().length() == 0)) {
-      removeOutputParam(privateParamName);
+      removeOutput(privateParamName);
     } else {
-      actionOutput = addOutputParam(privateParamName, outputType); 
+      actionOutput = addOutput(privateParamName, outputType); 
       actionOutput.setMapping(publicParamName);
     }
     return actionOutput;
@@ -1044,7 +974,7 @@ public class ActionDefinition implements IActionDefinition {
    */
   protected String getPublicOutputName(String privateName) {
     String publicName = null;
-    IActionOutput actionOutput = getOutputParam(privateName);
+    IActionOutput actionOutput = getOutput(privateName);
     if (actionOutput != null) {
       publicName = actionOutput.getPublicName();
     }
@@ -1058,9 +988,9 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateParamName the name of the param to be validated.
    * @return null if no errors are detected or the validation error otherwise.
    */
-  protected ActionSequenceValidationError validateInputParam(String privateParamName) {
+  protected ActionSequenceValidationError validateInput(String privateParamName) {
     int errorCode = ActionSequenceValidationError.INPUT_OK;
-    IActionInput actionInput = getInputParam(privateParamName);
+    ActionInput actionInput = getInputParam(privateParamName);
     if (actionInput == null) {
       if (getComponentDefElement(privateParamName) == null) {
         errorCode = ActionSequenceValidationError.INPUT_MISSING;
@@ -1111,12 +1041,12 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateResourceName the name of the param to be validated.
    * @return null if no errors are detected or the validation error otherwise.
    */
-  protected ActionSequenceValidationError validateResourceParam(String privateResourceName) {
-    ActionSequenceValidationError validationError = validateInputParam(privateResourceName);
+  protected ActionSequenceValidationError validateResource(String privateResourceName) {
+    ActionSequenceValidationError validationError = validateInput(privateResourceName);
     if (validationError != null) {
       validationError = null;
       int errorCode = ActionSequenceValidationError.INPUT_OK;
-      IActionResource actionResource = getResourceParam(privateResourceName);
+      IActionResource actionResource = getResource(privateResourceName);
       if (actionResource == null) {
         errorCode = ActionSequenceValidationError.INPUT_MISSING;
       } else {
@@ -1159,9 +1089,9 @@ public class ActionDefinition implements IActionDefinition {
    * @param privateParamName the name of the param to be validated.
    * @return null if no errors are detected or the validation error otherwise.
    */
-  protected ActionSequenceValidationError validateOutputParam(String privateParamName) {
+  protected ActionSequenceValidationError validateOutput(String privateParamName) {
     ActionSequenceValidationError validationError = null;
-    if (getOutputParam(privateParamName) == null) {
+    if (getOutput(privateParamName) == null) {
       validationError = new ActionSequenceValidationError();
       validationError.actionDefinition = this;
       validationError.errorCode = ActionSequenceValidationError.OUTPUT_MISSING;
@@ -1170,35 +1100,7 @@ public class ActionDefinition implements IActionDefinition {
     }
     return validationError;
   }
-  
-  /**
-   * Moves this action definition to the specified if/loop statement. If the parent control statement is null this action 
-   * definition will be a top level action in the action sequence document.
-   * 
-   * @param newParentControlStatement the new parent if/loop statement. May be null.
-   * @param index the index of this action definition within the parent control statement.
-   */
-  public void moveTo(IActionControlStatement newParentControlStatement, int index) {
-    if (newParentControlStatement == null) {
-      newParentControlStatement = getDocument().getRootLoop();
-    }
-    newParentControlStatement.add(this, index);
-  }
-  
-  /**
-   * Moves this action definition to the specified if/loop statement. This action definition will
-   * be the last child of parent control statement. If the parent control statement is null this action 
-   * definition will be a top level action in the action sequence document.
-   * 
-   * @param newParentControlStatement the new parent if/loop statement. May be null.
-   */
-  public void moveTo(IActionControlStatement newParentControlStatement) {
-    if (newParentControlStatement == null) {
-      newParentControlStatement = getDocument().getRootLoop();
-    }
-    newParentControlStatement.add(this);
-  }
-  
+    
   public IActionParameterMgr getActionParameterMgr() {
     return actionParameterMgr;
   }

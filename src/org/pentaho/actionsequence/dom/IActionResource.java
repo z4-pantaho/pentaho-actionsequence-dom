@@ -6,7 +6,7 @@ import java.net.URI;
 import org.dom4j.Element;
 import org.pentaho.commons.connection.IPentahoStreamSource;
 
-public interface IActionResource {
+public interface IActionResource extends IActionIOElement{
 
 	  /**
 	   * The Resource is a solution file
@@ -39,11 +39,11 @@ public interface IActionResource {
 	  public static final int XML = 6;
 	
 	
-	public URI getUri();
-	  public void setURI(URI uri);
-	  public String getMimeType();
-	  public void setMimeType(String mimeType);
-	  public IPentahoStreamSource getDataSource() throws FileNotFoundException;
+  public URI getUri();
+  public void setURI(URI uri);
+  public String getMimeType();
+  public void setMimeType(String mimeType);
+	public IPentahoStreamSource getDataSource() throws FileNotFoundException;
   
   public void delete();
   public void setMapping( String publicName );

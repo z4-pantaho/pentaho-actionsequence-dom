@@ -16,7 +16,8 @@ import java.net.URI;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
 
@@ -60,52 +61,52 @@ public class PrinterAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setPrintfile(IActionInputValueProvider value) {
+  public void setPrintfile(IActionInputSource value) {
     setActionInputValue(PRINT_FILE, value);
   }
   
-  public IActionInputValueProvider getPrintfile() {
-    return getActionInputValue(PRINT_FILE);
+  public IActionInput getPrintfile() {
+    return getInput(PRINT_FILE);
   }
-
+  
   public IActionResource setResourcesPrintFile(URI uri, String mimeType) {
     return setResourceUri(PRINT_FILE, uri, mimeType);
   }
   
   public IActionResource getResourcesPrintFile() {
-    return getResourceParam(PRINT_FILE);
+    return getResource(PRINT_FILE);
   }
   
-  public void setCopies(IActionInputValueProvider value) {
+  public void setCopies(IActionInputSource value) {
     setActionInputValue(COPIES_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getCopies() {
-    return getActionInputValue(COPIES_ELEMENT);
+  public IActionInput getCopies() {
+    return getInput(COPIES_ELEMENT);
   }
   
-  public void setPrinterName(IActionInputValueProvider value) {
+  public void setPrinterName(IActionInputSource value) {
     setActionInputValue(PRINTER_NAME, value);
   }
   
-  public IActionInputValueProvider getPrinterName() {
-    return getActionInputValue(PRINTER_NAME);
+  public IActionInput getPrinterName() {
+    return getInput(PRINTER_NAME);
   }
-
-  public void setReportOutput(IActionInputValueProvider value) {
+  
+  public void setReportOutput(IActionInputSource value) {
     setActionInputValue(REPORT_OUTPUT, value);
   }
   
-  public IActionInputValueProvider getReportOutput() {
-    return getActionInputValue(REPORT_OUTPUT);
+  public IActionInput getReportOutput() {
+    return getInput(REPORT_OUTPUT);
   }
-
-  public void setDefaultPrinter(IActionInputValueProvider value) {
+  
+  public void setDefaultPrinter(IActionInputSource value) {
     setActionInputValue(DEFAULT_PRINTER, value);
   }
   
-  public IActionInputValueProvider getDefaultPrinter() {
-    return getActionInputValue(DEFAULT_PRINTER);    
+  public IActionInput getDefaultPrinter() {
+    return getInput(DEFAULT_PRINTER);    
   }
   
   public IActionResource setResourcesFileToPrint(URI uri, String mimeType) {
@@ -113,23 +114,22 @@ public class PrinterAction extends ActionDefinition {
   }
   
   public IActionResource getResourcesFileToPrint() {
-    return getResourceParam(FILE_TO_PRINT);
+    return getResource(FILE_TO_PRINT);
   }
   
   public void setOutputPrinterName(String publicOutputName) {
-    setOutputParam(PRINTER_NAME, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+    setOutput(PRINTER_NAME, publicOutputName, ActionSequenceDocument.STRING_TYPE);
   }
   
   public IActionOutput getOutputPrinterName() {
-    return getOutputParam(PRINTER_NAME);
+    return getOutput(PRINTER_NAME);
   }
 
   public void setOutputDefaultPrinter(String publicOutputName) {
-    setOutputParam(DEFAULT_PRINTER, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+    setOutput(DEFAULT_PRINTER, publicOutputName, ActionSequenceDocument.STRING_TYPE);
   }
   
   public IActionOutput getOutputDefaultPrinter() {
-    return getOutputParam(DEFAULT_PRINTER);
+    return getOutput(DEFAULT_PRINTER);
   }
-
 }

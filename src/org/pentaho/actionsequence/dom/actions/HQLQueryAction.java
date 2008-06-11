@@ -5,7 +5,8 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class HQLQueryAction extends HQLConnectionAction {
@@ -45,8 +46,8 @@ public class HQLQueryAction extends HQLConnectionAction {
     
     public String[] getReservedOutputNames() {
       String expectedOutput = QUERY_RESULT_ELEMENT;
-      if (getOutputParam(expectedOutput) ==  null) { 
-        IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+      if (getOutput(expectedOutput) ==  null) { 
+        IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.RESULTSET_TYPE);
         if (actionOutputs.length > 0) {
           expectedOutput = actionOutputs[0].getName();
         }
@@ -54,16 +55,16 @@ public class HQLQueryAction extends HQLConnectionAction {
       return new String[]{expectedOutput};
     }
 
-    public IActionInputValueProvider getInputSharedConnection() {
-      return getActionInputValue(PREPARED_COMPONENT_ELEMENT);
+    public IActionInput getInputSharedConnection() {
+      return getInput(PREPARED_COMPONENT_ELEMENT);
     }  
     
-    public void setInputSharedConnection(IActionInputValueProvider value) {
+    public void setInputSharedConnection(IActionInputSource value) {
       setActionInputValue(PREPARED_COMPONENT_ELEMENT, value);
     }
     
     public void setOutputResultSetName(String name) {
-      setOutputParam(QUERY_RESULT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
+      setOutput(QUERY_RESULT_ELEMENT, name, ActionSequenceDocument.RESULTSET_TYPE);
       if ((name != null) && (name.trim().length() > 0)) {
         setOutputPreparedStatementName(null);
       }
@@ -79,12 +80,12 @@ public class HQLQueryAction extends HQLConnectionAction {
        * If not present then check for DEPRECATED_OUTPUT_NAME
        * Else get the first output name that's not PREPARED_COMPONENT
        */
-      IActionOutput actionOutput =  getOutputParam(QUERY_RESULT_ELEMENT);
+      IActionOutput actionOutput =  getOutput(QUERY_RESULT_ELEMENT);
       if (actionOutput == null) {
         //NOTE: Code below is Deprecated.
-        actionOutput = getOutputParam(DEPRECATED_OUTPUT_NAME);
+        actionOutput = getOutput(DEPRECATED_OUTPUT_NAME);
         if (actionOutput == null) {
-          IActionOutput[] actionOutputs = getAllOutputParams();
+          IActionOutput[] actionOutputs = getOutputs();
           for (int i = 0; i < actionOutputs.length; i++) {
             if (!actionOutputs[i].getName().equals(PREPARED_COMPONENT_ELEMENT)) {
               actionOutput = actionOutputs[i];
@@ -98,7 +99,7 @@ public class HQLQueryAction extends HQLConnectionAction {
     }
     
     public void setOutputPreparedStatementName(String name) {
-      setOutputParam(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.HQL_QUERY_TYPE);
+      setOutput(PREPARED_COMPONENT_ELEMENT, name, ActionSequenceDocument.HQL_QUERY_TYPE);
       if ((name != null) && (name.trim().length() > 0)) {
         setOutputResultSetName(null);
       }
@@ -109,16 +110,16 @@ public class HQLQueryAction extends HQLConnectionAction {
     }  
     
     public IActionOutput getOutputPreparedStatementParam() {
-      return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+      return getOutput(PREPARED_COMPONENT_ELEMENT);
     }
 
     
-    public IActionInputValueProvider getQuery() {
-      IActionInputValueProvider query = getActionInputValue(QUERY_ELEMENT);
+    public IActionInput getQuery() {
+      IActionInput query = getInput(QUERY_ELEMENT);
       return query;
     }
 
-    public void setQuery(IActionInputValueProvider value) {
+    public void setQuery(IActionInputSource value) {
       setActionInputValue(QUERY_ELEMENT, value);
     }
 }

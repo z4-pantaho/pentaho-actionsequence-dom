@@ -13,18 +13,18 @@ public class ActionSequenceValidationError implements IActionSequenceValidationE
   public String errorMsg;
   public ActionDefinition actionDefinition;
   public String parameterName;
-public int getErrorCode() {
-	return errorCode;
-}
-public String getErrorMsg() {
-	return errorMsg;
-}
+  public int getErrorCode() {
+    return errorCode;
+  }
+  public String getErrorMsg() {
+    return errorMsg;
+  }
 public IActionDefinition getActionDefinition() {
-	return actionDefinition;
-}
-public String getParameterName() {
-	return parameterName;
-}
+    return actionDefinition;
+  }
+  public String getParameterName() {
+    return parameterName;
+  }
   
   
 }

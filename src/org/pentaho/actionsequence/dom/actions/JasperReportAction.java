@@ -16,9 +16,11 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
@@ -72,8 +74,8 @@ public class JasperReportAction extends ActionDefinition {
   
   public String[] getReservedOutputNames() {
     String expectedOutput = REPORT_OUTPUT_ELEMENT;
-    if (getOutputParam(expectedOutput) ==  null) { 
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+    if (getOutput(expectedOutput) ==  null) { 
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -85,54 +87,54 @@ public class JasperReportAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setConnection(IActionInputValueProvider value) {
+  public void setConnection(IActionInputSource value) {
     setActionInputValue(CONNECTION_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getConnection() {
-    return getActionInputValue(CONNECTION_ELEMENT);
+  public IActionInput getConnection() {
+    return getInput(CONNECTION_ELEMENT);
   }
   
-  public void setUserId(IActionInputValueProvider value) {
+  public void setUserId(IActionInputSource value) {
     setActionInputValue(USER_ID_ELEMENT, value);
-		if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+		if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getUserId() {
-    return getActionInputValue(USER_ID_ELEMENT);
+  public IActionInput getUserId() {
+    return getInput(USER_ID_ELEMENT);
   }
 
-  public void setDriver(IActionInputValueProvider value) {
+  public void setDriver(IActionInputSource value) {
     setActionInputValue(DRIVER_ELEMENT, value);
-		if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+		if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getDriver() {
-    return getActionInputValue(DRIVER_ELEMENT);
+  public IActionInput getDriver() {
+    return getInput(DRIVER_ELEMENT);
   }
   
-  public void setPassword(IActionInputValueProvider value) {
+  public void setPassword(IActionInputSource value) {
     setActionInputValue(PASSWORD_ELEMENT, value);
-		if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+		if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
 
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getPassword() {
-    return getActionInputValue(PASSWORD_ELEMENT);
+  public IActionInput getPassword() {
+    return getInput(PASSWORD_ELEMENT);
   }
 
-  public void setJndi(IActionInputValueProvider value) {
+  public void setJndi(IActionInputSource value) {
     setActionInputValue(JNDI_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setDriver(null);
       setConnection(null);
       setUserId(null);
@@ -140,22 +142,22 @@ public class JasperReportAction extends ActionDefinition {
     }
   }
   
-  public IActionInputValueProvider getJndi() {
-    return getActionInputValue(JNDI_ELEMENT);
+  public IActionInput getJndi() {
+    return getInput(JNDI_ELEMENT);
   }
   
-  public void setOutputType(IActionInputValueProvider value) {
+  public void setOutputType(IActionInputSource value) {
     setActionInputValue(OUTPUT_TYPE_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getOutputType() {
-    return getActionInputValue(OUTPUT_TYPE_ELEMENT);
+  public IActionInput getOutputType() {
+    return getInput(OUTPUT_TYPE_ELEMENT);
   }
   
   public void setOutputReport(String publicOutputName) {
-    setOutputParam(REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
+    setOutput(REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
     if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
-      IActionOutput[] actionOutputs = getAllOutputParams();
+      IActionOutput[] actionOutputs = getOutputs();
       for (int i = 0; i < actionOutputs.length; i++) {
         if (actionOutputs[i].getType().equals(ActionSequenceDocument.CONTENT_TYPE)
             && !actionOutputs[i].getName().equals(REPORT_OUTPUT_ELEMENT)) {
@@ -167,21 +169,21 @@ public class JasperReportAction extends ActionDefinition {
   
   public IActionOutput getOutputReport() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
-    if (getOutputParam(privateOutputName) ==  null) { 
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.CONTENT_TYPE);
+    if (getOutput(privateOutputName) ==  null) { 
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.CONTENT_TYPE);
       if (actionOutputs.length > 0) {
         privateOutputName = actionOutputs[0].getName();
       }
     }
-    return getOutputParam(REPORT_OUTPUT_ELEMENT);
+    return getOutput(REPORT_OUTPUT_ELEMENT);
   }
   
   public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(DRIVER_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(DRIVER_ELEMENT);
     if (validationError == null) {
-      validationError = validateInputParam(CONNECTION_ELEMENT);
+      validationError = validateInput(CONNECTION_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -197,7 +199,7 @@ public class JasperReportAction extends ActionDefinition {
         errors.add(validationError);
       }
       
-      validationError = validateInputParam(USER_ID_ELEMENT);
+      validationError = validateInput(USER_ID_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -213,7 +215,7 @@ public class JasperReportAction extends ActionDefinition {
         errors.add(validationError);
       }
     } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-      validationError = validateInputParam(JNDI_ELEMENT);
+      validationError = validateInput(JNDI_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -233,7 +235,7 @@ public class JasperReportAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    validationError = validateInputParam(OUTPUT_TYPE_ELEMENT);
+    validationError = validateInput(OUTPUT_TYPE_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -249,7 +251,7 @@ public class JasperReportAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    validationError = validateResourceParam(REPORT_DEFINITION_ELEMENT);
+    validationError = validateResource(REPORT_DEFINITION_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -273,6 +275,6 @@ public class JasperReportAction extends ActionDefinition {
   }
   
   public IActionResource getReportDefinition() {
-    return getResourceParam(REPORT_DEFINITION_ELEMENT);
+    return getResource(REPORT_DEFINITION_ELEMENT);
   }
 }

@@ -10,7 +10,8 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class MQLAction extends AbstractRelationalDbAction {
@@ -44,7 +45,7 @@ public class MQLAction extends AbstractRelationalDbAction {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    IActionOutput actionOutput = setOutputParam(QUERY_RESULT_OUTPUT_NAME, QUERY_RESULT_OUTPUT_NAME, ActionSequenceDocument.RESULTSET_TYPE);
+    IActionOutput actionOutput = setOutput(QUERY_RESULT_OUTPUT_NAME, QUERY_RESULT_OUTPUT_NAME, ActionSequenceDocument.RESULTSET_TYPE);
     actionOutput.setMapping(MAPPED_QUERY_OUTPUT_NAME);
   }
   
@@ -57,8 +58,8 @@ public class MQLAction extends AbstractRelationalDbAction {
     String compDefVal = getComponentDefinitionValue(OUTPUT_NAME_ELEMENT);
     if (compDefVal != null) {
       expectedOutput = compDefVal;
-    } else if (getOutputParam(expectedOutput) == null) {
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+    } else if (getOutput(expectedOutput) == null) {
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -67,13 +68,13 @@ public class MQLAction extends AbstractRelationalDbAction {
   }
 
   
-  public IActionInputValueProvider getQuery() {
-    IActionInputValueProvider query = super.getQuery();
+  public IActionInput getQuery() {
+    IActionInput query = super.getQuery();
     
     // The following condition covers an alternative way to store the mql
     // within the action definition. This class does not use this method when
     // writing to the dom.
-    if (query == ActionInputConstant.NULL_INPUT) {
+    if (query == IActionInput.NULL_INPUT) {
       Element element = getComponentDefElement(MQL_ELEMENT);
       if (element != null) {
         try {
@@ -87,7 +88,7 @@ public class MQLAction extends AbstractRelationalDbAction {
     return query;
   }
 
-  public void setQuery(IActionInputValueProvider value) {
+  public void setQuery(IActionInputSource value) {
     super.setQuery(value);
     
     // The following removes an alternative way to store the mql
@@ -99,15 +100,15 @@ public class MQLAction extends AbstractRelationalDbAction {
     }
   }
 
-  public void setDisableDistinct(IActionInputValueProvider value) {
+  public void setDisableDistinct(IActionInputSource value) {
     setActionInputValue(DISABLE_DISTINCT_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getDisableDistinct() {
-    return getActionInputValue(DISABLE_DISTINCT_ELEMENT);
+  public IActionInput getDisableDistinct() {
+    return getInput(DISABLE_DISTINCT_ELEMENT);
   }
   
-  public void setForceDbDialect(IActionInputValueProvider value) {
+  public void setForceDbDialect(IActionInputSource value) {
     setActionInputValue(FORCE_DB_DIALECT_ELEMENT, value);
   }
   
@@ -115,11 +116,11 @@ public class MQLAction extends AbstractRelationalDbAction {
   // connection is of a different database.  this may be necessary if 
   // there are issues with detecting the correct database.  The value
   // defaults to false if not specified.
-  public IActionInputValueProvider getForceDbDialect() {
-    return getActionInputValue(FORCE_DB_DIALECT_ELEMENT);
+  public IActionInput getForceDbDialect() {
+    return getInput(FORCE_DB_DIALECT_ELEMENT);
   }
   
-  public void setMqlQueryClassName(IActionInputValueProvider value) {
+  public void setMqlQueryClassName(IActionInputSource value) {
     setActionInputValue(MQLQUERY_CLASSNAME, value);
   }
   
@@ -127,8 +128,8 @@ public class MQLAction extends AbstractRelationalDbAction {
   // connection is of a different database.  this may be necessary if 
   // there are issues with detecting the correct database.  The value
   // defaults to false if not specified.
-  public IActionInputValueProvider getMqlQueryClassName() {
-    return getActionInputValue(MQLQUERY_CLASSNAME);
+  public IActionInput getMqlQueryClassName() {
+    return getInput(MQLQUERY_CLASSNAME);
   }
   
   

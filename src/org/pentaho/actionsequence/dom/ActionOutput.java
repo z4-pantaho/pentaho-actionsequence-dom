@@ -44,39 +44,4 @@ public class ActionOutput extends AbstractActionIOElement implements IActionOutp
     }
   }
 
-  public Object getValue() {
-    throw new UnsupportedOperationException();
-  }
-  
-  public Boolean getBooleanValue() {
-    throw new UnsupportedOperationException();
-  }
-
-  public Integer getIntValue() {
-    throw new UnsupportedOperationException();
-  }
-
-  public String getStringValue() {
-    throw new UnsupportedOperationException();
-  }
-
-  public String getStringValue(boolean replaceParamReferences) {
-    throw new UnsupportedOperationException();
-  }
-
-  public boolean getBooleanValue(boolean defaultValue) {
-    throw new UnsupportedOperationException();
-  }
-
-  public int getIntValue(int defaultValue) {
-    throw new UnsupportedOperationException();
-  }
-
-  public String getStringValue(boolean replaceParamReferences, String defaultValue) {
-    throw new UnsupportedOperationException();
-  }
-
-  public String getStringValue(String defaultValue) {
-    throw new UnsupportedOperationException();
-  }
 }

@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.ActionSequenceResourceDom;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IAbstractIOElement;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
-import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class SqlConnectionAction extends ActionDefinition {
 
@@ -66,7 +66,7 @@ public class SqlConnectionAction extends ActionDefinition {
     if (ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME)) {
       Element connectionOutput = (Element)element.selectSingleNode(ActionSequenceDocument.ACTION_OUTPUTS_NAME + "/" + PREPARED_COMPONENT_ELEMENT); //$NON-NLS-1$
       result = (connectionOutput != null)
-        && ActionSequenceDocument.SQL_CONNECTION_TYPE.equals(connectionOutput.attributeValue(ActionSequenceResourceDom.TYPE_NAME));
+        && ActionSequenceDocument.SQL_CONNECTION_TYPE.equals(connectionOutput.attributeValue(IAbstractIOElement.TYPE_NAME));
     }
     return result;
   }
@@ -79,55 +79,55 @@ public class SqlConnectionAction extends ActionDefinition {
     return new String[]{PREPARED_COMPONENT_ELEMENT};
   }
   
-  public void setDbUrl(IActionInputValueProvider value) {
+  public void setDbUrl(IActionInputSource value) {
     setActionInputValue(CONNECTION_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getDbUrl() {
-    return getActionInputValue(CONNECTION_ELEMENT);
+  public IActionInput getDbUrl() {
+    return getInput(CONNECTION_ELEMENT);
   }
   
   
-  public void setUserId(IActionInputValueProvider value) {
+  public void setUserId(IActionInputSource value) {
     setActionInputValue(USER_ID_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getUserId() {
-    return getActionInputValue(USER_ID_ELEMENT);
+  public IActionInput getUserId() {
+    return getInput(USER_ID_ELEMENT);
   }
   
   
-  public void setDriver(IActionInputValueProvider value) {
+  public void setDriver(IActionInputSource value) {
     setActionInputValue(DRIVER_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getDriver() {
-    return getActionInputValue(DRIVER_ELEMENT);
+  public IActionInput getDriver() {
+    return getInput(DRIVER_ELEMENT);
   }
   
-  public void setPassword(IActionInputValueProvider value) {
+  public void setPassword(IActionInputSource value) {
     setActionInputValue(PASSWORD_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
     }
   }
   
-  public IActionInputValueProvider getPassword() {
-    return getActionInputValue(PASSWORD_ELEMENT);
+  public IActionInput getPassword() {
+    return getInput(PASSWORD_ELEMENT);
   }
   
-  public void setJndi(IActionInputValueProvider value) {
+  public void setJndi(IActionInputSource value) {
     setActionInputValue(JNDI_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setDriver(null);
       setDbUrl(null);
       setUserId(null);
@@ -135,25 +135,25 @@ public class SqlConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionInputValueProvider getJndi() {
-    return getActionInputValue(JNDI_ELEMENT);
+  public IActionInput getJndi() {
+    return getInput(JNDI_ELEMENT);
   }
   
   
   public void setOutputConnection(String publicOutputName) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.SQL_CONNECTION_TYPE);
+    setOutput(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.SQL_CONNECTION_TYPE);
   }
   
   public IActionOutput getOutputConnection() {
-    return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+    return getOutput(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public IActionSequenceValidationError[] validate() {
+  public ActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(CONNECTION_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(CONNECTION_ELEMENT);
     if (validationError == null) {
-      validationError = validateInputParam(DRIVER_ELEMENT);
+      validationError = validateInput(DRIVER_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -169,7 +169,7 @@ public class SqlConnectionAction extends ActionDefinition {
         errors.add(validationError);
       }
       
-      validationError = validateInputParam(USER_ID_ELEMENT);
+      validationError = validateInput(USER_ID_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -185,7 +185,7 @@ public class SqlConnectionAction extends ActionDefinition {
         errors.add(validationError);
       }
     } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-      validationError = validateInputParam(JNDI_ELEMENT);
+      validationError = validateInput(JNDI_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -208,7 +208,7 @@ public class SqlConnectionAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    validationError = validateOutput(PREPARED_COMPONENT_ELEMENT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
         validationError.errorMsg = "Missing output connection name.";

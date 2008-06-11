@@ -14,7 +14,8 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 
 public class SubActionAction extends ActionDefinition {
 
@@ -48,45 +49,45 @@ public class SubActionAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setSolution(IActionInputValueProvider value) {
+  public void setSolution(IActionInputSource value) {
     setActionInputValue(SOLUTION_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getSolution() {
-    return getActionInputValue(SOLUTION_ELEMENT);
+  public IActionInput getSolution() {
+    return getInput(SOLUTION_ELEMENT);
   }
   
-  public void setPath(IActionInputValueProvider value) {
+  public void setPath(IActionInputSource value) {
     setActionInputValue(PATH_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getPath() {
-    return getActionInputValue(PATH_ELEMENT);
+  public IActionInput getPath() {
+    return getInput(PATH_ELEMENT);
   }
   
-  public void setAction(IActionInputValueProvider value) {
+  public void setAction(IActionInputSource value) {
     setActionInputValue(ACTION_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getAction() {
-    return getActionInputValue(ACTION_ELEMENT);
+  public IActionInput getAction() {
+    return getInput(ACTION_ELEMENT);
   }
   
-  public void setSessionProxy(IActionInputValueProvider value) {
-    if ((value == null) || ((value instanceof ActionInputConstant) && (value.getValue() == null))) {
-      setActionInputValue(PROXY_REF_ELEMENT, null);
-      setActionInputValue(PROXY_ELEMENT, null);
+  public void setSessionProxy(IActionInputSource value) {
+    if ((value == null) || ((value instanceof ActionInputConstant) && (((ActionInputConstant)value).getValue() == null))) {
+      setActionInputValue(PROXY_REF_ELEMENT, (IActionInputSource)null);
+      setActionInputValue(PROXY_ELEMENT, (IActionInputSource)null);
     } else {
       setActionInputValue(PROXY_REF_ELEMENT, value);
       setActionInputValue(PROXY_ELEMENT, new ActionInputConstant(PROXY_REF_ELEMENT));
     }
   }
   
-  public IActionInputValueProvider getSessionProxy() {
-    IActionInputValueProvider actionInput = getActionInputValue(PROXY_ELEMENT);
+  public IActionInput getSessionProxy() {
+    IActionInput actionInput = getInput(PROXY_ELEMENT);
     String stringValue = actionInput.getStringValue();
     if (stringValue != null) {
-      actionInput = getActionInputValue(stringValue);
+      actionInput = getInput(stringValue);
     }
     return actionInput;
   }

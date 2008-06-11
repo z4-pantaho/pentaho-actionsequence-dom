@@ -23,11 +23,11 @@ import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
-import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public class MdxConnectionAction extends ActionDefinition {
 
@@ -101,59 +101,62 @@ public class MdxConnectionAction extends ActionDefinition {
     return EXPECTED_RESOURCES;
   }
   
-  public void setLocation(IActionInputValueProvider value) {
+  public void setLocation(IActionInputSource value) {
     setActionInputValue(LOCATION_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnectionString(null);
     }
   }
   
-  public IActionInputValueProvider getLocation() {
-    return getActionInputValue(LOCATION_ELEMENT);
+  public IActionInput getLocation() {
+    return getInput(LOCATION_ELEMENT);
   }
   
-  public void setUserId(IActionInputValueProvider value) {
+  public void setUserId(IActionInputSource value) {
     setActionInputValue(USER_ID_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
       setConnectionProps(null);      
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     }
   }
   
-  public IActionInputValueProvider getUserId() {
-    return getActionInputValue(USER_ID_ELEMENT);
+  public IActionInput getUserId() {
+    return getInput(USER_ID_ELEMENT);
   }
   
-  public void setPassword(IActionInputValueProvider value) {
+  public void setPassword(IActionInputSource value) {
     setActionInputValue(PASSWORD_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
       setConnectionProps(null);
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     }
   }
 
-  public IActionInputValueProvider getPassword() {
-    return getActionInputValue(PASSWORD_ELEMENT);
+  public IActionInput getPassword() {
+    return getInput(PASSWORD_ELEMENT);
   }
   
-  public void setDriver(IActionInputValueProvider value) {
+  public void setDriver(IActionInputSource value) {
     setActionInputValue(DRIVER_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnectionString(null);
       setJndi(null);
       setConnectionProps(null);
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     }
   }
   
-  public IActionInputValueProvider getDriver() {
-    return getActionInputValue(DRIVER_ELEMENT);
+  public IActionInput getDriver() {
+    return getInput(DRIVER_ELEMENT);
   }
   
-  public void setMdxConnectionString(IActionInputValueProvider value) {
+  public void setMdxConnectionString(IActionInputSource value) {
     setActionInputValue(MDX_CONNECTION_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
       setConnection(null);
       setConnectionProps(null);
@@ -165,35 +168,35 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
   
-  public IActionInputValueProvider getMdxConnectionString() {
-    return getActionInputValue(MDX_CONNECTION_ELEMENT);
+  public IActionInput getMdxConnectionString() {
+    return getInput(MDX_CONNECTION_ELEMENT);
   }
   
-  public void setRole(IActionInputValueProvider value) {
+  public void setRole(IActionInputSource value) {
     setActionInputValue(ROLE_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getRole() {
-    return getActionInputValue(ROLE_ELEMENT);
+  public IActionInput getRole() {
+    return getInput(ROLE_ELEMENT);
   }
   
-  public void setConnection(IActionInputValueProvider value) {
+  public void setConnection(IActionInputSource value) {
     setActionInputValue(CONNECTION_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setJndi(null);
       setMdxConnectionString(null);
       setConnectionProps(null);
     }
   }
   
-  public IActionInputValueProvider getConnection() {
-    return getActionInputValue(CONNECTION_ELEMENT);
+  public IActionInput getConnection() {
+    return getInput(CONNECTION_ELEMENT);
   }
 
-  public void setConnectionProps(IActionInputValueProvider value) {
+  public void setConnectionProps(IActionInputSource value) {
     if (value instanceof IActionInputVariable) {
       throw new IllegalArgumentException();
-    } else if (value == null || value.getValue() == null) {
+    } else if (value == null || ((ActionInputConstant)value).getValue() == null) {
       clearComponentDef(CONNECTION_PROPS);      
     } else {
       clearComponentDef(CONNECTION_PROPS);
@@ -201,7 +204,7 @@ public class MdxConnectionAction extends ActionDefinition {
        * Get the hash map of the key, value pairs from the properties and
        * create an entry for each key inside element CONNECTION_PROPS
        */
-      Properties properties = (Properties)value.getValue();
+      Properties properties = (Properties)((ActionInputConstant)value).getValue();
       Element compDefElement =(Element)actionDefElement.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME);
       Element connectionPropsElement = compDefElement.addElement(CONNECTION_PROPS);
       for (Iterator iter = properties.entrySet().iterator(); iter.hasNext();) {
@@ -219,8 +222,8 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }
 
-  public IActionInputValueProvider getConnectionProps() {
-    IActionInputValueProvider actionInput = ActionInputConstant.NULL_INPUT;
+  public IActionInput getConnectionProps() {
+    IActionInput actionInput = IActionInput.NULL_INPUT;
     Element connectionPropsElement = getComponentDefElement(CONNECTION_PROPS);
     if (connectionPropsElement != null) {
       Properties properties = new Properties();
@@ -245,34 +248,35 @@ public class MdxConnectionAction extends ActionDefinition {
     }
   }  
   
-  public void setJndi(IActionInputValueProvider value) {
+  public void setJndi(IActionInputSource value) {
     setActionInputValue(JNDI_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
       setMdxConnectionString(null);
       setConnection(null);
       setUserId(null);
       setPassword(null);
       setDriver(null);
       setConnectionProps(null);   
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
     }
   }
   
-  public IActionInputValueProvider getJndi() {
-    return getActionInputValue(JNDI_ELEMENT);
+  public IActionInput getJndi() {
+    return getInput(JNDI_ELEMENT);
   }
   
   public void setOutputConnection(String publicOutputName) {
-    setOutputParam(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.MDX_CONNECTION_TYPE);
+    setOutput(PREPARED_COMPONENT_ELEMENT, publicOutputName, ActionSequenceDocument.MDX_CONNECTION_TYPE);
   }
   
   public IActionOutput getOutputConnection() {
-    return getOutputParam(PREPARED_COMPONENT_ELEMENT);
+    return getOutput(PREPARED_COMPONENT_ELEMENT);
   }
   
-  public IActionSequenceValidationError[] validate() {
+  public ActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(MDX_CONNECTION_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(MDX_CONNECTION_ELEMENT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR) {
         validationError.errorMsg = "Database connection input parameter references unknown variable.";
@@ -281,7 +285,7 @@ public class MdxConnectionAction extends ActionDefinition {
         validationError.errorMsg = "Database connection input parameter is uninitialized.";
         errors.add(validationError);
       } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-        validationError = validateResourceParam(CATALOG_ELEMENT);
+        validationError = validateResource(CATALOG_ELEMENT);
         if (validationError != null) {
           switch (validationError.errorCode) {
             case ActionSequenceValidationError.INPUT_MISSING:
@@ -297,9 +301,9 @@ public class MdxConnectionAction extends ActionDefinition {
           errors.add(validationError);
         }
         
-        validationError = validateInputParam(CONNECTION_ELEMENT);
+        validationError = validateInput(CONNECTION_ELEMENT);
         if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-          validationError = validateInputParam(JNDI_ELEMENT);
+          validationError = validateInput(JNDI_ELEMENT);
           if (validationError != null) {
             switch (validationError.errorCode) {
               case ActionSequenceValidationError.INPUT_MISSING:
@@ -324,7 +328,7 @@ public class MdxConnectionAction extends ActionDefinition {
       }
     }
     
-    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    validationError = validateOutput(PREPARED_COMPONENT_ELEMENT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
         validationError.errorMsg = "Missing output connection name.";
@@ -341,15 +345,15 @@ public class MdxConnectionAction extends ActionDefinition {
   }
   
   public IActionResource getCatalogResource() {
-    return getResourceParam(CATALOG_ELEMENT);
+    return getResource(CATALOG_ELEMENT);
   }
   
-  public void setCatalog(IActionInputValueProvider value) {
+  public void setCatalog(IActionInputSource value) {
     setActionInputValue(CATALOG_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getCatalog() {
-    return getActionInputValue(CATALOG_ELEMENT);
+  public IActionInput getCatalog() {
+    return getInput(CATALOG_ELEMENT);
   }
 
 }

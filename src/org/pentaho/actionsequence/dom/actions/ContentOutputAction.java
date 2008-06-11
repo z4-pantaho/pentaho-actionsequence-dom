@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
@@ -49,34 +50,34 @@ public class ContentOutputAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setMimeType(IActionInputValueProvider value) {
+  public void setMimeType(IActionInputSource value) {
     setActionInputValue(MIME_TYPE_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getMimeType() {
-    return getActionInputValue(MIME_TYPE_ELEMENT);
+  public IActionInput getMimeType() {
+    return getInput(MIME_TYPE_ELEMENT);
   }
   
   public void setInput(IActionInputVariable value) {
     setActionInputValue(CONTENT_INPUT_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getInput() {
-    return getActionInputValue(CONTENT_INPUT_ELEMENT);
+  public IActionInput getInput() {
+    return getInput(CONTENT_INPUT_ELEMENT);
   }
   
   public IActionOutput getOutput() {
-    return getOutputParam(CONTENT_OUTPUT_ELEMENT);
+    return getOutput(CONTENT_OUTPUT_ELEMENT);
   }
   
   public void setOutput(String outputPublicName) {
-    setOutputParam(CONTENT_OUTPUT_ELEMENT, outputPublicName, ActionSequenceDocument.CONTENT_TYPE);
+    setOutput(CONTENT_OUTPUT_ELEMENT, outputPublicName, ActionSequenceDocument.CONTENT_TYPE);
   }
   
   public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     
-    ActionSequenceValidationError validationError = validateInputParam(CONTENT_INPUT_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(CONTENT_INPUT_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -92,7 +93,7 @@ public class ContentOutputAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    validationError = validateInputParam(MIME_TYPE_ELEMENT);
+    validationError = validateInput(MIME_TYPE_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -108,7 +109,7 @@ public class ContentOutputAction extends ActionDefinition {
       errors.add(validationError);
     }
     
-    validationError = validateOutputParam(CONTENT_OUTPUT);
+    validationError = validateOutput(CONTENT_OUTPUT);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
         validationError.errorMsg = "Missing content ouput parameter.";

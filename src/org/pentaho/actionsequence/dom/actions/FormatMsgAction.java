@@ -19,10 +19,11 @@ import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
-import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.SimpleActionInputVariable;
 
 public class FormatMsgAction extends ActionDefinition {
 
@@ -95,7 +96,7 @@ public class FormatMsgAction extends ActionDefinition {
         formatString = formatString.substring(1, formatString.length() - 1);
       }
     }
-    return formatString == null ? ActionInputConstant.NULL_INPUT : new ActionInputConstant(formatString);
+    return formatString == null ? IActionInput.NULL_INPUT : new ActionInputConstant(formatString);
   }
   
   public void setOutputString(String publicOutputName) {
@@ -103,7 +104,7 @@ public class FormatMsgAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
-    IActionOutput actionOutput = setOutputParam(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+    IActionOutput actionOutput = setOutput(privateName, publicOutputName, ActionSequenceDocument.STRING_TYPE);
     if (actionOutput == null) {
       setComponentDefinition(RETURN_NAME_XPATH, (String)null);
     } else {
@@ -116,13 +117,13 @@ public class FormatMsgAction extends ActionDefinition {
     if ((privateName == null) || (privateName.trim().length() == 0)) {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
-    return getOutputParam(privateName);
+    return getOutput(privateName);
   }
   
-  public IActionSequenceValidationError[] validate() {
+  public ActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
     ActionSequenceValidationError validationError = null;
-    if (getFormatString() == ActionInputConstant.NULL_INPUT){ //$NON-NLS-1$
+    if (getFormatString() == IActionInput.NULL_INPUT){ //$NON-NLS-1$
       validationError = new ActionSequenceValidationError();
       validationError.actionDefinition = this;
       validationError.errorCode = ActionSequenceValidationError.INPUT_MISSING;
@@ -136,7 +137,7 @@ public class FormatMsgAction extends ActionDefinition {
       privateName = OUTPUT_STRING_ELEMENT;
     }  
     
-    validationError = validateOutputParam(privateName);
+    validationError = validateOutput(privateName);
     if (validationError != null) {
       if (validationError.errorCode == ActionSequenceValidationError.OUTPUT_MISSING) {
         validationError.errorMsg = "Missing formatted message output parameter.";
@@ -147,21 +148,57 @@ public class FormatMsgAction extends ActionDefinition {
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
   
-  public IActionInputValueProvider[] getMsgInputs() {
+  public IActionInput[] getMsgInputs() {
     ArrayList msgInputs = new ArrayList();
     Element[] elements = getComponentDefElements(ARGUMENT_XPATH);
     for (int i = 0; i < elements.length; i++) {
       String msgInputParamName = elements[i].getText();
-      IActionInputValueProvider msgInput = getActionInputValue(msgInputParamName);
-      if (msgInput != ActionInputConstant.NULL_INPUT) {
+      IActionInput msgInput = getInput(msgInputParamName);
+      if (msgInput != IActionInput.NULL_INPUT) {
         msgInputs.add(msgInput);
       }
     }
-    return (IActionInputValueProvider[])msgInputs.toArray(new IActionInputValueProvider[0]);
+    return (IActionInput[])msgInputs.toArray(new IActionInput[0]);
   }
   
+  public void addMsgInput(IActionInputSource inputSource) {
+    IActionInput[] oldInputs = getMsgInputs();
+    for (int i = 0; i < oldInputs.length; i++) {
+      if (oldInputs[i] instanceof ActionInput) {
+        ((ActionInput)oldInputs[i]).delete();
+      }
+    }
+    setComponentDefinition(ARGUMENT_XPATH, new String[0]);
+    
+    ArrayList msgInputParamNames = new ArrayList();
+    for (int i = 0; i < oldInputs.length; i++) {
+      if ((oldInputs[i] instanceof ActionInputConstant) && (oldInputs[i].getValue() != null)) {
+        String msgInputParamName = getUniqueNameParam();
+        msgInputParamNames.add(msgInputParamName);
+        setActionInputValue(msgInputParamName, (ActionInputConstant)oldInputs[i]);
+      } else if (oldInputs[i] instanceof ActionInput) {
+        ActionInput actionInput = (ActionInput)oldInputs[i];
+        msgInputParamNames.add(actionInput.getName());
+        setActionInputValue(actionInput.getName(), actionInput);
+      }
+    }
+    
+    if (inputSource instanceof IActionInputVariable) {
+      IActionInputVariable actionVariable = (IActionInputVariable)inputSource;
+      msgInputParamNames.add(actionVariable.getVariableName());
+      setActionInputValue(actionVariable.getVariableName(), actionVariable);
+    } else if ((inputSource instanceof ActionInputConstant) && (((ActionInputConstant)inputSource).getValue() != null)) {
+      String msgInputParamName = getUniqueNameParam();
+      msgInputParamNames.add(msgInputParamName);
+      setActionInputValue(msgInputParamName, (ActionInputConstant)inputSource);
+    }
+    
+    if (msgInputParamNames.size() > 0) {
+      setComponentDefinition(ARGUMENT_XPATH, (String[])msgInputParamNames.toArray(new String[0]));
+    }
+  }
   
-  public void setMsgInputs(IActionInputValueProvider[] values) {
+  public void setMsgInputs(IActionInput[] values) {
     Object[] oldInputs = getMsgInputs();
     for (int i = 0; i < oldInputs.length; i++) {
       if (oldInputs[i] instanceof ActionInput) {
@@ -179,11 +216,11 @@ public class FormatMsgAction extends ActionDefinition {
       } else if ((values[i] instanceof ActionInputConstant) && (values[i].getValue() != null)) {
         String msgInputParamName = getUniqueNameParam();
         msgInputParamNames.add(msgInputParamName);
-        setActionInputValue(msgInputParamName, values[i]);
+        setActionInputValue(msgInputParamName, (ActionInputConstant)values[i]);
       } else if (values[i] instanceof ActionInput) {
         ActionInput actionInput = (ActionInput)values[i];
         msgInputParamNames.add(actionInput.getName());
-        setInputParam(actionInput.getName(), actionInput.getReferencedVariableName(), actionInput.getType());
+        setActionInputValue(actionInput.getName(), actionInput);
       }
     }
     if (msgInputParamNames.size() > 0) {

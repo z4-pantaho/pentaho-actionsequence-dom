@@ -37,8 +37,8 @@ import org.pentaho.actionsequence.dom.actions.SqlQueryAction;
  *
  */
 public class ActionSequenceDocument implements IActionSequenceDocument {
-
     
+
 /*
   public static final String SUSPEND_SCHEDULER_CMND = "suspendScheduler"; //$NON-NLS-1$
   
@@ -205,7 +205,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
       } else if (element.getParent().getPath().equals(DOC_OUTPUTS_PATH)) {
         actionSequenceElement = new ActionSequenceOutput(element, actionInputProvider);
       } else if (element.getParent().getPath().equals(DOC_RESOURCES_PATH)) {
-        actionSequenceElement = new ActionSequenceResourceDom(element, actionInputProvider);
+        actionSequenceElement = new ActionSequenceResource(element, actionInputProvider);
       } else if (element.getParent().getName().equals(ACTION_INPUTS_NAME)) {
         actionSequenceElement = new ActionInput(element, actionInputProvider);
       } else if (element.getParent().getName().equals(ACTION_OUTPUTS_NAME)) {
@@ -629,7 +629,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
    * @param resourceName the resource name
    */
   public void deleteResource(String resourceName) {
-    IActionSequenceResourceDom resource = getResource(resourceName);
+    IActionSequenceResource resource = getResource(resourceName);
     if (resource != null) {
       resource.getElement().detach();
       fireResourceRemoved(this, resource);
@@ -639,12 +639,12 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
   /**
    * @return all the action sequence resources
    */
-  public IActionSequenceResourceDom[] getResources() {
+  public IActionSequenceResource[] getResources() {
     List resourcesList =  document.getRootElement().selectNodes(DOC_RESOURCES_NAME + "/*"); //$NON-NLS-1$
-    IActionSequenceResourceDom[] resources = new ActionSequenceResourceDom[resourcesList.size()];
+    ActionSequenceResource[] resources = new ActionSequenceResource[resourcesList.size()];
     int index = 0;
     for (Iterator iter = resourcesList.iterator(); iter.hasNext();) {
-      resources[index++] = new ActionSequenceResourceDom((Element)iter.next(), actionInputProvider);
+      resources[index++] = new ActionSequenceResource((Element)iter.next(), actionInputProvider);
     }
     return resources;
   }
@@ -653,9 +653,9 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
    * @param resourceName the resource name.
    * @return the resource with the given name or null if it does not exist
    */
-  public IActionSequenceResourceDom getResource(String resourceName) {
+  public IActionSequenceResource getResource(String resourceName) {
     Element element = (Element)document.getRootElement().selectSingleNode(DOC_RESOURCES_NAME + "/" + resourceName); //$NON-NLS-1$
-    return element != null ? new ActionSequenceResourceDom(element, actionInputProvider) : null;
+    return element != null ? new ActionSequenceResource(element, actionInputProvider) : null;
   }
   
   /**
@@ -666,8 +666,8 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
    * @param mimeType the resource mime type
    * @return the action sequence resource
    */
-  public IActionSequenceResourceDom setResourceUri(String resourceName, URI uri, String mimeType) {
-	  IActionSequenceResourceDom docResource = getResource(resourceName);
+  public IActionSequenceResource setResourceUri(String resourceName, URI uri, String mimeType) {
+    IActionSequenceResource docResource = getResource(resourceName);
     if (uri == null) {
       if (docResource != null) {
         docResource.delete();
@@ -676,7 +676,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     } else {
       if (docResource == null) {
         Element resourceElement = DocumentHelper.makeElement(document.getRootElement(), DOC_RESOURCES_NAME + "/" + resourceName); //$NON-NLS-1$
-        docResource = new ActionSequenceResourceDom(resourceElement, actionInputProvider);
+        docResource = new ActionSequenceResource(resourceElement, actionInputProvider);
         fireResourceAdded(docResource);
       }
       docResource.setUri(uri);
@@ -831,8 +831,8 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     Document doc = null;
     if (resource instanceof ActionResource) {
       doc = ((ActionResource)resource).ioElement.getDocument();
-    } else if (resource instanceof ActionSequenceResourceDom) {
-      doc = ((ActionSequenceResourceDom)resource).ioElement.getDocument();
+    } else if (resource instanceof ActionSequenceResource) {
+      doc = ((ActionSequenceResource)resource).ioElement.getDocument();
     }
     ArrayList listenerList = (ArrayList)listenersMap.get(doc);
     if (listenerList != null) {
@@ -865,8 +865,8 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     Document doc = null;
     if (resource instanceof ActionResource) {
       doc = ((ActionResource)resource).ioElement.getDocument();
-    } else if (resource instanceof ActionSequenceResourceDom) {
-      doc = ((ActionSequenceResourceDom)resource).ioElement.getDocument();
+    } else if (resource instanceof ActionSequenceResource) {
+      doc = ((ActionSequenceResource)resource).ioElement.getDocument();
     }
     ArrayList listenerList = (ArrayList)listenersMap.get(doc);
     if (listenerList != null) {
@@ -882,8 +882,8 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     Document doc = null;
     if (resource instanceof ActionResource) {
       doc = ((ActionResource)resource).ioElement.getDocument();
-    } else if (resource instanceof ActionSequenceResourceDom) {
-      doc = ((ActionSequenceResourceDom)resource).ioElement.getDocument();
+    } else if (resource instanceof ActionSequenceResource) {
+      doc = ((ActionSequenceResource)resource).ioElement.getDocument();
     }
     ArrayList listenerList = (ArrayList)listenersMap.get(doc);
     if (listenerList != null) {
@@ -947,7 +947,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     }
   }
   
-  public static void fireActionChanged(final ActionDefinition action) {
+  public static void fireActionChanged(final IActionDefinition action) {
     ArrayList listenerList = (ArrayList)listenersMap.get(action.getElement().getDocument());
     if (listenerList != null) {
       Object[] listeners = listenerList.toArray();
@@ -1059,16 +1059,30 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     return (IActionDefinition[])getAncestorExecutables(controlStatement, false).toArray(new ActionDefinition[0]);
   }
   
+  /**
+   * Returns the list of ActionSequenceInputs and ActionOutputs that are available as inputs to 
+   * the action definition.
+   * @param actionDefinition the target action definition
+   * @param types the desired input types
+   * @return
+   */
   public IActionInputVariable[] getAvailInputVariables(IActionDefinition actionDefinition, String[] types) {
     List availParams = new ArrayList();
     availParams.addAll(Arrays.asList(getInputs(types)));
     IActionDefinition[] precedingActionDefs = getPrecedingActionDefinitions(actionDefinition);
     for (int i = 0; i < precedingActionDefs.length; i++) {
-      availParams.addAll(Arrays.asList(precedingActionDefs[i].getOutputParams(types)));
+      availParams.addAll(Arrays.asList(precedingActionDefs[i].getOutputs(types)));
     }
     return (IActionInputVariable[])availParams.toArray(new IActionInputVariable[0]);
   }
   
+  /**
+   * Returns the list of ActionSequenceInputs and ActionOutputs that are available as inputs to 
+   * this action definition.
+   * @param actionDefinition the target action definition
+   * @param types the desired input type
+   * @return
+   */
   public IActionInputVariable[] getAvailInputVariables(IActionDefinition actionDefinition, String type) {
     return getAvailInputVariables(actionDefinition, new String[]{type});
   }
@@ -1080,7 +1094,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
       availParams.addAll(Arrays.asList(getInputs(types)));
       IActionDefinition[] precedingActionDefs = getPrecedingActionDefinitions(controlStatement);
       for (int i = 0; i < precedingActionDefs.length; i++) {
-        availParams.addAll(Arrays.asList(precedingActionDefs[i].getOutputParams(types)));
+        availParams.addAll(Arrays.asList(precedingActionDefs[i].getOutputs(types)));
       }
     } else {
       IActionSequenceInput[] actionSequenceInputs = getInputs();
@@ -1091,7 +1105,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
       }
       IActionDefinition[] precedingActionDefs = getPrecedingActionDefinitions(controlStatement);
       for (int i = 0; i < precedingActionDefs.length; i++) {
-        IActionOutput[] actionOutputs = precedingActionDefs[i].getAllOutputParams();
+        IActionOutput[] actionOutputs = precedingActionDefs[i].getOutputs();
         for (int j = 0; j < actionOutputs.length; j++) {
           if (actionOutputs[j].getPublicName().indexOf('-') == -1) {
             availParams.add(actionOutputs[j]);
@@ -1154,7 +1168,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
       brokenReferences.removeAll(Arrays.asList(getReferencesTo((ActionOutput)iterator.next())));
     }
     
-    IActionSequenceResourceDom[] actionSequenceResources = getResources();
+    IActionSequenceResource[] actionSequenceResources = getResources();
     for (int i = 0; i < actionSequenceResources.length; i++) {
       brokenReferences.removeAll(Arrays.asList(getReferencesTo(actionSequenceResources[i])));
     }
@@ -1162,7 +1176,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     return (IActionSequenceElement[])brokenReferences.toArray(new IActionSequenceElement[0]);
   }
   
-  public IActionResource[] getReferencesTo(IActionSequenceResourceDom actionSequenceResource) {
+  public IActionResource[] getReferencesTo(IActionSequenceResource actionSequenceResource) {
     ArrayList actionInputs = new ArrayList();
     if (this.equals(actionSequenceResource.getDocument())) {
       String name = actionSequenceResource.getName();
@@ -1314,5 +1328,42 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     actionSequenceOutput = actionSequenceDocument.createOutput("queryResults", ActionSequenceDocument.RESULTSET_TYPE);
     actionSequenceOutput.addDestination(SESSION_OUTPUT_DESTINATION, "theOutput");
     System.out.println(actionSequenceDocument.toString());
+  }
+  
+  /**
+   * Moves the executable statement to the specified if/loop statement. This statement will
+   * be the last child of parent control statement. If the parent control statement is null this statement will be a top statement in the action sequence document.
+   * 
+   * @param statementToMove the statement to be moved.
+   * @param newParentControlStatement the new parent if/loop statement. May be null.
+   */
+  public void moveStatement(IActionSequenceExecutableStatement statementToMove, IActionControlStatement newParentControlStatement) {
+    if (newParentControlStatement == null) {
+      newParentControlStatement = getRootLoop();
+    }
+    if (statementToMove instanceof ActionControlStatement) {
+      newParentControlStatement.add((ActionControlStatement)statementToMove);
+    } else if (statementToMove instanceof ActionDefinition) {
+      newParentControlStatement.add((ActionDefinition)statementToMove);
+    }
+  }
+  
+  /**
+   * Moves the executable statement to the specified if/loop statement. If the parent control statement is null this statement will be a top level 
+   * statement in the action sequence document.
+   * 
+   * @param statementToMove the statement to be moved.
+   * @param newParentControlStatement the new parent if/loop statement. May be null.
+   * @param index the index of the statement within the parent control statement.
+   */
+  public void moveStatement(IActionSequenceExecutableStatement statementToMove, IActionControlStatement newParentControlStatement, int index) {
+    if (newParentControlStatement == null) {
+      newParentControlStatement = getRootLoop();
+    }
+    if (statementToMove instanceof ActionControlStatement) {
+      newParentControlStatement.add((ActionControlStatement)statementToMove, index);
+    } else if (statementToMove instanceof ActionDefinition) {
+      newParentControlStatement.add((ActionDefinition)statementToMove, index);
+    }
   }
 }

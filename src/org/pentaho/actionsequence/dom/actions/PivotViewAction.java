@@ -13,9 +13,10 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionInput;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 
 public class PivotViewAction extends ActionDefinition {
 
@@ -57,111 +58,63 @@ public class PivotViewAction extends ActionDefinition {
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
     setComponentDefinition(MODE_ELEMENT, EXECUTE_MODE);
-    setOutputParam(OPTIONS_ELEMENT, OPTIONS_ELEMENT, ActionSequenceDocument.LIST_TYPE);
-    setOutputParam(MODEL_ELEMENT, MODEL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    setOutputParam(CONNECTION_ELEMENT, CONNECTION_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    setOutputParam(MDX_ELEMENT, MDX_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    setOutputParam(TITLE_ELEMENT, TITLE_ELEMENT, ActionSequenceDocument.STRING_TYPE);
-    setOutputParam(URL_ELEMENT, URL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutput(OPTIONS_ELEMENT, OPTIONS_ELEMENT, ActionSequenceDocument.LIST_TYPE);
+    setOutput(MODEL_ELEMENT, MODEL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutput(CONNECTION_ELEMENT, CONNECTION_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutput(MDX_ELEMENT, MDX_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutput(TITLE_ELEMENT, TITLE_ELEMENT, ActionSequenceDocument.STRING_TYPE);
+    setOutput(URL_ELEMENT, URL_ELEMENT, ActionSequenceDocument.STRING_TYPE);
   }
   
   public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
   
-  public void setMode(String value) {
-    setInputValue(MODE_ELEMENT, value);
+  public void setMode(IActionInputSource value) {
+    setActionInputValue(MODE_ELEMENT, value);
   }
   
-  public String getMode() {
-    return getComponentDefinitionValue(MODE_ELEMENT);
+  public IActionInput getMode() {
+    return getInput(MODE_ELEMENT);
   }
   
-  public void setModeParam(IActionInputVariable variable) {
-    setInputParam(MODE_ELEMENT, variable);
+  public void setViewer(IActionInputSource value) {
+    setActionInputValue(VIEWER_ELEMENT, value);
   }
   
-  public IActionInput getModeParam() {
-    return getInputParam(MODE_ELEMENT);
-  }
-
-  public void setViewer(String value) {
-    setInputValue(VIEWER_ELEMENT, value);
+  public IActionInput getViewer() {
+    return getInput(VIEWER_ELEMENT);
   }
   
-  public String getViewer() {
-    return getComponentDefinitionValue(VIEWER_ELEMENT);
+  public void setModel(IActionInputSource value) {
+    setActionInputValue(MODEL_ELEMENT, value);
   }
   
-  public void setViewerParam(IActionInputVariable variable) {
-    setInputParam(VIEWER_ELEMENT, variable);
+  public IActionInput getModel() {
+    return getInput(MODEL_ELEMENT);
   }
   
-  public IActionInput getViewerParam() {
-    return getInputParam(VIEWER_ELEMENT);
-  }
-
-  public void setModel(String value) {
-    setInputValue(MODEL_ELEMENT, value);
+  public void setJndi(IActionInputSource value) {
+    setActionInputValue(JNDI_ELEMENT, value);
   }
   
-  public String getModel() {
-    return getComponentDefinitionValue(MODEL_ELEMENT);
+  public IActionInput getJndi() {
+    return getInput(JNDI_ELEMENT);
   }
   
-  public void setModelParam(IActionInputVariable variable) {
-    setInputParam(MODEL_ELEMENT, variable);
+  public void setRole(IActionInputSource value) {
+    setActionInputValue(ROLE_ELEMENT, value);
   }
   
-  public IActionInput getModelParam() {
-    return getInputParam(MODEL_ELEMENT);
-  }
-
-  public void setJndi(String value) {
-    setInputValue(JNDI_ELEMENT, value);
+  public IActionInput getRole() {
+    return getInput(ROLE_ELEMENT);
   }
   
-  public String getJndi() {
-    return getComponentDefinitionValue(JNDI_ELEMENT);
+  public void setQuery(IActionInputSource value) {
+    setActionInputValue(QUERY_ELEMENT, value);
   }
   
-  public void setJndiParam(IActionInputVariable variable) {
-    setInputParam(JNDI_ELEMENT, variable);
-  }
-  
-  public IActionInput getJndiParam() {
-    return getInputParam(JNDI_ELEMENT);
-  }
-
-  public void setRole(String value) {
-    setInputValue(ROLE_ELEMENT, value);
-  }
-  
-  public String getRole() {
-    return getComponentDefinitionValue(ROLE_ELEMENT);
-  }
-  
-  public void setRoleParam(IActionInputVariable variable) {
-    setInputParam(ROLE_ELEMENT, variable);
-  }
-  
-  public IActionInput getRoleParam() {
-    return getInputParam(ROLE_ELEMENT);
-  }
-
-  public void setQuery(String value) {
-    setInputValue(QUERY_ELEMENT, value);
-  }
-  
-  public String getQuery() {
-    return getComponentDefinitionValue(QUERY_ELEMENT);
-  }
-  
-  public void setQueryParam(IActionInputVariable variable) {
-    setInputParam(QUERY_ELEMENT, variable);
-  }
-  
-  public IActionInput getQueryParam() {
-    return getInputParam(QUERY_ELEMENT);
+  public IActionInput getQuery() {
+    return getInput(QUERY_ELEMENT);
   }
 }

@@ -15,8 +15,10 @@ package org.pentaho.actionsequence.dom.actions;
 import java.net.URI;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
@@ -57,8 +59,8 @@ public class TemplateMsgAction extends ActionDefinition {
   
   public String[] getReservedOutputNames() {
     String expectedOutput = OUTPUT_MSG_ELEMENT;
-    if (getOutputParam(expectedOutput) ==  null) { 
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.STRING_TYPE);
+    if (getOutput(expectedOutput) ==  null) { 
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.STRING_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -71,7 +73,7 @@ public class TemplateMsgAction extends ActionDefinition {
   }
 
   protected void initNewActionDefinition() {
-    setInputValue(TEMPLATE_ELEMENT, ""); //$NON-NLS-1$
+    setActionInputValue(TEMPLATE_ELEMENT, new ActionInputConstant("")); //$NON-NLS-1$
   }
 
   public IActionResource setTemplateResource(URI uri, String mimeType) {
@@ -79,48 +81,48 @@ public class TemplateMsgAction extends ActionDefinition {
     // Cleaning up the template from input since we would be using 
     // template based on resource
     if (uri != null) {
-    	setInputValue(TEMPLATE_ELEMENT, null);
+      setActionInputValue(TEMPLATE_ELEMENT, (IActionInputSource)null);
     }
     return templateResource;
   }
 	
   public IActionResource getTemplateResource() {
-    return getResourceParam(TEMPLATE_ELEMENT);
+    return getResource(TEMPLATE_ELEMENT);
   }
 
-  public void setTemplate(IActionInputValueProvider value) {
+  public void setTemplate(IActionInputSource value) {
 	  setActionInputValue(TEMPLATE_ELEMENT, value);
 	  
 	// Cleaning up the resource since we would be using template based on input
-    if ((value instanceof IActionInputVariable) || ((value != null) && (value.getValue() != null))) {
+    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
     	setTemplateResource(null, null);
     }
   }
   
-  public IActionInputValueProvider getTemplate() {
-	  return getActionInputValue(TEMPLATE_ELEMENT);
+  public IActionInput getTemplate() {
+	  return getInput(TEMPLATE_ELEMENT);
   }
 
-  public IActionInputValueProvider getMimeType() {
-    return getActionInputValue(MIME_TYPE);
+  public IActionInput getMimeType() {
+    return getInput(MIME_TYPE);
   }
 
-  public void setMimeType(IActionInputValueProvider value) {
+  public void setMimeType(IActionInputSource value) {
     setActionInputValue(MIME_TYPE, value);
   }
 
-  public IActionInputValueProvider getExtension() {
-	  return getActionInputValue(EXTENSION);
+  public IActionInput getExtension() {
+	  return getInput(EXTENSION);
   }
-  public void setExtension(IActionInputValueProvider value) {
+  public void setExtension(IActionInputSource value) {
     setActionInputValue(EXTENSION, value);
   }
   
   public void setOutputString(String publicOutputName) {
-    setOutputParam(OUTPUT_MSG_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+    setOutput(OUTPUT_MSG_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
   }
   
   public IActionOutput getOutputString() {
-    return getOutputParam(OUTPUT_MSG_ELEMENT);
+    return getOutput(OUTPUT_MSG_ELEMENT);
   }
 }

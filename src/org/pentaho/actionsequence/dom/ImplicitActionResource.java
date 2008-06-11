@@ -33,7 +33,7 @@ public class ImplicitActionResource extends ActionResource {
 
   public void delete() {
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         actionResource.delete();
       }
@@ -57,7 +57,7 @@ public class ImplicitActionResource extends ActionResource {
 
   public void setMapping(String mapping) {
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         actionResource.setMapping(mapping);
       } else {
@@ -73,7 +73,7 @@ public class ImplicitActionResource extends ActionResource {
 
   public void setMimeType(String mimeType) {
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         actionResource.setMimeType(mimeType);
       } else {
@@ -89,7 +89,7 @@ public class ImplicitActionResource extends ActionResource {
 
   public void setName(String resourceName) {
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(this.resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(this.resourceName, false);
       if (actionResource != null) {
         actionResource.setName(resourceName);
       } else {
@@ -106,7 +106,7 @@ public class ImplicitActionResource extends ActionResource {
 
   public void setType(String ioType) {
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         actionResource.setType(ioType);
       } else {
@@ -123,7 +123,7 @@ public class ImplicitActionResource extends ActionResource {
   public boolean equals(Object arg0) {
     boolean result = false;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         result = actionResource.equals(arg0);
       } else {
@@ -138,7 +138,7 @@ public class ImplicitActionResource extends ActionResource {
   public IPentahoStreamSource getDataSource() throws FileNotFoundException {
     IPentahoStreamSource dataSource = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         dataSource = actionResource.getDataSource();
       } else {
@@ -153,7 +153,7 @@ public class ImplicitActionResource extends ActionResource {
   public Element getElement() {
     Element element = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         element = actionResource.getElement();
       } else {
@@ -168,7 +168,7 @@ public class ImplicitActionResource extends ActionResource {
   public String getMapping() {
     String mapping = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         mapping = actionResource.getMapping();
       } else {
@@ -183,7 +183,7 @@ public class ImplicitActionResource extends ActionResource {
   public String getMimeType() {
     String mimeType = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         mimeType = actionResource.getMimeType();
       } else {
@@ -198,7 +198,7 @@ public class ImplicitActionResource extends ActionResource {
   public String getName() {
     String name = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         name = actionResource.getName();
       } else {
@@ -213,7 +213,7 @@ public class ImplicitActionResource extends ActionResource {
   public String getPublicName() {
     String name = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         name = actionResource.getPublicName();
       } else {
@@ -228,7 +228,7 @@ public class ImplicitActionResource extends ActionResource {
   public String getType() {
     String type = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         type = actionResource.getType();
       } else {
@@ -243,7 +243,7 @@ public class ImplicitActionResource extends ActionResource {
   public URI getUri() {
     URI uri = null;
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         uri = actionResource.getUri();
       } else {
@@ -257,7 +257,7 @@ public class ImplicitActionResource extends ActionResource {
 
   public void setURI(URI uri) {
     if (actionDefinition != null) {
-      IActionResource actionResource = actionDefinition.getResourceParam(resourceName, false);
+      IActionResource actionResource = actionDefinition.getResource(resourceName, false);
       if (actionResource != null) {
         actionResource.setURI(uri);
       } else {

@@ -14,11 +14,11 @@ package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.IActionInput;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 
 public class JMSAction extends ActionDefinition {
 
-  public static final String COMPONENT_NAME = "org.pentaho.component.JMSComponent"; //$NON-NLS-1$
+  public static final String COMPONENT_NAME = "com.pentaho.component.JMSComponent"; //$NON-NLS-1$
   public static final String SOLUTION_NAME_ELEMENT = "solution-name"; //$NON-NLS-1$
   public static final String ACTION_PATH_ELEMENT = "action-path"; //$NON-NLS-1$
   public static final String ACTION_NAME_ELEMENT = "action-name"; //$NON-NLS-1$
@@ -47,67 +47,36 @@ public class JMSAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setSolutionName(String value) {
-    setInputValue(SOLUTION_NAME_ELEMENT, value);
+  public void setSolutionName(IActionInputSource value) {
+    setActionInputValue(SOLUTION_NAME_ELEMENT, value);
   }
   
-  public String getSolutionName() {
-    return getComponentDefinitionValue(SOLUTION_NAME_ELEMENT);
+  public IActionInput getSolutionName() {
+    return getInput(ACTION_NAME_ELEMENT);
   }
   
-  public void setSolutionNameParam(IActionInputVariable variable) {
-    setInputParam(SOLUTION_NAME_ELEMENT, variable);
+  public void setActionPath(IActionInputSource value) {
+    setActionInputValue(ACTION_PATH_ELEMENT, value);
   }
   
-  public IActionInput getSolutionNameParam() {
-    return getInputParam(SOLUTION_NAME_ELEMENT);
+  public IActionInput getActionPath() {
+    return getInput(ACTION_NAME_ELEMENT);
   }
   
-  public void setActionPath(String value) {
-    setInputValue(ACTION_PATH_ELEMENT, value);
+  public void setActionName(IActionInputSource value) {
+    setActionInputValue(ACTION_NAME_ELEMENT, value);
   }
   
-  public String getActionPath() {
-    return getComponentDefinitionValue(ACTION_PATH_ELEMENT);
+  public IActionInput getActionName() {
+    return getInput(ACTION_NAME_ELEMENT);
   }
   
-  public void setActionPathParam(IActionInputVariable variable) {
-    setInputParam(ACTION_PATH_ELEMENT, variable);
+  public void setJmsQueueName(IActionInputSource value) {
+    setActionInputValue(QUEUE_NAME_ELEMENT, value);
   }
   
-  public IActionInput getActionPathParam() {
-    return getInputParam(ACTION_PATH_ELEMENT);
+  public IActionInput getJmsQueueName() {
+    return getInput(QUEUE_NAME_ELEMENT);
   }
   
-  public void setActionName(String value) {
-    setInputValue(ACTION_NAME_ELEMENT, value);
-  }
-  
-  public String getActionName() {
-    return getComponentDefinitionValue(ACTION_NAME_ELEMENT);
-  }
-  
-  public void setActionNameParam(IActionInputVariable variable) {
-    setInputParam(ACTION_NAME_ELEMENT, variable);
-  }
-  
-  public IActionInput getActionNameParam() {
-    return getInputParam(ACTION_NAME_ELEMENT);
-  }
-  
-  public void setJmsQueueName(String value) {
-    setInputValue(QUEUE_NAME_ELEMENT, value);
-  }
-  
-  public String getJmsQueueName() {
-    return getComponentDefinitionValue(QUEUE_NAME_ELEMENT);
-  }
-  
-  public void setJmsQueueNameParam(IActionInputVariable variable) {
-    setInputParam(QUEUE_NAME_ELEMENT, variable);
-  }
-  
-  public IActionInput getJmsQueueNameParam() {
-    return getInputParam(QUEUE_NAME_ELEMENT);
-  }
 }

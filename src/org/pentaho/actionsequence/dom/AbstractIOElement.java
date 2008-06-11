@@ -22,7 +22,7 @@ import org.pentaho.actionsequence.dom.messages.Messages;
  * @author Angelo Rodriguez
  *
  */
-public abstract class AbstractIOElement implements IGenericIOElement, IAbstractIOElement {
+public abstract class AbstractIOElement implements IAbstractIOElement {
 
   Element ioElement;
   IActionParameterMgr actionInputProvider;

@@ -3,8 +3,10 @@ package org.pentaho.actionsequence.dom.actions;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
@@ -63,144 +65,107 @@ public abstract class AbstractChartAction extends ActionDefinition {
     return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
   
-  public void setChartData(String value) {
-    setInputValue(CHART_DATA_ELEMENT, value);
+  public void setChartData(IActionInputVariable value) {
+    setActionInputValue(CHART_DATA_ELEMENT, value);
   }
   
-  public String getChartData() {
-    return getComponentDefinitionValue(CHART_DATA_ELEMENT);
+  public IActionInput getChartData() {
+    return getInput(CHART_DATA_ELEMENT);
   }
   
-  public void setChartDataParam(IActionInputVariable variable) {
-    setInputParam(CHART_DATA_ELEMENT, variable);
+  public void setWidth(IActionInputSource value) {
+    setActionInputValue(CHART_WIDTH_ELEMENT, value);
   }
   
-  public IActionInput getChartDataParam() {
-    return getInputParam(CHART_DATA_ELEMENT);
-  }
-
-  public void setWidth(String value) {
-    setInputValue(CHART_WIDTH_ELEMENT, value);
+  public IActionInput getWidth() {
+    return getInput(CHART_WIDTH_ELEMENT);
   }
   
-  public String getWidth() {
-    return getComponentDefinitionValue(CHART_WIDTH_ELEMENT);
+  public void setHeight(IActionInputSource value) {
+    setActionInputValue(CHART_HEIGHT_ELEMENT, value);
   }
   
-  public void setWidthParam(IActionInputVariable variable) {
-    setInputParam(CHART_WIDTH_ELEMENT, variable);
+  public IActionInput getHeight() {
+    return getInput(CHART_HEIGHT_ELEMENT);
   }
   
-  public IActionInput getWidthParam() {
-    return getInputParam(CHART_WIDTH_ELEMENT);
-  }
-
-  public void setHeight(String value) {
-    setInputValue(CHART_HEIGHT_ELEMENT, value);
+  public void setTitle(IActionInputSource value) {
+    setActionInputValue(CHART_TITLE_ELEMENT, value);
   }
   
-  public String getHeight() {
-    return getComponentDefinitionValue(CHART_HEIGHT_ELEMENT);
+  public IActionInput getTitle() {
+    return getInput(CHART_TITLE_ELEMENT);
   }
   
-  public void setHeightParam(IActionInputVariable variable) {
-    setInputParam(CHART_HEIGHT_ELEMENT, variable);
+  public void setTitleBold(ActionInputConstant value) {
+    setComponentDefinition(CHART_TITLE_FONT_BOLD_XPATH, value != null ? Boolean.toString(value.getBooleanValue(false)) : "false"); //$NON-NLS-1$//$NON-NLS-2$
   }
   
-  public IActionInput getHeightParam() {
-    return getInputParam(CHART_HEIGHT_ELEMENT);
-  }
-
-  public void setTitle(String value) {
-    setInputValue(CHART_TITLE_ELEMENT, value);
-  }
-  
-  public String getTitle() {
-    return getComponentDefinitionValue(CHART_TITLE_ELEMENT);
-  }
-  
-  public void setTitleParam(IActionInputVariable variable) {
-    setInputParam(CHART_TITLE_ELEMENT, variable);
-  }
-  
-  public IActionInput getTitleParam() {
-    return getInputParam(CHART_TITLE_ELEMENT);
-  }
-  
-  public void setTitleBold(boolean value) {
-    setComponentDefinition(CHART_TITLE_FONT_BOLD_XPATH, value ? "true" : "false"); //$NON-NLS-1$//$NON-NLS-2$
-  }
-  
-  public boolean getTitleBold() {
+  public ActionInputConstant getTitleBold() {
     String value = getComponentDefinitionValue(CHART_TITLE_FONT_BOLD_XPATH);
-    return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
+    return value != null ? new ActionInputConstant(new Boolean(value)) : IActionInput.NULL_INPUT;
   }
   
-  public void setTitleItalic(boolean value) {
-    setComponentDefinition(CHART_TITLE_FONT_ITALIC_XPATH, value ? "true" : "false"); //$NON-NLS-1$//$NON-NLS-2$
+  public void setTitleItalic(ActionInputConstant value) {
+    setComponentDefinition(CHART_TITLE_FONT_ITALIC_XPATH, value != null ? Boolean.toString(value.getBooleanValue(false)) : "false"); //$NON-NLS-1$//$NON-NLS-2$
   }
   
-  public boolean getTitleItalic() {
+  public ActionInputConstant getTitleItalic() {
     String value = getComponentDefinitionValue(CHART_TITLE_FONT_ITALIC_XPATH);
-    return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
+    return value != null ? new ActionInputConstant(new Boolean(value)) : IActionInput.NULL_INPUT;
   }
   
-  public void setByRow(boolean value) {
-    setComponentDefinition(CHART_BY_ROW_ELEMENT, value ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+  public void setByRow(IActionInputSource value) {
+    setActionInputValue(CHART_BY_ROW_ELEMENT, value);
   }
   
-  public boolean getByRow() {
-    String value =  getComponentDefinitionValue(CHART_BY_ROW_ELEMENT);
-    return (value != null) && value.trim().toLowerCase().equals("true"); //$NON-NLS-1$
+  public IActionInput getByRow() {
+    return getInput(CHART_BY_ROW_ELEMENT);
   }
   
-  public void setByRowParam(IActionInputVariable variable) {
-    setInputParam(CHART_BY_ROW_ELEMENT, variable);
+  public void setBorderVisible(ActionInputConstant value) {
+    setComponentDefinition(CHART_BORDER_VISIBLE_XPATH, value != null ? Boolean.toString(value.getBooleanValue(false)) : "false"); //$NON-NLS-1$//$NON-NLS-2$
   }
   
-  public IActionInput getByRowParam() {
-    return getInputParam(CHART_BY_ROW_ELEMENT);
-  }
-  
-  public void setBorderVisible(boolean value) {
-    setComponentDefinition(CHART_BORDER_VISIBLE_XPATH, value ? "true" : "false"); //$NON-NLS-1$//$NON-NLS-2$
-  }
-  
-  public boolean getBorderVisible() {
+  public ActionInputConstant getBorderVisible() {
     String value = getComponentDefinitionValue(CHART_BORDER_VISIBLE_XPATH);
-    return (value == null) || !value.trim().toLowerCase().equals("false"); //$NON-NLS-1$
+    return value != null ? new ActionInputConstant(new Boolean(value)) : IActionInput.NULL_INPUT;
   }
   
-  public void setFontFamily(String value) {
-    setComponentDefinition(CHART_TITLE_FONT_FAMILY_XPATH, value);
+  public void setFontFamily(ActionInputConstant value) {
+    setComponentDefinition(CHART_TITLE_FONT_FAMILY_XPATH, value != null ? value.getStringValue() : null); //$NON-NLS-1$//$NON-NLS-2$
   }
   
-  public String getFontFamily() {
-    return getComponentDefinitionValue(CHART_TITLE_FONT_FAMILY_XPATH);
+  public ActionInputConstant getFontFamily() {
+    String value = getComponentDefinitionValue(CHART_TITLE_FONT_FAMILY_XPATH);
+    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
   }
 
-  public void setSubtitle(String value) {
-    setComponentDefinition(CHART_SUBTITLE_XPATH, value);
+  public void setSubtitle(ActionInputConstant value) {
+    setComponentDefinition(CHART_SUBTITLE_XPATH, value != null ? value.getStringValue() : null); //$NON-NLS-1$//$NON-NLS-2$
   }
   
-  public String getSubtitle() {
-    return getComponentDefinitionValue(CHART_SUBTITLE_XPATH);
+  public ActionInputConstant getSubtitle() {
+    String value = getComponentDefinitionValue(CHART_SUBTITLE_XPATH);
+    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
   }
 
-  public void setFontSize(String value) {
-    setComponentDefinition(CHART_TITLE_FONT_SIZE_XPATH, value);
+  public void setFontSize(ActionInputConstant value) {
+    setComponentDefinition(CHART_TITLE_FONT_SIZE_XPATH, value != null ? value.getStringValue() : null); //$NON-NLS-1$//$NON-NLS-2$
   }
   
-  public String getFontSize() {
-    return getComponentDefinitionValue(CHART_TITLE_FONT_SIZE_XPATH);
+  public ActionInputConstant getFontSize() {
+    String value = getComponentDefinitionValue(CHART_SUBTITLE_XPATH);
+    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
   }
 
-  public void setBorderPaint(String value) {
-    setComponentDefinition(CHART_BORDER_COLOR_XPATH, value);
+  public void setBorderPaint(ActionInputConstant value) {
+    setComponentDefinition(CHART_BORDER_COLOR_XPATH, value != null ? value.getStringValue() : null); //$NON-NLS-1$//$NON-NLS-2$
   }
   
-  public String getBorderPaint() {
-    return getComponentDefinitionValue(CHART_BORDER_COLOR_XPATH);
+  public ActionInputConstant getBorderPaint() {
+    String value = getComponentDefinitionValue(CHART_SUBTITLE_XPATH);
+    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
   }
   
   public void setChartType(String value) {
@@ -213,7 +178,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public IActionSequenceValidationError[] validate() {
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(CHART_DATA_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(CHART_DATA_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
@@ -229,7 +194,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
       errors.add(validationError);
     }
       
-    validationError = validateResourceParam(CHART_ATTRIBUTES_ELEMENT);
+    validationError = validateResource(CHART_ATTRIBUTES_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:

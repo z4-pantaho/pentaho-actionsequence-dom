@@ -18,14 +18,15 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionOutput;
 
 public class JFreeReportGenAction extends ActionDefinition {
 
-  public static final String COMPONENT_NAME = "org.pentaho.component.JFreeReportGeneratorComponent"; //$NON-NLS-1$
-  public static final String RESULT_SET = "result-set"; //$NON-NLS-1$
-  public static final String COMPONENT_SETTINGS = "component-settings"; //$NON-NLS-1$
+  public static final String COMPONENT_NAME = "com.pentaho.component.JFreeReportGeneratorComponent"; //$NON-NLS-1$
+  public static final String RESULT_SET_ELEMENT = "result-set"; //$NON-NLS-1$
+  public static final String COMPONENT_SETTINGS_ELEMENT = "component-settings"; //$NON-NLS-1$
   public static final String TEMPLATE_PATH_PROP = "template-path"; //$NON-NLS-1$
   public static final String ORIENTATION_PROP = "orientation"; //$NON-NLS-1$
   public static final String NULL_STRING_PROP = "null-string"; //$NON-NLS-1$
@@ -48,8 +49,8 @@ public class JFreeReportGenAction extends ActionDefinition {
   public static final String REPORT_DEFINITION = "report-definition"; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
-    RESULT_SET,
-    COMPONENT_SETTINGS
+    RESULT_SET_ELEMENT,
+    COMPONENT_SETTINGS_ELEMENT
   };
   
   public JFreeReportGenAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
@@ -71,190 +72,193 @@ public class JFreeReportGenAction extends ActionDefinition {
   /*
    * Get the element from the COMPONENT_SETTINGS or ComponentDef section XML part. 
    */
-  private IActionInputValueProvider getComponentValue(String elementName) {
-	  IActionInputValueProvider value = getActionInputValue(elementName);
-	  try {
-		  if (value == ActionInputConstant.NULL_INPUT) {
-			value = getActionInputValue(COMPONENT_SETTINGS);
-			Document doc = DocumentHelper.parseText(value.getStringValue());
-		    Node componentNode = doc.getRootElement();	      
-		    value = new ActionInputConstant(componentNode.selectSingleNode(elementName).getText());
-		  }
-	  } catch (Exception e) {
-		  value = ActionInputConstant.NULL_INPUT;
-	  } 
-	  return value;
-  }
-
-  public void setResultSet(IActionInputValueProvider value) {
-    setActionInputValue(RESULT_SET, value);
+  private IActionInput getComponentValue(String elementName) {
+    IActionInput value = getInput(elementName);
+    try {
+      if (value == ActionInputConstant.NULL_INPUT) {
+        value = getInput(COMPONENT_SETTINGS_ELEMENT);
+        Document doc = DocumentHelper.parseText(value.getStringValue());
+        Node componentNode = doc.getRootElement();
+        value = new ActionInputConstant(componentNode.selectSingleNode(elementName).getText());
+      }
+    } catch (Exception e) {
+      value = ActionInputConstant.NULL_INPUT;
+    }
+    return value;
   }
   
-  public IActionInputValueProvider getResultSet() {
-    return getComponentValue(RESULT_SET);
+  public void setResultSet(IActionInputSource value) {
+    setActionInputValue(RESULT_SET_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getComponentSettings() {
-    return getActionInputValue(COMPONENT_SETTINGS);
+  public IActionInput getResultSet() {
+    return getComponentValue(RESULT_SET_ELEMENT);
   }
-
-  public void setTemplatePath(IActionInputValueProvider value) {
+  
+  public void setComponentSettings(IActionInputSource value) {
+    setActionInputValue(COMPONENT_SETTINGS_ELEMENT, value);
+  }
+  
+  public IActionInput getComponentSettings() {
+    return getInput(COMPONENT_SETTINGS_ELEMENT);
+  }
+  public void setTemplatePath(IActionInputSource value) {
     setActionInputValue(TEMPLATE_PATH_PROP, value);
   }
   
-  public IActionInputValueProvider getTemplatePath() {
+  public IActionInput getTemplatePath() {
     return getComponentValue(TEMPLATE_PATH_PROP);
   }
 
-  public void setOrientation(IActionInputValueProvider value) {
+  public void setOrientation(IActionInputSource value) {
     setActionInputValue(ORIENTATION_PROP, value);
   }
   
-  public IActionInputValueProvider getOrientation() {
+  public IActionInput getOrientation() {
     return getComponentValue(ORIENTATION_PROP);
   }
 
-  public void setNullString(IActionInputValueProvider value) {
+  public void setNullString(IActionInputSource value) {
     setActionInputValue(NULL_STRING_PROP, value);
   }
   
-  public IActionInputValueProvider getNullStrin() {
+  public IActionInput getNullString() {
     return getComponentValue(NULL_STRING_PROP);
   }
 
-  public void setHorizontalOffset(IActionInputValueProvider value) {
+  public void setHorizontalOffset(IActionInputSource value) {
     setActionInputValue(HORIZONTAL_OFFSET_PROP, value);
   }
   
-  public IActionInputValueProvider getHorizontalOffset() {
+  public IActionInput getHorizontalOffset() {
     return getComponentValue(HORIZONTAL_OFFSET_PROP);
   }
 
-  public void setReportName(IActionInputValueProvider value) {
+  public void setReportName(IActionInputSource value) {
     setActionInputValue(REPORTNAME_PROP, value);
   }
   
-  public IActionInputValueProvider getReportName() {
+  public IActionInput getReportName() {
     return getComponentValue(REPORTNAME_PROP);
   }
 
-  public void setCreateSubTotals(IActionInputValueProvider value) {
+  public void setCreateSubTotals(IActionInputSource value) {
     setActionInputValue(CREATE_SUBTOTALS_PROP, value);
   }
   
-  public IActionInputValueProvider getCreateSubTotals() {
+  public IActionInput getCreateSubTotals() {
     return getComponentValue(CREATE_SUBTOTALS_PROP);
   } 
   
-  public void setCreateGrandTotals(IActionInputValueProvider value) {
+  public void setCreateGrandTotals(IActionInputSource value) {
     setActionInputValue(CREATE_GRANDTOTALS_PROP, value);
   }
   
-  public IActionInputValueProvider getCreateGrandTotals() {
+  public IActionInput getCreateGrandTotals() {
     return getComponentValue(CREATE_GRANDTOTALS_PROP);
   } 
   
-  public void setCreateRowBanding(IActionInputValueProvider value) {
+  public void setCreateRowBanding(IActionInputSource value) {
     setActionInputValue(CREATE_ROWBANDING_PROP, value);
   }
   
-  public IActionInputValueProvider getCreateRowBanding() {
+  public IActionInput getCreateRowBanding() {
     return getComponentValue(CREATE_ROWBANDING_PROP);
   }   
   
-  public void setTotalColumnName(IActionInputValueProvider value) {
+  public void setTotalColumnName(IActionInputSource value) {
     setActionInputValue(TOTALCOLUMN_NAME_PROP, value);
   }
   
-  public IActionInputValueProvider getTotalColumnName() {
+  public IActionInput getTotalColumnName() {
     return getComponentValue(CREATE_ROWBANDING_PROP);
   }   
   
-  public void setTotalColumnWidth(IActionInputValueProvider value) {
+  public void setTotalColumnWidth(IActionInputSource value) {
     setActionInputValue(TOTALCOLUMN_WIDTH_PROP, value);
   }
   
-  public IActionInputValueProvider getTotalColumnWidth() {
+  public IActionInput getTotalColumnWidth() {
     return getComponentValue(TOTALCOLUMN_WIDTH_PROP);
   }   
   
-  public void setTotalColumnFormat(IActionInputValueProvider value) {
+  public void setTotalColumnFormat(IActionInputSource value) {
     setActionInputValue(TOTALCOLUMN_FORMAT_PROP, value);
   }
   
-  public IActionInputValueProvider getTotalColumnFormat() {
+  public IActionInput getTotalColumnFormat() {
     return getComponentValue(TOTALCOLUMN_FORMAT_PROP);
   }     
   
-  public void setRowBandingColor(IActionInputValueProvider value) {
+  public void setRowBandingColor(IActionInputSource value) {
     setActionInputValue(ROWBANDING_COLOR_PROP, value);
   }
   
-  public IActionInputValueProvider getRowBandingColor() {
+  public IActionInput getRowBandingColor() {
     return getComponentValue(ROWBANDING_COLOR_PROP);
   }     
 
-  public void setCreateTotalColumn(IActionInputValueProvider value) {
+  public void setCreateTotalColumn(IActionInputSource value) {
     setActionInputValue(CREATE_TOTALCOLUMN_PROP, value);
   }
   
-  public IActionInputValueProvider getCreateTotalColumn() {
+  public IActionInput getCreateTotalColumn() {
     return getComponentValue(CREATE_TOTALCOLUMN_PROP);
   }     
 
-  public void setColumnHeaderBackgroundColor(IActionInputValueProvider value) {
+  public void setColumnHeaderBackgroundColor(IActionInputSource value) {
     setActionInputValue(COLUMN_HEADER_BACKGROUND_COLOR_PROP, value);
   }
   
-  public IActionInputValueProvider getColumnHeaderBackgroundColor() {
+  public IActionInput getColumnHeaderBackgroundColor() {
     return getComponentValue(COLUMN_HEADER_BACKGROUND_COLOR_PROP);
   }     
 
-  public void setColumnHeaderForegroundColor(IActionInputValueProvider value) {
+  public void setColumnHeaderForegroundColor(IActionInputSource value) {
     setActionInputValue(COLUMN_HEADER_FOREGROUND_COLOR_PROP, value);
   }
   
-  public IActionInputValueProvider getColumnHeaderForegroundColor() {
+  public IActionInput getColumnHeaderForegroundColor() {
     return getComponentValue(COLUMN_HEADER_FOREGROUND_COLOR_PROP);
   }     
 
-  public void setColumnHeaderFontFace(IActionInputValueProvider value) {
+  public void setColumnHeaderFontFace(IActionInputSource value) {
     setActionInputValue(COLUMN_HEADER_FONT_FACE_PROP, value);
   }
   
-  public IActionInputValueProvider getColumnHeaderFontFace() {
+  public IActionInput getColumnHeaderFontFace() {
     return getComponentValue(COLUMN_HEADER_FONT_FACE_PROP);
   }     
 
-  public void setColumnHeaderFontSize(IActionInputValueProvider value) {
+  public void setColumnHeaderFontSize(IActionInputSource value) {
     setActionInputValue(COLUMN_HEADER_FONT_SIZE_PROP, value);
   }
   
-  public IActionInputValueProvider getColumnHeaderFontSize() {
+  public IActionInput getColumnHeaderFontSize() {
     return getComponentValue(COLUMN_HEADER_FONT_SIZE_PROP);
   }     
 
-  public void setColumnHeaderGap(IActionInputValueProvider value) {
+  public void setColumnHeaderGap(IActionInputSource value) {
     setActionInputValue(COLUMN_HEADER_GAP_PROP, value);
   }
   
-  public IActionInputValueProvider getColumnHeaderGap() {
+  public IActionInput getColumnHeaderGap() {
     return getComponentValue(COLUMN_HEADER_GAP_PROP);
   }     
 
-  public void setSpacerWidth(IActionInputValueProvider value) {
+  public void setSpacerWidth(IActionInputSource value) {
     setActionInputValue(SPACER_WIDTH_PROP, value);
   }
   
-  public IActionInputValueProvider getSpacerWidth() {
+  public IActionInput getSpacerWidth() {
     return getComponentValue(SPACER_WIDTH_PROP);
   }
   
   public void setOutputReportDefinition(String publicOutputName) {
-    setOutputParam(REPORT_DEFINITION, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
+    setOutput(REPORT_DEFINITION, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
   }
   
   public IActionOutput getOutputReportDefinition() {
-	  return getOutputParam(REPORT_DEFINITION);
+	  return getOutput(REPORT_DEFINITION);
   }
 }

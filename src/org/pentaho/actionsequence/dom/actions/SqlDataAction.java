@@ -74,9 +74,9 @@ public class SqlDataAction extends AbstractRelationalDbAction {
   public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(CONNECTION_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(CONNECTION_ELEMENT);
     if (validationError == null) {
-      validationError = validateInputParam(DRIVER_ELEMENT);
+      validationError = validateInput(DRIVER_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -92,7 +92,7 @@ public class SqlDataAction extends AbstractRelationalDbAction {
         errors.add(validationError);
       }
       
-      validationError = validateInputParam(USER_ID_ELEMENT);
+      validationError = validateInput(USER_ID_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -108,10 +108,10 @@ public class SqlDataAction extends AbstractRelationalDbAction {
         errors.add(validationError);
       }
     } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-      validationError = validateInputParam(JNDI_ELEMENT);
+      validationError = validateInput(JNDI_ELEMENT);
       if (validationError != null) {
         if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-          validationError = validateInputParam(PREPARED_COMPONENT_ELEMENT);
+          validationError = validateInput(PREPARED_COMPONENT_ELEMENT);
           if (validationError != null) {
             switch (validationError.errorCode) {
               case ActionSequenceValidationError.INPUT_MISSING:
@@ -144,7 +144,7 @@ public class SqlDataAction extends AbstractRelationalDbAction {
       errors.add(validationError);
     }
     
-    validationError = validateInputParam(QUERY_ELEMENT);
+    validationError = validateInput(QUERY_ELEMENT);
     if (validationError != null) {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:

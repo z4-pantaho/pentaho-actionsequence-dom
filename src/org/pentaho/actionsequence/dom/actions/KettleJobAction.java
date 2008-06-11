@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionResource;
 import org.pentaho.actionsequence.dom.IActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionSequenceResourceDom;
-import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
+import org.pentaho.actionsequence.dom.IActionSequenceResource;
 
 public class KettleJobAction extends ActionDefinition {
 
@@ -48,7 +48,7 @@ public class KettleJobAction extends ActionDefinition {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    addResourceParam(JOB_FILE_ELEMENT);
+    addResource(JOB_FILE_ELEMENT);
   }
 
   public static boolean accepts(Element element) {
@@ -69,28 +69,28 @@ public class KettleJobAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setJob(IActionInputValueProvider value) {
+  public void setJob(IActionInputSource value) {
     setActionInputValue(REPOSITORY_JOB, value);
   }
   
-  public IActionInputValueProvider getJob() {
-    return getActionInputValue(REPOSITORY_JOB);
+  public IActionInput getJob() {
+    return getInput(REPOSITORY_JOB);
   }
   
-  public void setDirectory(IActionInputValueProvider value) {
+  public void setDirectory(IActionInputSource value) {
     setActionInputValue(REPOSITORY_DIRECTORY, value);
   }
   
-  public IActionInputValueProvider getDirectory() {
-    return getActionInputValue(REPOSITORY_DIRECTORY);
+  public IActionInput getDirectory() {
+    return getInput(REPOSITORY_DIRECTORY);
   }
   
-  public IActionSequenceValidationError[] validate() {
+  public ActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(REPOSITORY_DIRECTORY);
+    ActionSequenceValidationError validationError = validateInput(REPOSITORY_DIRECTORY);
     if (validationError == null) {
-      validationError = validateResourceParam(JOB_FILE_ELEMENT);
+      validationError = validateResource(JOB_FILE_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -106,7 +106,7 @@ public class KettleJobAction extends ActionDefinition {
         errors.add(validationError);
       }
     } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-      validationError = validateInputParam(JOB_FILE_ELEMENT);
+      validationError = validateInput(JOB_FILE_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -140,10 +140,10 @@ public class KettleJobAction extends ActionDefinition {
     // of map the resource to an invalid name.
     IActionResource actionResource = null;
     if (uri == null) {
-      actionResource = getResourceParam(JOB_FILE_ELEMENT);
+      actionResource = getResource(JOB_FILE_ELEMENT);
       if (actionResource != null) {
         IActionSequenceDocument actionSequenceDocument = getDocument();
-        IActionSequenceResourceDom actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
+        IActionSequenceResource actionSequenceResource = actionSequenceDocument.getResource(actionResource.getPublicName());
         IActionResource[] actionResources = actionSequenceDocument.getReferencesTo(actionSequenceResource);
         if ((actionResources.length == 1) && actionResources[0].equals(actionResource)) {
           actionSequenceResource.delete();
@@ -159,7 +159,7 @@ public class KettleJobAction extends ActionDefinition {
   }
   
   public IActionResource getJobFile() {
-    return getResourceParam(JOB_FILE_ELEMENT);
+    return getResource(JOB_FILE_ELEMENT);
   }
   
 }

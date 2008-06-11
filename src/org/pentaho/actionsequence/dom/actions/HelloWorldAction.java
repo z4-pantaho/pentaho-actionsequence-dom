@@ -13,7 +13,8 @@
 package org.pentaho.actionsequence.dom.actions;
 
 import org.dom4j.Element;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 
 public class HelloWorldAction extends ActionDefinition {
 
@@ -40,12 +41,12 @@ public class HelloWorldAction extends ActionDefinition {
     return EXPECTED_INPUTS;
   }
   
-  public void setQuote(IActionInputValueProvider value) {
+  public void setQuote(IActionInputSource value) {
     setActionInputValue(QUOTE_ELEMENT, value);
   }
   
-  public IActionInputValueProvider getQuote() {
-    return getActionInputValue(QUOTE_ELEMENT);
+  public IActionInput getQuote() {
+    return getInput(QUOTE_ELEMENT);
   }
   
 }

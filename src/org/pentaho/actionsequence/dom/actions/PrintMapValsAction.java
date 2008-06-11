@@ -18,7 +18,8 @@ import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionInput;
 import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
-import org.pentaho.actionsequence.dom.IActionInputValueProvider;
+import org.pentaho.actionsequence.dom.IActionInput;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 
@@ -59,7 +60,7 @@ public class PrintMapValsAction extends ActionDefinition {
   public void setPropertyMap(IActionInputVariable value) {
     String mapParamName = getComponentDefinitionValue(TARGET_MAP_XPATH);
     if (value == null) {
-      setActionInputValue(mapParamName, null);
+      setActionInputValue(mapParamName, (IActionInputSource)null);
       setComponentDefinition(TARGET_MAP_XPATH, "", false);
     } else {
       if (!PROPERTY_MAP_ELEMENT.equals(mapParamName)) {
@@ -69,22 +70,22 @@ public class PrintMapValsAction extends ActionDefinition {
     }   
   }
   
-  public IActionInputValueProvider getPropertyMap() {
+  public IActionInput getPropertyMap() {
     String mapParamName = getComponentDefinitionValue(TARGET_MAP_XPATH);
-    IActionInputValueProvider actionInput = ActionInputConstant.NULL_INPUT;
+    IActionInput actionInput = IActionInput.NULL_INPUT;
     if ((mapParamName != null) && (mapParamName.trim().length() > 0)) {
-      actionInput = getActionInputValue(mapParamName);
+      actionInput = getInput(mapParamName);
     }
     return actionInput;
   }
   
-  public IActionInputValueProvider[] getKeys() {
+  public IActionInput[] getKeys() {
     ArrayList keys = new ArrayList();
     Element[] elements = getComponentDefElements(MAP_KEY_XPATH);
     for (int i = 0; i < elements.length; i++) {
       keys.add(new ActionInputConstant(elements[i].getText()));
     }
-    return (IActionInputValueProvider[])keys.toArray(new IActionInputValueProvider[0]);
+    return (IActionInput[])keys.toArray(new IActionInput[0]);
   }
   
   
@@ -95,7 +96,7 @@ public class PrintMapValsAction extends ActionDefinition {
         ((ActionInput)oldKeys[i]).delete();
       }
     }
-    IActionOutput[] oldOutputs = getAllOutputParams();
+    IActionOutput[] oldOutputs = getOutputs();
     for (int i = 0; i < oldOutputs.length; i++) {
       oldOutputs[i].delete();
     }
@@ -106,7 +107,7 @@ public class PrintMapValsAction extends ActionDefinition {
       String keyParamName = keys[i].getStringValue();
       if (keyParamName != null) {
         keyParamNames.add(keyParamName);
-        setOutputParam(keyParamName, keyParamName, ActionSequenceDocument.STRING_TYPE);
+        setOutput(keyParamName, keyParamName, ActionSequenceDocument.STRING_TYPE);
       }
     }
     

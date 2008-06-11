@@ -1,13 +1,18 @@
 package org.pentaho.actionsequence.dom;
 
+import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
 
 // This class is used to set an action input to a constant value.
-public class ActionInputConstant implements IActionInputValueProvider {
+public class ActionInputConstant implements IActionInput, IActionInputSource {
   Object value;
+  String inputName;
   IActionParameterMgr actionParameterMgr;
   
-  public static final ActionInputConstant NULL_INPUT = new ActionInputConstant((Object)null);
+  public ActionInputConstant(Element componentDefElement) {
+    inputName = componentDefElement.getName();
+    value = componentDefElement.getText();
+  }
   
   public ActionInputConstant(Object value) {
     this(value, null);
@@ -127,5 +132,18 @@ public class ActionInputConstant implements IActionInputValueProvider {
   public boolean equals(Object obj) {
     return value != null && (obj instanceof ActionInputConstant) && value.equals(((ActionInputConstant)obj).getValue());
   }
+
+  public String getName() {
+    return inputName;
+  }
+
+  public String getType() {
+    return "";
+  }
+
+  public String getVariableName() {
+    return getName();
+  }
+
 
 }

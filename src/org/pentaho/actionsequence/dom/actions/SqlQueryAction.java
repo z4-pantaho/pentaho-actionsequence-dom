@@ -73,8 +73,8 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
     String compDefVal = getComponentDefinitionValue(OUTPUT_NAME_ELEMENT);
     if (compDefVal != null) {
       expectedOutput = compDefVal;
-    } else if (getOutputParam(expectedOutput) == null) {
-      IActionOutput[] actionOutputs = getOutputParams(ActionSequenceDocument.RESULTSET_TYPE);
+    } else if (getOutput(expectedOutput) == null) {
+      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.RESULTSET_TYPE);
       if (actionOutputs.length > 0) {
         expectedOutput = actionOutputs[0].getName();
       }
@@ -89,9 +89,9 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
   public IActionSequenceValidationError[] validate() {
     
     ArrayList errors = new ArrayList();
-    ActionSequenceValidationError validationError = validateInputParam(CONNECTION_ELEMENT);
+    ActionSequenceValidationError validationError = validateInput(CONNECTION_ELEMENT);
     if (validationError == null) {
-      validationError = validateInputParam(DRIVER_ELEMENT);
+      validationError = validateInput(DRIVER_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -107,7 +107,7 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
         errors.add(validationError);
       }
       
-      validationError = validateInputParam(USER_ID_ELEMENT);
+      validationError = validateInput(USER_ID_ELEMENT);
       if (validationError != null) {
         switch (validationError.errorCode) {
           case ActionSequenceValidationError.INPUT_MISSING:
@@ -123,10 +123,10 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
         errors.add(validationError);
       }
     } else if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-      validationError = validateInputParam(JNDI_ELEMENT);
+      validationError = validateInput(JNDI_ELEMENT);
       if (validationError != null) {
         if (validationError.errorCode == ActionSequenceValidationError.INPUT_MISSING) {
-          validationError = validateInputParam(PREPARED_COMPONENT_ELEMENT);
+          validationError = validateInput(PREPARED_COMPONENT_ELEMENT);
           if (validationError != null) {
             switch (validationError.errorCode) {
               case ActionSequenceValidationError.INPUT_MISSING:
@@ -163,7 +163,7 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
       switch (validationError.errorCode) {
         case ActionSequenceValidationError.INPUT_MISSING:
           validationError.errorMsg = "Missing query input parameter.";
-          validationError = validateInputParam(QUERY_ELEMENT);
+          validationError = validateInput(QUERY_ELEMENT);
           break;
         case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
           validationError.errorMsg = "Query input parameter references unknown variable.";
@@ -175,9 +175,9 @@ public class SqlQueryAction extends AbstractRelationalDbAction {
       errors.add(validationError);
     }
     
-    validationError = validateOutputParam(PREPARED_COMPONENT_ELEMENT);
+    validationError = validateOutput(PREPARED_COMPONENT_ELEMENT);
     if (validationError != null) {
-      validationError = validateOutputParam(QUERY_RESULT_ELEMENT);
+      validationError = validateOutput(QUERY_RESULT_ELEMENT);
       if (validationError != null) {
         validationError.errorMsg = "Missing query results output parameter.";
         errors.add(validationError);
