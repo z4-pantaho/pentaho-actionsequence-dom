@@ -23,6 +23,9 @@ import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 
+/**
+ * @deprecated  As of 2.0
+ */
 public class PrintMapValsAction extends ActionDefinition {
 
 

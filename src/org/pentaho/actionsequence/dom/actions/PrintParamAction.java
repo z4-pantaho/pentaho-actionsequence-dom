@@ -23,6 +23,9 @@ import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionSequenceElement;
 
+/**
+ * @deprecated  As of 2.0
+ */
 public class PrintParamAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.component.UtilityComponent"; //$NON-NLS-1$

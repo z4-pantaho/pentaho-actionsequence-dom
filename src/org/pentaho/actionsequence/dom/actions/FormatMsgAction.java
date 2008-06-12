@@ -25,6 +25,9 @@ import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.SimpleActionInputVariable;
 
+/**
+ * @deprecated  As of 2.0
+ */
 public class FormatMsgAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.component.UtilityComponent"; //$NON-NLS-1$

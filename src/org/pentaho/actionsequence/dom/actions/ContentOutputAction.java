@@ -23,6 +23,9 @@ import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
+/**
+ * @deprecated  As of 2.0
+ */
 public class ContentOutputAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.component.ContentOutputComponent"; //$NON-NLS-1$
