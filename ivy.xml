@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
-    <info organisation="pentaho" module="pentaho-actionsequence-dom" revision="2.0-SNAPSHOT"/>
-    <dependencies defaultconf="*->default">
+    <info organisation="pentaho" module="pentaho-actionsequence-dom"/>
+    
+    <configurations>
+    	<conf name="default"/>
+    	<conf name="test" visibility="private"/>
+    </configurations>
+    
+    <dependencies defaultconf="default->default">
     	<!--  external dependencies -->
  	    <dependency org="commons-collections" name="commons-collections" rev="3.2"/>
-        <dependency org="dom4j" name="dom4j" rev="1.6.1"/>
-        <dependency org="javax.activation" name="activation" rev="1.1"/>
+        <dependency org="dom4j"               name="dom4j"               rev="1.6.1"/>
+        <!--  ignore all the unnecessary jars attached to jaxen -->
+        <dependency org="jaxen"               name="jaxen"               rev="1.1-beta-6" transitive="false"/>
+        <dependency org="javax.activation"    name="activation"          rev="1.0.2"/>
+      
+        <dependency org="junit"               name="junit"               rev="4.4" conf="test->default"/>
       
         <!--  internal dependencies -->  
         <dependency org="pentaho" name="pentaho-connections" rev="2.0-SNAPSHOT"/>
