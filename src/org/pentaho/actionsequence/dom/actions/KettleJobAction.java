@@ -31,11 +31,12 @@ public class KettleJobAction extends ActionDefinition {
   public static final String JOB_FILE_ELEMENT = "job-file"; //$NON-NLS-1$
   public static final String REPOSITORY_DIRECTORY = "directory"; //$NON-NLS-1$
   public static final String REPOSITORY_JOB = "job"; //$NON-NLS-1$
+  public static final String LOGGING_LEVEL = "logging-level"; //$NON-NLS-1$
   
   public static final String[] EXPECTED_RESOURCES = new String[]{JOB_FILE_ELEMENT};
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
-    REPOSITORY_DIRECTORY, REPOSITORY_JOB
+    REPOSITORY_DIRECTORY, REPOSITORY_JOB,LOGGING_LEVEL
   };
   
   public KettleJobAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
@@ -161,5 +162,13 @@ public class KettleJobAction extends ActionDefinition {
   public IActionResource getJobFile() {
     return getResource(JOB_FILE_ELEMENT);
   }
+  
+  public void setLoggingLevel(IActionInputSource value) {
+	    setActionInputValue(LOGGING_LEVEL, value);
+	  }
+	  
+	public IActionInput getLoggingLevel() {
+	  return getInput(LOGGING_LEVEL);
+	}
   
 }
