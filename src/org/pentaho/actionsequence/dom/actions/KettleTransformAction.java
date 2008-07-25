@@ -37,9 +37,10 @@ public class KettleTransformAction extends ActionDefinition {
   public static final String[] EXPECTED_RESOURCES = new String[]{TRANSFORMATION_FILE_ELEMENT};
   public static final String OUTPUT_RESULT_SET = "output-result-set"; //$NON-NLS-1$
   public static final String NULL_MAPPING = "NULL_MAPPING";
+  public static final String LOGGING_LEVEL = "logging-level";
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
-    TRANSFORMATION_STEP_ELEMENT, REPOSITORY_DIRECTORY, REPOSITORY_TRANSFORMATION
+    TRANSFORMATION_STEP_ELEMENT, REPOSITORY_DIRECTORY, REPOSITORY_TRANSFORMATION,LOGGING_LEVEL
   };
 
   protected static final String[] EXPECTED_OUTPUTS = new String[] {
@@ -87,6 +88,14 @@ public class KettleTransformAction extends ActionDefinition {
   
   public IActionInput getTransformation() {
     return getInput(REPOSITORY_TRANSFORMATION);
+  }
+  
+  public void setLoggingLevel(IActionInputSource value) {
+	    setActionInputValue(LOGGING_LEVEL, value);
+	  }
+	  
+  public IActionInput getLoggingLevel() {
+    return getInput(LOGGING_LEVEL);
   }
   
   public void setDirectory(IActionInputSource value) {
