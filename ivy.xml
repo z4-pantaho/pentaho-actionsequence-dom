@@ -19,7 +19,7 @@
         <dependency org="jaxen"               name="jaxen"               rev="1.1" transitive="false"/>
 
         <!--  internal dependencies -->  
-        <dependency org="pentaho"             name="pentaho-connections" rev="2.0-SNAPSHOT"/>
+        <dependency org="pentaho"             name="pentaho-connections" rev="2.0-SNAPSHOT"  changing="true"/>
 
 		<!--  unit testing dependencies -->
         <dependency org="junit"               name="junit"               rev="4.4" conf="test->default"/>
