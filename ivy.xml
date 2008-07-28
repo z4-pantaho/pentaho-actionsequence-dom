@@ -16,7 +16,7 @@
         </dependency>
 
         <!--  ignore all the unnecessary jars attached to jaxen -->
-        <dependency org="jaxen"               name="jaxen"               rev="1.1-beta-6" transitive="false"/>
+        <dependency org="jaxen"               name="jaxen"               rev="1.1" transitive="false"/>
 
         <!--  internal dependencies -->  
         <dependency org="pentaho"             name="pentaho-connections" rev="2.0-SNAPSHOT"/>
