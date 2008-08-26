@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
-    <info organisation="pentaho" module="pentaho-actionsequence-dom" revision="2.0.0-M1" />
+    <info organisation="pentaho" module="pentaho-actionsequence-dom" revision="2.0.0-SNAPSHOT" />
     
     <configurations>
     	<conf name="default"/>
@@ -19,7 +19,7 @@
         <dependency org="jaxen"               name="jaxen"               rev="1.1" transitive="false"/>
 
         <!--  internal dependencies -->  
-        <dependency org="pentaho"             name="pentaho-connections" rev="2.0.0-M1"/>
+        <dependency org="pentaho"             name="pentaho-connections" rev="2.0.0-SNAPSHOT" changing="true"/>
 
 		<!--  unit testing dependencies -->
         <dependency org="junit"               name="junit"               rev="4.4" conf="test->default"/>
