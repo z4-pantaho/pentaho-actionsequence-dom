@@ -221,13 +221,13 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     } else if (value instanceof ActionInputConstant) {
       Object object = ((ActionInputConstant)value).getValue();
       if (object instanceof DecimalFormat) {
-        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT, new ActionInputConstant(((DecimalFormat) object).toPattern()));
-        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DECIMAL_FORMAT_TYPE));
+        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT, new ActionInputConstant(((DecimalFormat) object).toPattern(), this.actionParameterMgr));
+        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DECIMAL_FORMAT_TYPE, this.actionParameterMgr));
       } else if (object instanceof SimpleDateFormat) {
-        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT, new ActionInputConstant(((SimpleDateFormat) object).toPattern()));
-        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DATE_FORMAT_TYPE));
+        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT, new ActionInputConstant(((SimpleDateFormat) object).toPattern(), this.actionParameterMgr));
+        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DATE_FORMAT_TYPE, this.actionParameterMgr));
       } else {
-        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT, new ActionInputConstant(object));
+        setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT, new ActionInputConstant(object, this.actionParameterMgr));
         setActionInputValue(TRANSFORM_PIVOT_DATA_FORMAT_TYPE_ELEMENT, (IActionInputSource)null);
       }
     } else {
@@ -260,13 +260,13 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     } else if (value instanceof ActionInputConstant) {
       Object object = ((ActionInputConstant)value).getValue();
       if (object instanceof DecimalFormat) {
-        setActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT, new ActionInputConstant(((DecimalFormat) object).toPattern()));
-        setActionInputValue(TRANSFORM_SORT_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DECIMAL_FORMAT_TYPE));
+        setActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT, new ActionInputConstant(((DecimalFormat) object).toPattern(), this.actionParameterMgr));
+        setActionInputValue(TRANSFORM_SORT_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DECIMAL_FORMAT_TYPE, this.actionParameterMgr));
       } else if (object instanceof SimpleDateFormat) {
-        setActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT, new ActionInputConstant(((SimpleDateFormat) object).toPattern()));
-        setActionInputValue(TRANSFORM_SORT_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DATE_FORMAT_TYPE));
+        setActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT, new ActionInputConstant(((SimpleDateFormat) object).toPattern(), this.actionParameterMgr));
+        setActionInputValue(TRANSFORM_SORT_FORMAT_TYPE_ELEMENT, new ActionInputConstant(DATE_FORMAT_TYPE, this.actionParameterMgr));
       } else {
-        setActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT, new ActionInputConstant(object));
+        setActionInputValue(TRANSFORM_SORT_FORMAT_STRING_ELEMENT, new ActionInputConstant(object, this.actionParameterMgr));
         setActionInputValue(TRANSFORM_SORT_FORMAT_TYPE_ELEMENT, (IActionInputSource)null);
       }
     } else {

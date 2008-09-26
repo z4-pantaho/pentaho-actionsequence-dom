@@ -57,7 +57,7 @@ public class SqlConnectionAction extends ActionDefinition {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
+    setJndi(new ActionInputConstant("", this.actionParameterMgr)); //$NON-NLS-1$
     setOutputConnection(DEFAULT_CONNECTION_NAME);
   }
   

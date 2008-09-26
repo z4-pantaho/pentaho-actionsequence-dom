@@ -103,7 +103,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public ActionInputConstant getTitleBold() {
     String value = getComponentDefinitionValue(CHART_TITLE_FONT_BOLD_XPATH);
-    return value != null ? new ActionInputConstant(new Boolean(value)) : IActionInput.NULL_INPUT;
+    return value != null ? new ActionInputConstant(new Boolean(value), this.actionParameterMgr) : IActionInput.NULL_INPUT;
   }
   
   public void setTitleItalic(ActionInputConstant value) {
@@ -112,7 +112,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public ActionInputConstant getTitleItalic() {
     String value = getComponentDefinitionValue(CHART_TITLE_FONT_ITALIC_XPATH);
-    return value != null ? new ActionInputConstant(new Boolean(value)) : IActionInput.NULL_INPUT;
+    return value != null ? new ActionInputConstant(new Boolean(value), this.actionParameterMgr) : IActionInput.NULL_INPUT;
   }
   
   public void setByRow(IActionInputSource value) {
@@ -129,7 +129,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public ActionInputConstant getBorderVisible() {
     String value = getComponentDefinitionValue(CHART_BORDER_VISIBLE_XPATH);
-    return value != null ? new ActionInputConstant(new Boolean(value)) : IActionInput.NULL_INPUT;
+    return value != null ? new ActionInputConstant(new Boolean(value), this.actionParameterMgr) : IActionInput.NULL_INPUT;
   }
   
   public void setFontFamily(ActionInputConstant value) {
@@ -138,7 +138,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public ActionInputConstant getFontFamily() {
     String value = getComponentDefinitionValue(CHART_TITLE_FONT_FAMILY_XPATH);
-    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
+    return value != null ? new ActionInputConstant(value, this.actionParameterMgr) : IActionInput.NULL_INPUT;
   }
 
   public void setSubtitle(ActionInputConstant value) {
@@ -147,7 +147,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public ActionInputConstant getSubtitle() {
     String value = getComponentDefinitionValue(CHART_SUBTITLE_XPATH);
-    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
+    return value != null ? new ActionInputConstant(value, this.actionParameterMgr) : IActionInput.NULL_INPUT;
   }
 
   public void setFontSize(ActionInputConstant value) {
@@ -156,7 +156,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public ActionInputConstant getFontSize() {
     String value = getComponentDefinitionValue(CHART_SUBTITLE_XPATH);
-    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
+    return value != null ? new ActionInputConstant(value, this.actionParameterMgr) : IActionInput.NULL_INPUT;
   }
 
   public void setBorderPaint(ActionInputConstant value) {
@@ -165,7 +165,7 @@ public abstract class AbstractChartAction extends ActionDefinition {
   
   public ActionInputConstant getBorderPaint() {
     String value = getComponentDefinitionValue(CHART_SUBTITLE_XPATH);
-    return value != null ? new ActionInputConstant(value) : IActionInput.NULL_INPUT;
+    return value != null ? new ActionInputConstant(value, this.actionParameterMgr) : IActionInput.NULL_INPUT;
   }
   
   public void setChartType(String value) {

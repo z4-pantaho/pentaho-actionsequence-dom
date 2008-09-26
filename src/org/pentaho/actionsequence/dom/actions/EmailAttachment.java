@@ -114,7 +114,7 @@ public class EmailAttachment implements IActionSequenceElement {
     }    
     if (attachmentName != null) {
       attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, getUniqueNameParam());
-      emailAction.setActionInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), new ActionInputConstant(attachmentName));
+      emailAction.setActionInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), new ActionInputConstant(attachmentName,  this.actionInputProvider));
     } else {
       attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, attachmentNameParam);
     }
@@ -130,7 +130,7 @@ public class EmailAttachment implements IActionSequenceElement {
     if (attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE) == null) {
       attachmentElement.addAttribute(ATTACHMENT_NAME_ATTRIBUTE, getUniqueNameParam());
     }
-    getEmailAction().setActionInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), new ActionInputConstant(name.trim()));
+    getEmailAction().setActionInputValue(attachmentElement.attribute(ATTACHMENT_NAME_ATTRIBUTE).getValue().trim(), new ActionInputConstant(name.trim(), this.actionInputProvider));
   }
 
   public String getName() {

@@ -79,7 +79,7 @@ public class JFreeReportGenAction extends ActionDefinition {
         value = getInput(COMPONENT_SETTINGS_ELEMENT);
         Document doc = DocumentHelper.parseText(value.getStringValue());
         Node componentNode = doc.getRootElement();
-        value = new ActionInputConstant(componentNode.selectSingleNode(elementName).getText());
+        value = new ActionInputConstant(componentNode.selectSingleNode(elementName).getText(), this.actionParameterMgr);
       }
     } catch (Exception e) {
       value = ActionInputConstant.NULL_INPUT;

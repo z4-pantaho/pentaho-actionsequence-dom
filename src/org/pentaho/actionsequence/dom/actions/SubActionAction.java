@@ -79,7 +79,7 @@ public class SubActionAction extends ActionDefinition {
       setActionInputValue(PROXY_ELEMENT, (IActionInputSource)null);
     } else {
       setActionInputValue(PROXY_REF_ELEMENT, value);
-      setActionInputValue(PROXY_ELEMENT, new ActionInputConstant(PROXY_REF_ELEMENT));
+      setActionInputValue(PROXY_ELEMENT, new ActionInputConstant(PROXY_REF_ELEMENT, this.actionParameterMgr));
     }
   }
   

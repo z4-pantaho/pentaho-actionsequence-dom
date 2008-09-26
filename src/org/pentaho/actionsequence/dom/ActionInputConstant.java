@@ -9,35 +9,12 @@ public class ActionInputConstant implements IActionInput, IActionInputSource {
   String inputName;
   IActionParameterMgr actionParameterMgr;
   
-  public ActionInputConstant(Element componentDefElement) {
+  public ActionInputConstant(Element componentDefElement, IActionParameterMgr actionParameterMgr) {
     inputName = componentDefElement.getName();
     value = componentDefElement.getText();
-  }
-  
-  public ActionInputConstant(Object value) {
-    this(value, null);
+    this.actionParameterMgr = actionParameterMgr;
   }
 
-  public ActionInputConstant(String value) {
-    this(value, null);
-  }
-  
-  public ActionInputConstant(Boolean value) {
-    this(value, null);
-  }
-  
-  public ActionInputConstant(boolean value) {
-    this(value, null);
-  }
-  
-  public ActionInputConstant(Integer value) {
-    this(value, null);
-  }
-  
-  public ActionInputConstant(int value) {
-    this(value, null);
-  }
-  
   // Not intended for general use. Use one parameter option.
   public ActionInputConstant(Object value, IActionParameterMgr actionParameterMgr) {
     this.value = value;

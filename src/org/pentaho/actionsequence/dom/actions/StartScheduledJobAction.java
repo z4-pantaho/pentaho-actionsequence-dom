@@ -89,7 +89,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
   public void setCronString(IActionInputSource value) {
     setActionInputValue(CRON_STRING_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
-      setTriggerType(new ActionInputConstant (CRON_TRIGGER));
+      setTriggerType(new ActionInputConstant (CRON_TRIGGER, this.actionParameterMgr));
       setRepeatCount(null);
       setRepeatInterval(null);
     } else if (CRON_TRIGGER.equals(getTriggerType().getStringValue())) {
@@ -136,7 +136,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
   public void setRepeatCount(IActionInputSource value) {
     setActionInputValue(REPEAT_COUNT_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
-      setTriggerType(new ActionInputConstant (SIMPLE_TRIGGER));
+      setTriggerType(new ActionInputConstant (SIMPLE_TRIGGER, this.actionParameterMgr));
       setCronString(null);
     } else if (SIMPLE_TRIGGER.equals(getTriggerType().getStringValue())) {
       setTriggerType(null);
@@ -150,7 +150,7 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
   public void setRepeatInterval(IActionInputSource value) {
     setActionInputValue(REPEAT_INTERVAL_ELEMENT, value);
     if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
-      setTriggerType(new ActionInputConstant (SIMPLE_TRIGGER));
+      setTriggerType(new ActionInputConstant (SIMPLE_TRIGGER, this.actionParameterMgr));
       setCronString(null);
     } else if (SIMPLE_TRIGGER.equals(getTriggerType().getStringValue())) {
       setTriggerType(null);

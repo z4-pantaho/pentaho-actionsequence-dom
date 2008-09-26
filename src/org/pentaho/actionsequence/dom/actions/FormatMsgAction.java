@@ -99,7 +99,7 @@ public class FormatMsgAction extends ActionDefinition {
         formatString = formatString.substring(1, formatString.length() - 1);
       }
     }
-    return formatString == null ? IActionInput.NULL_INPUT : new ActionInputConstant(formatString);
+    return formatString == null ? IActionInput.NULL_INPUT : new ActionInputConstant(formatString, this.actionParameterMgr);
   }
   
   public void setOutputString(String publicOutputName) {

@@ -53,7 +53,7 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setActionInputValue(JNDI_ELEMENT, new ActionInputConstant(""));
+    setActionInputValue(JNDI_ELEMENT, new ActionInputConstant("", this.actionParameterMgr));
   }
   
   public String[] getReservedInputNames() {

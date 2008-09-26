@@ -84,8 +84,8 @@ public class MdxConnectionAction extends ActionDefinition {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
-    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
+    setJndi(new ActionInputConstant("", this.actionParameterMgr)); //$NON-NLS-1$
+    setLocation(new ActionInputConstant(DEFAULT_LOCATION, this.actionParameterMgr));
     setOutputConnection(DEFAULT_CONNECTION_NAME);
   }
   
@@ -118,7 +118,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setMdxConnectionString(null);
       setJndi(null);
       setConnectionProps(null);      
-      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION, this.actionParameterMgr));
     }
   }
   
@@ -132,7 +132,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setMdxConnectionString(null);
       setJndi(null);
       setConnectionProps(null);
-      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION, this.actionParameterMgr));
     }
   }
 
@@ -146,7 +146,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setMdxConnectionString(null);
       setJndi(null);
       setConnectionProps(null);
-      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION, this.actionParameterMgr));
     }
   }
   
@@ -236,7 +236,7 @@ public class MdxConnectionAction extends ActionDefinition {
           properties.put(keyElement.getText(), valueElement != null ? valueElement.getText(): null);
         }
       }
-      actionInput = new ActionInputConstant(properties);
+      actionInput = new ActionInputConstant(properties, this.actionParameterMgr);
     }
     return actionInput;
   }
@@ -257,7 +257,7 @@ public class MdxConnectionAction extends ActionDefinition {
       setPassword(null);
       setDriver(null);
       setConnectionProps(null);   
-      setLocation(new ActionInputConstant(DEFAULT_LOCATION));
+      setLocation(new ActionInputConstant(DEFAULT_LOCATION, this.actionParameterMgr));
     }
   }
   

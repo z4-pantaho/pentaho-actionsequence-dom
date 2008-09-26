@@ -1288,8 +1288,8 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     actionSequenceDocument.getRootLoop().add(sqlQueryAction);
     
     // Set up the sql input parameter.
-    sqlQueryAction.setJndi(new ActionInputConstant("SampleData"));
-    sqlQueryAction.setQuery(new ActionInputConstant("select * from customers"));
+    sqlQueryAction.setJndi(new ActionInputConstant("SampleData", null));
+    sqlQueryAction.setQuery(new ActionInputConstant("select * from customers", null));
     
     // Set up the name of the output result set.
     sqlQueryAction.setOutputResultSet("queryResults");

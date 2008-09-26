@@ -119,7 +119,7 @@ public class JFreeReportAction extends ActionDefinition {
     }
     
     public void setDataClass(String className) {
-      setActionInputValue(JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT, new ActionInputConstant(className));
+      setActionInputValue(JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT, new ActionInputConstant(className, null));
       if (className != null) {
         setData(null);
         setDataComponent(null);
@@ -197,7 +197,7 @@ public class JFreeReportAction extends ActionDefinition {
     }
     
     public void setReportLocation(String location) {
-      setActionInputValue(REPORT_LOC_IN_JAR_ELEMENT, new ActionInputConstant(location));
+      setActionInputValue(REPORT_LOC_IN_JAR_ELEMENT, new ActionInputConstant(location, null));
       if (location != null) {
         if (!getComponentName().endsWith("JFreeReportComponent")) {
           setComponentName("JFreeReportComponent");

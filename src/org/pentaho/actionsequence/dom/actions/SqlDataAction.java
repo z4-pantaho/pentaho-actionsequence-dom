@@ -58,9 +58,9 @@ public class SqlDataAction extends AbstractRelationalDbAction {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
-    setQuery(new ActionInputConstant("")); //$NON-NLS-1$
-    setLive(new ActionInputConstant(true));
+    setJndi(new ActionInputConstant("", this.actionParameterMgr)); //$NON-NLS-1$
+    setQuery(new ActionInputConstant("", this.actionParameterMgr)); //$NON-NLS-1$
+    setLive(new ActionInputConstant(true, this.actionParameterMgr));
   }
   
   public String[] getReservedInputNames() {

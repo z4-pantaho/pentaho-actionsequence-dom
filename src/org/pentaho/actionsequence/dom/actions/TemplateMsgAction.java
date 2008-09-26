@@ -73,7 +73,7 @@ public class TemplateMsgAction extends ActionDefinition {
   }
 
   protected void initNewActionDefinition() {
-    setActionInputValue(TEMPLATE_ELEMENT, new ActionInputConstant("")); //$NON-NLS-1$
+    setActionInputValue(TEMPLATE_ELEMENT, new ActionInputConstant("", this.actionParameterMgr)); //$NON-NLS-1$
   }
 
   public IActionResource setTemplateResource(URI uri, String mimeType) {

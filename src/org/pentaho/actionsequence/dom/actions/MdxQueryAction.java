@@ -66,9 +66,9 @@ public class MdxQueryAction extends MdxConnectionAction {
   }
 
   protected void initNewActionDefinition() {
-    setJndi(new ActionInputConstant("")); //$NON-NLS-1$
-    setQuery(new ActionInputConstant("")); //$NON-NLS-1$
-    setLocation(new ActionInputConstant(DEFAULT_LOCATION));
+    setJndi(new ActionInputConstant("", this.actionParameterMgr)); //$NON-NLS-1$
+    setQuery(new ActionInputConstant("", this.actionParameterMgr)); //$NON-NLS-1$
+    setLocation(new ActionInputConstant(DEFAULT_LOCATION, this.actionParameterMgr));
     setOutputResultSet(DEFAULT_QUERY_RESULTS_NAME);
   }
   

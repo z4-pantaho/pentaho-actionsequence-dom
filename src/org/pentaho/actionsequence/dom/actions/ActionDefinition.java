@@ -411,7 +411,7 @@ public class ActionDefinition implements IActionDefinition {
     for (Iterator iter = componentDefElements.iterator(); iter.hasNext();) {
       Element componentDefElement = (Element)iter.next();
       if (componentDefElement.elements().size() == 0) {
-        constantInputs.add(new ActionInputConstant(componentDefElement));
+        constantInputs.add(new ActionInputConstant(componentDefElement, this.actionParameterMgr));
       }
     }
     return (ActionInputConstant[])constantInputs.toArray(new ActionInputConstant[0]);

@@ -86,7 +86,7 @@ public class PrintMapValsAction extends ActionDefinition {
     ArrayList keys = new ArrayList();
     Element[] elements = getComponentDefElements(MAP_KEY_XPATH);
     for (int i = 0; i < elements.length; i++) {
-      keys.add(new ActionInputConstant(elements[i].getText()));
+      keys.add(new ActionInputConstant(elements[i].getText(), this.actionParameterMgr));
     }
     return (IActionInput[])keys.toArray(new IActionInput[0]);
   }

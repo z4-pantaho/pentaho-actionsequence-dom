@@ -29,7 +29,7 @@ public class TestSqlQueryAction extends TestCase {
     assertEquals(-1, doc.getDocument().asXML().indexOf("<timeout>")); //$NON-NLS-1$
 
     // Add the query timeout
-    action.setQueryTimeout(new ActionInputConstant(10));
+    action.setQueryTimeout(new ActionInputConstant(10, null));
 
     // Check the resulting XML for the query timeout information
     String xml = doc.getDocument().asXML();

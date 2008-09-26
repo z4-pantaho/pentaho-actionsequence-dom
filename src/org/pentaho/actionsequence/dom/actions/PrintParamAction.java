@@ -81,7 +81,7 @@ public class PrintParamAction extends ActionDefinition {
           delimiter = delimiter.substring(1, delimiter.length() - 1);
         }
       }
-      actionInputConstant = new ActionInputConstant(delimiter);
+      actionInputConstant = new ActionInputConstant(delimiter, this.actionParameterMgr);
     }
     return actionInputConstant;
   }
