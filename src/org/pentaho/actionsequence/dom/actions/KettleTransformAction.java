@@ -16,6 +16,8 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
+import org.pentaho.actionsequence.dom.ActionInput;
+import org.pentaho.actionsequence.dom.ActionInputConstant;
 import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInput;
@@ -29,22 +31,44 @@ import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 public class KettleTransformAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "KettleComponent"; //$NON-NLS-1$
-  public static final String TRANSFORMATION_STEP_ELEMENT = "importstep" ; //$NON-NLS-1$
+  @Deprecated
+  protected static final String TRANSFORMATION_STEP_ELEMENT_OLD = "importstep" ; //$NON-NLS-1$
+  public static final String TRANSFORMATION_STEP_ELEMENT = "monitor-step" ; //$NON-NLS-1$
   public static final String TRANSFORMATION_FILE_ELEMENT = "transformation-file" ; //$NON-NLS-1$
+  @Deprecated 
   public static final String TRANSFORMATION_OUTPUT_ELEMENT = "transformation-output"; //$NON-NLS-1$
+  public static final String EXECUTION_STATUS_OUTPUT_ELEMENT = "kettle-execution-status"; //$NON-NLS-1$
+  public static final String EXECUTION_LOG_OUTPUT_ELEMENT = "kettle-execution-log"; //$NON-NLS-1$
+  public static final String TRANSFORM_SUCCESS_OUTPUT_ELEMENT = "transformation-output-rows"; //$NON-NLS-1$
+  public static final String TRANSFORM_ERROR_OUTPUT_ELEMENT = "transformation-output-error-rows"; //$NON-NLS-1$
+  public static final String TRANSFORM_SUCCESS_COUNT_OUTPUT_ELEMENT = "transformation-output-rows-count"; //$NON-NLS-1$
+  public static final String TRANSFORM_ERROR_COUNT_OUTPUT_ELEMENT = "transformation-output-error-rows-count"; //$NON-NLS-1$
   public static final String REPOSITORY_DIRECTORY = "directory"; //$NON-NLS-1$
   public static final String REPOSITORY_TRANSFORMATION = "transformation"; //$NON-NLS-1$
   public static final String[] EXPECTED_RESOURCES = new String[]{TRANSFORMATION_FILE_ELEMENT};
+  @Deprecated
   public static final String OUTPUT_RESULT_SET = "output-result-set"; //$NON-NLS-1$
-  public static final String NULL_MAPPING = "NULL_MAPPING";
-  public static final String LOGGING_LEVEL = "logging-level";
+  public static final String OUTPUT_SUCCESS_RESULT_SET = "output-success-result-set"; //$NON-NLS-1$
+  public static final String OUTPUT_ERROR_RESULT_SET = "output-error-result-set"; //$NON-NLS-1$
+  public static final String OUTPUT_SUCCESS_COUNT = "output-success-count"; //$NON-NLS-1$
+  public static final String OUTPUT_ERROR_COUNT = "output-error-count"; //$NON-NLS-1$
+  public static final String OUTPUT_EXECUTION_LOG = "output-execution-log"; //$NON-NLS-1$
+  public static final String OUTPUT_EXECUTION_STATUS = "output-execution-status"; //$NON-NLS-1$
+  public static final String NULL_MAPPING = "NULL_MAPPING"; //$NON-NLS-1$
+  public static final String LOGGING_LEVEL = "logging-level"; //$NON-NLS-1$
+  public static final String KETTLE_LOGGING_LEVEL = "kettle-logging-level"; //$NON-NLS-1$
+  
+  public static final String[] LOGGING_LEVEL_VALUES = new String[] {
+    "minimal", "basic", "detail", "error", "rowlevel","debug", "none" //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+  };
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
-    TRANSFORMATION_STEP_ELEMENT, REPOSITORY_DIRECTORY, REPOSITORY_TRANSFORMATION,LOGGING_LEVEL
+    TRANSFORMATION_STEP_ELEMENT_OLD, TRANSFORMATION_STEP_ELEMENT, REPOSITORY_DIRECTORY, REPOSITORY_TRANSFORMATION, LOGGING_LEVEL, KETTLE_LOGGING_LEVEL
   };
 
   protected static final String[] EXPECTED_OUTPUTS = new String[] {
-    TRANSFORMATION_OUTPUT_ELEMENT
+    TRANSFORMATION_OUTPUT_ELEMENT, EXECUTION_STATUS_OUTPUT_ELEMENT, EXECUTION_LOG_OUTPUT_ELEMENT, TRANSFORM_SUCCESS_OUTPUT_ELEMENT,
+    TRANSFORM_ERROR_OUTPUT_ELEMENT, TRANSFORM_SUCCESS_COUNT_OUTPUT_ELEMENT, TRANSFORM_ERROR_COUNT_OUTPUT_ELEMENT
   };
   
   public KettleTransformAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
@@ -98,6 +122,14 @@ public class KettleTransformAction extends ActionDefinition {
     return getInput(LOGGING_LEVEL);
   }
   
+  public void setKettleLoggingLevel(IActionInputSource value) {
+    setActionInputValue(KETTLE_LOGGING_LEVEL, value);
+  }
+  
+  public IActionInput getKettleLoggingLevel() {
+    return getInput(KETTLE_LOGGING_LEVEL);
+  }
+  
   public void setDirectory(IActionInputSource value) {
     setActionInputValue(REPOSITORY_DIRECTORY, value);
   }
@@ -106,24 +138,94 @@ public class KettleTransformAction extends ActionDefinition {
     return getInput(REPOSITORY_DIRECTORY);
   }
   
+  @Deprecated
   public void setImportstep(IActionInputSource value) {
+    setMonitorStep(value);
+  }
+  
+  @Deprecated
+  public IActionInput getImportstep() {
+    return getMonitorStep();
+  }
+  
+  public void setMonitorStep(IActionInputSource value) {
+    setActionInputValue(TRANSFORMATION_STEP_ELEMENT_OLD, ActionInputConstant.NULL_INPUT);
     setActionInputValue(TRANSFORMATION_STEP_ELEMENT, value);
   }
   
-  public IActionInput getImportstep() {
-    return getInput(TRANSFORMATION_STEP_ELEMENT);
+  public IActionInput getMonitorStep() {
+    IActionInput input = getInput(TRANSFORMATION_STEP_ELEMENT_OLD);
+    if (input == ActionInput.NULL_INPUT) {
+      input = getInput(TRANSFORMATION_STEP_ELEMENT);
+    }
+    return input;
   }
   
+  @Deprecated
   public void setOutputResultSet(String publicOutputName) {
-    setOutput(TRANSFORMATION_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+    setOutputSuccessResultSet(publicOutputName);
   }
   
+  @Deprecated
   public IActionOutput getOutputResultSet() {
-    return getOutput(TRANSFORMATION_OUTPUT_ELEMENT);
+    return getOutputSuccessResultSet();
+  }
+  
+  public void setOutputSuccessResultSet(String publicOutputName) {
+    setOutput(TRANSFORMATION_OUTPUT_ELEMENT, null, ActionSequenceDocument.RESULTSET_TYPE);
+    setOutput(TRANSFORM_SUCCESS_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+  }
+  
+  public IActionOutput getOutputSuccessResultSet() {
+    IActionOutput output = getOutput(TRANSFORMATION_OUTPUT_ELEMENT);
+    if (output == null){
+      output = getOutput(TRANSFORM_SUCCESS_OUTPUT_ELEMENT);
+    }
+    return output;
+  }
+  
+  public void setOutputErrorResultSet(String publicOutputName) {
+    setOutput(TRANSFORM_ERROR_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.RESULTSET_TYPE);
+  }
+  
+  public IActionOutput getOutputErrorResultSet() {
+    return getOutput(TRANSFORM_ERROR_OUTPUT_ELEMENT);
+  }
+  
+  public void setOutputSuccessCount(String publicOutputName) {
+    setOutput(TRANSFORM_SUCCESS_COUNT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.INTEGER_TYPE);
+  }
+  
+  public IActionOutput getOutputSuccessCount() {
+    return getOutput(TRANSFORM_SUCCESS_COUNT_OUTPUT_ELEMENT);
+  }
+  
+  public void setOutputErrorCount(String publicOutputName) {
+    setOutput(TRANSFORM_ERROR_COUNT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.INTEGER_TYPE);
+  }
+  
+  public IActionOutput getOutputErrorCount() {
+    return getOutput(TRANSFORM_ERROR_COUNT_OUTPUT_ELEMENT);
+  }
+  
+  public void setOutputExecutionLog(String publicOutputName) {
+    setOutput(EXECUTION_LOG_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+  }
+  
+  public IActionOutput getOutputExecutionLog() {
+    return getOutput(EXECUTION_LOG_OUTPUT_ELEMENT);
+  }
+  
+  public void setOutputExecutionStatus(String publicOutputName) {
+    setOutput(EXECUTION_STATUS_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+  }
+  
+  public IActionOutput getOutputExecutionStatus() {
+    return getOutput(EXECUTION_STATUS_OUTPUT_ELEMENT);
   }
   
   public IActionSequenceValidationError[] validate() {
-    ArrayList errors = new ArrayList();
+    ArrayList<IActionSequenceValidationError> errors = new ArrayList<IActionSequenceValidationError>();
     ActionSequenceValidationError validationError = validateInput(REPOSITORY_DIRECTORY);
     if (validationError == null) {
       validationError = validateResource(TRANSFORMATION_FILE_ELEMENT);
@@ -174,7 +276,7 @@ public class KettleTransformAction extends ActionDefinition {
     // We never want to get rid of the kettle transformation resource element. 
     // That's what's used to differentiate a kettle transformation action from a kettle job action.
     // If the uri is null we'll either delete the action sequence resource that is referenced
-    // of map the resource to an invalid name.
+    // or map the resource to an invalid name.
     if (uri == null) {
       actionResource = getResource(TRANSFORMATION_FILE_ELEMENT);
       if (actionResource != null) {

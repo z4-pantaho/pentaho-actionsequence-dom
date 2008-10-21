@@ -20,6 +20,7 @@ import org.pentaho.actionsequence.dom.ActionSequenceDocument;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInput;
 import org.pentaho.actionsequence.dom.IActionInputSource;
+import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
 import org.pentaho.actionsequence.dom.IActionSequenceDocument;
 import org.pentaho.actionsequence.dom.IActionSequenceResource;
@@ -32,11 +33,24 @@ public class KettleJobAction extends ActionDefinition {
   public static final String REPOSITORY_DIRECTORY = "directory"; //$NON-NLS-1$
   public static final String REPOSITORY_JOB = "job"; //$NON-NLS-1$
   public static final String LOGGING_LEVEL = "logging-level"; //$NON-NLS-1$
+  public static final String KETTLE_LOGGING_LEVEL = "kettle-logging-level"; //$NON-NLS-1$
+  public static final String EXECUTION_STATUS_OUTPUT_ELEMENT = "kettle-execution-status"; //$NON-NLS-1$
+  public static final String EXECUTION_LOG_OUTPUT_ELEMENT = "kettle-execution-log"; //$NON-NLS-1$
+  public static final String OUTPUT_EXECUTION_LOG = "output-execution-log"; //$NON-NLS-1$
+  public static final String OUTPUT_EXECUTION_STATUS = "output-execution-status"; //$NON-NLS-1$
+  
+  public static final String[] LOGGING_LEVEL_VALUES = new String[] {
+    "minimal", "basic", "detail", "error", "rowlevel","debug", "none"//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+  };
   
   public static final String[] EXPECTED_RESOURCES = new String[]{JOB_FILE_ELEMENT};
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
-    REPOSITORY_DIRECTORY, REPOSITORY_JOB,LOGGING_LEVEL
+    REPOSITORY_DIRECTORY, REPOSITORY_JOB, LOGGING_LEVEL, KETTLE_LOGGING_LEVEL
+  };
+  
+  protected static final String[] EXPECTED_OUTPUTS = new String[] {
+    EXECUTION_STATUS_OUTPUT_ELEMENT, EXECUTION_LOG_OUTPUT_ELEMENT
   };
   
   public KettleJobAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
@@ -84,6 +98,22 @@ public class KettleJobAction extends ActionDefinition {
   
   public IActionInput getDirectory() {
     return getInput(REPOSITORY_DIRECTORY);
+  }
+  
+  public void setOutputExecutionLog(String publicOutputName) {
+    setOutput(EXECUTION_LOG_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+  }
+  
+  public IActionOutput getOutputExecutionLog() {
+    return getOutput(EXECUTION_LOG_OUTPUT_ELEMENT);
+  }
+  
+  public void setOutputExecutionStatus(String publicOutputName) {
+    setOutput(EXECUTION_STATUS_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.STRING_TYPE);
+  }
+  
+  public IActionOutput getOutputExecutionStatus() {
+    return getOutput(EXECUTION_STATUS_OUTPUT_ELEMENT);
   }
   
   public ActionSequenceValidationError[] validate() {
@@ -170,5 +200,13 @@ public class KettleJobAction extends ActionDefinition {
 	public IActionInput getLoggingLevel() {
 	  return getInput(LOGGING_LEVEL);
 	}
+	
+	public void setKettleLoggingLevel(IActionInputSource value) {
+    setActionInputValue(KETTLE_LOGGING_LEVEL, value);
+  }
   
+	public IActionInput getKettleLoggingLevel() {
+	  return getInput(KETTLE_LOGGING_LEVEL);
+	}
+
 }
