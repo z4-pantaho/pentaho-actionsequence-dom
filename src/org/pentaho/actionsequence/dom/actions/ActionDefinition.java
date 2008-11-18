@@ -60,7 +60,7 @@ public class ActionDefinition implements IActionSequenceExecutableStatement {
   /**
    * @param actionDefElement the wrapped action definition element
    */
-  protected ActionDefinition() {
+  public ActionDefinition() {
     this(Messages.getString("ActionDefinition.ENTER_CLASS_NAME")); //$NON-NLS-1$
     setDescription(Messages.getString("ActionDefinition.CUSTOM_ACTION_TITLE")); //$NON-NLS-1$
   }
