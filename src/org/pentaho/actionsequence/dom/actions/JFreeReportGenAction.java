@@ -94,6 +94,10 @@ public class JFreeReportGenAction extends ActionDefinition {
     return getComponentValue(RESULT_SET);
   }
   
+  public void setComponentSettings(IActionInputValueProvider value) {
+    setActionInputValue(COMPONENT_SETTINGS, value);
+  }
+  
   public IActionInputValueProvider getComponentSettings() {
     return getActionInputValue(COMPONENT_SETTINGS);
   }
