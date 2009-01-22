@@ -33,6 +33,9 @@ public class HQLConnectionAction extends ActionDefinition {
   public static final String CLASSNAMES = "classNames"; //$NON-NLS-1$
   public static final String HIBERNATE_CONFIG = "hibernateConfig"; //$NON-NLS-1$
   public static final String HQL_CONNECTION_TYPE = "hql-connection"; //$NON-NLS-1$
+  // Added by Marc and Ramaiz
+  public static final String TIMEOUT = "timeout"; //$NON-NLS-1$
+  public static final String MAXROWS = "max_rows"; //$NON-NLS-1$
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     CLASSNAMES    
@@ -138,5 +141,21 @@ public class HQLConnectionAction extends ActionDefinition {
   public IActionResource getHibernateConfigResource() {
     return getResource(HIBERNATE_CONFIG);
   }
-}
+  
+  public void setQueryTimeout(IActionInputSource value) {
+    setActionInputValue(TIMEOUT, value);
+  }
 
+  public IActionInput getQueryTimeout() {
+    return getInput(TIMEOUT);
+  }
+  
+  public void setMaxRows(IActionInputSource value) {
+    setActionInputValue(MAXROWS, value);
+  }
+  
+  public IActionInput getMaxRows() {
+    return getInput(MAXROWS);
+  }
+  
+}

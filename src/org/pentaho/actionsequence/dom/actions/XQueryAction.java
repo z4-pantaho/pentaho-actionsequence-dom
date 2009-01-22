@@ -38,6 +38,8 @@ public class XQueryAction extends ActionDefinition {
   public static final String DEFAULT_QUERY_RESULTS_NAME = "query_result"; //$NON-NLS-1$
   public static final String XML_DOCUMENT = "xml-document" ; //$NON-NLS-1$
   public static final String LIVE_CONNECTION_ELEMENT = "live"; //$NON-NLS-1$
+  public static final String TIMEOUT = "timeout"; //$NON-NLS-1$
+  public static final String MAXROWS = "max_rows"; //$NON-NLS-1$
 
   protected static final String[] EXPECTED_RESOURCES = new String[] {
     DOCUMENT_ELEMENT
@@ -225,5 +227,25 @@ public class XQueryAction extends ActionDefinition {
   
   public IActionResource getXmlDocument() {
     return getResource(DOCUMENT_ELEMENT);
+  }
+  
+  public void setQueryTimeout(IActionInputSource value) {
+    // Not implemented in the component but
+    // plumbed through here for when it is.
+    setActionInputValue(TIMEOUT, value);
+  }
+
+  public IActionInput getQueryTimeout() {
+    // Not implemented in the component but
+    // plumbed through here for when it is.
+    return getInput(TIMEOUT);
+  }
+  
+  public void setMaxRows(IActionInputSource value) {
+    setActionInputValue(MAXROWS, value);
+  }
+
+  public IActionInput getMaxRows() {
+    return getInput(MAXROWS);
   }
 }

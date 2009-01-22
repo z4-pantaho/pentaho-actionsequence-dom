@@ -61,6 +61,7 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
   public static final String RESULTSET_FORWARD_ONLY = "forward-only"; //$NON-NLS-1$
   //Added by Arijit Chatterjee "timeout in xaction file"
   public static final String TIMEOUT = "timeout"; //$NON-NLS-1$
+  public static final String READ_ONLY_ELEMENT = "read_only";  //$NON-NLS-1$
 
   public AbstractRelationalDbAction(Element actionDefElement, IActionParameterMgr actionInputProvider) {
     super(actionDefElement, actionInputProvider);
@@ -347,6 +348,14 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
   
   public IActionInput getMaxRows() {
     return getInput(MAX_ROWS_ELEMENT);
+  }
+
+  public void setReadOnly(IActionInputSource value) {
+    setActionInputValue(READ_ONLY_ELEMENT, value);
+  }
+  
+  public IActionInput getReadOnly() {
+    return getInput(READ_ONLY_ELEMENT);
   }
   
   public void setOutputPreparedStatement(String publicOutputName) {
