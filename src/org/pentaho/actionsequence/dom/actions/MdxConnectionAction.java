@@ -50,6 +50,8 @@ public class MdxConnectionAction extends ActionDefinition {
   public static final String PROPERTY = "property"; //$NON-NLS-1$
   public static final String KEY_NODE = "key"; //$NON-NLS-1$
   public static final String VALUE_NODE = "value"; //$NON-NLS-1$
+  public static final String EXTENDED_COLUMN_NAMES_ELEMENT = "extended_column_names"; //$NON-NLS-1$
+  
   
   protected static final String[] EXPECTED_INPUTS = new String[] {
     LOCATION_ELEMENT,
@@ -78,6 +80,14 @@ public class MdxConnectionAction extends ActionDefinition {
     super(componentName);
   }
   
+  public void setExtendedColumnNames(IActionInputSource value) {
+    setActionInputValue(EXTENDED_COLUMN_NAMES_ELEMENT, value);
+  }
+	  
+  public IActionInput getExtendedColumnNames() {
+    return getInput(EXTENDED_COLUMN_NAMES_ELEMENT);
+  }
+
   public static boolean accepts(Element element) {
     return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
