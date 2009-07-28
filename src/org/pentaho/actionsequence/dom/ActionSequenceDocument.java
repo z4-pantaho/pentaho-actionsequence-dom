@@ -623,6 +623,9 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     return output;
   }
   
+  public IActionSequenceOutput createOutput(IActionOutput actionOutput, String outputType) {
+    return createOutput(actionOutput.getName(), outputType);
+  }
   
   /**
    * Removes the named action sequence resource from the action sequence
