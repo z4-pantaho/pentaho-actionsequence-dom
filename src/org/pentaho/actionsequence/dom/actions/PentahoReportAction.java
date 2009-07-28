@@ -14,7 +14,7 @@ import org.pentaho.actionsequence.dom.IActionInputVariable;
 import org.pentaho.actionsequence.dom.IActionOutput;
 import org.pentaho.actionsequence.dom.IActionResource;
 
-public class SimpleReportingAction extends ActionDefinition {
+public class PentahoReportAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.reporting.platform.plugin.SimpleReportingComponent"; //$NON-NLS-1$
   public static final String REPORT_DEFINITION_ELEMENT = "report-definition"; //$NON-NLS-1$
@@ -41,11 +41,11 @@ public class SimpleReportingAction extends ActionDefinition {
     ACCEPTED_PAGE_ELEMENT
   };
   
-  public SimpleReportingAction(Element actionDefElement, IActionParameterMgr actionParameterMgr) {
+  public PentahoReportAction(Element actionDefElement, IActionParameterMgr actionParameterMgr) {
     super(actionDefElement, actionParameterMgr);
   }
 
-  public SimpleReportingAction() {
+  public PentahoReportAction() {
     super(COMPONENT_NAME);
   }
   
