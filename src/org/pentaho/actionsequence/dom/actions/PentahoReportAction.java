@@ -49,6 +49,10 @@ public class PentahoReportAction extends ActionDefinition {
     super(COMPONENT_NAME);
   }
   
+  public static boolean accepts(Element element) {
+    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+  }
+  
   public IActionResource getReportDefinitionResource() {
     return getResource(REPORT_DEFINITION_ELEMENT);
   }
