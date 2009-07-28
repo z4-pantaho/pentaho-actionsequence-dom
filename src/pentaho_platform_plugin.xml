@@ -1,4 +1,5 @@
 <pentaho-plugin>
+<action-definition>org.pentaho.actionsequence.dom.actions.PentahoReportAction</action-definition>
 <action-definition>org.pentaho.actionsequence.dom.actions.JFreeReportAction</action-definition>
 <action-definition>org.pentaho.actionsequence.dom.actions.JasperReportAction</action-definition>
 <action-definition>org.pentaho.actionsequence.dom.actions.BirtReportAction</action-definition>
