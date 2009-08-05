@@ -18,6 +18,7 @@ public class PentahoReportAction extends ActionDefinition {
 
   public static final String COMPONENT_NAME = "org.pentaho.reporting.platform.plugin.SimpleReportingComponent"; //$NON-NLS-1$
   public static final String REPORT_DEFINITION_ELEMENT = "report-definition"; //$NON-NLS-1$
+  public static final String REPORT_DEFINITION_INPUT_STREAM_ELEMENT = "reportDefinitionInputStream"; //$NON-NLS-1$
   public static final String REPORT_DEFINITION_PATH_ELEMENT = "reportDefinitionPath"; //$NON-NLS-1$
   public static final String USE_CONTENT_REPOSITORY_ELEMENT = "useContentRepository"; //$NON-NLS-1$
   public static final String PAGINATE_OUTPUT_ELEMENT = "paginate"; //$NON-NLS-1$
@@ -49,6 +50,10 @@ public class PentahoReportAction extends ActionDefinition {
     super(COMPONENT_NAME);
   }
   
+  public String[] getReservedInputNames() {
+    return EXPECTED_INPUTS;
+  }
+  
   public static boolean accepts(Element element) {
     return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
   }
@@ -63,29 +68,26 @@ public class PentahoReportAction extends ActionDefinition {
       setResourceUri(REPORT_DEFINITION_ELEMENT, null, mimeType);
     } else {
       actionResource = setResourceUri(REPORT_DEFINITION_ELEMENT, uri, mimeType);         
-      setReportDefinitionPath(null);
       setReportDefinition(null);
     }
     return actionResource;
   }
   
-  public IActionInput getReportDefinitionPath() {
-    return getInput(REPORT_DEFINITION_PATH_ELEMENT);
-  }
-  
-  public void setReportDefinitionPath(IActionInputSource value) {
-    setActionInputValue(REPORT_DEFINITION_PATH_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
-      setReportDefinitionResource(null, null);
-      setReportDefinition(null);
-    }
-  }
-  
   public void setReportDefinition(IActionInputSource value) {
-    setActionInputValue(REPORT_DEFINITION_ELEMENT, value);
-    if ((value instanceof IActionInputVariable) || ((value != null) && (((ActionInputConstant)value).getValue() != null))) {
+    if (value instanceof IActionInputVariable) {
+      IActionInputVariable variable = (IActionInputVariable)value;
+      if (variable.getType().equals(ActionSequenceDocument.INPUT_STREAM_TYPE)) {
+        setActionInputValue(REPORT_DEFINITION_INPUT_STREAM_ELEMENT, value);
+      } else {
+        setActionInputValue(REPORT_DEFINITION_PATH_ELEMENT, value);
+      }
       setReportDefinitionResource(null, null);
-      setReportDefinitionPath(null);
+    } else if ((value != null) && (((ActionInputConstant)value).getValue() != null)) {
+      setActionInputValue(REPORT_DEFINITION_PATH_ELEMENT, value);
+      setReportDefinitionResource(null, null);
+    } else {
+      setActionInputValue(REPORT_DEFINITION_INPUT_STREAM_ELEMENT, (IActionInputSource)null);
+      setActionInputValue(REPORT_DEFINITION_PATH_ELEMENT, (IActionInputSource)null);
     }
   }
   

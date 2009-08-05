@@ -92,6 +92,7 @@ public interface IActionSequenceDocument {
   public static final String MDX_QUERY_TYPE = "mdx-query"; //$NON-NLS-1$
   public static final String HQL_QUERY_TYPE = "hql-query"; //$NON-NLS-1$
   public static final String XQUERY_TYPE = "xquery"; //$NON-NLS-1$
+  public static final String INPUT_STREAM_TYPE = "inputstream"; //$NON-NLS-1$
   
   public static final String PROPERTY_MAP_ENTRY = "entry"; //$NON-NLS-1$
   public static final String PROPERTY_MAP_ENTRY_KEY = "key"; //$NON-NLS-1$
@@ -115,7 +116,7 @@ public interface IActionSequenceDocument {
   public static final String ACTION_OUTPUTS_NAME = "action-outputs"; //$NON-NLS-1$
   public static final String MAPPING_NAME = "mapping"; //$NON-NLS-1$
 
-  public static final String[] IO_TYPES = new String[] { STRING_TYPE, LONG_TYPE, INTEGER_TYPE, BIGDECIMAL_TYPE, STRING_LIST_TYPE, LIST_TYPE, RESULTSET_TYPE, PROPERTY_MAP_TYPE, PROPERTY_MAP_LIST_TYPE, CONTENT_TYPE, OBJECT_TYPE };
+  public static final String[] IO_TYPES = new String[] { STRING_TYPE, LONG_TYPE, INTEGER_TYPE, BIGDECIMAL_TYPE, STRING_LIST_TYPE, LIST_TYPE, RESULTSET_TYPE, PROPERTY_MAP_TYPE, PROPERTY_MAP_LIST_TYPE, CONTENT_TYPE, OBJECT_TYPE, INPUT_STREAM_TYPE };
   public static final String DOC_INPUTS_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_INPUTS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
   public static final String DOC_OUTPUTS_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_OUTPUTS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
   public static final String DOC_RESOURCES_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_RESOURCES_NAME; //$NON-NLS-1$ //$NON-NLS-2$
