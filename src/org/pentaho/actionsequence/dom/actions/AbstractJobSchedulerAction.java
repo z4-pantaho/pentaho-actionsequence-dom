@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.ActionSequenceValidationError;
 import org.pentaho.actionsequence.dom.IActionInput;
-import org.pentaho.actionsequence.dom.IActionInputVariable;
+import org.pentaho.actionsequence.dom.IActionInputSource;
 import org.pentaho.actionsequence.dom.IActionSequenceValidationError;
 
 public abstract class AbstractJobSchedulerAction extends ActionDefinition {
@@ -35,7 +35,7 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
     super(componentName);
   }
   
-  public void setJobName(IActionInputVariable value) {
+  public void setJobName(IActionInputSource value) {
     setActionInputValue(JOB_NAME_ELEMENT, value);
   }
   
