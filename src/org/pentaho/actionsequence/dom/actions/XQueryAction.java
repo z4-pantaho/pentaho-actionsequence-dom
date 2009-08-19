@@ -104,6 +104,10 @@ public class XQueryAction extends ActionDefinition {
   }
   
   public void setQuery(IActionInputSource value) {
+    if ((value == null) 
+        || ((value instanceof ActionInputConstant) && (((ActionInputConstant)value).getValue() == null))) {
+      value = new ActionInputConstant("", null);
+    }
     setActionInputValue(QUERY_ELEMENT, value);
   }
   
@@ -218,6 +222,7 @@ public class XQueryAction extends ActionDefinition {
   
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
+    setQuery(new ActionInputConstant("", null));
     setOutputResultSet(DEFAULT_QUERY_RESULTS_NAME);
   }
   

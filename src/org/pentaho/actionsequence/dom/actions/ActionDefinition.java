@@ -69,7 +69,7 @@ public class ActionDefinition implements IActionDefinition {
     setDescription(Messages.getString("ActionDefinition.CUSTOM_ACTION_TITLE")); //$NON-NLS-1$
   }
   
-  protected ActionDefinition(Element actionDefElement, IActionParameterMgr actionParameterMgr) {
+  public ActionDefinition(Element actionDefElement, IActionParameterMgr actionParameterMgr) {
     super();
     this.actionDefElement = actionDefElement;
     this.actionParameterMgr = actionParameterMgr;
