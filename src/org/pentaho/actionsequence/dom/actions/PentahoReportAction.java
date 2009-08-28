@@ -92,7 +92,7 @@ public class PentahoReportAction extends ActionDefinition {
   }
   
   public IActionInput getReportDefinition() {
-    return getInput(REPORT_DEFINITION_ELEMENT);
+    return getInput(REPORT_DEFINITION_PATH_ELEMENT);
   }
   
   public void setUseContentRepository(IActionInputSource value)
