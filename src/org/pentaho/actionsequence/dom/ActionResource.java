@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 
 import org.dom4j.Attribute;
@@ -235,6 +236,14 @@ public class ActionResource extends AbstractActionIOElement implements IActionRe
       dataSource = actionInputProvider.getDataSource(this);
     }
     return dataSource;
+  }
+  
+  public InputStream getInputStream() throws FileNotFoundException {
+    InputStream inputStream = null;
+    if (actionInputProvider != null) {
+      inputStream = actionInputProvider.getInputStream(this);
+    }
+    return inputStream;
   }
   
   public String getStringValue() throws IOException {

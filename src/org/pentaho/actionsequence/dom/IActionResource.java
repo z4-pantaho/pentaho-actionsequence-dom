@@ -1,6 +1,7 @@
 package org.pentaho.actionsequence.dom;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URI;
 
 import org.dom4j.Element;
@@ -44,6 +45,7 @@ public interface IActionResource extends IActionIOElement{
   public String getMimeType();
   public void setMimeType(String mimeType);
 	public IPentahoStreamSource getDataSource() throws FileNotFoundException;
+	public InputStream getInputStream() throws FileNotFoundException;
   
   public void delete();
   public void setMapping( String publicName );
@@ -61,5 +63,6 @@ public interface IActionResource extends IActionIOElement{
   public String getPublicName();
   
   public String getType();
+  
 
 }
