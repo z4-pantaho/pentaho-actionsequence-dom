@@ -37,6 +37,9 @@ public interface IActionLoop extends IActionControlStatement {
   public Boolean getLoopUsingPeek();
   
   /**
+   * Determines if a peek operation will be performed to loop on a result set. Only if the 
+   * result set is scrollable that is we CAN go back to the first record should we reset
+   * to the first record. This is to resolve multiple levels of looping on resultset.
    * @param usePeek determines if a peek operation will be performed to loop on a result set
    */
   public void setLoopUsingPeek(Boolean usePeek);
