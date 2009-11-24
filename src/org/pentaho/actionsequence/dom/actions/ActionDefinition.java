@@ -1104,4 +1104,8 @@ public class ActionDefinition implements IActionDefinition {
   public IActionParameterMgr getActionParameterMgr() {
     return actionParameterMgr;
   }
+  
+  public void setActionParameterMgr(IActionParameterMgr actionParameterMgr) {
+    this.actionParameterMgr = actionParameterMgr;
+  }
 }
