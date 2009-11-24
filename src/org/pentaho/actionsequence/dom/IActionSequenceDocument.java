@@ -104,6 +104,7 @@ public interface IActionSequenceDocument {
   // Actions group nodes
   public static final String ACTIONS_NAME = "actions"; //$NON-NLS-1$
   public static final String LOOP_ON_NAME = "loop-on"; //$NON-NLS-1$
+  public static final String PEEK_ONLY_NAME = "peek-only"; //$NON-NLS-1$
   public static final String CONDITION_NAME = "condition"; //$NON-NLS-1$
 
   // Action definition nodes

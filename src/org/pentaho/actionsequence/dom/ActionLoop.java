@@ -77,5 +77,29 @@ public class ActionLoop extends ActionControlStatement implements IActionLoop {
     }
     return (ActionSequenceValidationError[])errors.toArray(new ActionSequenceValidationError[0]);
   }
+
+  public Boolean getLoopUsingPeek() {
+    return Boolean.parseBoolean(controlElement.attributeValue(ActionSequenceDocument.PEEK_ONLY_NAME));
+  }
+
+  public void setLoopUsingPeek(Boolean usePeek) {
+
+    Attribute attr = controlElement.attribute(ActionSequenceDocument.PEEK_ONLY_NAME);
+    if (usePeek == null) {
+      if (attr != null) {
+        attr.detach();
+        ActionSequenceDocument.fireControlStatementChanged(this);
+      }
+    } else {
+      if (attr == null) {
+        controlElement.addAttribute(ActionSequenceDocument.PEEK_ONLY_NAME, usePeek.toString());
+        attr = controlElement.attribute(ActionSequenceDocument.PEEK_ONLY_NAME);
+        ActionSequenceDocument.fireControlStatementChanged(this);
+      } else if (!usePeek.toString().equals(attr.getValue())) {
+        attr.setValue(usePeek.toString());
+        ActionSequenceDocument.fireControlStatementChanged(this);
+      }
+    }
+  }
   
 }

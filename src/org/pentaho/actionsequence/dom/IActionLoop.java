@@ -31,4 +31,14 @@ public interface IActionLoop extends IActionControlStatement {
    */
   public String getLoopOn();
   
+  /**
+   * @return whether a peek operation will be performed to loop on a result set
+   */
+  public Boolean getLoopUsingPeek();
+  
+  /**
+   * @param usePeek determines if a peek operation will be performed to loop on a result set
+   */
+  public void setLoopUsingPeek(Boolean usePeek);
+  
 }
