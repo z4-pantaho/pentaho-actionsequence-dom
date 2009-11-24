@@ -657,6 +657,14 @@ public class ActionDefinition implements IActionDefinition {
   }
 
   /**
+   * The component definition element.
+   * @return the element or null if the element does not exist.
+   */
+  public Element getComponentDefElement() {
+    return (Element)actionDefElement.selectSingleNode(ActionSequenceDocument.COMPONENT_DEF_NAME); //$NON-NLS-1$
+  }
+  
+  /**
    * Sets the value of the component definition element at the specified XPath.
    * @param compDefXpath the XPath of the element relative to the component definition element.
    * @param value the value to be assigned to the element

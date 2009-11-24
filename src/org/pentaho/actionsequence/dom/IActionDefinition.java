@@ -269,6 +269,12 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
 	  public Element[] getComponentDefElements(String compDefXpath);
 
 	  /**
+	   * The component definition element.
+	   * @return the element or null if the element does not exist.
+	   */
+	  public Element getComponentDefElement();
+	  
+	  /**
 	   * The component definition element at the specified XPath
 	   * @param compDefXpath the XPath of the elements relative to the component definition element.
 	   * @return the element or null if the element does not exist.
