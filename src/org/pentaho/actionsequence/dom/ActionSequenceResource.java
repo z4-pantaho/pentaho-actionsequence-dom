@@ -15,8 +15,10 @@ package org.pentaho.actionsequence.dom;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
@@ -164,13 +166,19 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
     Element solutionFileElement = ioElement.element(SOLUTION_FILE_RESOURCE_TYPE);
     Element fileElement = ioElement.element(FILE_RESOURCE_TYPE);
     Element urlElement = ioElement.element(URL_RESOURCE_TYPE);
+    Element xmlElement = ioElement.element(XML_RESOURCE_TYPE);
+    Element stringElement = ioElement.element(STRING_RESOURCE_TYPE);
     String resourceType = null;
-    if ((solutionFileElement != null) && (fileElement == null) && (urlElement == null)) {
+    if ((solutionFileElement != null) && (fileElement == null) && (urlElement == null) && (xmlElement == null) && (stringElement == null)) {
       resourceType = SOLUTION_FILE_RESOURCE_TYPE;
-    } else if ((solutionFileElement == null) && (fileElement != null) && (urlElement == null)) {
+    } else if ((solutionFileElement == null) && (fileElement != null) && (urlElement == null) && (xmlElement == null) && (stringElement == null)) {
       resourceType = FILE_RESOURCE_TYPE;
-    } else if ((solutionFileElement == null) && (fileElement == null) && (urlElement != null)) {
+    } else if ((solutionFileElement == null) && (fileElement == null) && (urlElement != null) && (xmlElement == null) && (stringElement == null)) {
       resourceType = URL_RESOURCE_TYPE;
+    } else if ((solutionFileElement == null) && (fileElement == null) && (urlElement == null) && (xmlElement != null) && (stringElement == null)) {
+      resourceType = XML_RESOURCE_TYPE;
+    } else if ((solutionFileElement == null) && (fileElement == null) && (urlElement == null) && (xmlElement == null) && (stringElement != null)) {
+      resourceType = STRING_RESOURCE_TYPE;
     }
     return resourceType;
   }
@@ -180,10 +188,12 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
    * @param resourceType the resource file type
    */
   public void setType(String resourceType) {
-    if (SOLUTION_FILE_RESOURCE_TYPE.equals(resourceType) || FILE_RESOURCE_TYPE.equals(resourceType) || URL_RESOURCE_TYPE.equals(resourceType)) {
+    if (SOLUTION_FILE_RESOURCE_TYPE.equals(resourceType) || FILE_RESOURCE_TYPE.equals(resourceType) || URL_RESOURCE_TYPE.equals(resourceType) || XML_RESOURCE_TYPE.equals(resourceType) || STRING_RESOURCE_TYPE.equals(resourceType)) {
       Element solutionFileElement = ioElement.element(SOLUTION_FILE_RESOURCE_TYPE);
       Element fileElement = ioElement.element(FILE_RESOURCE_TYPE);
       Element urlElement = ioElement.element(URL_RESOURCE_TYPE);
+      Element stringElement = ioElement.element(STRING_RESOURCE_TYPE);
+      Element xmlElement = ioElement.element(XML_RESOURCE_TYPE);
       if (getType() == null) {
         if (solutionFileElement != null) {
           solutionFileElement.detach();
@@ -197,6 +207,14 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
           urlElement.detach();
           urlElement = null;
         }
+        if (stringElement != null) {
+          stringElement.detach();
+          stringElement = null;
+        }
+        if (xmlElement != null) {
+          xmlElement.detach();
+          xmlElement = null;
+        }
       }
       
       Element existingElement = solutionFileElement;
@@ -206,14 +224,34 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
       if (existingElement == null) {
         existingElement = urlElement;
       }
+      if (existingElement == null) {
+        existingElement = stringElement;
+      }
+      if (existingElement == null) {
+        existingElement = xmlElement;
+      }
       
       if (existingElement == null) {
         existingElement = ioElement.addElement(resourceType);
-        existingElement.addElement(RES_LOCATION_NAME);
+        if (!STRING_RESOURCE_TYPE.equals(resourceType)) {
+          existingElement.addElement(RES_LOCATION_NAME);
+        }
         existingElement.addElement(RES_MIME_TYPE_NAME);
         ActionSequenceDocument.fireResourceChanged(this);
       } else {
         existingElement.setName(resourceType);
+        Element locationElement = existingElement.element(RES_LOCATION_NAME);
+        if (STRING_RESOURCE_TYPE.equals(resourceType)) {
+          if (locationElement != null) {
+            locationElement.detach();
+          }
+        }
+        if (!XML_RESOURCE_TYPE.equals(resourceType)) {
+          List elements = locationElement.elements();
+          for (Object obj : elements) {
+            ((Element)obj).detach();
+          }
+        }
         ActionSequenceDocument.fireResourceChanged(this);
       }
     }
@@ -294,5 +332,40 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
         setPath(uri.toString());
       }
     }
+  }
+  
+  public String getString() {
+    String string = null;
+    if (STRING_RESOURCE_TYPE.equals(getType())) {
+      string = ioElement.element(STRING_RESOURCE_TYPE).getText();
+    }
+    return string;
+  }
+  
+  public void setString(String string) {
+    setType(STRING_RESOURCE_TYPE);
+    ioElement.element(STRING_RESOURCE_TYPE).setText(string);
+  }
+  
+  public String getXml() {
+    String xml = null;
+    if (XML_RESOURCE_TYPE.equals(getType())) {
+      Element element = (Element)ioElement.selectSingleNode(SOLUTION_FILE_RESOURCE_TYPE + "/" + RES_LOCATION_NAME + "/*"); //$NON-NLS-1$
+      if (element != null) {
+        xml = element.asXML();
+      }
+    }
+    return xml;
+  }
+  
+  public void setXml(String xml) throws DocumentException {
+    setType(XML_RESOURCE_TYPE);
+    Document document = DocumentHelper.parseText(xml);
+    Element locationElement = (Element)ioElement.selectSingleNode(SOLUTION_FILE_RESOURCE_TYPE + "/" + RES_LOCATION_NAME); //$NON-NLS-1$
+    List elements = locationElement.elements();
+    for (Object obj : elements) {
+      ((Element)obj).detach();
+    }
+    locationElement.add(document.getRootElement());
   }
 }

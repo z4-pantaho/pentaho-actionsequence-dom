@@ -14,6 +14,7 @@ package org.pentaho.actionsequence.dom;
 
 import java.net.URI;
 
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 
 /**
@@ -27,6 +28,8 @@ public interface IActionSequenceResource extends IAbstractIOElement {
   public static final String SOLUTION_FILE_RESOURCE_TYPE = "solution-file"; //$NON-NLS-1$
   public static final String URL_RESOURCE_TYPE = "url"; //$NON-NLS-1$
   public static final String FILE_RESOURCE_TYPE = "file"; //$NON-NLS-1$
+  public static final String XML_RESOURCE_TYPE = "xml"; //$NON-NLS-1$
+  public static final String STRING_RESOURCE_TYPE = "string"; //$NON-NLS-1$
   public static final String RES_LOCATION_NAME = "location"; //$NON-NLS-1$
   public static final String RES_MIME_TYPE_NAME = "mime-type"; //$NON-NLS-1$
   
@@ -95,4 +98,12 @@ public interface IActionSequenceResource extends IAbstractIOElement {
   public URI getUri();
   
   public void setUri(URI uri);
+  
+  public String getString();
+  
+  public void setString(String string);
+  
+  public String getXml();
+  
+  public void setXml(String xml) throws DocumentException;
 }
