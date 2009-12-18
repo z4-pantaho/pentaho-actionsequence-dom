@@ -400,4 +400,5 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
 	  	  
 	  public IActionParameterMgr getActionParameterMgr();
 
+	  public void setActionParameterMgr(IActionParameterMgr actionParameterMgr);
 }

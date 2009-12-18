@@ -141,8 +141,38 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
   */
   Document document;
   IActionParameterMgr actionInputProvider;
+  Metadata metadata;
   
   static HashMap listenersMap = new HashMap();
+  
+  /**
+   * @deprecated
+   * This class is created to workaround architectual issues in the BI server. As soon as the issues
+   * are addressed this class will no longer exist.
+   */
+  public class Metadata {
+    String solutionName;
+    String solutionPath;
+    String documentName;
+    public String getSolutionName() {
+      return solutionName;
+    }
+    public void setSolutionName(String solutionName) {
+      this.solutionName = solutionName;
+    }
+    public String getSolutionPath() {
+      return solutionPath;
+    }
+    public void setSolutionPath(String solutionPath) {
+      this.solutionPath = solutionPath;
+    }
+    public String getDocumentName() {
+      return documentName;
+    }
+    public void setDocumentName(String documentName) {
+      this.documentName = documentName;
+    }
+  }
   
   public ActionSequenceDocument() {
     document = DocumentHelper.createDocument();
@@ -1368,5 +1398,14 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     } else if (statementToMove instanceof ActionDefinition) {
       newParentControlStatement.add((ActionDefinition)statementToMove, index);
     }
+  }
+  
+  /**
+   * @deprecated
+   * No replacement. This method was created to workaround architectual issues in the BI server. As soon as the issues
+   * are addressed this method will no longer exist.
+   */
+  public Metadata getMetadata() {
+    return metadata;
   }
 }
