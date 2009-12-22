@@ -141,7 +141,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
   */
   Document document;
   IActionParameterMgr actionInputProvider;
-  Metadata metadata;
+  Metadata metadata = new Metadata();
   
   static HashMap listenersMap = new HashMap();
   
