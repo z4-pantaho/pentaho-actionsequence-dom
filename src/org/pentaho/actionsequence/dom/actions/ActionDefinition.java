@@ -1116,4 +1116,10 @@ public class ActionDefinition implements IActionDefinition {
   public void setActionParameterMgr(IActionParameterMgr actionParameterMgr) {
     this.actionParameterMgr = actionParameterMgr;
   }
+
+  public int hashCode() {
+    return actionDefElement != null ? actionDefElement.hashCode() : super.hashCode();
+  }
+  
+  
 }
