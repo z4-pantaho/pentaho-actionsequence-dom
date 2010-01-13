@@ -12,6 +12,7 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
 public class ActionFactory {
 
@@ -37,17 +38,8 @@ public class ActionFactory {
           try {
             Object obj = url.getContent();
             if( obj instanceof InputStream ) {
-              // we have an input stream, it should give us an xml document
-              InputStream in = (InputStream) obj;
-              StringBuilder str = new StringBuilder();
-              byte buffer[] = new byte[4096];
-              int n = in.read( buffer );
-              while( n != -1 ) {
-                str.append( new String( buffer, 0, n, "UTF-8" ) );
-                n = in.read( buffer );
-              }
-              // we have the text now generate a DOM
-              Document doc = DocumentHelper.parseText( str.toString() );
+              SAXReader reader = new SAXReader();
+              Document doc = reader.read((InputStream)obj);
               if( doc != null ) {
                 // look for nodes 
                 List nodes = doc.selectNodes( PLUGIN_ROOT_NODE+"/"+PLUGIN_ACTION_DEFINITION_NODE );
