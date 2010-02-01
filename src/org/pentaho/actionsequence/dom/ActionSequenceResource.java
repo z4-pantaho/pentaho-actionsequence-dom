@@ -350,7 +350,7 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
   public String getXml() {
     String xml = null;
     if (XML_RESOURCE_TYPE.equals(getType())) {
-      Element element = (Element)ioElement.selectSingleNode(SOLUTION_FILE_RESOURCE_TYPE + "/" + RES_LOCATION_NAME + "/*"); //$NON-NLS-1$
+      Element element = (Element)ioElement.selectSingleNode(XML_RESOURCE_TYPE + "/" + RES_LOCATION_NAME + "/*"); //$NON-NLS-1$
       if (element != null) {
         xml = element.asXML();
       }
@@ -361,7 +361,7 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
   public void setXml(String xml) throws DocumentException {
     setType(XML_RESOURCE_TYPE);
     Document document = DocumentHelper.parseText(xml);
-    Element locationElement = (Element)ioElement.selectSingleNode(SOLUTION_FILE_RESOURCE_TYPE + "/" + RES_LOCATION_NAME); //$NON-NLS-1$
+    Element locationElement = (Element)ioElement.selectSingleNode(XML_RESOURCE_TYPE + "/" + RES_LOCATION_NAME); //$NON-NLS-1$
     List elements = locationElement.elements();
     for (Object obj : elements) {
       ((Element)obj).detach();
