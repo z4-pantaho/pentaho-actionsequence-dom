@@ -65,8 +65,9 @@ public interface IActionSequenceDocument {
   public static final String SESSION_OUTPUT_DESTINATION = "session"; //$NON-NLS-1$
   public static final String RUNTIME_OUTPUT_DESTINATION = "runtime"; //$NON-NLS-1$
   public static final String GLOBAL_OUTPUT_DESTINATION = "global"; //$NON-NLS-1$
+  public static final String CONTENT_REPO_OUTPUT_DESTINATION = "contentrepo"; //$NON-NLS-1$
   
-  public static final String[] OUTPUT_DESTINATIONS = new String[]{ RUNTIME_OUTPUT_DESTINATION, SESSION_OUTPUT_DESTINATION, RESPONSE_OUTPUT_DESTINATION, GLOBAL_OUTPUT_DESTINATION };
+  public static final String[] OUTPUT_DESTINATIONS = new String[]{ RUNTIME_OUTPUT_DESTINATION, SESSION_OUTPUT_DESTINATION, RESPONSE_OUTPUT_DESTINATION, CONTENT_REPO_OUTPUT_DESTINATION, GLOBAL_OUTPUT_DESTINATION };
   
   public static final String DOC_RESOURCES_NAME = "resources"; //$NON-NLS-1$
 
