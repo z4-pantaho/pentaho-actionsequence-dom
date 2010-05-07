@@ -34,12 +34,16 @@ public class ActionFactory {
         // we might have multiple documents
         while( enumer.hasMoreElements() ) {
           URL url = enumer.nextElement();
+
           // make sure a failure for one resource does not affect any other ones
           try {
-            Object obj = url.getContent();
-            if( obj instanceof InputStream ) {
+            // ESR-168 - This resolves an issue in Websphere/Weblogic
+            //
+            // url.getContent() throws an UnknownServiceException (no content-type)
+            InputStream is = url.openStream();
+            if( is != null ) {
               SAXReader reader = new SAXReader();
-              Document doc = reader.read((InputStream)obj);
+              Document doc = reader.read(is);
               if( doc != null ) {
                 // look for nodes 
                 List nodes = doc.selectNodes( PLUGIN_ROOT_NODE+"/"+PLUGIN_ACTION_DEFINITION_NODE );
