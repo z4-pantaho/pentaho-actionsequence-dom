@@ -11,7 +11,7 @@ import org.pentaho.actionsequence.dom.ActionSequenceDocument;
  * 
  * @author dkincade
  */
-public class TestSqlQueryAction extends TestCase {
+public class SqlQueryActionTest extends TestCase {
 
   /**
    * Tests the ability to manipulate the query timeout
