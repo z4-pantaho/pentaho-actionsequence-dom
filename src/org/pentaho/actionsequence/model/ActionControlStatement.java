@@ -12,14 +12,16 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
-public abstract class ActionControlStatement implements IActionControlStatement {
+public abstract class ActionControlStatement implements IActionControlStatement, Serializable {
 
   IActionControlStatement parent;
-  ArrayList<IActionSequenceExecutableStatement> children = new ArrayList<IActionSequenceExecutableStatement>();
+  IActionSequenceExecutableStatement[] children = new IActionSequenceExecutableStatement[0];
   
   
   public ActionControlStatement() {
@@ -28,60 +30,13 @@ public abstract class ActionControlStatement implements IActionControlStatement 
   public ActionControlStatement(IActionControlStatement parent) {
     this.parent = parent;
   }
-  
-  /**
-   * Adds a new child action definition to the end of this control statements
-   * list of children.
-   * @param componentName the name of the component that processes
-   * the action definition
-   * @return the newly created action definition
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefinitionClass) {
-    throw new UnsupportedOperationException("cannot do a newInstance()");
-//    ActionDefinition action = null;   
-//    try {
-//      action = (ActionDefinition) actionDefinitionClass.newInstance();
-//      children.add(action);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//    return action;
-  }
-  
-  /**
-   * Adds a new child action definition to this control statement.
-   * @param componentName the name of the component that processes
-   * the action definition
-   * @param index the index of where to add the new action. If index
-   * is greater than the number of children then the new action is added
-   * at the end of the list of children.
-   * @return the newly created action definition
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefClass, int index) {
-    IActionDefinition actionDef = null;
-    try {
-      if (index >= children.size()) {
-        actionDef = addAction(actionDefClass);
-      } else {
-        throw new UnsupportedOperationException("cannot do a newInstance()");
-//        actionDef = (ActionDefinition) actionDefClass.newInstance();
-//        children.add(index, actionDef);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return actionDef;
-  }
+    
   
   /**
    * @return the child actions and control statements
    */
   public List<IActionSequenceExecutableStatement> getChildren() {
-    return children;
+    return Arrays.asList(children);
   }
   
   /**
@@ -102,8 +57,11 @@ public abstract class ActionControlStatement implements IActionControlStatement 
    * @param actionDef the action definition to be added.
    */
   public void add(IActionDefinition actionDef) {
-    actionDef.setParent(this.parent);
-    children.add(actionDef);
+    actionDef.setParent(this);
+    List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+    tmpList.addAll(Arrays.asList(children));
+    tmpList.add(actionDef);
+    children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
   }
   
   /**
@@ -114,11 +72,14 @@ public abstract class ActionControlStatement implements IActionControlStatement 
    * at the end of the list of children.
    */
   public void add(IActionDefinition actionDef, int index) {
-    if (index >= children.size()) {
+    if (index >= children.length) {
       add(actionDef);
     } else {
       actionDef.setParent(this.parent);
-      children.add(index, actionDef);
+      List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+      tmpList.addAll(Arrays.asList(children));
+      tmpList.add(index, actionDef);
+      children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
     }
   }
   
@@ -129,7 +90,10 @@ public abstract class ActionControlStatement implements IActionControlStatement 
    */
   public void add(IActionControlStatement controlStatement) {
     controlStatement.setParent(this.parent);
-    children.add(controlStatement);
+    List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+    tmpList.addAll(Arrays.asList(children));
+    tmpList.add(controlStatement);
+    children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
   }
   
   /**
@@ -141,11 +105,14 @@ public abstract class ActionControlStatement implements IActionControlStatement 
    * at the end of the list of children.
    */
   public void add(IActionControlStatement controlStatement, int index) {
-    if (index >= children.size()) {
+    if (index >= children.length) {
       add(controlStatement);
     } else {
       controlStatement.setParent(this.parent);
-      children.add(index, controlStatement);
+      List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+      tmpList.addAll(Arrays.asList(children));
+      tmpList.add(index, controlStatement);
+      children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
     }
   }
   
@@ -156,7 +123,10 @@ public abstract class ActionControlStatement implements IActionControlStatement 
   public IActionLoop addLoop(String loopOn) {
     IActionLoop loop = new ActionLoop(this.parent);
     loop.setLoopOn(loopOn);
-    children.add(loop);
+    List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+    tmpList.addAll(Arrays.asList(children));
+    tmpList.add(loop);
+    children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
     return loop;
   }
   
@@ -169,12 +139,15 @@ public abstract class ActionControlStatement implements IActionControlStatement 
    */
   public IActionLoop addLoop(String loopOn, int index) {
     IActionLoop actionLoop = null;
-    if (index >= children.size()) {
+    if (index >= children.length) {
       actionLoop = addLoop(loopOn);
     } else {
       actionLoop = new ActionLoop(this.parent);
       actionLoop.setLoopOn(loopOn);
-      children.add(index, actionLoop);
+      List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+      tmpList.addAll(Arrays.asList(children));
+      tmpList.add(index, actionLoop);
+      children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
     }
     return actionLoop;
   }
@@ -186,7 +159,10 @@ public abstract class ActionControlStatement implements IActionControlStatement 
   public IActionIfStatement addIf(String condition) {
     IActionIfStatement ifStatement = new ActionIfStatement(this.parent);
     ifStatement.setCondition(condition);
-    children.add(ifStatement);
+    List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+    tmpList.addAll(Arrays.asList(children));
+    tmpList.add(ifStatement);
+    children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
     return ifStatement;
   }
   
@@ -199,12 +175,15 @@ public abstract class ActionControlStatement implements IActionControlStatement 
    */
   public IActionIfStatement addIf(String condition, int index) {
     IActionIfStatement actionIf = null;
-    if (index >= children.size()) {
+    if (index >= children.length) {
       actionIf = addIf(condition);
     } else {
       actionIf = new ActionIfStatement(this.parent);
       actionIf.setCondition(condition);
-      children.add(index, actionIf);
+      List<IActionSequenceExecutableStatement> tmpList = new ArrayList<IActionSequenceExecutableStatement>();
+      tmpList.addAll(Arrays.asList(children));
+      tmpList.add(index, actionIf);
+      children = tmpList.toArray(new IActionSequenceExecutableStatement[0]);
     }
     return actionIf;
   }
