@@ -12,13 +12,15 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
+
 
 /**
  * A wrapper class for an action sequence input or output element.
  * @author Angelo Rodriguez
  *
  */
-public abstract class AbstractIOElement implements IAbstractIOElement {
+public abstract class AbstractIOElement implements IAbstractIOElement, Serializable {
 
   String name;
   String type;
