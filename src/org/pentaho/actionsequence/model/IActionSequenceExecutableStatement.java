@@ -12,8 +12,10 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 
-public interface IActionSequenceExecutableStatement {
+
+public interface IActionSequenceExecutableStatement extends Serializable {
   public IActionControlStatement getParent();
   public void setParent(IActionControlStatement parent);
 }

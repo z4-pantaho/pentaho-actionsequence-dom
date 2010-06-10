@@ -12,7 +12,6 @@
 */
 package org.pentaho.actionsequence.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
  *
  */
 
-public class ActionResource extends AbstractActionIOElement implements IActionResource, Serializable {
+public class ActionResource extends AbstractActionIOElement implements IActionResource {
   
   public ActionResource() {
   }

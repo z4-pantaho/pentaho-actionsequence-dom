@@ -17,29 +17,6 @@ import java.util.List;
 
 public interface IActionControlStatement extends IActionSequenceExecutableStatement {
 
-  /**
-   * Adds a new child action definition to the end of this control statements
-   * list of children.
-   * @param componentName the name of the component that processes
-   * the action definition
-   * @return the newly created action definition
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefinitionClass);
-  
-  /**
-   * Adds a new child action definition to this control statement.
-   * @param componentName the name of the component that processes
-   * the action definition
-   * @param index the index of where to add the new action. If index
-   * is greater than the number of children then the new action is added
-   * at the end of the list of children.
-   * @return the newly created action definition
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefClass, int index);
   
   /**
    * @return the child actions and control statements

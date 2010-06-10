@@ -229,25 +229,6 @@ public interface IActionSequenceDocument {
    */
   public List<IActionSequenceExecutableStatement> getExecutableChildren();
   
-  /**
-   * Adds a new child action definition to the end of this documents
-   * list of children.
-   * @param componentName the name of the component that processes
-   * the action definition
-   * @return the newly created action definition
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefinitionClass);
-  
-  /** 
-   * Creates a new action definition which conforms to the specifications of this template.
-   * @param parent the parent of the new detail
-   * @param index the index where the new element should be created
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefinitionClass, int index);
   
   public String toString();
   

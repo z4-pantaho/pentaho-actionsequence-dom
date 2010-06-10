@@ -12,7 +12,6 @@
 */
 package org.pentaho.actionsequence.model;
 
-import java.io.Serializable;
 
 
 /**
@@ -20,7 +19,7 @@ import java.io.Serializable;
  * @author Angelo Rodriguez
  *
  */
-public class ActionOutput extends AbstractActionIOElement implements IActionOutput, Serializable {
+public class ActionOutput extends AbstractActionIOElement implements IActionOutput {
 
   public ActionOutput() {
     super();

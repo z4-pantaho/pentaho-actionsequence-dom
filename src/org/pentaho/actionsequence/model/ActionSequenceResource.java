@@ -12,7 +12,6 @@
 */
 package org.pentaho.actionsequence.model;
 
-import java.io.Serializable;
 
 
 /**
@@ -20,7 +19,7 @@ import java.io.Serializable;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceResource extends AbstractIOElement implements IActionSequenceResource, Serializable {
+public class ActionSequenceResource extends AbstractIOElement implements IActionSequenceResource {
 
   IActionSequenceDocument parent;
   String mimeType;

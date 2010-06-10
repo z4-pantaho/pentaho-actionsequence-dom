@@ -361,30 +361,6 @@ public class ActionSequenceDocument implements IActionSequenceDocument, Serializ
     return getRootLoop().getChildren();
   }
   
-  /**
-   * Adds a new child action definition to the end of this documents
-   * list of children.
-   * @param componentName the name of the component that processes
-   * the action definition
-   * @return the newly created action definition
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefinitionClass) {
-    return getRootLoop().addAction(actionDefinitionClass);
-  }
-  
-  /** 
-   * Creates a new action definition which conforms to the specifications of this template.
-   * @param parent the parent of the new detail
-   * @param index the index where the new element should be created
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   */
-  public IActionDefinition addAction(Class actionDefinitionClass, int index) {
-    return getRootLoop().addAction(actionDefinitionClass, index);
-  }
-  
   private List<IActionResource> getReferencesTo(IActionSequenceExecutableStatement executableStatement, IActionSequenceResource actionSequenceResource) {
     List<IActionResource> referers = new ArrayList<IActionResource>();
     if (executableStatement instanceof IActionControlStatement) {

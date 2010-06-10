@@ -12,7 +12,6 @@
 */
 package org.pentaho.actionsequence.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceOutput extends AbstractIOElement implements IActionSequenceOutput, Serializable {
+public class ActionSequenceOutput extends AbstractIOElement implements IActionSequenceOutput {
   
   IActionSequenceDocument parent;
   ArrayList<IActionSequenceOutputDestination> destinations = new ArrayList<IActionSequenceOutputDestination>();
