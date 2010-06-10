@@ -12,6 +12,7 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceInput extends AbstractIOElement implements IActionSequenceInput {
+public class ActionSequenceInput extends AbstractIOElement implements IActionSequenceInput, Serializable {
 
   public static final int REQUEST_INPUT_SOURCE_ID = 1;
   public static final int SESSION_INPUT_SOURCE_ID = 2;

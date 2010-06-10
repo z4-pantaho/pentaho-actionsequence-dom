@@ -12,13 +12,15 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
+
 
 /**
  * A wrapper class for an action if statement.
  * @author Angelo Rodriguez
  *
  */
-public class ActionIfStatement extends ActionControlStatement implements IActionIfStatement {
+public class ActionIfStatement extends ActionControlStatement implements IActionIfStatement, Serializable {
 
   String condition;
   

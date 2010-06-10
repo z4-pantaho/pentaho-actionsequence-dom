@@ -12,8 +12,10 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 
-public class ActionSequenceOutputDestination implements IActionSequenceOutputDestination {
+
+public class ActionSequenceOutputDestination implements IActionSequenceOutputDestination, Serializable {
   
   IActionSequenceOutput parent;
   String name;

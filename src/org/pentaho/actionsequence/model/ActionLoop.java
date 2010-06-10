@@ -12,13 +12,15 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
+
 
 /**
  * A wrapper class for an action loop.
  * @author Angelo Rodriguez
  *
  */
-public class ActionLoop extends ActionControlStatement implements IActionLoop {
+public class ActionLoop extends ActionControlStatement implements IActionLoop, Serializable {
 
   String loopOn;
   Boolean loopUsingPeek;

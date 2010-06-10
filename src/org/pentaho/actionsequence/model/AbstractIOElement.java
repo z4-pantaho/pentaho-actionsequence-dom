@@ -12,7 +12,6 @@
 */
 package org.pentaho.actionsequence.model;
 
-import org.pentaho.actionsequence.model.messages.Messages;
 
 /**
  * A wrapper class for an action sequence input or output element.
@@ -38,7 +37,7 @@ public abstract class AbstractIOElement implements IAbstractIOElement {
   public void setName(String ioName) {
     ioName = ioName.trim();
     if (ioName.split("\\s+").length > 1) { //$NON-NLS-1$
-      throw new IllegalArgumentException(Messages.getString("ActionSequenceIO.NO_SPACES_IN_NAME")); //$NON-NLS-1$
+      throw new IllegalArgumentException("No spaces allowed in name"); //$NON-NLS-1$
     }
     if (!ioName.equals(getName())) {
       this.name = ioName;

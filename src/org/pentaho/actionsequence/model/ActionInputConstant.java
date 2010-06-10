@@ -1,8 +1,10 @@
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
+
 
 // This class is used to set an action input to a constant value.
-public class ActionInputConstant implements IActionInput, IActionInputSource {
+public class ActionInputConstant implements IActionInput, IActionInputSource, Serializable {
   Object value;
   String inputName;
   

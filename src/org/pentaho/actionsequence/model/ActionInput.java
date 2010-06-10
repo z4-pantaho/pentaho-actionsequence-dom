@@ -12,13 +12,15 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
+
 
 /**
  * Convenience class used to distinguish action inputs from action outputs.
  * @author Angelo Rodriguez
  *
  */
-public class ActionInput extends AbstractActionIOElement implements IActionInput {
+public class ActionInput extends AbstractActionIOElement implements IActionInput, Serializable {
 
   public ActionInput(IActionDefinition parent) {
     super(parent);

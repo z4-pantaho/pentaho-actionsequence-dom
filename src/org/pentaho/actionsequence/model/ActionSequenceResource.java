@@ -12,13 +12,15 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
+
 
 /**
  * A wrapper class for an action sequence resource element.
  * @author Angelo Rodriguez
  *
  */
-public class ActionSequenceResource extends AbstractIOElement implements IActionSequenceResource {
+public class ActionSequenceResource extends AbstractIOElement implements IActionSequenceResource, Serializable {
 
   IActionSequenceDocument parent;
   String mimeType;

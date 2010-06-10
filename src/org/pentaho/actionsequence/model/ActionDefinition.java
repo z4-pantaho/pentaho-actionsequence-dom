@@ -12,16 +12,15 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.pentaho.actionsequence.model.messages.Messages;
 
 /**
  * A wrapper for an action definition element within an action sequence.
  * @author Angelo Rodriguez
  */
-public class ActionDefinition implements IActionDefinition {
+public class ActionDefinition implements IActionDefinition, Serializable {
   
   IActionControlStatement parent;
   String componentName;
@@ -37,8 +36,8 @@ public class ActionDefinition implements IActionDefinition {
    * @param actionDefElement the wrapped action definition element
    */
   public ActionDefinition() {
-    this(Messages.getString("ActionDefinition.ENTER_CLASS_NAME")); //$NON-NLS-1$
-    setDescription(Messages.getString("ActionDefinition.CUSTOM_ACTION_TITLE")); //$NON-NLS-1$
+    this("Generic Action"); //$NON-NLS-1$
+    setDescription("Generic Action"); //$NON-NLS-1$
   }
   
   public ActionDefinition(IActionControlStatement parent) {

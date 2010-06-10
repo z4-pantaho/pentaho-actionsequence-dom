@@ -12,8 +12,10 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 
-public class ActionSequenceInputSource implements IActionSequenceInputSource {
+
+public class ActionSequenceInputSource implements IActionSequenceInputSource, Serializable {
   
   IActionSequenceInput parent;
   String name;

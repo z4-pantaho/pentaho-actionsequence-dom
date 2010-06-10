@@ -1,7 +1,9 @@
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 
-public class SimpleActionInputVariable implements IActionInputVariable {
+
+public class SimpleActionInputVariable implements IActionInputVariable, Serializable {
 
   public String name;
   public String type;

@@ -12,8 +12,10 @@
 */
 package org.pentaho.actionsequence.model;
 
+import java.io.Serializable;
 
-public class ActionSequenceDocumentAdapter implements IActionSequenceListener {
+
+public class ActionSequenceDocumentAdapter implements IActionSequenceListener, Serializable {
 
   public ActionSequenceDocumentAdapter() {
     super();
