@@ -26,6 +26,9 @@ public class ActionSequenceOutput extends AbstractIOElement implements IActionSe
   IActionSequenceDocument parent;
   ArrayList<IActionSequenceOutputDestination> destinations = new ArrayList<IActionSequenceOutputDestination>();
   
+  public ActionSequenceOutput() {
+  }
+  
   protected ActionSequenceOutput(IActionSequenceDocument parent) {
     this.parent = parent;
   }

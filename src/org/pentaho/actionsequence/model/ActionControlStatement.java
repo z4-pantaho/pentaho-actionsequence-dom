@@ -22,6 +22,9 @@ public abstract class ActionControlStatement implements IActionControlStatement 
   ArrayList<IActionSequenceExecutableStatement> children = new ArrayList<IActionSequenceExecutableStatement>();
   
   
+  public ActionControlStatement() {
+  }
+  
   public ActionControlStatement(IActionControlStatement parent) {
     this.parent = parent;
   }

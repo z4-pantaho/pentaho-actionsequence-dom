@@ -26,6 +26,9 @@ public class ActionLoop extends ActionControlStatement implements IActionLoop, S
   Boolean loopUsingPeek;
   IActionSequenceDocument parent;
   
+  ActionLoop() {
+  }
+  
   ActionLoop(IActionSequenceDocument parent) {
     super(null);
     this.parent = parent;

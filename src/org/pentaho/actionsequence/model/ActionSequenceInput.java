@@ -34,6 +34,9 @@ public class ActionSequenceInput extends AbstractIOElement implements IActionSeq
   ArrayList<IActionSequenceInputSource> sources = new ArrayList<IActionSequenceInputSource>();
   
   
+  public ActionSequenceInput() {
+  }
+  
   public ActionSequenceInput(IActionSequenceDocument parent) {
     this.parent = parent;
   }

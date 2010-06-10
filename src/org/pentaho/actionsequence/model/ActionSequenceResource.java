@@ -28,6 +28,9 @@ public class ActionSequenceResource extends AbstractIOElement implements IAction
   String xml;
   String uri;
   
+  public ActionSequenceResource() {
+  }
+  
   public ActionSequenceResource(IActionSequenceDocument parent) {
     this.parent = parent;
   }

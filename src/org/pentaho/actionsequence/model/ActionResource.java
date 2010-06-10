@@ -23,6 +23,9 @@ import java.util.List;
 
 public class ActionResource extends AbstractActionIOElement implements IActionResource, Serializable {
   
+  public ActionResource() {
+  }
+    
   public ActionResource(IActionDefinition parent) {
     super(parent);
   }

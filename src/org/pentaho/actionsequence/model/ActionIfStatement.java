@@ -24,6 +24,10 @@ public class ActionIfStatement extends ActionControlStatement implements IAction
 
   String condition;
   
+  public ActionIfStatement() {
+    super();
+  }
+  
   public ActionIfStatement(IActionControlStatement parent) {
     super(parent);
   }

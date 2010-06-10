@@ -22,6 +22,10 @@ import java.io.Serializable;
  */
 public class ActionInput extends AbstractActionIOElement implements IActionInput, Serializable {
 
+  public ActionInput() {
+    super();
+  }
+  
   public ActionInput(IActionDefinition parent) {
     super(parent);
   }

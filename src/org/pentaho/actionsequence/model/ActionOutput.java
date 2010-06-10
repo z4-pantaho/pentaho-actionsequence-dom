@@ -22,6 +22,10 @@ import java.io.Serializable;
  */
 public class ActionOutput extends AbstractActionIOElement implements IActionOutput, Serializable {
 
+  public ActionOutput() {
+    super();
+  }
+  
   public ActionOutput(IActionDefinition parent) {
     super(parent);
   }

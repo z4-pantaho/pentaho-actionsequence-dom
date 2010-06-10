@@ -21,6 +21,9 @@ public class ActionSequenceOutputDestination implements IActionSequenceOutputDes
   String name;
   String destination;
   
+  protected ActionSequenceOutputDestination() {
+  }
+  
   protected ActionSequenceOutputDestination(IActionSequenceOutput parent) {
     this.parent = parent;
   }

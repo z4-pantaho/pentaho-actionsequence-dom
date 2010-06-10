@@ -8,6 +8,9 @@ public class ActionInputConstant implements IActionInput, IActionInputSource, Se
   Object value;
   String inputName;
   
+  public ActionInputConstant() {
+  }
+  
   // Not intended for general use. Use one parameter option.
   public ActionInputConstant(Object value) {
     this.value = value;

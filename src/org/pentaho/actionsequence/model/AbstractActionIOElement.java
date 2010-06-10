@@ -22,6 +22,9 @@ public abstract class AbstractActionIOElement extends AbstractIOElement implemen
   String mapping;
   IActionDefinition actionDefinition;
 
+  public AbstractActionIOElement() {
+  }
+  
   public AbstractActionIOElement(IActionDefinition parent) {
     this.actionDefinition = parent;
   }

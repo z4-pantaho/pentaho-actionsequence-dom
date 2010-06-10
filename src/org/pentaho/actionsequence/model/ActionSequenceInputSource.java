@@ -21,6 +21,9 @@ public class ActionSequenceInputSource implements IActionSequenceInputSource, Se
   String name;
   String origin;
   
+  public ActionSequenceInputSource() {
+  }
+  
   protected ActionSequenceInputSource(IActionSequenceInput parent) {
     this.parent = parent;
     
