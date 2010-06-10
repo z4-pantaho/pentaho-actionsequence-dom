@@ -5,17 +5,12 @@ import java.io.Serializable;
 
 // This class is used to set an action input to a constant value.
 public class ActionInputConstant implements IActionInput, IActionInputSource, Serializable {
-  Object value;
+  String value;
   String inputName;
   
   public ActionInputConstant() {
   }
   
-  // Not intended for general use. Use one parameter option.
-  public ActionInputConstant(Object value) {
-    this.value = value;
-  }
-
   // Not intended for general use. Use one parameter option.
   public ActionInputConstant(String value) {
     this.value = value;
@@ -23,30 +18,47 @@ public class ActionInputConstant implements IActionInput, IActionInputSource, Se
   
   // Not intended for general use. Use one parameter option.
   public ActionInputConstant(Boolean value) {
-    this.value = value;
+    this.value = value.toString();
   }
   
   // Not intended for general use. Use one parameter option.
   public ActionInputConstant(boolean value) {
-    this.value = new Boolean(value);
+    this.value = Boolean.toString(value);
   }
   
   // Not intended for general use. Use one parameter option.
   public ActionInputConstant(Integer value) {
-    this.value = value;
+    this.value = value.toString();
   }
   
   // Not intended for general use. Use one parameter option.
   public ActionInputConstant(int value) {
-    this.value = new Integer(value);
+    this.value = Integer.toString(value);
   }
   
-  public Object getValue() {
-    return value;
-  }
-  
-  public void setValue(Object value) {
+  // Not intended for general use. Use one parameter option.
+  public void setValue(String value) {
     this.value = value;
+  }
+  
+  // Not intended for general use. Use one parameter option.
+  public void setValue(Boolean value) {
+    this.value = value.toString();
+  }
+  
+  // Not intended for general use. Use one parameter option.
+  public void setValue(boolean value) {
+    this.value = Boolean.toString(value);
+  }
+  
+  // Not intended for general use. Use one parameter option.
+  public void setValue(Integer value) {
+    this.value = value.toString();
+  }
+  
+  // Not intended for general use. Use one parameter option.
+  public void setValue(int value) {
+    this.value = Integer.toString(value);
   }
   
   public String getStringValue() {
@@ -90,7 +102,7 @@ public class ActionInputConstant implements IActionInput, IActionInputSource, Se
   }
 
   public boolean equals(Object obj) {
-    return value != null && (obj instanceof ActionInputConstant) && value.equals(((ActionInputConstant)obj).getValue());
+    return value != null && (obj instanceof ActionInputConstant) && value.equals(((ActionInputConstant)obj).value);
   }
 
   public String getName() {

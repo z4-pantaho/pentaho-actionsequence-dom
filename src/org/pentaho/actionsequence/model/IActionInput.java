@@ -13,7 +13,7 @@
 package org.pentaho.actionsequence.model;
 
 public interface IActionInput {
-  public static final ActionInputConstant NULL_INPUT = new ActionInputConstant((Object)null);
+  public static final ActionInputConstant NULL_INPUT = new ActionInputConstant((String)null);
   public String getName();
   public void setName(String name);
 }
