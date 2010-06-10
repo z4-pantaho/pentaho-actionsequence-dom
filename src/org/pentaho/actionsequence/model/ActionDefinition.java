@@ -123,8 +123,15 @@ public class ActionDefinition implements IActionDefinition, Serializable {
   }
   
   public void setActionInputValue(String inputPrivateName, IActionInputSource value) {
-    if ((value == null) || (value instanceof ActionInputConstant)) {
-      setInputValue(inputPrivateName, value != null ? ((ActionInputConstant)value).getStringValue() : null);
+    if (value == null || value == ActionInputConstant.NULL_INPUT) {
+      setInputValue(inputPrivateName, null);
+    } else if (value instanceof ActionInputConstant) {
+      IActionInput oldInput = getInput(inputPrivateName);
+      if (oldInput != ActionInputConstant.NULL_INPUT) {
+        inputs.remove(oldInput);
+      }
+      ((ActionInputConstant) value).setName(inputPrivateName);
+      inputs.add((ActionInputConstant)value);
     } else {
       setInputParam(inputPrivateName, (IActionInputVariable)value);
     }
