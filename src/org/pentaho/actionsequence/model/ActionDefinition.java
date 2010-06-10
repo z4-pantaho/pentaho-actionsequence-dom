@@ -361,7 +361,7 @@ public class ActionDefinition implements IActionDefinition, Serializable {
    * @return the outputs listed in the action outputs section of the specified type
    */
   public List<IActionOutput> getOutputs(String[] types) {
-    List matchingOutputs = new ArrayList();
+    List<IActionOutput> matchingOutputs = new ArrayList<IActionOutput>();
     if (types == null) {
       matchingOutputs.addAll(outputs);
     } else {
