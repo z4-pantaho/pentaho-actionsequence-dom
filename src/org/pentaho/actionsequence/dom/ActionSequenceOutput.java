@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.dom4j.Attribute;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
@@ -49,4 +50,31 @@ public class ActionSequenceOutput extends AbstractIOElement implements IActionSe
     ActionSequenceDocument.fireIoChanged(this);
     return actionSequenceOutputDestination;
   }
+
+  public boolean isOutputParameter() {
+    List<Attribute> attribs = ioElement.attributes();
+    for(Attribute attrib : attribs){
+      if(attrib.getName().equals(IS_OUTPUT_PARAM_ATTR)){
+        String outParamTxt = attrib.getValue();
+        return Boolean.parseBoolean(outParamTxt);
+      }
+    }
+    //default if not present
+    return true;
+  }
+
+  public void setOutputParameter(boolean isOutputParameter) {
+    List<Attribute> attribs = ioElement.attributes();
+    for(Attribute attrib : attribs){
+      if(attrib.getName().equals(IS_OUTPUT_PARAM_ATTR)){
+        attrib.setValue(Boolean.toString(isOutputParameter));
+        ActionSequenceDocument.fireIoChanged(this);
+        return;
+      }
+    }
+    //not found, create new
+    ioElement.addAttribute(IS_OUTPUT_PARAM_ATTR, Boolean.toString(isOutputParameter));
+    ActionSequenceDocument.fireIoChanged(this);
+  }
+  
 }
