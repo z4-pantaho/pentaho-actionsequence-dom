@@ -370,12 +370,47 @@ TYPICAL TARGET SEQUENCE
     <pathelement path="${classes.dir}" />
   </path>
 
+
   <!--=======================================================================
       default
       
       The target that is run if no target is given
       ====================================================================-->
-  <target name="default" depends="clean-all,resolve,dist" />
+  <target name="default" depends="build" />
+
+
+  <!--=======================================================================
+      build
+      
+      Runs a typical build process to create the project locally
+      ====================================================================-->
+  <target name="build" depends="clean-all,resolve,cobertura,dist-source,dist" />
+
+
+  <!--=======================================================================
+      build-testless
+      
+      Runs a typical build process to create the project locally (no testing)
+      ====================================================================-->
+  <target name="build-testless" depends="clean-all,resolve,dist-source,dist" />
+
+
+  <!--=======================================================================
+      continuous
+      
+      Runs a typical continuous integration build including project dist,
+      test, and coverage artifacts
+      ====================================================================-->
+  <target name="continuous" depends="build,sonar,publish" />
+
+
+  <!--=======================================================================
+      continuous-testless
+      
+      Runs a typical continuous integration build including project dist,
+      and coverage artifacts
+      ====================================================================-->
+  <target name="continuous-testless" depends="build-testless,publish" />
 
 
   <!--=======================================================================
@@ -1386,24 +1421,6 @@ TYPICAL TARGET SEQUENCE
 
 
   <!--=======================================================================
-      continuous
-      
-      Runs a typical continuous integration build including project dist, javadoc, test, 
-      and coverage artifacts
-      ====================================================================-->
-  <target name="continuous" depends="clean-all,resolve,cobertura,sonar,dist-source,dist" />
-
-
-  <!--=======================================================================
-      continuous-testless
-      
-      Runs a typical continuous integration build including project dist, javadoc, test, 
-      and coverage artifacts
-      ====================================================================-->
-  <target name="continuous-testless" depends="clean-all,resolve,dist-source,dist" />
-
-
-  <!--=======================================================================
       javadoc
       
       Generates javadoc source documentation for this project
@@ -1900,7 +1917,6 @@ TYPICAL TARGET SEQUENCE
     sonar.jdbc.password
     sonar.host.url
     ====================================================================-->
-
   <target name="sonar" depends="install-sonar, compile, test, cobertura">
     <property name="sonar.sources" value="${src.dir}" />
     <property name="sonar.binaries" value="${classes.dir}" />
