@@ -1,15 +1,15 @@
 /*
-* Copyright 2002 - 2013 Pentaho Corporation.  All rights reserved.
-* 
-* This software was developed by Pentaho Corporation and is provided under the terms
-* of the Mozilla Public License, Version 1.1, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to http://www.mozilla.org/MPL/MPL-1.1.txt. TThe Initial Developer is Pentaho Corporation.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2013 Pentaho Corporation.  All rights reserved.
+ * 
+ * This software was developed by Pentaho Corporation and is provided under the terms
+ * of the Mozilla Public License, Version 1.1, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://www.mozilla.org/MPL/MPL-1.1.txt. TThe Initial Developer is Pentaho Corporation.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package org.pentaho.actionsequence.dom;
 
@@ -20,15 +20,15 @@ public class SimpleActionInputVariable implements IActionInputVariable {
 
   public String name;
   public String type;
-  
+
   public SimpleActionInputVariable() {
   }
-  
-  public SimpleActionInputVariable(String name, String type) {
+
+  public SimpleActionInputVariable( String name, String type ) {
     this.name = name;
     this.type = type;
   }
-  
+
   public String getType() {
     return type;
   }
@@ -37,11 +37,11 @@ public class SimpleActionInputVariable implements IActionInputVariable {
     return name;
   }
 
-  public void setType(String type) {
+  public void setType( String type ) {
     this.type = type;
   }
 
-  public void setVariableName(String name) {
+  public void setVariableName( String name ) {
     this.name = name;
   }
 
@@ -49,7 +49,7 @@ public class SimpleActionInputVariable implements IActionInputVariable {
     return null;
   }
 
-  public boolean getBooleanValue(boolean defaultValue) {
+  public boolean getBooleanValue( boolean defaultValue ) {
     return defaultValue;
   }
 
@@ -57,7 +57,7 @@ public class SimpleActionInputVariable implements IActionInputVariable {
     return null;
   }
 
-  public int getIntValue(int defaultValue) {
+  public int getIntValue( int defaultValue ) {
     return defaultValue;
   }
 
@@ -65,15 +65,15 @@ public class SimpleActionInputVariable implements IActionInputVariable {
     return null;
   }
 
-  public String getStringValue(boolean replaceParamReferences, String defaultValue) {
+  public String getStringValue( boolean replaceParamReferences, String defaultValue ) {
     return defaultValue;
   }
 
-  public String getStringValue(boolean replaceParamReferences) {
+  public String getStringValue( boolean replaceParamReferences ) {
     return null;
   }
 
-  public String getStringValue(String defaultValue) {
+  public String getStringValue( String defaultValue ) {
     return defaultValue;
   }
 
@@ -82,12 +82,12 @@ public class SimpleActionInputVariable implements IActionInputVariable {
   }
 
   public String getName() {
-   return name;
+    return name;
   }
 
-  public void setName(String ioName) {
+  public void setName( String ioName ) {
     name = ioName;
-    
+
   }
 
   public void delete() {
@@ -100,9 +100,9 @@ public class SimpleActionInputVariable implements IActionInputVariable {
   public Element getElement() {
     return null;
   }
-  
+
   public IActionParameterMgr getParameterMgr() {
-	  return null;
+    return null;
   }
 
 }

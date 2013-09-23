@@ -1,15 +1,15 @@
 /*
-* Copyright 2002 - 2013 Pentaho Corporation.  All rights reserved.
-* 
-* This software was developed by Pentaho Corporation and is provided under the terms
-* of the Mozilla Public License, Version 1.1, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to http://www.mozilla.org/MPL/MPL-1.1.txt. TThe Initial Developer is Pentaho Corporation.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2013 Pentaho Corporation.  All rights reserved.
+ * 
+ * This software was developed by Pentaho Corporation and is provided under the terms
+ * of the Mozilla Public License, Version 1.1, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://www.mozilla.org/MPL/MPL-1.1.txt. TThe Initial Developer is Pentaho Corporation.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package org.pentaho.actionsequence.dom.actions;
 
@@ -40,181 +40,172 @@ public class PentahoReportAction extends ActionDefinition {
   public static final String REPORTGENERATE_YIELDRATE_ELEMENT = "yield-rate"; //$NON-NLS-1$
   public static final String ACCEPTED_PAGE_ELEMENT = "accepted-page"; //$NON-NLS-1$
   public static final String REPORT_OUTPUT_ELEMENT = "outputstream";
-  
-  protected static final String[] EXPECTED_RESOURCES = new String[] {
-    REPORT_DEFINITION_ELEMENT
-  };
-  
-  protected static final String[] EXPECTED_INPUTS = new String[] {
-    REPORT_DEFINITION_PATH_ELEMENT,
-    REPORT_DEFINITION_ELEMENT,
-    USE_CONTENT_REPOSITORY_ELEMENT,
-    PAGINATE_OUTPUT_ELEMENT,
-    OUTPUT_TYPE_ELEMENT,
-    REPORTGENERATE_YIELDRATE_ELEMENT,
-    ACCEPTED_PAGE_ELEMENT
-  };
-  
-  public PentahoReportAction(Element actionDefElement, IActionParameterMgr actionParameterMgr) {
-    super(actionDefElement, actionParameterMgr);
+
+  protected static final String[] EXPECTED_RESOURCES = new String[] { REPORT_DEFINITION_ELEMENT };
+
+  protected static final String[] EXPECTED_INPUTS = new String[] { REPORT_DEFINITION_PATH_ELEMENT,
+      REPORT_DEFINITION_ELEMENT, USE_CONTENT_REPOSITORY_ELEMENT, PAGINATE_OUTPUT_ELEMENT, OUTPUT_TYPE_ELEMENT,
+      REPORTGENERATE_YIELDRATE_ELEMENT, ACCEPTED_PAGE_ELEMENT };
+
+  public PentahoReportAction( Element actionDefElement, IActionParameterMgr actionParameterMgr ) {
+    super( actionDefElement, actionParameterMgr );
   }
 
   public PentahoReportAction() {
-    super(COMPONENT_NAME);
+    super( COMPONENT_NAME );
   }
-  
+
   public String[] getReservedInputNames() {
     return EXPECTED_INPUTS;
   }
-  
-  public static boolean accepts(Element element) {
-    return ActionDefinition.accepts(element) && hasComponentName(element, COMPONENT_NAME);
+
+  public static boolean accepts( Element element ) {
+    return ActionDefinition.accepts( element ) && hasComponentName( element, COMPONENT_NAME );
   }
-  
+
   public IActionResource getReportDefinitionResource() {
-    return getResource(REPORT_DEFINITION_ELEMENT);
+    return getResource( REPORT_DEFINITION_ELEMENT );
   }
-  
-  public IActionResource setReportDefinitionResource(URI uri, String mimeType) {
+
+  public IActionResource setReportDefinitionResource( URI uri, String mimeType ) {
     IActionResource actionResource = null;
-    if (uri == null) {
-      setResourceUri(REPORT_DEFINITION_ELEMENT, null, mimeType);
+    if ( uri == null ) {
+      setResourceUri( REPORT_DEFINITION_ELEMENT, null, mimeType );
     } else {
-      actionResource = setResourceUri(REPORT_DEFINITION_ELEMENT, uri, mimeType);         
-      setReportDefinition(null);
+      actionResource = setResourceUri( REPORT_DEFINITION_ELEMENT, uri, mimeType );
+      setReportDefinition( null );
     }
     return actionResource;
   }
-  
-  public void setReportDefinition(IActionInputSource value) {
-    if (value instanceof IActionInputVariable) {
-      IActionInputVariable variable = (IActionInputVariable)value;
-      if (variable.getType().equals(ActionSequenceDocument.INPUT_STREAM_TYPE)) {
-        setActionInputValue(REPORT_DEFINITION_INPUT_STREAM_ELEMENT, value);
+
+  public void setReportDefinition( IActionInputSource value ) {
+    if ( value instanceof IActionInputVariable ) {
+      IActionInputVariable variable = (IActionInputVariable) value;
+      if ( variable.getType().equals( ActionSequenceDocument.INPUT_STREAM_TYPE ) ) {
+        setActionInputValue( REPORT_DEFINITION_INPUT_STREAM_ELEMENT, value );
       } else {
-        setActionInputValue(REPORT_DEFINITION_PATH_ELEMENT, value);
+        setActionInputValue( REPORT_DEFINITION_PATH_ELEMENT, value );
       }
-      setReportDefinitionResource(null, null);
-    } else if ((value != null) && (((ActionInputConstant)value).getValue() != null)) {
-      setActionInputValue(REPORT_DEFINITION_PATH_ELEMENT, value);
-      setReportDefinitionResource(null, null);
+      setReportDefinitionResource( null, null );
+    } else if ( ( value != null ) && ( ( (ActionInputConstant) value ).getValue() != null ) ) {
+      setActionInputValue( REPORT_DEFINITION_PATH_ELEMENT, value );
+      setReportDefinitionResource( null, null );
     } else {
-      setActionInputValue(REPORT_DEFINITION_INPUT_STREAM_ELEMENT, (IActionInputSource)null);
-      setActionInputValue(REPORT_DEFINITION_PATH_ELEMENT, (IActionInputSource)null);
+      setActionInputValue( REPORT_DEFINITION_INPUT_STREAM_ELEMENT, (IActionInputSource) null );
+      setActionInputValue( REPORT_DEFINITION_PATH_ELEMENT, (IActionInputSource) null );
     }
   }
-  
+
   public IActionInput getReportDefinition() {
-    return getInput(REPORT_DEFINITION_PATH_ELEMENT);
+    return getInput( REPORT_DEFINITION_PATH_ELEMENT );
   }
-  
-  public void setUseContentRepository(IActionInputSource value)
-  {
-    setActionInputValue(USE_CONTENT_REPOSITORY_ELEMENT, value);
+
+  public void setUseContentRepository( IActionInputSource value ) {
+    setActionInputValue( USE_CONTENT_REPOSITORY_ELEMENT, value );
   }
-  
-  public IActionInput getUseContentRepository()
-  {
-    return getInput(USE_CONTENT_REPOSITORY_ELEMENT);
+
+  public IActionInput getUseContentRepository() {
+    return getInput( USE_CONTENT_REPOSITORY_ELEMENT );
   }
-  
-  public void setPaginate(IActionInputSource value)
-  {
-    setActionInputValue(PAGINATE_OUTPUT_ELEMENT, value);
+
+  public void setPaginate( IActionInputSource value ) {
+    setActionInputValue( PAGINATE_OUTPUT_ELEMENT, value );
   }
-  
-  public IActionInput getPaginate()
-  {
-    return getInput(PAGINATE_OUTPUT_ELEMENT);
+
+  public IActionInput getPaginate() {
+    return getInput( PAGINATE_OUTPUT_ELEMENT );
   }
-  
-  public void setOutputType(IActionInputSource value) {
-    setActionInputValue(OUTPUT_TYPE_ELEMENT, value);
+
+  public void setOutputType( IActionInputSource value ) {
+    setActionInputValue( OUTPUT_TYPE_ELEMENT, value );
   }
-  
+
   public IActionInput getOutputType() {
-    return getInput(OUTPUT_TYPE_ELEMENT);
+    return getInput( OUTPUT_TYPE_ELEMENT );
   }
-  
-  public void setAcceptedPage(IActionInputSource value) {
-    setActionInputValue(ACCEPTED_PAGE_ELEMENT, value);
+
+  public void setAcceptedPage( IActionInputSource value ) {
+    setActionInputValue( ACCEPTED_PAGE_ELEMENT, value );
   }
-  
+
   public IActionInput getAcceptedPage() {
-    return getInput(ACCEPTED_PAGE_ELEMENT);
+    return getInput( ACCEPTED_PAGE_ELEMENT );
   }
-  
-  public void setYieldRate(IActionInputSource value) {
-    setActionInputValue(REPORTGENERATE_YIELDRATE_ELEMENT, value);
+
+  public void setYieldRate( IActionInputSource value ) {
+    setActionInputValue( REPORTGENERATE_YIELDRATE_ELEMENT, value );
   }
-  
+
   public IActionInput getYieldRate() {
-    return getInput(REPORTGENERATE_YIELDRATE_ELEMENT);    
+    return getInput( REPORTGENERATE_YIELDRATE_ELEMENT );
   }
-  
-  public void setReportHtmlContentHandlerPattern(IActionInputSource value) {
-    setActionInputValue(REPORTHTML_CONTENTHANDLER_PATTERN_ELEMENT, value);
+
+  public void setReportHtmlContentHandlerPattern( IActionInputSource value ) {
+    setActionInputValue( REPORTHTML_CONTENTHANDLER_PATTERN_ELEMENT, value );
   }
-  
+
   public IActionInput getReportHtmlContentHandlerPattern() {
-    return getInput(REPORTHTML_CONTENTHANDLER_PATTERN_ELEMENT);    
+    return getInput( REPORTHTML_CONTENTHANDLER_PATTERN_ELEMENT );
   }
-  
+
   public List<IActionInput> getReportParameters() {
-    ArrayList<String> knownInputs = new ArrayList<String>(Arrays.asList(EXPECTED_INPUTS));
+    ArrayList<String> knownInputs = new ArrayList<String>( Arrays.asList( EXPECTED_INPUTS ) );
     ArrayList<IActionInput> reportParameters = new ArrayList<IActionInput>();
-    for (IActionInput input : getInputs()) {
-      if ((input instanceof ActionInputConstant)
-          && !knownInputs.contains(((ActionInputConstant)input).getName())) {
-        reportParameters.add(input);
-      } else if ((input instanceof IActionInputVariable)
-          && !knownInputs.contains(((IActionInputVariable)input).getVariableName())) {
-        reportParameters.add(input);
+    for ( IActionInput input : getInputs() ) {
+      if ( ( input instanceof ActionInputConstant )
+          && !knownInputs.contains( ( (ActionInputConstant) input ).getName() ) ) {
+        reportParameters.add( input );
+      } else if ( ( input instanceof IActionInputVariable )
+          && !knownInputs.contains( ( (IActionInputVariable) input ).getVariableName() ) ) {
+        reportParameters.add( input );
       }
     }
     return reportParameters;
   }
-  
-  public void setReportParameters(List<IActionInputSource> reportParameters) {
+
+  public void setReportParameters( List<IActionInputSource> reportParameters ) {
     List<IActionInput> existingReportParameters = getReportParameters();
-    for (IActionInput existingReportParameter : existingReportParameters) {
-      if (existingReportParameter instanceof ActionInputConstant) {
-        setActionInputValue(((ActionInputConstant)existingReportParameter).getName(), (IActionInputSource)null);
-      } else if (existingReportParameter instanceof IActionInputVariable) {
-        setActionInputValue(((IActionInputVariable)existingReportParameter).getVariableName(), (IActionInputSource)null);
+    for ( IActionInput existingReportParameter : existingReportParameters ) {
+      if ( existingReportParameter instanceof ActionInputConstant ) {
+        setActionInputValue( ( (ActionInputConstant) existingReportParameter ).getName(), (IActionInputSource) null );
+      } else if ( existingReportParameter instanceof IActionInputVariable ) {
+        setActionInputValue( ( (IActionInputVariable) existingReportParameter ).getVariableName(),
+            (IActionInputSource) null );
       }
     }
-    for (IActionInputSource reportParameter : reportParameters) {
-      if (reportParameter instanceof ActionInputConstant) {
-        setActionInputValue(((ActionInputConstant)reportParameter).getName(), (IActionInputSource)reportParameter);
-      } else if (reportParameter instanceof IActionInputVariable) {
-        setActionInputValue(((IActionInputVariable)reportParameter).getVariableName(), (IActionInputSource)reportParameter);
+    for ( IActionInputSource reportParameter : reportParameters ) {
+      if ( reportParameter instanceof ActionInputConstant ) {
+        setActionInputValue( ( (ActionInputConstant) reportParameter ).getName(), (IActionInputSource) reportParameter );
+      } else if ( reportParameter instanceof IActionInputVariable ) {
+        setActionInputValue( ( (IActionInputVariable) reportParameter ).getVariableName(),
+            (IActionInputSource) reportParameter );
       }
     }
   }
-  
-  public IActionOutput setOutputReport(String publicOutputName) {
-    IActionOutput actionOutput = setOutput(REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE);
-    if ((publicOutputName != null) && (publicOutputName.trim().length() > 0)) {
+
+  public IActionOutput setOutputReport( String publicOutputName ) {
+    IActionOutput actionOutput =
+        setOutput( REPORT_OUTPUT_ELEMENT, publicOutputName, ActionSequenceDocument.CONTENT_TYPE );
+    if ( ( publicOutputName != null ) && ( publicOutputName.trim().length() > 0 ) ) {
       IActionOutput[] actionOutputs = getOutputs();
-      for (int i = 0; i < actionOutputs.length; i++) {
-        if (actionOutputs[i].getType().equals(ActionSequenceDocument.CONTENT_TYPE)
-            && !actionOutputs[i].getName().equals(REPORT_OUTPUT_ELEMENT)) {
+      for ( int i = 0; i < actionOutputs.length; i++ ) {
+        if ( actionOutputs[i].getType().equals( ActionSequenceDocument.CONTENT_TYPE )
+            && !actionOutputs[i].getName().equals( REPORT_OUTPUT_ELEMENT ) ) {
           actionOutputs[i].delete();
         }
       }
     }
     return actionOutput;
   }
-  
+
   public IActionOutput getOutputReport() {
     String privateOutputName = REPORT_OUTPUT_ELEMENT;
-    if (getOutput(privateOutputName) ==  null) { 
-      IActionOutput[] actionOutputs = getOutputs(ActionSequenceDocument.CONTENT_TYPE);
-      if (actionOutputs.length > 0) {
+    if ( getOutput( privateOutputName ) == null ) {
+      IActionOutput[] actionOutputs = getOutputs( ActionSequenceDocument.CONTENT_TYPE );
+      if ( actionOutputs.length > 0 ) {
         privateOutputName = actionOutputs[0].getName();
       }
     }
-    return getOutput(REPORT_OUTPUT_ELEMENT);
+    return getOutput( REPORT_OUTPUT_ELEMENT );
   }
 }

@@ -1,15 +1,15 @@
 /*
-* Copyright 2002 - 2013 Pentaho Corporation.  All rights reserved.
-* 
-* This software was developed by Pentaho Corporation and is provided under the terms
-* of the Mozilla Public License, Version 1.1, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to http://www.mozilla.org/MPL/MPL-1.1.txt. TThe Initial Developer is Pentaho Corporation.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2013 Pentaho Corporation.  All rights reserved.
+ * 
+ * This software was developed by Pentaho Corporation and is provided under the terms
+ * of the Mozilla Public License, Version 1.1, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://www.mozilla.org/MPL/MPL-1.1.txt. TThe Initial Developer is Pentaho Corporation.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package org.pentaho.actionsequence.dom;
 
@@ -21,83 +21,83 @@ public class ActionInputConstant implements IActionInput, IActionInputSource {
   Object value;
   String inputName;
   IActionParameterMgr actionParameterMgr;
-  
-  public ActionInputConstant(Element componentDefElement, IActionParameterMgr actionParameterMgr) {
+
+  public ActionInputConstant( Element componentDefElement, IActionParameterMgr actionParameterMgr ) {
     inputName = componentDefElement.getName();
     value = componentDefElement.getText();
     this.actionParameterMgr = actionParameterMgr;
   }
 
   // Not intended for general use. Use one parameter option.
-  public ActionInputConstant(Object value, IActionParameterMgr actionParameterMgr) {
+  public ActionInputConstant( Object value, IActionParameterMgr actionParameterMgr ) {
     this.value = value;
     this.actionParameterMgr = actionParameterMgr;
   }
 
   // Not intended for general use. Use one parameter option.
-  public ActionInputConstant(String value, IActionParameterMgr actionParameterMgr) {
+  public ActionInputConstant( String value, IActionParameterMgr actionParameterMgr ) {
     this.value = value;
     this.actionParameterMgr = actionParameterMgr;
   }
-  
+
   // Not intended for general use. Use one parameter option.
-  public ActionInputConstant(Boolean value, IActionParameterMgr actionParameterMgr) {
+  public ActionInputConstant( Boolean value, IActionParameterMgr actionParameterMgr ) {
     this.value = value;
     this.actionParameterMgr = actionParameterMgr;
   }
-  
+
   // Not intended for general use. Use one parameter option.
-  public ActionInputConstant(boolean value, IActionParameterMgr actionParameterMgr) {
-    this.value = new Boolean(value);
+  public ActionInputConstant( boolean value, IActionParameterMgr actionParameterMgr ) {
+    this.value = new Boolean( value );
     this.actionParameterMgr = actionParameterMgr;
   }
-  
+
   // Not intended for general use. Use one parameter option.
-  public ActionInputConstant(Integer value, IActionParameterMgr actionParameterMgr) {
+  public ActionInputConstant( Integer value, IActionParameterMgr actionParameterMgr ) {
     this.value = value;
     this.actionParameterMgr = actionParameterMgr;
   }
-  
+
   // Not intended for general use. Use one parameter option.
-  public ActionInputConstant(int value, IActionParameterMgr actionParameterMgr) {
-    this.value = new Integer(value);
+  public ActionInputConstant( int value, IActionParameterMgr actionParameterMgr ) {
+    this.value = new Integer( value );
     this.actionParameterMgr = actionParameterMgr;
   }
-  
+
   public Object getValue() {
     return value;
   }
-  
+
   public String getStringValue() {
-    return getStringValue(true, null);
+    return getStringValue( true, null );
   }
-  
-  public String getStringValue(boolean replaceParamReferences) {
-    return getStringValue(replaceParamReferences, null);
+
+  public String getStringValue( boolean replaceParamReferences ) {
+    return getStringValue( replaceParamReferences, null );
   }
-  
-  public String getStringValue(boolean replaceParamReferences, String defaultValue) {
+
+  public String getStringValue( boolean replaceParamReferences, String defaultValue ) {
     Object theValue = value;
-    if (replaceParamReferences && (actionParameterMgr != null) && (theValue != null)) {
-      theValue = actionParameterMgr.replaceParameterReferences(theValue.toString());
+    if ( replaceParamReferences && ( actionParameterMgr != null ) && ( theValue != null ) ) {
+      theValue = actionParameterMgr.replaceParameterReferences( theValue.toString() );
     }
     return theValue != null ? theValue.toString() : defaultValue;
   }
 
-  public String getStringValue(String defaultValue) {
-    return getStringValue(true, defaultValue);
+  public String getStringValue( String defaultValue ) {
+    return getStringValue( true, defaultValue );
   }
 
   public Boolean getBooleanValue() {
     Boolean boolValue = null;
     String stringValue = getStringValue();
-    if (stringValue != null) {
-      boolValue = new Boolean(stringValue);
+    if ( stringValue != null ) {
+      boolValue = new Boolean( stringValue );
     }
     return boolValue;
   }
-  
-  public boolean getBooleanValue(boolean defaultValue) {
+
+  public boolean getBooleanValue( boolean defaultValue ) {
     Boolean boolValue = getBooleanValue();
     return boolValue != null ? boolValue.booleanValue() : defaultValue;
   }
@@ -105,22 +105,23 @@ public class ActionInputConstant implements IActionInput, IActionInputSource {
   public Integer getIntValue() {
     Integer intValue = null;
     String stringValue = getStringValue();
-    if (stringValue != null) {
+    if ( stringValue != null ) {
       try {
-        intValue = new Integer(Integer.parseInt(stringValue));
-      } catch (NumberFormatException e) {
+        intValue = new Integer( Integer.parseInt( stringValue ) );
+      } catch ( NumberFormatException e ) {
       }
     }
     return intValue;
   }
-  
-  public int getIntValue(int defaultValue) {
+
+  public int getIntValue( int defaultValue ) {
     Integer intValue = getIntValue();
     return intValue != null ? intValue.intValue() : defaultValue;
   }
 
-  public boolean equals(Object obj) {
-    return value != null && (obj instanceof ActionInputConstant) && value.equals(((ActionInputConstant)obj).getValue());
+  public boolean equals( Object obj ) {
+    return value != null && ( obj instanceof ActionInputConstant )
+        && value.equals( ( (ActionInputConstant) obj ).getValue() );
   }
 
   public String getName() {
@@ -134,6 +135,5 @@ public class ActionInputConstant implements IActionInput, IActionInputSource {
   public String getVariableName() {
     return getName();
   }
-
 
 }
