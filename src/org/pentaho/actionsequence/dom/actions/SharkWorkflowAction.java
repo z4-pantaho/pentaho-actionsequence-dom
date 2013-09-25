@@ -24,7 +24,7 @@ public class SharkWorkflowAction extends ActionDefinition {
   public static final String NEW_INSTANCE_ELEMENT = "new-instance"; //$NON-NLS-1$
   public static final String PROCESS_NAME_ELEMENT = "process-name"; //$NON-NLS-1$
   protected static final String[] EXPECTED_INPUTS = new String[] { PACKAGE_NAME_ELEMENT, NEW_INSTANCE_ELEMENT,
-      PROCESS_NAME_ELEMENT };
+    PROCESS_NAME_ELEMENT };
 
   public SharkWorkflowAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );

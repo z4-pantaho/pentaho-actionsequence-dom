@@ -58,15 +58,15 @@ public class JavascriptAction extends ActionDefinition {
     ActionSequenceValidationError validationError = validateInput( SCRIPT_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing javascript input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Javascript input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Javascript input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing javascript input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Javascript input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Javascript input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

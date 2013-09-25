@@ -44,7 +44,7 @@ public class JasperReportAction extends ActionDefinition {
   public static final String[] EXPECTED_RESOURCES = new String[] { REPORT_DEFINITION_ELEMENT };
 
   protected static final String[] EXPECTED_INPUTS = new String[] { OUTPUT_TYPE_ELEMENT, DRIVER_ELEMENT,
-      CONNECTION_ELEMENT, USER_ID_ELEMENT, PASSWORD_ELEMENT, JNDI_ELEMENT };
+    CONNECTION_ELEMENT, USER_ID_ELEMENT, PASSWORD_ELEMENT, JNDI_ELEMENT };
 
   public JasperReportAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );
@@ -60,7 +60,7 @@ public class JasperReportAction extends ActionDefinition {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setComponentDefinition( OUTPUT_TYPE_ELEMENT, "html" );//$NON-NLS-1$
+    setComponentDefinition( OUTPUT_TYPE_ELEMENT, "html" ); //$NON-NLS-1$
   }
 
   public String[] getReservedInputNames() {
@@ -186,15 +186,15 @@ public class JasperReportAction extends ActionDefinition {
       validationError = validateInput( CONNECTION_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing database connection input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Database connection input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Database connection input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing database connection input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Database connection input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Database connection input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }
@@ -202,15 +202,15 @@ public class JasperReportAction extends ActionDefinition {
       validationError = validateInput( USER_ID_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing database login input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Database login input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Database login input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing database login input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Database login input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Database login input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }
@@ -218,15 +218,15 @@ public class JasperReportAction extends ActionDefinition {
       validationError = validateInput( JNDI_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing database connection input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Database connection input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Database connection input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing database connection input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Database connection input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Database connection input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }
@@ -238,15 +238,15 @@ public class JasperReportAction extends ActionDefinition {
     validationError = validateInput( OUTPUT_TYPE_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing report format input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Report format input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Report format input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report format input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report format input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report format input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }
@@ -254,15 +254,15 @@ public class JasperReportAction extends ActionDefinition {
     validationError = validateResource( REPORT_DEFINITION_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing report definition input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Report definition input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Report definition input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report definition input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report definition input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report definition input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

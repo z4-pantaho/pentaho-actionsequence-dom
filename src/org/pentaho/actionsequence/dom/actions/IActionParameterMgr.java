@@ -23,17 +23,17 @@ import org.pentaho.actionsequence.dom.IActionResource;
 import org.pentaho.commons.connection.IPentahoStreamSource;
 
 public interface IActionParameterMgr {
-  public Object getInputValue( IActionInput actionInput );
+  Object getInputValue( IActionInput actionInput );
 
-  public String replaceParameterReferences( String inputString );
+  String replaceParameterReferences( String inputString );
 
-  public IPentahoStreamSource getDataSource( IActionResource actionResource ) throws FileNotFoundException;
+  IPentahoStreamSource getDataSource( IActionResource actionResource ) throws FileNotFoundException;
 
-  public InputStream getInputStream( IActionResource actionResource ) throws FileNotFoundException;
+  InputStream getInputStream( IActionResource actionResource ) throws FileNotFoundException;
 
-  public IPentahoStreamSource getDataSource( IActionInput actionInput );
+  IPentahoStreamSource getDataSource( IActionInput actionInput );
 
-  public void setOutputValue( IActionOutput actionOutput, Object value );
+  void setOutputValue( IActionOutput actionOutput, Object value );
 
-  public String getString( IActionResource actionResource ) throws IOException;
+  String getString( IActionResource actionResource ) throws IOException;
 }

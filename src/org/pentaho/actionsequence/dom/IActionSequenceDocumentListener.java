@@ -21,35 +21,35 @@ package org.pentaho.actionsequence.dom;
  */
 public interface IActionSequenceDocumentListener {
 
-  public void ioAdded( IAbstractIOElement io );
+  void ioAdded( IAbstractIOElement io );
 
-  public void ioRemoved( Object parent, IAbstractIOElement io );
+  void ioRemoved( Object parent, IAbstractIOElement io );
 
-  public void ioRenamed( IAbstractIOElement io );
+  void ioRenamed( IAbstractIOElement io );
 
-  public void ioChanged( IAbstractIOElement io );
+  void ioChanged( IAbstractIOElement io );
 
-  public void resourceAdded( Object resource );
+  void resourceAdded( Object resource );
 
-  public void resourceRemoved( Object parent, Object resource );
+  void resourceRemoved( Object parent, Object resource );
 
-  public void resourceRenamed( Object resource );
+  void resourceRenamed( Object resource );
 
-  public void resourceChanged( Object resource );
+  void resourceChanged( Object resource );
 
-  public void actionAdded( IActionDefinition action );
+  void actionAdded( IActionDefinition action );
 
-  public void actionRemoved( Object parent, IActionDefinition action );
+  void actionRemoved( Object parent, IActionDefinition action );
 
-  public void actionRenamed( IActionDefinition action );
+  void actionRenamed( IActionDefinition action );
 
-  public void actionChanged( IActionDefinition action );
+  void actionChanged( IActionDefinition action );
 
-  public void controlStatementAdded( IActionControlStatement controlStatement );
+  void controlStatementAdded( IActionControlStatement controlStatement );
 
-  public void controlStatementRemoved( Object parent, IActionControlStatement controlStatement );
+  void controlStatementRemoved( Object parent, IActionControlStatement controlStatement );
 
-  public void controlStatementChanged( IActionControlStatement controlStatement );
+  void controlStatementChanged( IActionControlStatement controlStatement );
 
-  public void headerChanged( IActionSequenceDocument actionSequenceDocument );
+  void headerChanged( IActionSequenceDocument actionSequenceDocument );
 }

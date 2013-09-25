@@ -23,9 +23,9 @@ import org.pentaho.actionsequence.dom.actions.IActionParameterMgr;
  */
 public interface IAbstractIOElement extends IActionSequenceElement {
 
-  public static final String TYPE_NAME = "type"; //$NON-NLS-1$
+  String TYPE_NAME = "type"; //$NON-NLS-1$
 
-  public String getName();
+  String getName();
 
   /**
    * Sets the name of the action sequence input/output
@@ -33,12 +33,12 @@ public interface IAbstractIOElement extends IActionSequenceElement {
    * @param ioName
    *          the input/output name
    */
-  public void setName( String ioName );
+  void setName( String ioName );
 
   /**
    * @return the type of input/output
    */
-  public String getType();
+  String getType();
 
   /**
    * Sets the type of the IO type.
@@ -46,7 +46,7 @@ public interface IAbstractIOElement extends IActionSequenceElement {
    * @param ioType
    *          the io type
    */
-  public void setType( String ioType );
+  void setType( String ioType );
 
-  public IActionParameterMgr getParameterMgr();
+  IActionParameterMgr getParameterMgr();
 }

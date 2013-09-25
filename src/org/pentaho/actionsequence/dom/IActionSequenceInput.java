@@ -26,17 +26,17 @@ import javax.swing.table.TableModel;
 @SuppressWarnings( { "rawtypes" } )
 public interface IActionSequenceInput extends IActionInputVariable, IAbstractIOElement {
 
-  public static final int REQUEST_INPUT_SOURCE_ID = 1;
-  public static final int SESSION_INPUT_SOURCE_ID = 2;
-  public static final int RUNTIME_INPUT_SOURCE_ID = 3;
-  public static final int GLOBAL_INPUT_SOURCE_ID = 4;
+  int REQUEST_INPUT_SOURCE_ID = 1;
+  int SESSION_INPUT_SOURCE_ID = 2;
+  int RUNTIME_INPUT_SOURCE_ID = 3;
+  int GLOBAL_INPUT_SOURCE_ID = 4;
 
   /*
    * (non-Javadoc)
    * 
    * @see org.pentaho.designstudio.dom.ActionSequenceIO#setType(java.lang.String)
    */
-  public void setType( String ioType );
+  void setType( String ioType );
 
   /**
    * Sets the input default value.
@@ -44,7 +44,7 @@ public interface IActionSequenceInput extends IActionInputVariable, IAbstractIOE
    * @param defValue
    *          the default value
    */
-  public void setDefaultValue( String defValue );
+  void setDefaultValue( String defValue );
 
   /**
    * Sets the input default value.
@@ -52,7 +52,7 @@ public interface IActionSequenceInput extends IActionInputVariable, IAbstractIOE
    * @param defValue
    *          the default value
    */
-  public void setDefaultValue( String[] defValue );
+  void setDefaultValue( String[] defValue );
 
   /**
    * Sets the input default value.
@@ -60,7 +60,7 @@ public interface IActionSequenceInput extends IActionInputVariable, IAbstractIOE
    * @param paramMap
    *          the default value
    */
-  public void setDefaultValue( HashMap paramMap );
+  void setDefaultValue( HashMap paramMap );
 
   /**
    * Sets the input default value.
@@ -68,7 +68,7 @@ public interface IActionSequenceInput extends IActionInputVariable, IAbstractIOE
    * @param defValue
    *          the default value
    */
-  public void setDefaultValue( TableModel defValue );
+  void setDefaultValue( TableModel defValue );
 
   /**
    * Sets the input default value.
@@ -79,19 +79,19 @@ public interface IActionSequenceInput extends IActionInputVariable, IAbstractIOE
    *          indicates whether the property map list element or result set element should be used to save the default
    *          value.
    */
-  public void setDefaultValue( TableModel defValue, boolean usePropertyMapList );
+  void setDefaultValue( TableModel defValue, boolean usePropertyMapList );
 
   /**
    * @return the default value or null if none exists.
    */
-  public Object getDefaultValue();
+  Object getDefaultValue();
 
-  public IActionSequenceInputSource[] getSources();
+  IActionSequenceInputSource[] getSources();
 
-  public IActionSequenceInputSource addSource( String origin, String name );
+  IActionSequenceInputSource addSource( String origin, String name );
 
-  public IActionSequenceInputSource addSource( int index, String origin, String name );
+  IActionSequenceInputSource addSource( int index, String origin, String name );
 
-  public String getVariableName();
+  String getVariableName();
 
 }

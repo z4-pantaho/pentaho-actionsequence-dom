@@ -57,8 +57,8 @@ public class StartScheduledJobAction extends AbstractJobSchedulerAction {
   public static final String DEFAULT_CRON_EXP_STR = "0 0 12 * * ?"; // Everyday at Noon //$NON-NLS-1$
 
   static final String[] EXPECTED_INPUTS = new String[] { JOB_ACTION_ELEMENT, SOLUTION_ELEMENT, PATH_ELEMENT,
-      ACTION_ELEMENT, TRIGGER_TYPE_ELEMENT, TRIGGER_NAME_ELEMENT, REPEAT_INTERVAL_ELEMENT, REPEAT_COUNT_ELEMENT,
-      JOB_NAME_ELEMENT, CRON_STRING_ELEMENT };
+    ACTION_ELEMENT, TRIGGER_TYPE_ELEMENT, TRIGGER_NAME_ELEMENT, REPEAT_INTERVAL_ELEMENT, REPEAT_COUNT_ELEMENT,
+    JOB_NAME_ELEMENT, CRON_STRING_ELEMENT };
 
   public StartScheduledJobAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );

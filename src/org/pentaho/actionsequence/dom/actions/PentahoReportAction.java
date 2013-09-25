@@ -44,8 +44,8 @@ public class PentahoReportAction extends ActionDefinition {
   protected static final String[] EXPECTED_RESOURCES = new String[] { REPORT_DEFINITION_ELEMENT };
 
   protected static final String[] EXPECTED_INPUTS = new String[] { REPORT_DEFINITION_PATH_ELEMENT,
-      REPORT_DEFINITION_ELEMENT, USE_CONTENT_REPOSITORY_ELEMENT, PAGINATE_OUTPUT_ELEMENT, OUTPUT_TYPE_ELEMENT,
-      REPORTGENERATE_YIELDRATE_ELEMENT, ACCEPTED_PAGE_ELEMENT };
+    REPORT_DEFINITION_ELEMENT, USE_CONTENT_REPOSITORY_ELEMENT, PAGINATE_OUTPUT_ELEMENT, OUTPUT_TYPE_ELEMENT,
+    REPORTGENERATE_YIELDRATE_ELEMENT, ACCEPTED_PAGE_ELEMENT };
 
   public PentahoReportAction( Element actionDefElement, IActionParameterMgr actionParameterMgr ) {
     super( actionDefElement, actionParameterMgr );
@@ -173,12 +173,12 @@ public class PentahoReportAction extends ActionDefinition {
             (IActionInputSource) null );
       }
     }
-    for ( IActionInputSource reportParameter : reportParameters ) {
-      if ( reportParameter instanceof ActionInputConstant ) {
-        setActionInputValue( ( (ActionInputConstant) reportParameter ).getName(), (IActionInputSource) reportParameter );
-      } else if ( reportParameter instanceof IActionInputVariable ) {
-        setActionInputValue( ( (IActionInputVariable) reportParameter ).getVariableName(),
-            (IActionInputSource) reportParameter );
+    for ( IActionInputSource reportParam : reportParameters ) {
+      if ( reportParam instanceof ActionInputConstant ) {
+        setActionInputValue( ( (ActionInputConstant) reportParam ).getName(), (IActionInputSource) reportParam );
+      } else if ( reportParam instanceof IActionInputVariable ) {
+        setActionInputValue( ( (IActionInputVariable) reportParam ).getVariableName(),
+            (IActionInputSource) reportParam );
       }
     }
   }

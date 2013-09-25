@@ -40,14 +40,14 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the resource mime type. Ignored if the resource URI is null.
    * @return the modified/created resource, or null if the resource is deleted.
    */
-  public IActionResource setResourceUri( String privateResourceName, URI uri, String mimeType );
+  IActionResource setResourceUri( String privateResourceName, URI uri, String mimeType );
 
   /**
    * Returns the component name of this action definition.
    * 
    * @return the action definition's component name.
    */
-  public String getComponentName();
+  String getComponentName();
 
   /**
    * Sets the component name of this action definition.
@@ -55,7 +55,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param name
    *          the component name.
    */
-  public void setComponentName( String name );
+  void setComponentName( String name );
 
   /**
    * Adds a new input parameter to this action definition. If the input already exists the type of the input is set to
@@ -67,7 +67,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the input type
    * @return the action input
    */
-  public IActionInput addInput( String privateParamName, String inputType );
+  IActionInput addInput( String privateParamName, String inputType );
 
   /**
    * Sets the value of the named action input to the specified constant value. A child element of the component
@@ -80,7 +80,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param value
    *          the value to be assigned. May be null.
    */
-  public void setInputValue( String privateParamName, String value );
+  void setInputValue( String privateParamName, String value );
 
   /**
    * Creates or modifies the named input parameter to refer to the named variable. The referenced variable should be the
@@ -95,7 +95,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param value
    *          the value to be assigned. May be null.
    */
-  public IActionInput setInputParam( String privateParamName, String referencedVariableName, String type );
+  IActionInput setInputParam( String privateParamName, String referencedVariableName, String type );
 
   /**
    * Sets the value of the named action input to the specified constant value. A child element of the component
@@ -110,7 +110,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param useCData
    *          indicates whether a CDATA node should be used to store the value.
    */
-  public void setInputValue( String privateParamName, String value, boolean useCData );
+  void setInputValue( String privateParamName, String value, boolean useCData );
 
   /**
    * Creates an input resource with the given name. No operation is performed if the resource already exists.
@@ -119,7 +119,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the name of the resource as it is known by this action definition (the element name).
    * @return the newly created or existing resource.
    */
-  public IActionResource addResource( String privateResourceName );
+  IActionResource addResource( String privateResourceName );
 
   /**
    * Creates an input resource with the given name. The resource will reference the specified action sequence resource.
@@ -129,12 +129,12 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the name of the resource as it is known by this action definition (the element name).
    * @return the newly created or existing resource.
    */
-  public IActionResource addResource( String privateResourceName, String referencedActionSequenceResource );
+  IActionResource addResource( String privateResourceName, String referencedActionSequenceResource );
 
   /**
    * @return the resources referenced by this action definition
    */
-  public IActionResource[] getResources();
+  IActionResource[] getResources();
 
   /**
    * Return the named resource of null if none exists. If the resource is not explicitly listed in the action resources
@@ -147,7 +147,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the resource name
    * @return the resource with the given name or null if none exists.
    */
-  public IActionResource getResource( String privateResourceName );
+  IActionResource getResource( String privateResourceName );
 
   /**
    * Return the named resource of null if none exists. If the resource is not explicitly listed in the action resources
@@ -162,7 +162,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          whether to include implicit resource references.
    * @return the resource with the given name or null if none exists.
    */
-  public IActionResource getResource( String privateResourceName, boolean includeImplicitResource );
+  IActionResource getResource( String privateResourceName, boolean includeImplicitResource );
 
   /**
    * Returns all the inputs that are listed in the action inputs section of this action definition. Inputs that have
@@ -170,7 +170,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * 
    * @return the inputs list in the action inputs section
    */
-  public IActionInput[] getInputs();
+  IActionInput[] getInputs();
 
   /**
    * Returns the input in the action inputs section of this action definition that the specified name. Inputs that have
@@ -180,7 +180,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the name of the param as it is known by this action definition (the input element name).
    * @return the input with the specified name or null if none exists.
    */
-  public IActionInput getInput( String privateInputName );
+  IActionInput getInput( String privateInputName );
 
   /**
    * Returns all the inputs that are listed in the action inputs section of this action definition that are accepted by
@@ -190,16 +190,16 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the input filter
    * @return the inputs of the specified types listed in the action inputs section of this action definition
    */
-  public IActionInput[] getInputs( IActionInputFilter actionInputFilter );
+  IActionInput[] getInputs( IActionInputFilter actionInputFilter );
 
-  public IActionOutput addOutput( String privateParamName, String outputType );
+  IActionOutput addOutput( String privateParamName, String outputType );
 
   /**
    * Returns all the outputs that are listed in the action outputs section of this action definition.
    * 
    * @return the outputs list in the action input name
    */
-  public IActionOutput[] getOutputs();
+  IActionOutput[] getOutputs();
 
   /**
    * Returns the output, with the specified name, listed in the action outputs section of this action definition.
@@ -208,7 +208,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the name of the param as it is known by this action definition (the output element name).
    * @return the named output or null if none exists.
    */
-  public IActionOutput getOutput( String privateParamName );
+  IActionOutput getOutput( String privateParamName );
 
   /**
    * Returns all the outputs that are listed in the action outputs section of this action definition that have the
@@ -218,7 +218,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          data types of the desired outputs.
    * @return the outputs listed in the action outputs section of the specified type
    */
-  public IActionOutput[] getOutputs( String[] types );
+  IActionOutput[] getOutputs( String[] types );
 
   /**
    * Returns all the outputs that are listed in the action outputs section of this action definition that have the
@@ -228,12 +228,12 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          data types of the desired outputs.
    * @return the outputs listed in the action outputs section of the specified type
    */
-  public IActionOutput[] getOutputs( String type );
+  IActionOutput[] getOutputs( String type );
 
   /**
    * @return the action definition description
    */
-  public String getDescription();
+  String getDescription();
 
   /**
    * Set the action definition description
@@ -241,36 +241,36 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param description
    *          the description
    */
-  public void setDescription( String description );
+  void setDescription( String description );
 
-  public boolean equals( Object arg0 );
+  boolean equals( Object arg0 );
 
   /**
    * @return the action control statement (if or loop) that contains this action definition or null if there is no
    *         parent control statement.
    */
-  public IActionControlStatement getParent();
+  IActionControlStatement getParent();
 
   /*
    * (non-Javadoc)
    * 
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getElement()
    */
-  public Element getElement();
+  Element getElement();
 
   /*
    * (non-Javadoc)
    * 
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#delete()
    */
-  public void delete();
+  void delete();
 
   /*
    * (non-Javadoc)
    * 
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getDocument()
    */
-  public IActionSequenceDocument getDocument();
+  IActionSequenceDocument getDocument();
 
   /**
    * The value of the component definition element at the specified XPath
@@ -279,7 +279,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the XPath of the element relative to the component definition element.
    * @return the value of the element or null if the element does not exist
    */
-  public String getComponentDefinitionValue( String compDefXpath );
+  String getComponentDefinitionValue( String compDefXpath );
 
   /**
    * The values of the component definition elements at the specified XPath
@@ -288,7 +288,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the XPath of the elements relative to the component definition element.
    * @return the values of the elements
    */
-  public String[] getComponentDefinitionValues( String compDefXpath );
+  String[] getComponentDefinitionValues( String compDefXpath );
 
   /**
    * The component definition elements at the specified XPath
@@ -297,14 +297,14 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the XPath of the elements relative to the component definition element.
    * @return the elements
    */
-  public Element[] getComponentDefElements( String compDefXpath );
+  Element[] getComponentDefElements( String compDefXpath );
 
   /**
    * The component definition element.
    * 
    * @return the element or null if the element does not exist.
    */
-  public Element getComponentDefElement();
+  Element getComponentDefElement();
 
   /**
    * The component definition element at the specified XPath
@@ -313,7 +313,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    *          the XPath of the elements relative to the component definition element.
    * @return the element or null if the element does not exist.
    */
-  public Element getComponentDefElement( String compDefXpath );
+  Element getComponentDefElement( String compDefXpath );
 
   /**
    * Sets the value of the component definition element at the specified XPath.
@@ -323,7 +323,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param value
    *          the value to be assigned to the element
    */
-  public void setComponentDefinition( String compDefXpath, String value );
+  void setComponentDefinition( String compDefXpath, String value );
 
   /**
    * Sets the value of the component definition elements at the specified XPath.
@@ -333,7 +333,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param values
    *          the value to be assigned to the elements
    */
-  public void setComponentDefinition( String compDefXpath, String[] values );
+  void setComponentDefinition( String compDefXpath, String[] values );
 
   /**
    * Sets the attribute value of the component definition element at the specified XPath.
@@ -345,7 +345,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param value
    *          the value to be assigned to the attribute
    */
-  public void setComponentDefinitionAttribute( String compDefXpath, String attributeName, String value );
+  void setComponentDefinitionAttribute( String compDefXpath, String attributeName, String value );
 
   /**
    * Sets the value of the component definition element at the specified XPath.
@@ -357,7 +357,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param useCData
    *          whether a CDATA node should be used to save the value
    */
-  public void setComponentDefinition( String compDefXpath, String value, boolean useCData );
+  void setComponentDefinition( String compDefXpath, String value, boolean useCData );
 
   /**
    * Removes an input from this action definition
@@ -365,7 +365,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param inputName
    *          the name of the input to be removed.
    */
-  public void removeInput( String privateParamName );
+  void removeInput( String privateParamName );
 
   /**
    * Renames the named action input. No operation is performed if the input does not exist. Any inputs defined in the
@@ -377,7 +377,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param newName
    *          the new input name.
    */
-  public void renameInput( String oldName, String newName );
+  void renameInput( String oldName, String newName );
 
   /**
    * Removes a resource from this action definition
@@ -385,22 +385,22 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param privateResourceName
    *          the name of the resource to be removed.
    */
-  public void removeResource( String privateResourceName );
+  void removeResource( String privateResourceName );
 
   /**
    * Removes all inputs from this action definition
    */
-  public void deleteAllInputs();
+  void deleteAllInputs();
 
   /**
    * Removes all output from this action definition
    */
-  public void deleteAllOutputs();
+  void deleteAllOutputs();
 
   /**
    * Removes all resources from this action definition
    */
-  public void deleteAllResources();
+  void deleteAllResources();
 
   /**
    * Removes all component definition elements at the specified XPath
@@ -408,12 +408,12 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param compDefXpath
    *          the XPath of the elements relative to the component definition element.
    */
-  public void removeComponentDefinitions( String compDefXpath );
+  void removeComponentDefinitions( String compDefXpath );
 
   /**
    * Removes all component definition child elements from this action definition.
    */
-  public void removeComponentDefinitions();
+  void removeComponentDefinitions();
 
   /**
    * Moves the given input to the specified position in the action inputs list.
@@ -423,7 +423,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * @param index
    *          the new input position
    */
-  public void setInputIndex( ActionInput actionInput, int index );
+  void setInputIndex( ActionInput actionInput, int index );
 
   /**
    * Returns all the private input names that are reserved for use by this action definition. Inputs with these names
@@ -431,7 +431,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * 
    * @return the reserved input names
    */
-  public String[] getReservedInputNames();
+  String[] getReservedInputNames();
 
   /**
    * Returns all the private outputs names that are reserved for use by this action definition. Outputs with these names
@@ -439,7 +439,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * 
    * @return the reserved output names
    */
-  public String[] getReservedOutputNames();
+  String[] getReservedOutputNames();
 
   /**
    * Returns all the private resource names that are reserved for use by this action definition. Resources with these
@@ -447,7 +447,7 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * 
    * @return the reserved output names
    */
-  public String[] getReservedResourceNames();
+  String[] getReservedResourceNames();
 
   /**
    * This is the default implementation for validating an action definition. By default no errors are returned.
@@ -455,9 +455,9 @@ public interface IActionDefinition extends IActionSequenceExecutableStatement {
    * 
    * @return the validation errors that were detected.
    */
-  public IActionSequenceValidationError[] validate();
+  IActionSequenceValidationError[] validate();
 
-  public IActionParameterMgr getActionParameterMgr();
+  IActionParameterMgr getActionParameterMgr();
 
-  public void setActionParameterMgr( IActionParameterMgr actionParameterMgr );
+  void setActionParameterMgr( IActionParameterMgr actionParameterMgr );
 }

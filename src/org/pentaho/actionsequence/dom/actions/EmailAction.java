@@ -50,7 +50,7 @@ public class EmailAction extends ActionDefinition {
       if ( msg instanceof InputStream ) {
         InputStream is = (InputStream) msg;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte bytes[] = new byte[1024];
+        byte[] bytes = new byte[1024];
         int numRead = 0;
         try {
           while ( ( numRead = is.read( bytes ) ) != -1 ) {
@@ -81,7 +81,7 @@ public class EmailAction extends ActionDefinition {
   }
 
   protected static final String[] EXPECTED_INPUTS = new String[] { TO_ELEMENT, FROM_ELEMENT, CC_ELEMENT, BCC_ELEMENT,
-      SUBJECT_ELEMENT, PLAIN_MSG_ELEMENT, HTML_MSG_ELEMENT };
+    SUBJECT_ELEMENT, PLAIN_MSG_ELEMENT, HTML_MSG_ELEMENT };
 
   public EmailAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );
@@ -148,12 +148,12 @@ public class EmailAction extends ActionDefinition {
   }
 
   public IActionInput getMessageHtml() {
-    IActionInput actionInput = getInput( HTML_MSG_ELEMENT );
-    if ( actionInput instanceof ActionInput ) {
-      actionInput =
-          new HTMLMsgInput( ( (ActionInput) actionInput ).getElement(), ( (ActionInput) actionInput ).getParameterMgr() );
+    IActionInput actInput = getInput( HTML_MSG_ELEMENT );
+    if ( actInput instanceof ActionInput ) {
+      actInput =
+          new HTMLMsgInput( ( (ActionInput) actInput ).getElement(), ( (ActionInput) actInput ).getParameterMgr() );
     }
-    return actionInput;
+    return actInput;
   }
 
   public void setMessagePlain( IActionInputSource value ) {
@@ -181,7 +181,7 @@ public class EmailAction extends ActionDefinition {
     if ( actionInput == null ) {
       actionInput = getInput( PLAIN_MSG_ELEMENT );
     }
-    ;
+
     return actionInput;
   }
 
@@ -209,7 +209,7 @@ public class EmailAction extends ActionDefinition {
     if ( actionInput == null ) {
       actionInput = getInput( SUBJECT_ELEMENT );
     }
-    ;
+
     return actionInput;
   }
 
@@ -218,15 +218,15 @@ public class EmailAction extends ActionDefinition {
     ActionSequenceValidationError validationError = validateInput( TO_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing input parameter for destination address.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Destination address is unavailable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Destination address is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing input parameter for destination address.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Destination address is unavailable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Destination address is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }
@@ -234,15 +234,15 @@ public class EmailAction extends ActionDefinition {
     validationError = validateInput( SUBJECT_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing input parameter for subject.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Subject input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Subject input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing input parameter for subject.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Subject input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Subject input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

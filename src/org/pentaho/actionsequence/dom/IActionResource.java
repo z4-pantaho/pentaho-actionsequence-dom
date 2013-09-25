@@ -25,61 +25,61 @@ public interface IActionResource extends IActionIOElement {
   /**
    * The Resource is a solution file
    */
-  public static final int SOLUTION_FILE_RESOURCE = 1;
+  int SOLUTION_FILE_RESOURCE = 1;
 
   /**
    * The resource is a URL
    */
-  public static final int URL_RESOURCE = 2;
+  int URL_RESOURCE = 2;
 
   /**
    * The resource is an arbitrary file
    */
-  public static final int FILE_RESOURCE = 3;
+  int FILE_RESOURCE = 3;
 
   /**
    * The resource type is unknown
    */
-  public static final int UNKNOWN_RESOURCE = 4;
+  int UNKNOWN_RESOURCE = 4;
 
   /**
    * The resource type is an embedded string
    */
-  public static final int STRING = 5;
+  int STRING = 5;
 
   /**
    * The resource type is embedded xml
    */
-  public static final int XML = 6;
+  int XML = 6;
 
-  public URI getUri();
+  URI getUri();
 
-  public void setURI( URI uri );
+  void setURI( URI uri );
 
-  public String getMimeType();
+  String getMimeType();
 
-  public void setMimeType( String mimeType );
+  void setMimeType( String mimeType );
 
-  public IPentahoStreamSource getDataSource() throws FileNotFoundException;
+  IPentahoStreamSource getDataSource() throws FileNotFoundException;
 
-  public InputStream getInputStream() throws FileNotFoundException;
+  InputStream getInputStream() throws FileNotFoundException;
 
-  public void delete();
+  void delete();
 
-  public void setMapping( String publicName );
+  void setMapping( String publicName );
 
-  public void setName( String resourceName );
+  void setName( String resourceName );
 
-  public void setType( String ioType );
+  void setType( String ioType );
 
-  public Element getElement();
+  Element getElement();
 
-  public String getMapping();
+  String getMapping();
 
-  public String getName();
+  String getName();
 
-  public String getPublicName();
+  String getPublicName();
 
-  public String getType();
+  String getType();
 
 }

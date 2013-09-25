@@ -82,15 +82,15 @@ public class ContentOutputAction extends ActionDefinition {
     ActionSequenceValidationError validationError = validateInput( CONTENT_INPUT_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing content input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Content input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Content input is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing content input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Content input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Content input is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }
@@ -98,15 +98,15 @@ public class ContentOutputAction extends ActionDefinition {
     validationError = validateInput( MIME_TYPE_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing content mime type parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Content mime type input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Content mime type input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing content mime type parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Content mime type input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Content mime type input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

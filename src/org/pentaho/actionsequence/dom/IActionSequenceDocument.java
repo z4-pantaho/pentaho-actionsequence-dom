@@ -26,166 +26,165 @@ import org.dom4j.Document;
 @SuppressWarnings( { "rawtypes" } )
 public interface IActionSequenceDocument {
 
-  public static final String SUSPEND_SCHEDULER_CMND = "suspendScheduler"; //$NON-NLS-1$
+  String SUSPEND_SCHEDULER_CMND = "suspendScheduler"; //$NON-NLS-1$
 
   // Document header nodes
-  public static final String ACTION_SEQUENCE = "action-sequence"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_NAME = "name"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_TITLE = "title"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_VERSION = "version"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_LOGGING_LEVEL = "logging-level"; //$NON-NLS-1$
-  public static final String LOG_LEVEL_TRACE = "TRACE"; //$NON-NLS-1$
-  public static final String LOG_LEVEL_DEBUG = "DEBUG"; //$NON-NLS-1$
-  public static final String LOG_LEVEL_INFO = "INFO"; //$NON-NLS-1$
-  public static final String LOG_LEVEL_WARN = "WARN"; //$NON-NLS-1$
-  public static final String LOG_LEVEL_ERROR = "ERROR"; //$NON-NLS-1$
-  public static final String LOG_LEVEL_FATAL = "FATAL"; //$NON-NLS-1$
-  public static final String[] LOGGING_LEVELS = new String[] { LOG_LEVEL_TRACE, LOG_LEVEL_DEBUG, LOG_LEVEL_INFO,
-      LOG_LEVEL_WARN, LOG_LEVEL_ERROR, LOG_LEVEL_FATAL };
+  String ACTION_SEQUENCE = "action-sequence"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_NAME = "name"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_TITLE = "title"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_VERSION = "version"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_LOGGING_LEVEL = "logging-level"; //$NON-NLS-1$
+  String LOG_LEVEL_TRACE = "TRACE"; //$NON-NLS-1$
+  String LOG_LEVEL_DEBUG = "DEBUG"; //$NON-NLS-1$
+  String LOG_LEVEL_INFO = "INFO"; //$NON-NLS-1$
+  String LOG_LEVEL_WARN = "WARN"; //$NON-NLS-1$
+  String LOG_LEVEL_ERROR = "ERROR"; //$NON-NLS-1$
+  String LOG_LEVEL_FATAL = "FATAL"; //$NON-NLS-1$
+  String[] LOGGING_LEVELS = new String[] { LOG_LEVEL_TRACE, LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARN,
+    LOG_LEVEL_ERROR, LOG_LEVEL_FATAL };
 
-  public static final String ACTION_SEQUENCE_DOCUMENTATION = "documentation"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_DOCUMENTATION_AUTHOR = "documentation/author"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_DOCUMENTATION_DESCRIPT = "documentation/description"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_DOCUMENTATION_HELP = "documentation/help"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_DOCUMENTATION_RESULT_TYPE = "documentation/result-type"; //$NON-NLS-1$
-  public static final String ACTION_SEQUENCE_DOCUMENTATION_ICON = "documentation/icon"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_DOCUMENTATION = "documentation"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_DOCUMENTATION_AUTHOR = "documentation/author"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_DOCUMENTATION_DESCRIPT = "documentation/description"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_DOCUMENTATION_HELP = "documentation/help"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_DOCUMENTATION_RESULT_TYPE = "documentation/result-type"; //$NON-NLS-1$
+  String ACTION_SEQUENCE_DOCUMENTATION_ICON = "documentation/icon"; //$NON-NLS-1$
 
   // Document Inputs nodes
-  public static final String DOC_INPUTS_NAME = "inputs"; //$NON-NLS-1$
-  public static final String INPUT_SOURCES_NAME = "sources"; //$NON-NLS-1$
-  public static final String REQUEST_INPUT_SOURCE = "request"; //$NON-NLS-1$
-  public static final String SESSION_INPUT_SOURCE = "session"; //$NON-NLS-1$
-  public static final String RUNTIME_INPUT_SOURCE = "runtime"; //$NON-NLS-1$
-  public static final String GLOBAL_INPUT_SOURCE = "global"; //$NON-NLS-1$
-  public static final String SECURITY_INPUT_SOURCE = "security"; //$NON-NLS-1$
+  String DOC_INPUTS_NAME = "inputs"; //$NON-NLS-1$
+  String INPUT_SOURCES_NAME = "sources"; //$NON-NLS-1$
+  String REQUEST_INPUT_SOURCE = "request"; //$NON-NLS-1$
+  String SESSION_INPUT_SOURCE = "session"; //$NON-NLS-1$
+  String RUNTIME_INPUT_SOURCE = "runtime"; //$NON-NLS-1$
+  String GLOBAL_INPUT_SOURCE = "global"; //$NON-NLS-1$
+  String SECURITY_INPUT_SOURCE = "security"; //$NON-NLS-1$
 
-  public static final String[] INPUT_SOURCES = new String[] { REQUEST_INPUT_SOURCE, SESSION_INPUT_SOURCE,
-      GLOBAL_INPUT_SOURCE, RUNTIME_INPUT_SOURCE, SECURITY_INPUT_SOURCE };
+  String[] INPUT_SOURCES = new String[] { REQUEST_INPUT_SOURCE, SESSION_INPUT_SOURCE, GLOBAL_INPUT_SOURCE,
+    RUNTIME_INPUT_SOURCE, SECURITY_INPUT_SOURCE };
 
   // Document Outputs nodes
-  public static final String DOC_OUTPUTS_NAME = "outputs"; //$NON-NLS-1$
-  public static final String OUTPUTS_DESTINATIONS_NAME = "destinations"; //$NON-NLS-1$
-  public static final String RESPONSE_OUTPUT_DESTINATION = "response"; //$NON-NLS-1$
-  public static final String SESSION_OUTPUT_DESTINATION = "session"; //$NON-NLS-1$
-  public static final String RUNTIME_OUTPUT_DESTINATION = "runtime"; //$NON-NLS-1$
-  public static final String GLOBAL_OUTPUT_DESTINATION = "global"; //$NON-NLS-1$
-  public static final String CONTENT_REPO_OUTPUT_DESTINATION = "contentrepo"; //$NON-NLS-1$
+  String DOC_OUTPUTS_NAME = "outputs"; //$NON-NLS-1$
+  String OUTPUTS_DESTINATIONS_NAME = "destinations"; //$NON-NLS-1$
+  String RESPONSE_OUTPUT_DESTINATION = "response"; //$NON-NLS-1$
+  String SESSION_OUTPUT_DESTINATION = "session"; //$NON-NLS-1$
+  String RUNTIME_OUTPUT_DESTINATION = "runtime"; //$NON-NLS-1$
+  String GLOBAL_OUTPUT_DESTINATION = "global"; //$NON-NLS-1$
+  String CONTENT_REPO_OUTPUT_DESTINATION = "contentrepo"; //$NON-NLS-1$
 
-  public static final String[] OUTPUT_DESTINATIONS = new String[] { RUNTIME_OUTPUT_DESTINATION,
-      SESSION_OUTPUT_DESTINATION, RESPONSE_OUTPUT_DESTINATION, CONTENT_REPO_OUTPUT_DESTINATION,
-      GLOBAL_OUTPUT_DESTINATION };
+  String[] OUTPUT_DESTINATIONS = new String[] { RUNTIME_OUTPUT_DESTINATION, SESSION_OUTPUT_DESTINATION,
+    RESPONSE_OUTPUT_DESTINATION, CONTENT_REPO_OUTPUT_DESTINATION, GLOBAL_OUTPUT_DESTINATION };
 
-  public static final String DOC_RESOURCES_NAME = "resources"; //$NON-NLS-1$
+  String DOC_RESOURCES_NAME = "resources"; //$NON-NLS-1$
 
   // Data Types
-  public static final String STRING_TYPE = "s" + "tring"; //$NON-NLS-1$
-  public static final String LONG_TYPE = "long"; //$NON-NLS-1$
-  public static final String INTEGER_TYPE = "integer"; //$NON-NLS-1$
-  public static final String BIGDECIMAL_TYPE = "bigdecimal"; //$NON-NLS-1$
-  public static final String LIST_TYPE = "list"; //$NON-NLS-1$
-  public static final String OBJECT_TYPE = "object"; //$NON-NLS-1$
-  public static final String DATE_TYPE = "date"; //$NON-NLS-1$
-  public static final String RESULTSET_TYPE = "result-set"; //$NON-NLS-1$
-  public static final String STRING_LIST_TYPE = "string-list"; //$NON-NLS-1$
-  public static final String PROPERTY_MAP_TYPE = "property-map"; //$NON-NLS-1$
-  public static final String PROPERTY_MAP_LIST_TYPE = "property-map-list"; //$NON-NLS-1$
-  public static final String CONTENT_TYPE = "content"; //$NON-NLS-1$
-  public static final String RESOURCE_TYPE = "resource"; //$NON-NLS-1$
-  public static final String SQL_CONNECTION_TYPE = "sql-connection"; //$NON-NLS-1$
-  public static final String MDX_CONNECTION_TYPE = "mdx-connection"; //$NON-NLS-1$
-  public static final String XQUERY_CONNECTION_TYPE = "xquery-connection"; //$NON-NLS-1$
-  public static final String SQL_QUERY_TYPE = "sql-query"; //$NON-NLS-1$
-  public static final String MDX_QUERY_TYPE = "mdx-query"; //$NON-NLS-1$
-  public static final String HQL_QUERY_TYPE = "hql-query"; //$NON-NLS-1$
-  public static final String XQUERY_TYPE = "xquery"; //$NON-NLS-1$
-  public static final String INPUT_STREAM_TYPE = "inputstream"; //$NON-NLS-1$
+  String STRING_TYPE = "s" + "tring"; //$NON-NLS-1$
+  String LONG_TYPE = "long"; //$NON-NLS-1$
+  String INTEGER_TYPE = "integer"; //$NON-NLS-1$
+  String BIGDECIMAL_TYPE = "bigdecimal"; //$NON-NLS-1$
+  String LIST_TYPE = "list"; //$NON-NLS-1$
+  String OBJECT_TYPE = "object"; //$NON-NLS-1$
+  String DATE_TYPE = "date"; //$NON-NLS-1$
+  String RESULTSET_TYPE = "result-set"; //$NON-NLS-1$
+  String STRING_LIST_TYPE = "string-list"; //$NON-NLS-1$
+  String PROPERTY_MAP_TYPE = "property-map"; //$NON-NLS-1$
+  String PROPERTY_MAP_LIST_TYPE = "property-map-list"; //$NON-NLS-1$
+  String CONTENT_TYPE = "content"; //$NON-NLS-1$
+  String RESOURCE_TYPE = "resource"; //$NON-NLS-1$
+  String SQL_CONNECTION_TYPE = "sql-connection"; //$NON-NLS-1$
+  String MDX_CONNECTION_TYPE = "mdx-connection"; //$NON-NLS-1$
+  String XQUERY_CONNECTION_TYPE = "xquery-connection"; //$NON-NLS-1$
+  String SQL_QUERY_TYPE = "sql-query"; //$NON-NLS-1$
+  String MDX_QUERY_TYPE = "mdx-query"; //$NON-NLS-1$
+  String HQL_QUERY_TYPE = "hql-query"; //$NON-NLS-1$
+  String XQUERY_TYPE = "xquery"; //$NON-NLS-1$
+  String INPUT_STREAM_TYPE = "inputstream"; //$NON-NLS-1$
 
-  public static final String PROPERTY_MAP_ENTRY = "entry"; //$NON-NLS-1$
-  public static final String PROPERTY_MAP_ENTRY_KEY = "key"; //$NON-NLS-1$
-  public static final String RESULTSET_DEFAULT_COLUMNS = "columns"; //$NON-NLS-1$
-  public static final String RESULTSET_ROW = "row"; //$NON-NLS-1$
-  public static final String DEFAULT_STRING_LIST_ITEM = "list-item"; //$NON-NLS-1$
-  public static final String DEFAULT_VAL_NAME = "default-value"; //$NON-NLS-1$
+  String PROPERTY_MAP_ENTRY = "entry"; //$NON-NLS-1$
+  String PROPERTY_MAP_ENTRY_KEY = "key"; //$NON-NLS-1$
+  String RESULTSET_DEFAULT_COLUMNS = "columns"; //$NON-NLS-1$
+  String RESULTSET_ROW = "row"; //$NON-NLS-1$
+  String DEFAULT_STRING_LIST_ITEM = "list-item"; //$NON-NLS-1$
+  String DEFAULT_VAL_NAME = "default-value"; //$NON-NLS-1$
 
   // Actions group nodes
-  public static final String ACTIONS_NAME = "actions"; //$NON-NLS-1$
-  public static final String LOOP_ON_NAME = "loop-on"; //$NON-NLS-1$
-  public static final String PEEK_ONLY_NAME = "peek-only"; //$NON-NLS-1$
-  public static final String CONDITION_NAME = "condition"; //$NON-NLS-1$
+  String ACTIONS_NAME = "actions"; //$NON-NLS-1$
+  String LOOP_ON_NAME = "loop-on"; //$NON-NLS-1$
+  String PEEK_ONLY_NAME = "peek-only"; //$NON-NLS-1$
+  String CONDITION_NAME = "condition"; //$NON-NLS-1$
 
   // Action definition nodes
-  public static final String ACTION_DEFINITION_NAME = "action-definition"; //$NON-NLS-1$
-  public static final String ACTION_TYPE_NAME = "action-type"; //$NON-NLS-1$
-  public static final String COMPONENT_DEF_NAME = "component-definition"; //$NON-NLS-1$
-  public static final String COMPONENT_NAME = "component-name"; //$NON-NLS-1$
-  public static final String ACTION_INPUTS_NAME = "action-inputs"; //$NON-NLS-1$
-  public static final String ACTION_RESOURCES_NAME = "action-resources"; //$NON-NLS-1$
-  public static final String ACTION_OUTPUTS_NAME = "action-outputs"; //$NON-NLS-1$
-  public static final String MAPPING_NAME = "mapping"; //$NON-NLS-1$
+  String ACTION_DEFINITION_NAME = "action-definition"; //$NON-NLS-1$
+  String ACTION_TYPE_NAME = "action-type"; //$NON-NLS-1$
+  String COMPONENT_DEF_NAME = "component-definition"; //$NON-NLS-1$
+  String COMPONENT_NAME = "component-name"; //$NON-NLS-1$
+  String ACTION_INPUTS_NAME = "action-inputs"; //$NON-NLS-1$
+  String ACTION_RESOURCES_NAME = "action-resources"; //$NON-NLS-1$
+  String ACTION_OUTPUTS_NAME = "action-outputs"; //$NON-NLS-1$
+  String MAPPING_NAME = "mapping"; //$NON-NLS-1$
 
-  public static final String[] IO_TYPES = new String[] { STRING_TYPE, LONG_TYPE, INTEGER_TYPE, BIGDECIMAL_TYPE,
-      STRING_LIST_TYPE, LIST_TYPE, RESULTSET_TYPE, PROPERTY_MAP_TYPE, PROPERTY_MAP_LIST_TYPE, CONTENT_TYPE,
-      OBJECT_TYPE, INPUT_STREAM_TYPE };
-  public static final String DOC_INPUTS_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_INPUTS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
-  public static final String DOC_OUTPUTS_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_OUTPUTS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
-  public static final String DOC_RESOURCES_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_RESOURCES_NAME; //$NON-NLS-1$ //$NON-NLS-2$
-  public static final String DOC_ACTIONS_PATH = "/" + ACTION_SEQUENCE + "/" + ACTIONS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
+  String[] IO_TYPES =
+      new String[] { STRING_TYPE, LONG_TYPE, INTEGER_TYPE, BIGDECIMAL_TYPE, STRING_LIST_TYPE, LIST_TYPE,
+        RESULTSET_TYPE, PROPERTY_MAP_TYPE, PROPERTY_MAP_LIST_TYPE, CONTENT_TYPE, OBJECT_TYPE, INPUT_STREAM_TYPE };
+  String DOC_INPUTS_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_INPUTS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
+  String DOC_OUTPUTS_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_OUTPUTS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
+  String DOC_RESOURCES_PATH = "/" + ACTION_SEQUENCE + "/" + DOC_RESOURCES_NAME; //$NON-NLS-1$ //$NON-NLS-2$
+  String DOC_ACTIONS_PATH = "/" + ACTION_SEQUENCE + "/" + ACTIONS_NAME; //$NON-NLS-1$ //$NON-NLS-2$
 
   /**
    * @param xPath
    * @return the element identified by the specified XPath
    */
-  public IActionSequenceElement getElement( String xPath );
+  IActionSequenceElement getElement( String xPath );
 
   /**
    * @return the document wrapped by this object
    */
-  public Document getDocument();
+  Document getDocument();
 
   /**
    * @return the action sequence description
    */
-  public String getDescription();
+  String getDescription();
 
   /**
    * @return the help message
    */
-  public String getHelp();
+  String getHelp();
 
   /**
    * @return the action sequence version
    */
-  public String getVersion();
+  String getVersion();
 
   /**
    * @return the logging level being used when this action sequence is executed.
    */
-  public String getLoggingLevel();
+  String getLoggingLevel();
 
   /**
    * @return the action sequence author
    */
-  public String getAuthor();
+  String getAuthor();
 
   /**
    * @return the type of results returned by the action sequence
    */
-  public String getResultType();
+  String getResultType();
 
   /**
    * @return the location of the icon used by the action sequence.
    */
-  public String getIconLocation();
+  String getIconLocation();
 
   /**
    * @return the location of the flyover icon used by the action sequence.
    */
-  public String getFlyoverIconLocation();
+  String getFlyoverIconLocation();
 
   /**
    * @return the action sequence title
    */
-  public String getTitle();
+  String getTitle();
 
   /**
    * Sets the action sequence description.
@@ -193,7 +192,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the description
    */
-  public void setDescription( String value );
+  void setDescription( String value );
 
   /**
    * Sets the action sequence help message
@@ -201,7 +200,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the help message
    */
-  public void setHelp( String value );
+  void setHelp( String value );
 
   /**
    * Sets the action sequence version.
@@ -209,7 +208,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the version
    */
-  public void setVersion( String value );
+  void setVersion( String value );
 
   /**
    * Sets the action sequence logging level
@@ -217,7 +216,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the logging level
    */
-  public void setLoggingLevel( String value );
+  void setLoggingLevel( String value );
 
   /**
    * Sets the action sequence author
@@ -225,7 +224,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the author name
    */
-  public void setAuthor( String value );
+  void setAuthor( String value );
 
   /**
    * Sets the action sequence result type
@@ -233,7 +232,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the result type
    */
-  public void setResultType( String value );
+  void setResultType( String value );
 
   /**
    * Sets the location of the icon for this action sequence
@@ -241,7 +240,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the icon path
    */
-  public void setIconLocation( String value );
+  void setIconLocation( String value );
 
   /**
    * Sets the location of the icon for this action sequence
@@ -249,7 +248,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the icon path
    */
-  public void setFlyoverIconLocation( String value );
+  void setFlyoverIconLocation( String value );
 
   /**
    * Sets the action sequence title.
@@ -257,7 +256,7 @@ public interface IActionSequenceDocument {
    * @param value
    *          the title
    */
-  public void setTitle( String value );
+  void setTitle( String value );
 
   /**
    * Removes the named action sequence input from the action sequence
@@ -265,24 +264,24 @@ public interface IActionSequenceDocument {
    * @param inputName
    *          the input name
    */
-  public void deleteInput( String inputName );
+  void deleteInput( String inputName );
 
   /**
    * @return the action sequence inputs of the specified type
    */
-  public IActionSequenceInput[] getInputs( String[] types );
+  IActionSequenceInput[] getInputs( String[] types );
 
   /**
    * @return all the inputs to the action sequence
    */
-  public IActionSequenceInput[] getInputs();
+  IActionSequenceInput[] getInputs();
 
   /**
    * @param inputName
    *          the input name.
    * @return the input with the given name or null if it does not exist
    */
-  public IActionSequenceInput getInput( String inputName );
+  IActionSequenceInput getInput( String inputName );
 
   /**
    * Adds a new input this action sequence. If the input already exists the type of the input is set to the specified
@@ -294,7 +293,7 @@ public interface IActionSequenceDocument {
    *          the input type
    * @return the action sequence input
    */
-  public IActionSequenceInput createInput( String inputName, String inputType );
+  IActionSequenceInput createInput( String inputName, String inputType );
 
   /**
    * Removes the output of the given name from the action sequence.
@@ -302,18 +301,18 @@ public interface IActionSequenceDocument {
    * @param outputName
    *          the output name.
    */
-  public void deleteOutput( String outputName );
+  void deleteOutput( String outputName );
 
   /**
    * @return an array of all the outputs from this action sequence.
    */
-  public IActionSequenceOutput[] getOutputs();
+  IActionSequenceOutput[] getOutputs();
 
   /**
    * @param outputName
    * @return the action sequence output with the given name or null if it does not exist.
    */
-  public IActionSequenceOutput getOutput( String outputName );
+  IActionSequenceOutput getOutput( String outputName );
 
   /**
    * Adds a new output to this action sequence. If the output already exists the type of the output is set to the
@@ -325,7 +324,7 @@ public interface IActionSequenceDocument {
    *          the input type
    * @return the action sequence output
    */
-  public IActionSequenceOutput createOutput( String outputName, String outputType );
+  IActionSequenceOutput createOutput( String outputName, String outputType );
 
   /**
    * Removes the named action sequence resource from the action sequence
@@ -333,19 +332,19 @@ public interface IActionSequenceDocument {
    * @param resourceName
    *          the resource name
    */
-  public void deleteResource( String resourceName );
+  void deleteResource( String resourceName );
 
   /**
    * @return all the action sequence resources
    */
-  public IActionSequenceResource[] getResources();
+  IActionSequenceResource[] getResources();
 
   /**
    * @param resourceName
    *          the resource name.
    * @return the resource with the given name or null if it does not exist
    */
-  public IActionSequenceResource getResource( String resourceName );
+  IActionSequenceResource getResource( String resourceName );
 
   /**
    * Adds a new resource to this action sequence.
@@ -360,9 +359,9 @@ public interface IActionSequenceDocument {
    *          the resource mime type
    * @return the action sequence resource
    */
-  public IActionSequenceResource setResourceUri( String resourceName, URI uri, String mimeType );
+  IActionSequenceResource setResourceUri( String resourceName, URI uri, String mimeType );
 
-  public IActionLoop getRootLoop();
+  IActionLoop getRootLoop();
 
   /**
    * Create a new loop at the top level of the action sequence
@@ -373,7 +372,7 @@ public interface IActionSequenceDocument {
    *          the index of where to insert the loop
    * @return the create action loop
    */
-  public IActionLoop addLoop( String loopOn, int index );
+  IActionLoop addLoop( String loopOn, int index );
 
   /**
    * Adds an action loop to the end of this documents list of children.
@@ -381,7 +380,7 @@ public interface IActionSequenceDocument {
    * @param loopOn
    *          the name of the paremater to loop on
    */
-  public IActionLoop addLoop( String loopOn );
+  IActionLoop addLoop( String loopOn );
 
   /**
    * Adds an if statement to the end of this documents list of children.
@@ -389,7 +388,7 @@ public interface IActionSequenceDocument {
    * @param condition
    *          the if condition
    */
-  public IActionIfStatement addIf( String condition );
+  IActionIfStatement addIf( String condition );
 
   /**
    * Create a new if statment at the top level of the action sequence
@@ -400,12 +399,12 @@ public interface IActionSequenceDocument {
    *          the index of where to insert the if statment
    * @return the createe if statment
    */
-  public IActionIfStatement addIf( String condition, int index );
+  IActionIfStatement addIf( String condition, int index );
 
   /**
    * @return all the top level action definitions and control statments in the action sequence.
    */
-  public IActionSequenceExecutableStatement[] getExecutableChildren();
+  IActionSequenceExecutableStatement[] getExecutableChildren();
 
   /**
    * Adds a new child action definition to the end of this documents list of children.
@@ -416,7 +415,7 @@ public interface IActionSequenceDocument {
    * @throws IllegalAccessException
    * @throws InstantiationException
    */
-  public IActionDefinition addAction( Class actionDefinitionClass );
+  IActionDefinition addAction( Class actionDefinitionClass );
 
   /**
    * Creates a new action definition which conforms to the specifications of this template.
@@ -428,41 +427,41 @@ public interface IActionSequenceDocument {
    * @throws IllegalAccessException
    * @throws InstantiationException
    */
-  public IActionDefinition addAction( Class actionDefinitionClass, int index );
+  IActionDefinition addAction( Class actionDefinitionClass, int index );
 
-  public void addListener( IActionSequenceDocumentListener listener );
+  void addListener( IActionSequenceDocumentListener listener );
 
-  public void removeListener( IActionSequenceDocumentListener listener );
+  void removeListener( IActionSequenceDocumentListener listener );
 
-  public IActionSequenceExecutableStatement[] getPrecedingExecutables( IActionDefinition actionDefinition );
+  IActionSequenceExecutableStatement[] getPrecedingExecutables( IActionDefinition actionDefinition );
 
-  public IActionSequenceExecutableStatement[] getPrecedingExecutables( IActionControlStatement actionControlStatement );
+  IActionSequenceExecutableStatement[] getPrecedingExecutables( IActionControlStatement actionControlStatement );
 
-  public IActionDefinition[] getPrecedingActionDefinitions( IActionDefinition actionDefinition );
+  IActionDefinition[] getPrecedingActionDefinitions( IActionDefinition actionDefinition );
 
-  public IActionDefinition[] getPrecedingActionDefinitions( IActionControlStatement controlStatement );
+  IActionDefinition[] getPrecedingActionDefinitions( IActionControlStatement controlStatement );
 
-  public IActionInputVariable[] getAvailInputVariables( IActionDefinition actionDefinition, String[] types );
+  IActionInputVariable[] getAvailInputVariables( IActionDefinition actionDefinition, String[] types );
 
-  public IActionInputVariable[] getAvailInputVariables( IActionDefinition actionDefinition, String type );
+  IActionInputVariable[] getAvailInputVariables( IActionDefinition actionDefinition, String type );
 
-  public IActionInputVariable[] getAvailInputVariables( IActionControlStatement controlStatement );
+  IActionInputVariable[] getAvailInputVariables( IActionControlStatement controlStatement );
 
-  public IActionSequenceElement[] getReferencesTo( IActionSequenceInput actionSequenceInput );
+  IActionSequenceElement[] getReferencesTo( IActionSequenceInput actionSequenceInput );
 
-  public IActionSequenceElement[] getBrokenReferences();
+  IActionSequenceElement[] getBrokenReferences();
 
-  public IActionResource[] getReferencesTo( IActionSequenceResource actionSequenceResource );
+  IActionResource[] getReferencesTo( IActionSequenceResource actionSequenceResource );
 
-  public IActionSequenceElement[] getReferencesTo( IActionOutput actionOutput );
+  IActionSequenceElement[] getReferencesTo( IActionOutput actionOutput );
 
-  public IActionSequenceValidationError[] validate();
+  IActionSequenceValidationError[] validate();
 
-  public String toString();
+  String toString();
 
-  public void moveStatement( IActionSequenceExecutableStatement statementToMove,
+  void moveStatement( IActionSequenceExecutableStatement statementToMove,
       IActionControlStatement newParentControlStatement );
 
-  public void moveStatement( IActionSequenceExecutableStatement statementToMove,
+  void moveStatement( IActionSequenceExecutableStatement statementToMove,
       IActionControlStatement newParentControlStatement, int index );
 }

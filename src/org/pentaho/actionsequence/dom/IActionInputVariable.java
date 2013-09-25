@@ -14,7 +14,7 @@
 package org.pentaho.actionsequence.dom;
 
 public interface IActionInputVariable extends IActionInputSource {
-  public String getVariableName();
+  String getVariableName();
 
-  public String getType();
+  String getType();
 }

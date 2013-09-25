@@ -15,16 +15,16 @@ package org.pentaho.actionsequence.dom;
 
 public interface IActionSequenceInputSource {
 
-  public void setOrigin( String origin );
+  void setOrigin( String origin );
 
-  public String getOrigin();
+  String getOrigin();
 
-  public void setName( String name );
+  void setName( String name );
 
-  public String getName();
+  String getName();
 
-  public IActionSequenceInput getActionSequenceInput();
+  IActionSequenceInput getActionSequenceInput();
 
-  public void delete();
+  void delete();
 
 }

@@ -15,16 +15,16 @@ package org.pentaho.actionsequence.dom;
 
 public interface IActionSequenceOutputDestination {
 
-  public void setDestination( String destination );
+  void setDestination( String destination );
 
-  public String getDestination();
+  String getDestination();
 
-  public void setName( String name );
+  void setName( String name );
 
-  public String getName();
+  String getName();
 
-  public IActionSequenceOutput getActionSequenceOutput();
+  IActionSequenceOutput getActionSequenceOutput();
 
-  public void delete();
+  void delete();
 
 }

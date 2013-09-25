@@ -24,10 +24,10 @@ public interface IActionOutput extends IActionInputVariable, IActionIOElement {
   /**
    * @return the mapped name if it exists, otherwise the input/output name is returned.
    */
-  public String getPublicName();
+  String getPublicName();
 
-  public String getVariableName();
+  String getVariableName();
 
-  public void setValue( Object value );
+  void setValue( Object value );
 
 }

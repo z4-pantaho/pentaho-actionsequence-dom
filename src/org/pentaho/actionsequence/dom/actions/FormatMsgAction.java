@@ -52,7 +52,7 @@ public class FormatMsgAction extends ActionDefinition {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setComponentDefinition( FORMAT_MSG_COMMAND, "" );//$NON-NLS-1$
+    setComponentDefinition( FORMAT_MSG_COMMAND, "" ); //$NON-NLS-1$
   }
 
   public String[] getReservedInputNames() {
@@ -63,7 +63,6 @@ public class FormatMsgAction extends ActionDefinition {
     String outputName = getComponentDefinitionValue( RETURN_NAME_XPATH );
     if ( ( outputName == null ) || ( outputName.trim().length() == 0 ) ) {
       outputName = OUTPUT_STRING_ELEMENT;
-      ;
     }
     return new String[] { outputName };
   }

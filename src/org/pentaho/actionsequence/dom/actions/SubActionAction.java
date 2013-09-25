@@ -27,7 +27,7 @@ public class SubActionAction extends ActionDefinition {
   public static final String PROXY_ELEMENT = "session-proxy"; //$NON-NLS-1$
   public static final String PROXY_REF_ELEMENT = "session-proxy-ref"; //$NON-NLS-1$
   protected static final String[] EXPECTED_INPUTS = new String[] { SOLUTION_ELEMENT, PATH_ELEMENT, ACTION_ELEMENT,
-      PROXY_ELEMENT, PROXY_REF_ELEMENT };
+    PROXY_ELEMENT, PROXY_REF_ELEMENT };
 
   public SubActionAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );

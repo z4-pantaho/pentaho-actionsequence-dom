@@ -1040,8 +1040,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     }
   }
 
-  protected static void
-      fireControlStatementRemoved( final Object parent, final ActionControlStatement controlStatement ) {
+  protected static void fireControlStatementRemoved( final Object parent, final ActionControlStatement controlStmnt ) {
     Document doc = null;
     if ( parent instanceof ActionControlStatement ) {
       doc = ( (ActionLoop) parent ).controlElement.getDocument();
@@ -1054,7 +1053,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
         Object[] listeners = listenerList.toArray();
         for ( int i = 0; i < listeners.length; ++i ) {
           final IActionSequenceDocumentListener l = (IActionSequenceDocumentListener) listeners[i];
-          l.controlStatementRemoved( parent, controlStatement );
+          l.controlStatementRemoved( parent, controlStmnt );
         }
       }
     }
@@ -1119,8 +1118,8 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
         new IActionSequenceExecutableStatement[0] );
   }
 
-  public IActionSequenceExecutableStatement[] getPrecedingExecutables( IActionControlStatement actionControlStatement ) {
-    return (IActionSequenceExecutableStatement[]) getAncestorExecutables( actionControlStatement, true ).toArray(
+  public IActionSequenceExecutableStatement[] getPrecedingExecutables( IActionControlStatement actControlStatement ) {
+    return (IActionSequenceExecutableStatement[]) getAncestorExecutables( actControlStatement, true ).toArray(
         new IActionSequenceExecutableStatement[0] );
   }
 
@@ -1169,7 +1168,7 @@ public class ActionSequenceDocument implements IActionSequenceDocument {
     if ( controlStatement instanceof ActionLoop ) {
       String[] types =
           new String[] { ActionSequenceDocument.PROPERTY_MAP_LIST_TYPE, ActionSequenceDocument.STRING_LIST_TYPE,
-              ActionSequenceDocument.RESULTSET_TYPE };
+            ActionSequenceDocument.RESULTSET_TYPE };
       availParams.addAll( Arrays.asList( getInputs( types ) ) );
       IActionDefinition[] precedingActionDefs = getPrecedingActionDefinitions( controlStatement );
       for ( int i = 0; i < precedingActionDefs.length; i++ ) {

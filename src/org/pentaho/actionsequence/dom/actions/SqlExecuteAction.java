@@ -28,8 +28,8 @@ public class SqlExecuteAction extends AbstractRelationalDbAction {
   public static final String MULTI_STATEMENT_SEPARATOR = "multi_statement_separator"; //$NON-NLS-1$
 
   protected static final String[] EXPECTED_INPUTS = new String[] { DRIVER_ELEMENT, CONNECTION_ELEMENT, USER_ID_ELEMENT,
-      PASSWORD_ELEMENT, JNDI_ELEMENT, QUERY_ELEMENT, CONTINUE_ON_EXCEPTION, FORCE_SINGLE_STATEMENT,
-      MULTI_STATEMENT_SEPARATOR };
+    PASSWORD_ELEMENT, JNDI_ELEMENT, QUERY_ELEMENT, CONTINUE_ON_EXCEPTION, FORCE_SINGLE_STATEMENT,
+    MULTI_STATEMENT_SEPARATOR };
 
   public SqlExecuteAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );

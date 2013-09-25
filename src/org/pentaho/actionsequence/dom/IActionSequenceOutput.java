@@ -21,14 +21,14 @@ package org.pentaho.actionsequence.dom;
  */
 public interface IActionSequenceOutput extends IAbstractIOElement {
 
-  public static final String IS_OUTPUT_PARAM_ATTR = "is-output-parameter";
+  String IS_OUTPUT_PARAM_ATTR = "is-output-parameter";
 
-  public IActionSequenceOutputDestination[] getDestinations();
+  IActionSequenceOutputDestination[] getDestinations();
 
-  public IActionSequenceOutputDestination addDestination( String destination, String name );
+  IActionSequenceOutputDestination addDestination( String destination, String name );
 
-  public boolean isOutputParameter();
+  boolean isOutputParameter();
 
-  public void setOutputParameter( boolean isOutputParameter );
+  void setOutputParameter( boolean isOutputParameter );
 
 }

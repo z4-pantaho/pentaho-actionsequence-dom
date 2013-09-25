@@ -27,7 +27,6 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
   public static final String JOB_NAME_ELEMENT = "jobName"; //$NON-NLS-1$
   public static final String JOB_ACTION_ELEMENT = "jobAction"; //$NON-NLS-1$
   public static final String JOB_NAME = "job-name"; //$NON-NLS-1$
-  //  private static final String DEFAULT_STR = "default"; //$NON-NLS-1$
 
   protected AbstractJobSchedulerAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );
@@ -50,15 +49,15 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
     ActionSequenceValidationError validationError = validateInput( JOB_ACTION_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing job action input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Job action input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Job action input is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing job action input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Job action input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Job action input is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }
@@ -66,15 +65,15 @@ public abstract class AbstractJobSchedulerAction extends ActionDefinition {
     validationError = validateInput( JOB_NAME_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing job name input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Job name input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Job name input is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing job name input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Job name input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Job name input is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

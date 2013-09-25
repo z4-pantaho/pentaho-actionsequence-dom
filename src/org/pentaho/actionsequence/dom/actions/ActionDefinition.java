@@ -1126,15 +1126,15 @@ public class ActionDefinition implements IActionDefinition {
       validationError.errorCode = errorCode;
       validationError.parameterName = privateParamName;
       switch ( errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing input.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Input references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Input is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing input.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Input references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Input is uninitialized.";
+          break;
       }
     }
     return validationError;
@@ -1165,15 +1165,15 @@ public class ActionDefinition implements IActionDefinition {
         validationError.errorCode = errorCode;
         validationError.parameterName = privateResourceName;
         switch ( errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing input.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Input references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Input is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing input.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Input references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Input is uninitialized.";
+            break;
         }
       }
     }

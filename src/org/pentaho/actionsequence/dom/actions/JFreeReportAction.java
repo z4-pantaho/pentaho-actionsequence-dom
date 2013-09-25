@@ -50,11 +50,11 @@ public class JFreeReportAction extends ActionDefinition {
           if ( n.intValue() > 0 ) {
             intValue = n.intValue();
           }
-        } else if ( value != null ) {
+        } else {
           try {
             intValue = Integer.parseInt( value.toString() );
           } catch ( Exception ex ) {
-            // Do nothing.
+            intValue = null;
           }
         }
       }
@@ -123,7 +123,8 @@ public class JFreeReportAction extends ActionDefinition {
     }
 
     public void setDataClass( String className ) {
-      setActionInputValue( JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT, new ActionInputConstant( className, null ) );
+      ActionInputConstant actConstant = new ActionInputConstant( className, null );
+      setActionInputValue( JFreeReportAction.REPORT_DATA_JAR_CLASS_ELEMENT, actConstant );
       if ( className != null ) {
         setData( null );
         setDataComponent( null );
@@ -292,10 +293,10 @@ public class JFreeReportAction extends ActionDefinition {
   private StaticReportConfig staticReportConfig = new StaticReportConfig();
 
   protected static final String[] EXPECTED_RESOURCES = new String[] { REPORT_DEFINITION_ELEMENT,
-      REPORT_WIZ_SPEC_ELEMENT };
+    REPORT_WIZ_SPEC_ELEMENT };
 
   protected static final String[] EXPECTED_INPUTS = new String[] { DATA_ELEMENT, DRIVER_ELEMENT, CONNECTION_ELEMENT,
-      USER_ID_ELEMENT, PASSWORD_ELEMENT, JNDI_ELEMENT, QUERY_ELEMENT, XSL_ELEMENT, OUTPUT_TYPE_ELEMENT };
+    USER_ID_ELEMENT, PASSWORD_ELEMENT, JNDI_ELEMENT, QUERY_ELEMENT, XSL_ELEMENT, OUTPUT_TYPE_ELEMENT };
 
   public JFreeReportAction( Element actionDefElement, IActionParameterMgr actionParameterMgr ) {
     super( actionDefElement, actionParameterMgr );
@@ -307,7 +308,7 @@ public class JFreeReportAction extends ActionDefinition {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setComponentDefinition( OUTPUT_TYPE_ELEMENT, "html" );//$NON-NLS-1$
+    setComponentDefinition( OUTPUT_TYPE_ELEMENT, "html" ); //$NON-NLS-1$
   }
 
   public String[] getReservedInputNames() {
@@ -558,15 +559,15 @@ public class JFreeReportAction extends ActionDefinition {
     ActionSequenceValidationError validationError = validateInput( DATA_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing report data input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Report data input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Report data input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report data input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report data input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report data input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }
@@ -574,15 +575,15 @@ public class JFreeReportAction extends ActionDefinition {
     validationError = validateResource( REPORT_DEFINITION_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing report definition input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Report definition input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Report definition input parameter is unitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing report definition input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Report definition input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Report definition input parameter is unitialized.";
+          break;
       }
       errors.add( validationError );
     }
@@ -742,8 +743,8 @@ public class JFreeReportAction extends ActionDefinition {
     IActionInput actionInput = getInput( REPORT_GEN_YIELD_RATE_ELEMENT );
     if ( actionInput instanceof ActionInput ) {
       actionInput =
-          new YieldRateInput( ( (ActionInput) actionInput ).getElement(),
-              ( (ActionInput) actionInput ).getParameterMgr() );
+          new YieldRateInput( ( (ActionInput) actionInput ).getElement(), ( (ActionInput) actionInput )
+              .getParameterMgr() );
     }
     return actionInput;
   }
@@ -753,8 +754,8 @@ public class JFreeReportAction extends ActionDefinition {
     ActionInput mainReportData = (ActionInput) getData();
     IActionInput[] actionInputs =
         getInputs( new ActionInputTypeFilter( new String[] { ActionSequenceDocument.RESULTSET_TYPE,
-            ActionSequenceDocument.MDX_QUERY_TYPE, ActionSequenceDocument.SQL_QUERY_TYPE,
-            ActionSequenceDocument.XQUERY_TYPE, ActionSequenceDocument.HQL_QUERY_TYPE } ) );
+          ActionSequenceDocument.MDX_QUERY_TYPE, ActionSequenceDocument.SQL_QUERY_TYPE,
+          ActionSequenceDocument.XQUERY_TYPE, ActionSequenceDocument.HQL_QUERY_TYPE } ) );
     for ( int i = 0; i < actionInputs.length; i++ ) {
       if ( !actionInputs[i].equals( mainReportData ) ) {
         subreportQueryParams.add( actionInputs[i] );

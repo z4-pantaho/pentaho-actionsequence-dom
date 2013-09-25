@@ -167,15 +167,15 @@ public class XQueryAction extends ActionDefinition {
         validationError = validateResource( DOCUMENT_ELEMENT );
         if ( validationError != null ) {
           switch ( validationError.errorCode ) {
-          case ActionSequenceValidationError.INPUT_MISSING:
-            validationError.errorMsg = "Missing source XML input parameter.";
-            break;
-          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-            validationError.errorMsg = "Source XML input parameter references unknown variable.";
-            break;
-          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-            validationError.errorMsg = "Source XML input parameter is uninitialized.";
-            break;
+            case ActionSequenceValidationError.INPUT_MISSING:
+              validationError.errorMsg = "Missing source XML input parameter.";
+              break;
+            case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+              validationError.errorMsg = "Source XML input parameter references unknown variable.";
+              break;
+            case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+              validationError.errorMsg = "Source XML input parameter is uninitialized.";
+              break;
           }
           errors.add( validationError );
         }
@@ -191,15 +191,15 @@ public class XQueryAction extends ActionDefinition {
     validationError = validateInput( QUERY_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing query input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Query input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Query input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing query input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Query input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Query input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

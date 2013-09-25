@@ -27,11 +27,11 @@ public interface IActionIfStatement extends IActionControlStatement {
    * @param condition
    *          the condition.
    */
-  public void setCondition( String condition );
+  void setCondition( String condition );
 
   /**
    * @return the condition.
    */
-  public String getCondition();
+  String getCondition();
 
 }

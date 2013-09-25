@@ -264,21 +264,21 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
   }
 
   public IActionInput getTransformPivotDataFormat() {
-    IActionInput actionInput = getInput( TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT );
-    if ( actionInput instanceof ActionInput ) {
-      actionInput =
-          new FormatInput( ( (ActionInput) actionInput ).getElement(), ( (ActionInput) actionInput ).getParameterMgr() );
-    } else if ( actionInput instanceof ActionInputConstant ) {
+    IActionInput actInput = getInput( TRANSFORM_PIVOT_DATA_FORMAT_STRING_ELEMENT );
+    if ( actInput instanceof ActionInput ) {
+      actInput =
+          new FormatInput( ( (ActionInput) actInput ).getElement(), ( (ActionInput) actInput ).getParameterMgr() );
+    } else if ( actInput instanceof ActionInputConstant ) {
       Format format = null;
-      String formatPattern = actionInput.getStringValue();
+      String formatPattern = actInput.getStringValue();
       if ( formatPattern != null ) {
         format = getFormat( formatPattern );
       }
       if ( format != null ) {
-        actionInput = new ActionInputConstant( format, actionParameterMgr );
+        actInput = new ActionInputConstant( format, actionParameterMgr );
       }
     }
-    return actionInput;
+    return actInput;
   }
 
   public void setTransformSortDataFormat( IActionInputSource value ) {
@@ -289,8 +289,8 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
     } else if ( value instanceof ActionInputConstant ) {
       Object object = ( (ActionInputConstant) value ).getValue();
       if ( object instanceof DecimalFormat ) {
-        setActionInputValue( TRANSFORM_SORT_FORMAT_STRING_ELEMENT,
-            new ActionInputConstant( ( (DecimalFormat) object ).toPattern(), this.actionParameterMgr ) );
+        setActionInputValue( TRANSFORM_SORT_FORMAT_STRING_ELEMENT, new ActionInputConstant( ( (DecimalFormat) object )
+            .toPattern(), this.actionParameterMgr ) );
         setActionInputValue( TRANSFORM_SORT_FORMAT_TYPE_ELEMENT, new ActionInputConstant( DECIMAL_FORMAT_TYPE,
             this.actionParameterMgr ) );
       } else if ( object instanceof SimpleDateFormat ) {
@@ -310,21 +310,21 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
   }
 
   public IActionInput getTransformSortDataFormat() {
-    IActionInput actionInput = getInput( TRANSFORM_SORT_FORMAT_STRING_ELEMENT );
-    if ( actionInput instanceof ActionInput ) {
-      actionInput =
-          new FormatInput( ( (ActionInput) actionInput ).getElement(), ( (ActionInput) actionInput ).getParameterMgr() );
-    } else if ( actionInput instanceof ActionInputConstant ) {
+    IActionInput actInput = getInput( TRANSFORM_SORT_FORMAT_STRING_ELEMENT );
+    if ( actInput instanceof ActionInput ) {
+      actInput =
+          new FormatInput( ( (ActionInput) actInput ).getElement(), ( (ActionInput) actInput ).getParameterMgr() );
+    } else if ( actInput instanceof ActionInputConstant ) {
       Format format = null;
-      String formatPattern = actionInput.getStringValue();
+      String formatPattern = actInput.getStringValue();
       if ( formatPattern != null ) {
         format = getFormat( formatPattern );
       }
       if ( format != null ) {
-        actionInput = new ActionInputConstant( format, actionParameterMgr );
+        actInput = new ActionInputConstant( format, actionParameterMgr );
       }
     }
-    return actionInput;
+    return actInput;
   }
 
   public void setTransformSortColumn( IActionInputSource value ) {
@@ -433,6 +433,7 @@ public abstract class AbstractRelationalDbAction extends ActionDefinition {
       try {
         format = new SimpleDateFormat( formatPattern.toString() );
       } catch ( Exception ex2 ) {
+        format = null;
       }
     }
     return format;

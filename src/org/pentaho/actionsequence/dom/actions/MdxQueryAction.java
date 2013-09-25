@@ -45,7 +45,7 @@ public class MdxQueryAction extends MdxConnectionAction {
   public static final String OUTPUT_PREPARED_STATEMENT = "output-prepared_statement"; //$NON-NLS-1$
 
   protected static final String[] EXPECTED_INPUTS = new String[] { LOCATION_ELEMENT, CONNECTION_ELEMENT,
-      USER_ID_ELEMENT, PASSWORD_ELEMENT, MDX_CONNECTION_ELEMENT, ROLE_ELEMENT, QUERY_ELEMENT, JNDI_ELEMENT };
+    USER_ID_ELEMENT, PASSWORD_ELEMENT, MDX_CONNECTION_ELEMENT, ROLE_ELEMENT, QUERY_ELEMENT, JNDI_ELEMENT };
 
   protected static final String[] EXPECTED_RESOURCES = new String[] { CATALOG_ELEMENT };
 
@@ -193,15 +193,15 @@ public class MdxQueryAction extends MdxConnectionAction {
         validationError = validateResource( CATALOG_ELEMENT );
         if ( validationError != null ) {
           switch ( validationError.errorCode ) {
-          case ActionSequenceValidationError.INPUT_MISSING:
-            validationError.errorMsg = "Missing mondrian schema input parameter.";
-            break;
-          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-            validationError.errorMsg = "Mondrian schema input parameter references unknown variable.";
-            break;
-          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-            validationError.errorMsg = "Mondrian schema input parameter is uninitialized.";
-            break;
+            case ActionSequenceValidationError.INPUT_MISSING:
+              validationError.errorMsg = "Missing mondrian schema input parameter.";
+              break;
+            case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+              validationError.errorMsg = "Mondrian schema input parameter references unknown variable.";
+              break;
+            case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+              validationError.errorMsg = "Mondrian schema input parameter is uninitialized.";
+              break;
           }
           errors.add( validationError );
         }
@@ -213,15 +213,15 @@ public class MdxQueryAction extends MdxConnectionAction {
             validationError = validateInput( PREPARED_COMPONENT_ELEMENT );
             if ( validationError != null ) {
               switch ( validationError.errorCode ) {
-              case ActionSequenceValidationError.INPUT_MISSING:
-                validationError.errorMsg = "Missing database connection input parameter.";
-                break;
-              case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-                validationError.errorMsg = "Database connection input parameter references unknown variable.";
-                break;
-              case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-                validationError.errorMsg = "Database connection input parameter is uninitialized.";
-                break;
+                case ActionSequenceValidationError.INPUT_MISSING:
+                  validationError.errorMsg = "Missing database connection input parameter.";
+                  break;
+                case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+                  validationError.errorMsg = "Database connection input parameter references unknown variable.";
+                  break;
+                case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+                  validationError.errorMsg = "Database connection input parameter is uninitialized.";
+                  break;
               }
               errors.add( validationError );
             }
@@ -245,15 +245,15 @@ public class MdxQueryAction extends MdxConnectionAction {
     validationError = validateInput( QUERY_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing query input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Query input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Query input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing query input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Query input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Query input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

@@ -47,7 +47,7 @@ public class PrintMapValsAction extends ActionDefinition {
 
   protected void initNewActionDefinition() {
     super.initNewActionDefinition();
-    setComponentDefinition( PRINT_MAP_VALS_COMMAND, "" );//$NON-NLS-1$
+    setComponentDefinition( PRINT_MAP_VALS_COMMAND, "" ); //$NON-NLS-1$
   }
 
   public static boolean accepts( Element element ) {

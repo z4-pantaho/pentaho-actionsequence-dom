@@ -26,7 +26,7 @@ public class JMSAction extends ActionDefinition {
   public static final String QUEUE_NAME_ELEMENT = "jms-queue-name"; //$NON-NLS-1$
 
   protected static final String[] EXPECTED_INPUTS = new String[] { SOLUTION_NAME_ELEMENT, ACTION_PATH_ELEMENT,
-      ACTION_NAME_ELEMENT, QUEUE_NAME_ELEMENT };
+    ACTION_NAME_ELEMENT, QUEUE_NAME_ELEMENT };
 
   public JMSAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );

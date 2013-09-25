@@ -55,7 +55,7 @@ public class MdxConnectionAction extends ActionDefinition {
   public static final String EXTENDED_COLUMN_NAMES_ELEMENT = "extended_column_names"; //$NON-NLS-1$
 
   protected static final String[] EXPECTED_INPUTS = new String[] { LOCATION_ELEMENT, CONNECTION_ELEMENT,
-      USER_ID_ELEMENT, PASSWORD_ELEMENT, DRIVER_ELEMENT, MDX_CONNECTION_ELEMENT, ROLE_ELEMENT, JNDI_ELEMENT };
+    USER_ID_ELEMENT, PASSWORD_ELEMENT, DRIVER_ELEMENT, MDX_CONNECTION_ELEMENT, ROLE_ELEMENT, JNDI_ELEMENT };
 
   protected static final String[] EXPECTED_RESOURCES = new String[] { CATALOG_ELEMENT };
 
@@ -296,15 +296,15 @@ public class MdxConnectionAction extends ActionDefinition {
         validationError = validateResource( CATALOG_ELEMENT );
         if ( validationError != null ) {
           switch ( validationError.errorCode ) {
-          case ActionSequenceValidationError.INPUT_MISSING:
-            validationError.errorMsg = "Missing mondrian schema input parameter.";
-            break;
-          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-            validationError.errorMsg = "Mondrian schema input parameter references unknown variable.";
-            break;
-          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-            validationError.errorMsg = "Mondrian schema input parameter is uninitialized.";
-            break;
+            case ActionSequenceValidationError.INPUT_MISSING:
+              validationError.errorMsg = "Missing mondrian schema input parameter.";
+              break;
+            case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+              validationError.errorMsg = "Mondrian schema input parameter references unknown variable.";
+              break;
+            case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+              validationError.errorMsg = "Mondrian schema input parameter is uninitialized.";
+              break;
           }
           errors.add( validationError );
         }
@@ -314,15 +314,15 @@ public class MdxConnectionAction extends ActionDefinition {
           validationError = validateInput( JNDI_ELEMENT );
           if ( validationError != null ) {
             switch ( validationError.errorCode ) {
-            case ActionSequenceValidationError.INPUT_MISSING:
-              validationError.errorMsg = "Missing database connection input parameter.";
-              break;
-            case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-              validationError.errorMsg = "Database connection input parameter references unknown variable.";
-              break;
-            case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-              validationError.errorMsg = "Database connection input parameter in unitialized.";
-              break;
+              case ActionSequenceValidationError.INPUT_MISSING:
+                validationError.errorMsg = "Missing database connection input parameter.";
+                break;
+              case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+                validationError.errorMsg = "Database connection input parameter references unknown variable.";
+                break;
+              case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+                validationError.errorMsg = "Database connection input parameter in unitialized.";
+                break;
             }
             errors.add( validationError );
           }

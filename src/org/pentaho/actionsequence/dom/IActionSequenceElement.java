@@ -26,15 +26,15 @@ public interface IActionSequenceElement {
   /**
    * @return the action sequence element wrapped by this object
    */
-  public Element getElement();
+  Element getElement();
 
   /**
    * Removes the element from the action sequence
    */
-  public void delete();
+  void delete();
 
   /**
    * @return an action sequence document that wraps the dom document containing the element wrapped by this object.
    */
-  public IActionSequenceDocument getDocument();
+  IActionSequenceDocument getDocument();
 }

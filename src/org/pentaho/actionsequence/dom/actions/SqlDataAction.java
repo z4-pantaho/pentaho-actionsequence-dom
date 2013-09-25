@@ -33,7 +33,7 @@ public class SqlDataAction extends AbstractRelationalDbAction {
   private static final String[] EXPECTED_OUTPUTS = new String[0];
 
   protected static final String[] EXPECTED_INPUTS = new String[] { DRIVER_ELEMENT, CONNECTION_ELEMENT, USER_ID_ELEMENT,
-      PASSWORD_ELEMENT, JNDI_ELEMENT, QUERY_ELEMENT, LIVE_CONNECTION_ELEMENT };
+    PASSWORD_ELEMENT, JNDI_ELEMENT, QUERY_ELEMENT, LIVE_CONNECTION_ELEMENT };
 
   public SqlDataAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );
@@ -72,15 +72,15 @@ public class SqlDataAction extends AbstractRelationalDbAction {
       validationError = validateInput( DRIVER_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing database driver input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Database driver input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Database driver input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing database driver input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Database driver input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Database driver input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }
@@ -88,15 +88,15 @@ public class SqlDataAction extends AbstractRelationalDbAction {
       validationError = validateInput( USER_ID_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing database login input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Database login input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Database login input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing database login input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Database login input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Database login input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }
@@ -107,15 +107,15 @@ public class SqlDataAction extends AbstractRelationalDbAction {
           validationError = validateInput( PREPARED_COMPONENT_ELEMENT );
           if ( validationError != null ) {
             switch ( validationError.errorCode ) {
-            case ActionSequenceValidationError.INPUT_MISSING:
-              validationError.errorMsg = "Missing database connection input parameter.";
-              break;
-            case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-              validationError.errorMsg = "Database connection input parameter references unknown variable.";
-              break;
-            case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-              validationError.errorMsg = "Database connection input parameter is uninitialized.";
-              break;
+              case ActionSequenceValidationError.INPUT_MISSING:
+                validationError.errorMsg = "Missing database connection input parameter.";
+                break;
+              case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+                validationError.errorMsg = "Database connection input parameter references unknown variable.";
+                break;
+              case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+                validationError.errorMsg = "Database connection input parameter is uninitialized.";
+                break;
             }
             errors.add( validationError );
           }
@@ -140,15 +140,15 @@ public class SqlDataAction extends AbstractRelationalDbAction {
     validationError = validateInput( QUERY_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing query input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Query input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Query input parameter is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing query input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Query input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Query input parameter is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

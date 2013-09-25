@@ -159,8 +159,8 @@ public class EmailAttachment implements IActionSequenceElement {
 
   public String getName() {
     String paramName =
-        isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement
-            .attribute( ATTACHMENT_NAME_ATTRIBUTE ).getValue().trim();
+        isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement.attribute(
+            ATTACHMENT_NAME_ATTRIBUTE ).getValue().trim();
     Object name = null;
     if ( paramName != null ) {
       name = getEmailAction().getInput( paramName ).getValue();
@@ -187,8 +187,8 @@ public class EmailAttachment implements IActionSequenceElement {
   public ActionInput getNameParam() {
     ActionInput actionInput = null;
     String paramName =
-        isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement
-            .attribute( ATTACHMENT_NAME_ATTRIBUTE ).getValue().trim();
+        isDeprecatedAttachmentStyle() ? OLD_ATTACHMENT_NAME_ELEMENT : attachmentElement.attribute(
+            ATTACHMENT_NAME_ATTRIBUTE ).getValue().trim();
     if ( paramName != null ) {
       actionInput = getEmailAction().getInputParam( paramName );
     }
@@ -280,7 +280,10 @@ public class EmailAttachment implements IActionSequenceElement {
     EmailAction emailAction = getEmailAction();
     for ( int i = 1; !isUnique; i++ ) {
       name = ATTACHMENT_NAME_PREFIX + i;
-      isUnique = ( emailAction.getInputParam( name ) == null ) && ( emailAction.getComponentDefElement( name ) == null );
+
+      if ( ( emailAction.getInputParam( name ) == null ) && ( emailAction.getComponentDefElement( name ) == null ) ) {
+        isUnique = true;
+      }
     }
     return name;
   }

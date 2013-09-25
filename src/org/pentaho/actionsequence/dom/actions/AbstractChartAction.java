@@ -56,8 +56,8 @@ public abstract class AbstractChartAction extends ActionDefinition {
   public static final String CHART_TITLE_BOLD = "title-bold"; //$NON-NLS-1$
 
   public static final String[] EXPECTED_INPUTS = new String[] { CHART_DATA_ELEMENT, CHART_WIDTH_ELEMENT,
-      CHART_HEIGHT_ELEMENT, CHART_TITLE_ELEMENT, CHART_SUBTITLE_ELEMENT, CHART_FONT_ELEMENT, CHART_FONT_SIZE_ELEMENT,
-      CHART_BY_ROW_ELEMENT, CHART_PAINT_BORDER_ELEMENT };
+    CHART_HEIGHT_ELEMENT, CHART_TITLE_ELEMENT, CHART_SUBTITLE_ELEMENT, CHART_FONT_ELEMENT, CHART_FONT_SIZE_ELEMENT,
+    CHART_BY_ROW_ELEMENT, CHART_PAINT_BORDER_ELEMENT };
 
   public AbstractChartAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );
@@ -104,8 +104,8 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
 
   public void setTitleBold( ActionInputConstant value ) {
-    setComponentDefinition( CHART_TITLE_FONT_BOLD_XPATH,
-        value != null ? Boolean.toString( value.getBooleanValue( false ) ) : "false" ); //$NON-NLS-1$//$NON-NLS-2$
+    setComponentDefinition( CHART_TITLE_FONT_BOLD_XPATH, value != null ? Boolean.toString( value
+        .getBooleanValue( false ) ) : "false" ); //$NON-NLS-1$//$NON-NLS-2$
   }
 
   public ActionInputConstant getTitleBold() {
@@ -115,8 +115,8 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
 
   public void setTitleItalic( ActionInputConstant value ) {
-    setComponentDefinition( CHART_TITLE_FONT_ITALIC_XPATH,
-        value != null ? Boolean.toString( value.getBooleanValue( false ) ) : "false" ); //$NON-NLS-1$//$NON-NLS-2$
+    setComponentDefinition( CHART_TITLE_FONT_ITALIC_XPATH, value != null ? Boolean.toString( value
+        .getBooleanValue( false ) ) : "false" ); //$NON-NLS-1$//$NON-NLS-2$
   }
 
   public ActionInputConstant getTitleItalic() {
@@ -134,8 +134,8 @@ public abstract class AbstractChartAction extends ActionDefinition {
   }
 
   public void setBorderVisible( ActionInputConstant value ) {
-    setComponentDefinition( CHART_BORDER_VISIBLE_XPATH,
-        value != null ? Boolean.toString( value.getBooleanValue( false ) ) : "false" ); //$NON-NLS-1$//$NON-NLS-2$
+    setComponentDefinition( CHART_BORDER_VISIBLE_XPATH, value != null ? Boolean
+        .toString( value.getBooleanValue( false ) ) : "false" ); //$NON-NLS-1$//$NON-NLS-2$
   }
 
   public ActionInputConstant getBorderVisible() {
@@ -193,15 +193,15 @@ public abstract class AbstractChartAction extends ActionDefinition {
     ActionSequenceValidationError validationError = validateInput( CHART_DATA_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing chart data input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Chart data input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Chart data is uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing chart data input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Chart data input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Chart data is uninitialized.";
+          break;
       }
       errors.add( validationError );
     }
@@ -209,15 +209,15 @@ public abstract class AbstractChartAction extends ActionDefinition {
     validationError = validateResource( CHART_ATTRIBUTES_ELEMENT );
     if ( validationError != null ) {
       switch ( validationError.errorCode ) {
-      case ActionSequenceValidationError.INPUT_MISSING:
-        validationError.errorMsg = "Missing chart attributes input parameter.";
-        break;
-      case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-        validationError.errorMsg = "Chart attributes input parameter references unknown variable.";
-        break;
-      case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-        validationError.errorMsg = "Chart attributes are uninitialized.";
-        break;
+        case ActionSequenceValidationError.INPUT_MISSING:
+          validationError.errorMsg = "Missing chart attributes input parameter.";
+          break;
+        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+          validationError.errorMsg = "Chart attributes input parameter references unknown variable.";
+          break;
+        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+          validationError.errorMsg = "Chart attributes are uninitialized.";
+          break;
       }
       errors.add( validationError );
     }

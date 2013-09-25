@@ -14,25 +14,25 @@
 package org.pentaho.actionsequence.dom;
 
 public interface IActionInput {
-  public static final ActionInputConstant NULL_INPUT = new ActionInputConstant( (Object) null, null );
+  ActionInputConstant NULL_INPUT = new ActionInputConstant( (Object) null, null );
 
-  public Object getValue();
+  Object getValue();
 
-  public String getStringValue();
+  String getStringValue();
 
-  public String getStringValue( String defaultValue );
+  String getStringValue( String defaultValue );
 
-  public String getStringValue( boolean replaceParamReferences );
+  String getStringValue( boolean replaceParamReferences );
 
-  public String getStringValue( boolean replaceParamReferences, String defaultValue );
+  String getStringValue( boolean replaceParamReferences, String defaultValue );
 
-  public Boolean getBooleanValue();
+  Boolean getBooleanValue();
 
-  public boolean getBooleanValue( boolean defaultValue );
+  boolean getBooleanValue( boolean defaultValue );
 
-  public Integer getIntValue();
+  Integer getIntValue();
 
-  public int getIntValue( int defaultValue );
+  int getIntValue( int defaultValue );
 
-  public String getName();
+  String getName();
 }

@@ -60,16 +60,15 @@ public class KettleTransformAction extends ActionDefinition {
   public static final String KETTLE_LOGGING_LEVEL = "kettle-logging-level"; //$NON-NLS-1$
 
   public static final String[] LOGGING_LEVEL_VALUES = new String[] {
-      "minimal", "basic", "detail", "error", "rowlevel", "debug", "none" //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+    "minimal", "basic", "detail", "error", "rowlevel", "debug", "none" //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
   };
 
-  protected static final String[] EXPECTED_INPUTS =
-      new String[] { TRANSFORMATION_STEP_ELEMENT_OLD, TRANSFORMATION_STEP_ELEMENT, REPOSITORY_DIRECTORY,
-          REPOSITORY_TRANSFORMATION, LOGGING_LEVEL, KETTLE_LOGGING_LEVEL };
+  protected static final String[] EXPECTED_INPUTS = new String[] { TRANSFORMATION_STEP_ELEMENT_OLD,
+    TRANSFORMATION_STEP_ELEMENT, REPOSITORY_DIRECTORY, REPOSITORY_TRANSFORMATION, LOGGING_LEVEL, KETTLE_LOGGING_LEVEL };
 
   protected static final String[] EXPECTED_OUTPUTS = new String[] { TRANSFORMATION_OUTPUT_ELEMENT,
-      EXECUTION_STATUS_OUTPUT_ELEMENT, EXECUTION_LOG_OUTPUT_ELEMENT, TRANSFORM_SUCCESS_OUTPUT_ELEMENT,
-      TRANSFORM_ERROR_OUTPUT_ELEMENT, TRANSFORM_SUCCESS_COUNT_OUTPUT_ELEMENT, TRANSFORM_ERROR_COUNT_OUTPUT_ELEMENT };
+    EXECUTION_STATUS_OUTPUT_ELEMENT, EXECUTION_LOG_OUTPUT_ELEMENT, TRANSFORM_SUCCESS_OUTPUT_ELEMENT,
+    TRANSFORM_ERROR_OUTPUT_ELEMENT, TRANSFORM_SUCCESS_COUNT_OUTPUT_ELEMENT, TRANSFORM_ERROR_COUNT_OUTPUT_ELEMENT };
 
   public KettleTransformAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );
@@ -234,15 +233,15 @@ public class KettleTransformAction extends ActionDefinition {
       validationError = validateResource( TRANSFORMATION_FILE_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing transformation file location input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Transformation file location input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Transformation file location input parameter is unitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing transformation file location input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Transformation file location input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Transformation file location input parameter is unitialized.";
+            break;
         }
         errors.add( validationError );
       }
@@ -250,15 +249,15 @@ public class KettleTransformAction extends ActionDefinition {
       validationError = validateInput( TRANSFORMATION_FILE_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing transformation file location input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Transformation file location input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Transformation file location input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing transformation file location input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Transformation file location input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Transformation file location input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }

@@ -27,17 +27,17 @@ public interface IActionLoop extends IActionControlStatement {
    * @param loopOn
    *          the parameter name. If null the loop parameter is removed.
    */
-  public void setLoopOn( String loopOn );
+  void setLoopOn( String loopOn );
 
   /**
    * @return loopOn the name of the parameter that is being looped on
    */
-  public String getLoopOn();
+  String getLoopOn();
 
   /**
    * @return whether a peek operation will be performed to loop on a result set
    */
-  public Boolean getLoopUsingPeek();
+  Boolean getLoopUsingPeek();
 
   /**
    * Determines if a peek operation will be performed to loop on a result set. Only if the result set is scrollable that
@@ -47,6 +47,6 @@ public interface IActionLoop extends IActionControlStatement {
    * @param usePeek
    *          determines if a peek operation will be performed to loop on a result set
    */
-  public void setLoopUsingPeek( Boolean usePeek );
+  void setLoopUsingPeek( Boolean usePeek );
 
 }

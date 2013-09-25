@@ -27,21 +27,21 @@ import org.dom4j.Element;
 public interface IActionSequenceResource extends IAbstractIOElement {
 
   // Document Resources nodes
-  public static final String SOLUTION_FILE_RESOURCE_TYPE = "solution-file"; //$NON-NLS-1$
-  public static final String URL_RESOURCE_TYPE = "url"; //$NON-NLS-1$
-  public static final String FILE_RESOURCE_TYPE = "file"; //$NON-NLS-1$
-  public static final String XML_RESOURCE_TYPE = "xml"; //$NON-NLS-1$
-  public static final String STRING_RESOURCE_TYPE = "string"; //$NON-NLS-1$
-  public static final String RES_LOCATION_NAME = "location"; //$NON-NLS-1$
-  public static final String RES_MIME_TYPE_NAME = "mime-type"; //$NON-NLS-1$
+  String SOLUTION_FILE_RESOURCE_TYPE = "solution-file"; //$NON-NLS-1$
+  String URL_RESOURCE_TYPE = "url"; //$NON-NLS-1$
+  String FILE_RESOURCE_TYPE = "file"; //$NON-NLS-1$
+  String XML_RESOURCE_TYPE = "xml"; //$NON-NLS-1$
+  String STRING_RESOURCE_TYPE = "string"; //$NON-NLS-1$
+  String RES_LOCATION_NAME = "location"; //$NON-NLS-1$
+  String RES_MIME_TYPE_NAME = "mime-type"; //$NON-NLS-1$
 
-  public static final String SOLUTION_SCHEME = "solution"; //$NON-NLS-1$
-  public static final String FILE_SCHEME = "file"; //$NON-NLS-1$
+  String SOLUTION_SCHEME = "solution"; //$NON-NLS-1$
+  String FILE_SCHEME = "file"; //$NON-NLS-1$
 
   /**
    * @return the resource name
    */
-  public String getName();
+  String getName();
 
   /**
    * Sets the resource name.
@@ -49,7 +49,7 @@ public interface IActionSequenceResource extends IAbstractIOElement {
    * @param resourceName
    *          the resource name
    */
-  public void setName( String resourceName );
+  void setName( String resourceName );
 
   /**
    * Sets the resource mime type.
@@ -57,12 +57,12 @@ public interface IActionSequenceResource extends IAbstractIOElement {
    * @param mimeType
    *          the mime type
    */
-  public void setMimeType( String mimeType );
+  void setMimeType( String mimeType );
 
   /**
    * @return the resource mime type
    */
-  public String getMimeType();
+  String getMimeType();
 
   /**
    * Sets the resource URI
@@ -70,17 +70,17 @@ public interface IActionSequenceResource extends IAbstractIOElement {
    * @param uri
    *          the resource URI
    */
-  public void setPath( String uri );
+  void setPath( String uri );
 
   /**
    * @return the resource URI
    */
-  public String getPath();
+  String getPath();
 
   /**
    * @return the resource file type
    */
-  public String getType();
+  String getType();
 
   /**
    * Sets the resource file type
@@ -88,38 +88,38 @@ public interface IActionSequenceResource extends IAbstractIOElement {
    * @param resourceType
    *          the resource file type
    */
-  public void setType( String resourceType );
+  void setType( String resourceType );
 
   /*
    * (non-Javadoc)
    * 
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#delete()
    */
-  public void delete();
+  void delete();
 
   /*
    * (non-Javadoc)
    * 
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getElement()
    */
-  public Element getElement();
+  Element getElement();
 
   /*
    * (non-Javadoc)
    * 
    * @see org.pentaho.designstudio.dom.IActionSequenceElement#getDocument()
    */
-  public IActionSequenceDocument getDocument();
+  IActionSequenceDocument getDocument();
 
-  public URI getUri();
+  URI getUri();
 
-  public void setUri( URI uri );
+  void setUri( URI uri );
 
-  public String getString();
+  String getString();
 
-  public void setString( String string );
+  void setString( String string );
 
-  public String getXml();
+  String getXml();
 
-  public void setXml( String xml ) throws DocumentException;
+  void setXml( String xml ) throws DocumentException;
 }

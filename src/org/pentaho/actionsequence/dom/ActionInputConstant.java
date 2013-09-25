@@ -109,6 +109,7 @@ public class ActionInputConstant implements IActionInput, IActionInputSource {
       try {
         intValue = new Integer( Integer.parseInt( stringValue ) );
       } catch ( NumberFormatException e ) {
+        intValue = null;
       }
     }
     return intValue;

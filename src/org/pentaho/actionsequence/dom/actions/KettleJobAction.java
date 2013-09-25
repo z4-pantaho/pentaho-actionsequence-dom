@@ -42,16 +42,16 @@ public class KettleJobAction extends ActionDefinition {
   public static final String OUTPUT_EXECUTION_STATUS = "output-execution-status"; //$NON-NLS-1$
 
   public static final String[] LOGGING_LEVEL_VALUES = new String[] {
-      "minimal", "basic", "detail", "error", "rowlevel", "debug", "none"//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+    "minimal", "basic", "detail", "error", "rowlevel", "debug", "none"//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
   };
 
   public static final String[] EXPECTED_RESOURCES = new String[] { JOB_FILE_ELEMENT };
 
   protected static final String[] EXPECTED_INPUTS = new String[] { REPOSITORY_DIRECTORY, REPOSITORY_JOB, LOGGING_LEVEL,
-      KETTLE_LOGGING_LEVEL };
+    KETTLE_LOGGING_LEVEL };
 
   protected static final String[] EXPECTED_OUTPUTS = new String[] { EXECUTION_STATUS_OUTPUT_ELEMENT,
-      EXECUTION_LOG_OUTPUT_ELEMENT };
+    EXECUTION_LOG_OUTPUT_ELEMENT };
 
   public KettleJobAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );
@@ -66,13 +66,14 @@ public class KettleJobAction extends ActionDefinition {
     addResource( JOB_FILE_ELEMENT );
   }
 
-  public static boolean accepts( Element element ) {
+  public static boolean accepts( Element elem ) {
     boolean result = false;
-    if ( ActionDefinition.accepts( element ) && hasComponentName( element, COMPONENT_NAME ) ) {
+    if ( ActionDefinition.accepts( elem ) && hasComponentName( elem, COMPONENT_NAME ) ) {
+
       result =
-          ( element.selectSingleNode( ActionSequenceDocument.ACTION_RESOURCES_NAME + "/" + JOB_FILE_ELEMENT ) != null ) //$NON-NLS-1$
-              || ( element.selectSingleNode( ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + REPOSITORY_JOB ) != null ) //$NON-NLS-1$
-              || ( element.selectSingleNode( ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + REPOSITORY_JOB ) != null ); //$NON-NLS-1$
+          ( elem.selectSingleNode( ActionSequenceDocument.ACTION_RESOURCES_NAME + "/" + JOB_FILE_ELEMENT ) != null )
+              || ( elem.selectSingleNode( ActionSequenceDocument.ACTION_INPUTS_NAME + "/" + REPOSITORY_JOB ) != null )
+              || ( elem.selectSingleNode( ActionSequenceDocument.COMPONENT_DEF_NAME + "/" + REPOSITORY_JOB ) != null );
     }
     return result;
   }
@@ -125,15 +126,15 @@ public class KettleJobAction extends ActionDefinition {
       validationError = validateResource( JOB_FILE_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing job file location input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Job file location input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Job file location input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing job file location input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Job file location input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Job file location input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }
@@ -141,15 +142,15 @@ public class KettleJobAction extends ActionDefinition {
       validationError = validateInput( JOB_FILE_ELEMENT );
       if ( validationError != null ) {
         switch ( validationError.errorCode ) {
-        case ActionSequenceValidationError.INPUT_MISSING:
-          validationError.errorMsg = "Missing job file location input parameter.";
-          break;
-        case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
-          validationError.errorMsg = "Job file location input parameter references unknown variable.";
-          break;
-        case ActionSequenceValidationError.INPUT_UNINITIALIZED:
-          validationError.errorMsg = "Job file location input parameter is uninitialized.";
-          break;
+          case ActionSequenceValidationError.INPUT_MISSING:
+            validationError.errorMsg = "Missing job file location input parameter.";
+            break;
+          case ActionSequenceValidationError.INPUT_REFERENCES_UNKNOWN_VAR:
+            validationError.errorMsg = "Job file location input parameter references unknown variable.";
+            break;
+          case ActionSequenceValidationError.INPUT_UNINITIALIZED:
+            validationError.errorMsg = "Job file location input parameter is uninitialized.";
+            break;
         }
         errors.add( validationError );
       }

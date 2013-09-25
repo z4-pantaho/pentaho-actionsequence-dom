@@ -86,8 +86,9 @@ public abstract class ActionControlStatement implements IActionControlStatement 
       } else {
         Object childAtIndex = children[index];
         Element childElement =
-            ( childAtIndex instanceof ActionControlStatement ) ? ( (ActionControlStatement) childAtIndex ).controlElement
-                : ( (ActionDefinition) childAtIndex ).getElement();
+            ( childAtIndex instanceof ActionControlStatement )
+                ? ( (ActionControlStatement) childAtIndex ).controlElement : ( (ActionDefinition) childAtIndex )
+                    .getElement();
         List childElements = controlElement.elements();
         index = childElements.indexOf( childElement );
         if ( index >= 0 ) {
@@ -148,7 +149,8 @@ public abstract class ActionControlStatement implements IActionControlStatement 
     Document doc = controlElement.getDocument();
     if ( doc != null ) {
       controlElement.detach();
-      ActionSequenceDocument.fireControlStatementRemoved( new ActionSequenceDocument( doc, actionInputProvider ), this );
+      ActionSequenceDocument asDoc = new ActionSequenceDocument( doc, actionInputProvider );
+      ActionSequenceDocument.fireControlStatementRemoved( asDoc, this );
     }
   }
 

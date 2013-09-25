@@ -35,7 +35,7 @@ public class ResultSetCompareAction extends ActionDefinition {
   public static final String COMPARE_COLUMN_NUM = "compare-column-num";
 
   protected static final String[] EXPECTED_INPUTS = new String[] { COMPARE_FROM_ELEMENT, COMPARE_COLUMN_ELEMENT,
-      OUTPUT_MISMATCHES_ELEMENT, STOP_ON_ERROR_ELEMENT, COMPARE_TO_ELEMENT };
+    OUTPUT_MISMATCHES_ELEMENT, STOP_ON_ERROR_ELEMENT, COMPARE_TO_ELEMENT };
 
   public ResultSetCompareAction( Element actionDefElement, IActionParameterMgr actionInputProvider ) {
     super( actionDefElement, actionInputProvider );

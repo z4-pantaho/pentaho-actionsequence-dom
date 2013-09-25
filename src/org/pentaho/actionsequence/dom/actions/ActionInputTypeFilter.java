@@ -56,7 +56,7 @@ public class ActionInputTypeFilter implements IActionInputFilter {
             Integer.parseInt( constant.getStringValue() );
             result = true;
           } catch ( Exception ex ) {
-            // Do nothing. Method will return false.
+            result = false;
           }
         }
       }
