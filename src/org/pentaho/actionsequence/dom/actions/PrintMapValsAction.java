@@ -50,6 +50,7 @@ public class PrintMapValsAction extends ActionDefinition {
     setComponentDefinition( PRINT_MAP_VALS_COMMAND, "" ); //$NON-NLS-1$
   }
 
+  @SuppressWarnings( "deprecation" )
   public static boolean accepts( Element element ) {
     boolean accepts = false;
     if ( ActionDefinition.accepts( element ) && hasComponentName( element, COMPONENT_NAME ) ) {

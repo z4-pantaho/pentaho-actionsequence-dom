@@ -70,6 +70,7 @@ public class CopyParamAction extends ActionDefinition {
     return new String[] { outputName };
   }
 
+  @SuppressWarnings( "deprecation" )
   public static boolean accepts( Element element ) {
     boolean accepts = false;
     if ( ActionDefinition.accepts( element ) && hasComponentName( element, COMPONENT_NAME ) ) {
