@@ -45,5 +45,4 @@
   <action-definition id="relationalConnectionAction">org.pentaho.actionsequence.dom.actions.SqlConnectionAction</action-definition>
   <action-definition id="olapConnectionAction">org.pentaho.actionsequence.dom.actions.MdxConnectionAction</action-definition>
   <action-definition id="hqlConnectionAction">org.pentaho.actionsequence.dom.actions.HQLConnectionAction</action-definition>
-<pentaho-plugin>
-
+</pentaho-plugin>
