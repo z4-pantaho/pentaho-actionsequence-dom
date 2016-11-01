@@ -28,6 +28,8 @@
 
 		<!--  unit testing dependencies -->
         <dependency org="junit"               name="junit"               rev="4.4" conf="test->default"/>
-      
+
+        <dependency org="commons-logging" name="commons-logging" rev="1.1.3" transitive="false"/>
+
     </dependencies>
 </ivy-module>

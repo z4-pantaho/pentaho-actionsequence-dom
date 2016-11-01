@@ -1,5 +1,5 @@
 /*
- * Copyright 2002 - 2013 Pentaho Corporation.  All rights reserved.
+ * Copyright 2002 - 2016 Pentaho Corporation.  All rights reserved.
  * 
  * This software was developed by Pentaho Corporation and is provided under the terms
  * of the Mozilla Public License, Version 1.1, or any later version. You may not use
@@ -22,12 +22,19 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.xml.sax.SAXException;
+
+import javax.xml.XMLConstants;
 
 @SuppressWarnings( { "rawtypes", "unchecked" } )
 public class ActionFactory {
+
+  private static final Log logger = LogFactory.getLog( ActionFactory.class );
 
   public static LinkedHashMap<String, Class> pluginActions = new LinkedHashMap<String, Class>();
 
@@ -55,7 +62,7 @@ public class ActionFactory {
             // url.getContent() throws an UnknownServiceException (no content-type)
             InputStream is = url.openStream();
             if ( is != null ) {
-              SAXReader reader = new SAXReader();
+              SAXReader reader = createSafeSaxReader();
               Document doc = reader.read( is );
               if ( doc != null ) {
                 // look for nodes
@@ -73,20 +80,17 @@ public class ActionFactory {
                     // add the class to the plugin list
                     pluginActions.put( id, componentClass );
                   } catch ( Exception e ) {
-                    // TODO log this
-                    e.printStackTrace();
+                    logger.error( e );
                   }
                 }
               }
             }
           } catch ( Exception e ) {
-            // TODO log this
-            e.printStackTrace();
+            logger.error( e );
           }
         }
       } catch ( Exception e ) {
-        // TODO log this
-        e.printStackTrace();
+        logger.error( e );
       }
       pluginsLoaded = true;
     }
@@ -112,7 +116,7 @@ public class ActionFactory {
           break;
         }
       } catch ( Exception e ) {
-        e.printStackTrace();
+        logger.error( e );
       }
     }
 
@@ -128,6 +132,19 @@ public class ActionFactory {
     }
 
     return pluginActions.get( actionId );
+  }
+
+  private static SAXReader createSafeSaxReader() {
+    SAXReader reader = new SAXReader();
+    try {
+      reader.setFeature( XMLConstants.FEATURE_SECURE_PROCESSING, true );
+      reader.setFeature( "http://xml.org/sax/features/external-general-entities", false );
+      reader.setFeature( "http://xml.org/sax/features/external-parameter-entities", false );
+      reader.setFeature( "http://apache.org/xml/features/nonvalidating/load-external-dtd", false );
+    } catch ( SAXException e ) {
+      logger.error( e );
+    }
+    return reader;
   }
 
 }
