@@ -16,12 +16,10 @@
     <dependencies defaultconf="default->default">
 
     	<!--  external dependencies -->
-        <dependency org="dom4j"               name="dom4j"               rev="1.6.1">
-          <exclude org="xml-apis" name="xml-apis"/>
-        </dependency>
+	<dependency org="org.dom4j"           name="dom4j"               rev="2.1.1" />
 
         <!--  ignore all the unnecessary jars attached to jaxen -->
-        <dependency org="jaxen"               name="jaxen"               rev="1.1" transitive="false"/>
+        <dependency org="jaxen"               name="jaxen"               rev="1.1.6" transitive="false"/>
 
         <!--  internal dependencies -->  
         <dependency org="pentaho"             name="pentaho-connections" rev="${dependency.pentaho-connections.revision}" changing="true"/>
